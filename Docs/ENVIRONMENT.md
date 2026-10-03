@@ -1,7 +1,7 @@
 # Vývojové prostředí a spolupráce agentů
 
 Technický základ pro Codex, Claude Code a další místní MCP klienty. Herní
-architektura a design zůstávají otevřené. Výsledky revize jsou v
+architektura má základ popsaný v [ARCHITECTURE.md](ARCHITECTURE.md); kreativní design zůstává otevřený. Výsledky revize prostředí jsou v
 ENVIRONMENT_AUDIT_2026-10-03.md.
 
 ## Společné nástroje
@@ -130,3 +130,4 @@ Systémové komponenty a malé soubory klientských aplikací na C: přetrvají.
 - [Codex AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md): společné projektové pokyny.
 - [Claude Code MCP](https://code.claude.com/docs/en/mcp): projektová .mcp.json a klientská oprávnění.
 - [Claude Code memory](https://code.claude.com/docs/en/memory): import společných pokynů přes CLAUDE.md.
+

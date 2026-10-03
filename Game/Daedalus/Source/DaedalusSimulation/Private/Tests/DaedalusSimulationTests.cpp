@@ -48,7 +48,7 @@ bool FCatalogValidationTest::RunTest(const FString& Parameters)
     TestFalse(TEXT("Non-finite parsed input rejected"), C.LoadJson(Fixture.Replace(TEXT("\"radiusMetres\":6371000"), TEXT("\"radiusMetres\":1e999")), Error));
     FCatalog Direct = C; Direct.ShipDefinitions.FindChecked(TEXT("scout")).HullCapacity = std::numeric_limits<double>::infinity();
     TestFalse(TEXT("Direct catalog validation blocks non-finite values"), Direct.Validate(Error));
-    Direct = C; Direct.InitialShips.Add(Direct.InitialShips[0]);
+    Direct = C; const FInitialShip Duplicate = Direct.InitialShips[0]; Direct.InitialShips.Add(Duplicate);
     TestFalse(TEXT("Duplicate instance rejected"), Direct.Validate(Error));
     TestEqual(TEXT("Failed parses never replace valid catalog"), C.InitialShips.Num(), 3);
     return true;
@@ -144,10 +144,15 @@ bool FSaveValidationTest::RunTest(const FString& Parameters)
     Reject(ModifySave(Save, [](TSharedPtr<FJsonObject> O) { O->SetNumberField(TEXT("clock"), -1); }), TEXT("Negative clock rejected"));
     Reject(ModifySave(Save, [](TSharedPtr<FJsonObject> O) { O->SetStringField(TEXT("playerId"), TEXT("enemy")); }), TEXT("Player identity substitution rejected"));
     Reject(ModifySave(Save, [](TSharedPtr<FJsonObject> O) { O->SetStringField(TEXT("locationId"), TEXT("distant")); }), TEXT("Wrong-system location rejected"));
-    Reject(ModifySave(Save, [](TSharedPtr<FJsonObject> O) { auto A=O->GetArrayField(TEXT("ships")); A.Add(A[0]); O->SetArrayField(TEXT("ships"),A); }), TEXT("Duplicate saved instance rejected"));
+    Reject(ModifySave(Save, [](TSharedPtr<FJsonObject> O) { auto A=O->GetArrayField(TEXT("ships")); const auto DuplicateValue=A[0]; A.Add(DuplicateValue); O->SetArrayField(TEXT("ships"),A); }), TEXT("Duplicate saved instance rejected"));
     Reject(ModifySave(Save, [](TSharedPtr<FJsonObject> O) { auto A=O->GetArrayField(TEXT("ships")); A.RemoveAll([](const TSharedPtr<FJsonValue>& V) { return V->AsObject()->GetStringField(TEXT("id"))==TEXT("player"); }); O->SetArrayField(TEXT("ships"),A); }), TEXT("Missing player instance rejected"));
     Reject(ModifySave(Save, [](TSharedPtr<FJsonObject> O) { O->GetArrayField(TEXT("ships"))[0]->AsObject()->SetNumberField(TEXT("energy"),1000); }), TEXT("Capacity overflow rejected"));
     Reject(ModifySave(Save, [](TSharedPtr<FJsonObject> O) { O->GetArrayField(TEXT("ships"))[0]->AsObject()->SetStringField(TEXT("systemId"),TEXT("unknown")); }), TEXT("Unknown saved system rejected"));
+    Reject(ModifySave(Save, [](TSharedPtr<FJsonObject> O) {
+        TArray<TSharedPtr<FJsonValue>> Position;
+        Position.Add(MakeShared<FJsonValueNumber>(1000000000.)); Position.Add(MakeShared<FJsonValueNumber>(0.)); Position.Add(MakeShared<FJsonValueNumber>(0.));
+        O->GetArrayField(TEXT("ships"))[0]->AsObject()->SetArrayField(TEXT("positionMetres"), Position);
+    }), TEXT("Saved position inside planet rejected"));
     TestTrue(TEXT("Valid snapshot accepted"), S.Restore(Save, Error));
     TestTrue(TEXT("Pause persisted"), S.GetSnapshot().bPaused);
     TestTrue(TEXT("Fractional time persisted"), FMath::IsNearlyEqual(S.GetSnapshot().PendingSeconds,0.0123,1e-12));
@@ -250,4 +255,25 @@ bool FArrivalSafetyTest::RunTest(const FString& Parameters)
     Near.Serialize(After,Error); TestEqual(TEXT("Rejected travel retains entire state"),After,Before);
     return true;
 }
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuardPilotTest, "Daedalus.Foundation.GuardPilot", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FGuardPilotTest::RunTest(const FString&)
+{
+    FSimulation S; FString Error; const FCatalog C = MakeCatalog(); S.Initialize(C, Error);
+    S.SetShipFlightInput(TEXT("enemy"), FVector3d(1,0,0), Error); S.Advance(3);
+    const FVector3d Anchor(100,0,0);
+    TestTrue(TEXT("NPC displaced before autopilot"), S.GetSnapshot().Ships.FindChecked(TEXT("enemy")).PositionMetres.X > 500);
+    for (int32 I=0; I<2400; ++I)
+    {
+        const auto& Ship = S.GetSnapshot().Ships.FindChecked(TEXT("enemy"));
+        S.SetShipFlightInput(Ship.Id, HoldPositionInput(Ship, C.ShipDefinitions.FindChecked(Ship.DefinitionId), Anchor), Error);
+        S.Advance(FSimulation::FixedStepSeconds);
+    }
+    const auto& Guard = S.GetSnapshot().Ships.FindChecked(TEXT("enemy"));
+    TestTrue(TEXT("Guard returns and brakes near anchor"), FVector3d::Dist(Guard.PositionMetres, Anchor) < 2 && Guard.VelocityMetresPerSecond.Size() < 1);
+    TestTrue(TEXT("Guard never moves inactive system NPC"), S.GetSnapshot().Ships.FindChecked(TEXT("inactive")).PositionMetres.Equals(FVector3d(200,0,0)));
+    return true;
+}
+
 #endif
+

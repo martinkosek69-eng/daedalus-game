@@ -107,4 +107,6 @@ private:
 
 DAEDALUSSIMULATION_API FVector3d MetresToCentimetresRelative(const FVector3d& PositionMetres, const FVector3d& OriginMetres);
 DAEDALUSSIMULATION_API FVector3d CentimetresRelativeToMetres(const FVector3d& PositionCentimetres, const FVector3d& OriginMetres);
+/** Minimal guard pilot: desired velocity toward an anchor, with bounded braking. */
+DAEDALUSSIMULATION_API FVector3d HoldPositionInput(const FShipState& Ship, const FShipDefinition& Definition, const FVector3d& AnchorMetres);
 }

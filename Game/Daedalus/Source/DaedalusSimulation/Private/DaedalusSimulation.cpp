@@ -227,6 +227,14 @@ bool FCatalog::Validate(FString& Error) const
 
 FVector3d MetresToCentimetresRelative(const FVector3d& PositionMetres, const FVector3d& OriginMetres) { return (PositionMetres - OriginMetres) * 100.0; }
 FVector3d CentimetresRelativeToMetres(const FVector3d& PositionCentimetres, const FVector3d& OriginMetres) { return OriginMetres + PositionCentimetres / 100.0; }
+FVector3d HoldPositionInput(const FShipState& Ship, const FShipDefinition& Definition, const FVector3d& AnchorMetres)
+{
+    if (!Ship.IsAlive() || !VectorValid(AnchorMetres) || !VectorValid(Ship.PositionMetres) ||
+        !VectorValid(Ship.VelocityMetresPerSecond, MaxScalar) || !NumberValid(Definition.AccelerationMetresPerSecondSquared, 0.000001) ||
+        !NumberValid(Definition.MaxSpeedMetresPerSecond, 0.000001)) return FVector3d::ZeroVector;
+    const FVector3d DesiredVelocity = ((AnchorMetres - Ship.PositionMetres) * .2).GetClampedToMaxSize(Definition.MaxSpeedMetresPerSecond);
+    return ((DesiredVelocity - Ship.VelocityMetresPerSecond) / Definition.AccelerationMetresPerSecondSquared).GetClampedToMaxSize(1.0);
+}
 
 bool FSimulation::Initialize(const FCatalog& Catalog, FString& Error)
 {
@@ -405,6 +413,7 @@ bool FSimulation::ValidateSnapshot(const FSnapshot& C, FString& Error) const
         const FShipDefinition* D = Definitions.ShipDefinitions.Find(S.DefinitionId);
         if (!IdValid(P.Key) || P.Key != S.Id || !D || !Definitions.Systems.Contains(S.SystemId) || !VectorValid(S.PositionMetres) || !VectorValid(S.VelocityMetresPerSecond, MaxScalar)) return Fail(Error, TEXT("Invalid saved ship reference or position: ") + P.Key);
         const FWeaponDefinition& W = Definitions.Weapons.FindChecked(D->WeaponId);
+        if (!PlacementClear(Definitions.Systems.FindChecked(S.SystemId), S.PositionMetres, D->LengthMetres * 0.5)) return Fail(Error, TEXT("Saved ship overlaps a celestial body: ") + P.Key);
         if (!NumberValid(S.Hull, 0, D->HullCapacity) || !NumberValid(S.Shield, 0, D->ShieldCapacity) || !NumberValid(S.Energy, 0, D->EnergyCapacity)
             || !NumberValid(S.WeaponCooldownSeconds, 0, W.CooldownSeconds) || S.VelocityMetresPerSecond.Size() > D->MaxSpeedMetresPerSecond + 1e-6
             || (!S.IsAlive() && !S.VelocityMetresPerSecond.IsNearlyZero())) return Fail(Error, TEXT("Saved ship values violate capacities: ") + P.Key);

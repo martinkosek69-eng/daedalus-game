@@ -3,6 +3,9 @@
 Read README.md and Docs/ENVIRONMENT.md before environment work. These are
 development instructions; creative game ideas remain editable.
 Read Tasks/README.md before accepting or handing off a numbered task.
+Read Docs/FOUNDATION.md, Docs/ARCHITECTURE.md, Docs/CODING_RULES.md and
+Docs/CURRENT_STATE.md before gameplay work. Confirm singleplayer scope and
+canonical data/state/presentation boundaries; do not mutate state through visuals.
 
 - Codex coordinates the project and integrates reviewed results. Claude and
   other assistants take individual tasks; there are no permanent world/ship

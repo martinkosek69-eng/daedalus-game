@@ -1,7 +1,13 @@
 # Daedalus
 
-Unreal C++ foundation for a game project. Gameplay design is still open.
+Unreal C++ foundation for a pure single-player space game. Creative content
+remains editable. Capital ships normally stay in space; authored locations are
+visited by transport, with shuttles a future extension.
 The previous Three.js game is a separate reference and backup.
+
+Start with [the game foundation](Docs/FOUNDATION.md),
+[architecture](Docs/ARCHITECTURE.md), [implementation rules](Docs/CODING_RULES.md),
+[current state](Docs/CURRENT_STATE.md) and [checks](Docs/TESTING.md).
 
 Read [the environment guide](Docs/ENVIRONMENT.md) and
 [the audit of 3 October 2026](Docs/ENVIRONMENT_AUDIT_2026-10-03.md).

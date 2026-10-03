@@ -4,6 +4,7 @@
 	"Category": "",
 	"Description": "",
 	"Modules": [
+		{"Name": "DaedalusSimulation", "Type": "Runtime", "LoadingPhase": "Default"},
 		{
 			"Name": "Daedalus",
 			"Type": "Runtime",
