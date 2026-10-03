@@ -32,26 +32,51 @@ Modifications by this project to the CC BY-NC 4.0 work above (credit retained):
   model. At the user's request they are removed. The 30 baseline window boxes
   keep their positions but are no longer welded into the hull. They are the
   separate object `Daedalus_WindowLights` in `DaedalusLights.glb`.
-- **New hull colour.** COLOR_0 now holds a reference-based palette (see
-  REFERENCES.md): dark grey with an olive cast, lighter sunlit decks, dark and
-  light plate patches, and dark greebles. Baked ambient occlusion adds recess
-  contrast. The 16 bow silo hatch plates are amber-orange (`#c98f35`, plain
-  paint), at the user's request. The hull slot base factor is white, so the
-  Unreal parent material can keep multiplying COLOR_0 by the base factor.
-- **Material slots on existing faces.** The hull uses `Daedalus_Armor`,
-  `Daedalus_EngineMetal`, `Daedalus_HangarInterior` (warm emissive bay
-  interiors) and `Daedalus_LightWhite` (bow light strip). There are no texture
-  files.
-- **Effects outside the hull.**
+- **Hull look (series-matched, second pass).** After the user rejected the
+  first pass (too light, cool and flat; orange too strong), the hull got:
+  - **Plating texture.** `Textures/T_Daedalus_Plating_BaseColor/ORM/Normal.png`
+    (2048², 32 m tile) are generated procedurally by the detail script (no
+    third-party images). They are applied through a world-scale box-projected
+    `UVMap`.
+  - **COLOR_0.** It now carries a neutral grey palette sampled from the
+    on-screen still U13, plate patches and baked AO; the texture multiplies it
+    (glTF rule).
+  - **Silo markings.** These are only a faint ochre tint on the VLS door frame
+    ridges.
+  - **Hangars.** Dark plated hangar interiors.
+  - **Lights.** Cool blue-white windows and bow strip.
+- **Material slots on existing faces.** The hull uses:
+  - `Daedalus_Armor` (textured),
+  - `Daedalus_EngineMetal`,
+  - `Daedalus_HangarInterior` (textured, weak emission),
+  - `Daedalus_LightWhite` (bow light strip).
+- **Separate exports in the hull frame (no offsets).**
   - `DaedalusEngineGlow.glb` holds six `<id>_Glow` objects sized from the
     measured outlets (`ENGINE_MOUNTS.json`). Each has its origin at the outlet
     centre and exhausts along local −X.
   - `DaedalusLights.glb` holds the window lights.
-  - Both share the hull's coordinate frame, so they need no offset.
+  - `DaedalusAddOns.glb` holds parts the stills show but the model lacks: the
+    bridge masts and two 40 m forward rods at the bow. This keeps Daedalus.glb
+    the exact 600 m hull.
+  - `DaedalusTurrets.glb` holds twin railgun barrels `TURRET_<mountID>`. They
+    share one mesh, `SM_Daedalus_RailgunBarrels`, with the pivot on the mount
+    frame. The domes stay on the hull.
+- **Look-dev.** The `.blend` has a `LookDev_Series` collection that matches the
+  on-screen still U13. It is not exported. It contains:
+  - a key sun,
+  - an Earth bounce,
+  - a camera fill,
+  - the camera `CAM_SeriesStill`.
+
+  The scene uses a dark world and AgX Medium High Contrast.
 - **Weapon mounts.** Measured weapon and launch mounts are in
   `WEAPON_MOUNTS.json`, with matching `MOUNT_<id>` empties in the `.blend`.
-  They cover railgun domes, bow VLS, F-302 bays and 4 Asgard beam weapons.
-  No turret or barrel geometry was added.
+  They cover:
+  - railgun domes,
+  - bow VLS,
+  - F-302 bays,
+  - 4 Asgard beam weapons,
+  - the two rod tips.
 
 Reproduce with:
 

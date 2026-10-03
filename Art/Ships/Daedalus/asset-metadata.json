@@ -1,7 +1,7 @@
 {
   "sourceSHA256": "c7c670ff703842e2d9e1525bcfba44682de05705defbc74743d1cd66fd8335cd",
-  "blendSHA256": "8f5c884e02c1d0f0b8f16a67d7bc0a3b340d006fea487bf33da46e8b8ed3aab8",
-  "glbSHA256": "9db590a7a56606ad40ddcbb0bc093732ea8f73726139f846e65be698b86e612c",
+  "blendSHA256": "49d092624e4f2ad5b7de09781dc9e961e62e5cd239046df996a691440a499ece",
+  "glbSHA256": "723fa4bbee94e86890c3faa746381b124ef512b3e10cc01f6fe34093a4ab2f69",
   "engineGlowGlbSHA256": "1326b654f5ccedc7fb89295af038adbbdfddbc2a7cd609c83f593d4ecfe3b1a4",
   "dimensionsMetres": [
     600.0001,
@@ -12,14 +12,101 @@
   "finalTriangles": 222330,
   "vertices": 503846,
   "originalAstrofossilGeometryChanged": false,
-  "changesFromBaseline": "hull is the exact Astrofossil geometry: the baseline hatch squares and vent slats (not in the original) were removed at the user request; baseline window cubes moved to the separate DaedalusLights.glb",
+  "changesFromBaseline": "hull is the exact Astrofossil geometry: the baseline hatch squares and vent slats (not in the original) were removed at the user request; baseline window cubes moved to the separate DaedalusLights.glb; parts the stills show but the model lacks (bridge masts, bow rods, railgun barrels) are separate add-on exports",
   "materialSlots": [
     "Daedalus_Armor",
     "Daedalus_EngineMetal",
     "Daedalus_HangarInterior",
     "Daedalus_LightWhite"
   ],
-  "vertexColour": "COLOR_0 linear albedo x baked AO (hull slot base factor white; other slots carry base colour)",
+  "vertexColour": "COLOR_0 linear large-scale albedo x baked AO; textured slots multiply it with the plating base colour (glTF rule), untextured slots carry their base colour",
+  "textures": {
+    "files": {
+      "base": "Textures/T_Daedalus_Plating_BaseColor.png",
+      "orm": "Textures/T_Daedalus_Plating_ORM.png",
+      "normal": "Textures/T_Daedalus_Plating_Normal.png"
+    },
+    "sizePixels": 2048,
+    "tileMetres": 32.0,
+    "uv": "UVMap: world-scale box projection per face (dominant normal axis), 1 UV unit = 32 m",
+    "generator": "procedural, plating_maps() in this script (seed 304); no third-party images",
+    "stats": {
+      "plates": 152,
+      "albedoMeanSRGB": 0.709,
+      "roughnessMean": 0.563
+    },
+    "sha256": {
+      "base": "cecf95d3d24f448b1381c54843fa9146cd788afa6ab581f40720874dc5b267e9",
+      "orm": "55032c451e5869ca1e659b9aab6a1ade4c4b77336e854046c13a91bfd5f3e988",
+      "normal": "c27f873a543cde79f0d78b5b79aee1c8a86795a9bdd962fdd16c67b57241c7dd"
+    }
+  },
+  "addOns": {
+    "masts": [
+      {
+        "baseMetres": [
+          -230.0,
+          47.0,
+          45.24
+        ],
+        "heightMetres": 34.0
+      },
+      {
+        "baseMetres": [
+          -230.0,
+          55.0,
+          45.24
+        ],
+        "heightMetres": 24.0
+      },
+      {
+        "baseMetres": [
+          -201.0,
+          36.0,
+          42.04
+        ],
+        "heightMetres": 9.0
+      },
+      {
+        "baseMetres": [
+          -201.0,
+          64.0,
+          42.04
+        ],
+        "heightMetres": 9.0
+      }
+    ],
+    "rods": [
+      {
+        "baseMetres": [
+          291.14,
+          29.5,
+          -14.0
+        ],
+        "tipMetres": [
+          331.14,
+          29.5,
+          -14.0
+        ]
+      },
+      {
+        "baseMetres": [
+          291.13,
+          -29.5,
+          -14.0
+        ],
+        "tipMetres": [
+          331.13,
+          -29.5,
+          -14.0
+        ]
+      }
+    ]
+  },
+  "turrets": {
+    "mesh": "SM_Daedalus_RailgunBarrels",
+    "objects": 38
+  },
   "fittings": {
     "windowLights": 30,
     "removedBaselineHatchSquares": 14,
@@ -29,11 +116,12 @@
     "engineMetalFaces": 7916,
     "hangarInteriorFaces": 156,
     "bowLightFaces": 38,
-    "siloOrangeFaces": 2336
+    "siloMarkingFaces": 64
   },
   "engineOutlets": 6,
   "mountGroups": {
     "asgard_beams": 4,
+    "bow_rods": 2,
     "bow_vls": 16,
     "dorsal_railguns": 26,
     "f302_bays": 2,
@@ -42,9 +130,13 @@
   "exports": {
     "hull": "Daedalus.glb",
     "engineGlow": "DaedalusEngineGlow.glb",
-    "windowLights": "DaedalusLights.glb"
+    "windowLights": "DaedalusLights.glb",
+    "addOns": "DaedalusAddOns.glb",
+    "turrets": "DaedalusTurrets.glb"
   },
-  "lightsGlbSHA256": "d2f2e220594180bb31b0f909133fcd38c0945c1d889cad6c334212c81cd4aa3b",
+  "lightsGlbSHA256": "c32be0933a6801a53f86a551ce904fd9ed86716322fc376eb1bc10cff5349420",
+  "addOnsGlbSHA256": "d8a97885a9a75af3117bf6f1914c0a9142924643092eb364528e9816016374bc",
+  "turretsGlbSHA256": "1dba81b4ae5bb48465c3ebc68ab44839caf089c944c947aa5960f27f92b0ada5",
   "checks": {
     "blendReopen": true,
     "dimensionsMetres": [
@@ -60,6 +152,14 @@
     ],
     "colorAttributes": [
       "COLOR_0"
+    ],
+    "uvMaps": [
+      "UVMap"
+    ],
+    "imageDependencies": [
+      "//Textures\\T_Daedalus_Plating_BaseColor.png",
+      "//Textures\\T_Daedalus_Plating_Normal.png",
+      "//Textures\\T_Daedalus_Plating_ORM.png"
     ],
     "glbMeshes": [
       "SM_Daedalus"
@@ -79,6 +179,15 @@
       "Daedalus_HangarInterior",
       "Daedalus_LightWhite"
     ],
+    "glbUVMaps": [
+      "UVMap"
+    ],
+    "glbImages": 3,
+    "addOnObjects": [
+      "Daedalus_AddOns"
+    ],
+    "turretObjects": 38,
+    "turretMeshes": 1,
     "lightsObjects": [
       "Daedalus_WindowLights"
     ],
