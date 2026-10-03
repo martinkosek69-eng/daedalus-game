@@ -509,5 +509,613 @@ Podle hráčské wiki, archivní snímek 2021. Oficiální přehled ovládání 
 - Ovládání navrhnout od začátku i pro ovladač. Je to levnější než převod
   později.
 
+---
 
-> ROZPRACOVÁNO: kapitoly 7–22 budou doplněny v dalším checkpointu.
+## 7. Napájení lodi (energie a podsystémy)
+
+### 7.1 Původní záměr [OFICIÁLNÍ 1059800, 1059700]
+
+- Warp jádro je zdroj energie. Hráč ji přerozděluje mezi zbraně, štíty, motory
+  a pomocné systémy. Nikdy nedojde úplně, vždy jde jen o kompromis.
+- Před vydáním (2009) vývojáři popsali 100 jednotek energie mezi čtyřmi systémy.
+  Dnes je to bazén 200 (viz 7.2). Princip zůstal stejný, čísla se změnila.
+- **Odběr zbraněmi.** Bez ztráty jdou vystřelit dvě energetické zbraně. Každá
+  další ubírá energii zbraní a tím i poškození každé z nich. Plná boční salva
+  osmi phaserů je tak silný, ale vyčerpávající úder.
+
+### 7.2 Dnešní pravidla [KOMUNITA Starship (Power and Subsystems), 2022]
+
+| Prvek | Pravidlo |
+| --- | --- |
+| Systémy | Zbraně, Štíty, Motory, Pomocné (Auxiliary) |
+| Bazén | 200 bodů. Zvýšení jednoho systému sníží jiný. |
+| Ruční rozsah | 15–100 na systém. Strop je obvykle 125 a předměty ho můžou zvýšit. |
+| Předvolby | Uložené rozdělení, přepínatelné i v boji. Na ovladači „100 do jednoho“. |
+| Zbraně | Násobitel energetického poškození = (energie + 100) / 200. Při 50 → 75 %, 100 → 100 %, 125 → 112,5 %. Na torpéda a miny nemá vliv. |
+| Odběr zbraní | Střelba hráče ubírá energii zbraní. NPC si energii při střelbě neubírají (podle vývojáře z roku 2019). |
+| Štíty | Každý bod = 2 % regenerace z hodnoty štítu (50 = 100 %) a 0,2 % pohlcení poškození (50 = 10 %). Kapacitu sektorů nemění. |
+| Motory | 50 = základní rychlost. Každý bod nad 50 přidá 2 % (100 = +100 %), každý pod 50 ubere 2 %. Rychlost zvyšuje obranu. Na warp nemá vliv. |
+| Pomocné | Síla vědeckých schopností (+2 % za bod nad 50), maskování a jeho odhalování, rychlejší doplňování stíhaček. |
+| Energetický rozvod (EPS) | Rychlost přelévání energie mezi systémy. Zrychlují ho konzole a schopnost inženýra. |
+| Plný impuls | Motory 100, ostatní 5. Po vypnutí se energie vrací se zpožděním. |
+| Couvání | Couvání déle než 10 s ubírá každou sekundu 1 bod ze všech systémů, až −25. |
+| Účinnost | Dovednosti a vlastnosti přidají nejvíc systémům, které běží na nízké úrovni. |
+
+### 7.3 Warp jádra [OFICIÁLNÍ 1011770, 2013]
+
+- Jádro mění pravidla energie a dává konkrétní sestavě charakter.
+- Jádro hmota/antihmota zvedne strop jednoho systému na 130. Když tento systém
+  běží pod 75, dává navíc bonus k účinnosti.
+- Singularitní jádro Romulanů dává bonus energie do jednoho systému podle
+  nabití singularity (viz kapitola 14).
+
+### 7.4 [ODVOZENO] Pro nás
+
+Napájení je ve STO „volant“ taktiky. Pro hru jednoho hráče doporučuji:
+
+- začít se 3–4 systémy a jednoduchými předvolbami (útok, obrana, rychlost,
+  rovnováha),
+- zachovat cenu přepnutí: energie se přelévá postupně, ne okamžitě,
+- odběr energie zbraněmi ponechat jako přirozenou brzdu „všech zbraní najednou“,
+- přesná čísla (200, 15–100, 125) jsou pomůcka pro první ladění, ne závazek.
+
+---
+
+## 8. Štíty
+
+### 8.1 Mechanika [KOMUNITA Playable starship 2023, Space combat 2022, Ship Shields 2022]
+
+- **Čtyři sektory:** přední, zadní, levý a pravý (fore, aft, port, starboard).
+  Zásah ubere sektor, ze kterého střela přiletěla. Když sektor padne,
+  poškození z té strany jde rovnou do trupu.
+- **Prosakování (bleedthrough):** standardně 10 % poškození jde přes štít
+  rovnou na trup. Například 100 poškození phaserem znamená 90 na štít a 10 na
+  trup. Odolné štíty (Resilient) mají jen 5 %.
+- **Kinetické zbraně:** štíty mají vrozenou 75% odolnost proti torpédům a minám.
+  Některá torpéda štíty částečně obcházejí (transphasic). **[KOMUNITA Ship weapon]**
+- **Regenerace:** štíty se doplňují pravidelně, po 6 sekundách. Rychlost
+  ovlivňuje typ štítu, energie štítů a dovednost (0,1 % kapacity za 6 s na bod).
+  **[KOMUNITA Skill: Shield Regeneration]**
+- **Tvrdost:** energie štítů pohlcuje část poškození (0,2 % za bod).
+- **Kapacitu sektoru** určuje vybavení (štítový generátor) krát modifikátor
+  štítů dané lodi. Odyssey má modifikátor 1,15 **[OFICIÁLNÍ 9782283]**, vědecké
+  lodě mají „velmi vysoký“ **[OFICIÁLNÍ 3030983]**.
+- **Přerozdělení:**
+  - Ruční: přelít energii do ohroženého sektoru, nebo vyrovnat všechny.
+  - Automatické na 10 s schopností Tactical Team.
+  - Na ovladači jen vyrovnání všech sektorů jedním stiskem.
+
+**Typy štítových generátorů:**
+
+| Typ | Kapacita | Regenerace | Zvláštnost |
+| --- | --- | --- | --- |
+| Standardní | vyvážená | vyvážená | – |
+| Covariant | +10 % | −25 % | – |
+| Regenerative | −10 % | +25 % | – |
+| Resilient | −5 % | −5 % | pohlcení 5 %, prosakování 5 % místo 10 % |
+
+**Úprava štítů proti typu energie:** −20 % poškození od phaserů, disruptorů
+a podobně.
+
+### 8.2 Taktika, kterou štíty vytvářejí [KOMUNITA Space combat 2022; OFICIÁLNÍ 1059810]
+
+- Natáčet loď tak, aby se poškození rozložilo do různých sektorů.
+- Slabý sektor držet od nepřítele.
+- Útočník se soustředí na jeden sektor a „prorazí díru“.
+- Do prázdného sektoru posílá torpéda, která na trup působí plnou silou.
+- Obránce čte, kterým sektorem přiletí torpédo, a reaguje (Brace for Impact).
+- Výpadek celého štítu je silný efekt: cílení na podsystémy může štíty vypnout
+  a tím shodit všechny sektory naráz (viz 14.6).
+
+### 8.3 Vzhled štítů [OFICIÁLNÍ 9888133, 11568363; KOMUNITA]
+
+- Vzhled štítu je ve STO oddělený od statistik. Od roku 2016 existují vizuální
+  sloty, které přepíšou vzhled štítu, deflektoru a impulsních motorů beze
+  změny statistik.
+- Prodávají se i čistě kosmetické „vanity“ štíty (Borg, Discovery, Section 31…).
+- **[NEOVĚŘENO]** Přesný tvar a chování zásahového efektu štítu (bublina kolem
+  lodi, rozvlnění v místě zásahu, barva podle typu) jsem v textových zdrojích
+  nenašel. Je potřeba ho změřit nebo prohlédnout přímo ve hře či na videu.
+
+### 8.4 [ODVOZENO] Pro nás
+
+Čtyři sektory s prosakováním a s rozdílnou odolností proti energii a kinetice
+dávají hodně taktiky za malou složitost. Doporučuji je jako jádro budoucího
+boje. Vizuál štítu stavět jako samostatný efekt, ne jako statistiku. Umožní to
+pozdější úpravy vzhledu a čitelnost.
+
+---
+
+## 9. Trup, odolnosti a typy poškození
+
+### 9.1 Trup [KOMUNITA Playable starship 2023]
+
+- Trup je „život“ lodi. Když dojde, loď je zničena (viz 16).
+- Kapacitu určuje typ a tier lodi. Například Star Cruiser má 57 000 na úrovni 60
+  **[OFICIÁLNÍ 9782283]**.
+- Trup se opravuje schopnostmi (Engineering Team, Auxiliary to Structural,
+  Hazard Emitters) a pasivní regenerací.
+- **Posádka (odstraněno 2015):** dříve počet posádky ovlivňoval opravy
+  a výsadky a posádku šlo zranit. STO mechaniku v roce 2015 zrušilo.
+  **[ODVOZENO]** Nejspíš proto, že přidávala složitost bez dost zábavy. Pro
+  hru jednoho hráče může posádka zase dávat smysl jako příběhová a opravárenská
+  vrstva, ale jen pokud bude čitelná.
+
+### 9.2 Typy poškození [KOMUNITA Damage type (space) 2023; Ship weapon 2022]
+
+Tři hlavní kategorie:
+
+- **Energie:** paprsky a děla. Na štít i trup působí stejně.
+- **Kinetika:** torpéda, miny a některé schopnosti. Proti štítům má jen 25 %
+  účinnost, trup zasáhne plně.
+- **Exotické:** schopnosti, které nejsou zbraně (důstojníci, konzole). Sílu
+  určuje dovednost Exotic Particle Generator.
+
+**Druhy energie** (barvu i vedlejší efekt má většina zbraní daného druhu,
+efekt se spouští s šancí 2,5 %, pokud není uvedeno jinak):
+
+| Druh | Barva | Vedlejší efekt | Typický uživatel |
+| --- | --- | --- | --- |
+| Phaser | oranžová / světle žlutá (TOS a andorijské modré) | vyřadí 1 podsystém na 5 s | Federace |
+| Disruptor | zelená | −10 % odolnosti cíle | Klingoni, Cardassiané, Romulanské impérium, Orioni |
+| Plazma | zelená / tyrkysová | trvalé poškození ohněm (DoT) | Romulané |
+| Tetryon | modrá | poškození navíc všem sektorům štítu | Tholiané, Hirogeni |
+| Polaron | růžová / fialová | −25 energie všem systémům | Dominion, Breen |
+| Antiproton | karmínová s černým okrajem | +20 % síla kritického zásahu (trvale) | Borg, Undine, Voth, Iconiané |
+| Proton | bělomodrá | při kritickém zásahu 50 %: poškození přes štíty | vzácné |
+
+**Odolnosti:**
+
+- úpravy štítů (−20 % proti jednomu druhu),
+- pancéřové konzole (plating: 2 druhy silně, armor: 4 druhy středně, alloy:
+  všechny slabě; zvláštní konzole proti kinetice),
+- dovednosti a vlastnosti kapitána,
+- frakce používají určité druhy, takže výběr odolnosti je taktické rozhodnutí
+  před misí.
+
+### 9.3 Výpočet odolnosti [KOMUNITA Damage resistance 2022]
+
+- Hra počítá „hodnotu odolnosti“ (součet bonusů a postihů) a převádí ji na
+  procento se **snižujícím se přínosem**. Křivka začíná lineárně (1 bod = 1 %)
+  a blíží se 75 %.
+- Body z tabulky: 10 → 9,1 %, 40 → 28,3 %, 50 → 32,8 %.
+- 75 % lze překonat jen zvláštními dočasnými schopnostmi.
+- **[ODVOZENO]** Pro nás je klíčový princip, ne přesný vzorec: odolnost
+  nesmí dosáhnout 100 % a každý další bonus musí přinést méně. Vzorec
+  navrhneme vlastní a otestujeme.
+
+---
+
+## 10. Zbraně
+
+### 10.1 Typy zbraní a palebné úhly [KOMUNITA Ship weapon 2022 a stránky zbraní]
+
+| Zbraň | Úhel | Montáž | Charakter |
+| --- | --- | --- | --- |
+| Paprskové pole (Beam Array) | 250° | příď i záď | široký úhel, menší poškození, základ všech lodí |
+| Dvojitá paprsková banka (DBB) | 90° | jen příď | víc poškození |
+| Dělo | 180° | jen příď | o něco víc než paprsek |
+| Dvojitá děla (DC) | 45° | jen příď | velké poškození, jen některé lodě |
+| Dvojitá těžká děla (DHC) | 45° | jen příď | pomalejší, větší salvy, +10 % síla kritického zásahu |
+| Věž (Turret) | 360° | příď i záď | nejmenší poškození, dobrá na stíhačky |
+| Všesměrový paprsek (Omni) | 360° | příď i záď; počet na loď je omezen [NEOVĚŘENO] | paprsek všemi směry |
+| Torpédomet | 90° | příď i záď | těžké kinetické poškození, prodleva |
+| Minomet | bez úhlu | záď | mina čeká, pak pronásleduje cíl |
+| Experimentální zbraň | podle typu | zvláštní slot | jen některé lodě |
+
+- Úhel zadních zbraní se měří od zádi.
+- Kanóny, DBB a DC nejdou montovat dozadu.
+- Dostřel je standardně **10 km**, některé zbraně mají 12 km.
+- Paprsky mají plné poškození do **2 km** a se vzdáleností slábnou až do 10 km.
+  Postih zmenšuje dovednost Long-Range Targeting Sensors.
+- Obecně: blíž (≤ 5 km) znamená víc poškození.
+
+### 10.2 Boční salva [KOMUNITA Ship weapon 2022]
+
+- Přední a zadní paprsková pole (250°) se na obou bocích překrývají asi v pásmu
+  70°.
+- Loď s paprsky vpředu i vzadu proto nejvíc poškodí cíl, který má „po boku“,
+  a často kolem něj krouží.
+- Pomalé křižníky s až 8 zbraněmi jsou na boční salvu stavěné. Plná salva osmi
+  paprsků je zničující, ale vyčerpá energii.
+
+### 10.3 Palebné cykly [KOMUNITA Ship weapon 2022]
+
+Všechny energetické zbraně mají 5sekundový cyklus:
+
+| Zbraň | Střelba v cyklu | Dobití | Účinnost (DPS / základ) |
+| --- | --- | --- | --- |
+| Paprsek | 4 výstřely, 1 za sekundu | 1 s | 80 % |
+| Paprsek s Fire at Will | 5 výstřelů | – | – |
+| Paprsek s Overload | 1 velký výstřel | potom normální cyklus | – |
+| Lehké dělo | 3 salvy po 2 výstřelech za sekundu | 2 s | 120 % |
+| Těžké dělo | 2 salvy po 2 výstřelech | 3 s | 80 % |
+
+- Rapid Fire zvýší počet výstřelů děl.
+- **Základní poškození** (nezávislé na úrovni předmětu):
+
+  | Zbraň | Poškození | DPS |
+  | --- | --- | --- |
+  | Paprsek | 200 | 160 |
+  | DBB | 260 | 208 |
+  | Věž | 100 | 120 |
+  | Dělo | 160 | 192 |
+  | DC | 192 | 230,4 |
+  | DHC | 288 | 230,4 |
+
+- **Torpéda:** každý typ má vlastní nabití (photon 6 s, quantum 8 s, plasma 8 s,
+  transphasic 10 s, chroniton 10 s, tricobalt 30 s). Navíc mají všechny
+  torpédomety sdílenou prodlevu 2 s, takže nevypálí naráz, ale postupně.
+- **Historie:** v Season 13 vývojáři změnili cyklus děl (dřív 3 s) a za základ
+  vzali 100 energie zbraní. Proto starší texty uvádějí, že při 50 má zbraň
+  plné poškození.
+- **Prodlevy podle vývojářů [OFICIÁLNÍ 1059700, 2009]:** paprsky a děla nemají
+  prakticky žádnou prodlevu. Skutečnou brzdou je energie. Prodlevu mají torpéda.
+
+### 10.4 Torpéda a miny [KOMUNITA Damage type (space) 2023; Mine Launcher 2022]
+
+- Torpédo je samonaváděcí výbušnina s kinetickým poškozením a vedlejším efektem
+  podle typu:
+
+  | Typ | Vlastnost |
+  | --- | --- |
+  | Photon | nejčastější palba |
+  | Quantum | víc poškození na salvu |
+  | Plasma | poškození ohněm; těžká plazmová torpéda jdou sestřelit |
+  | Transphasic | částečně obchází štíty |
+  | Chroniton | zpomalí cíl |
+  | Tricobalt | vyřadí cíl; vždy jde sestřelit |
+
+- **Sestřelitelná torpéda:** od roku 2017 letí rychleji a gravitační jámy na
+  ně nepůsobí. Neexplodují tak hned po výstřelu, ale pořád se dají sestřelit.
+  **[OFICIÁLNÍ 10426883]**
+- **Miny:** stojí, dokud se nepřítel nepřiblíží na 2 km (zlepšeně až 4 km),
+  pak ho pronásledují a vybuchnou. Minomety sdílejí prodlevu, takže nejde položit
+  „koberec“ min.
+- Některé zbraně dělají kulový plošný zásah (až 10 km průměr).
+
+### 10.5 Režimy palby (schopnosti taktických důstojníků) [KOMUNITA; OFICIÁLNÍ 10426883]
+
+| Schopnost | Účinek |
+| --- | --- |
+| Beams: Fire at Will | paprsky střílí na více cílů. Od 2017 lehce snižuje poškození a přesnost. |
+| Beams: Overload | jeden silný výstřel. Od 2017 není vždy kritický, ale posílí následující paprsky. |
+| Cannon: Rapid Fire | víc výstřelů |
+| Cannon: Scatter Volley | plošně, úhel 45° se rozšíří na 90° |
+| Torpedo: High Yield | silné torpédo (může být sestřelitelné) |
+| Torpedo: Spread | vějíř torpéd |
+
+### 10.6 Automatická palba [KOMUNITA Ship weapon 2022]
+
+- Každá zbraň může střílet automaticky.
+- Pořadí, v jakém hráč automatiku zapne, určuje prioritu při sdílených
+  prodlevách, například u torpéd.
+
+### 10.7 [ODVOZENO] Pro nás
+
+- Palebné úhly a montáž vpředu či vzadu dávají lodím charakter bez dalších
+  pravidel. Kandidát na jádro boje.
+- 5s cyklus s pevným rytmem střel je čitelný a dobře se vyvažuje. Rytmus
+  výstřelů navíc sedí na zvukové a vizuální efekty.
+- Slábnutí poškození se vzdáleností vede hráče k manévrování a přibližování.
+- Barva podle druhu energie je okamžitá čitelnost frakce. Barvy navrhneme
+  vlastní, ale princip „barva = druh zbraně“ převezmeme.
+
+---
+
+## 11. Zásah, obrana a kritické zásahy [KOMUNITA Accuracy 2022, Critical Hit 2022]
+
+- **Šance zásahu:**
+  - Když je přesnost útočníka ≥ obrana cíle, šance je 100 %.
+  - Jinak = 100 / (100 + obrana − přesnost).
+  - Nikdy neklesne pod 25 %.
+  - Přebytečná přesnost se mění v malý bonus ke kritickým zásahům.
+- **Obranu** zvyšuje hlavně pohyb (rychlost) a schopnosti jako Evasive Maneuvers.
+  Maskování ji zvyšuje taky.
+- **Kritický zásah:** základní šance 2,5 %, síla +50 % (tedy 150 % poškození).
+  Zvyšují ho dovednosti, úpravy zbraní a antiproton.
+- **[ODVOZENO]** Pro hru jednoho hráče stačí jednodušší model: obrana roste
+  s pohybem lodi, šance zásahu má spodní hranici a kritické zásahy jsou vzácné
+  a čitelné. Vzorce STO jsou dobrá výchozí reference pro ladění.
+---
+
+## 12. Schopnosti: důstojníci na můstku, kapitáni a progrese
+
+### 12.1 Důstojníci na můstku (bridge officers) [OFICIÁLNÍ 1059700; KOMUNITA Bridge officer 2023]
+
+- **Každá loď má „zasedací pořádek“:** daný počet křesel podle profese
+  (taktika, strojovna, věda, univerzální) a hodnosti (praporčík až komandér).
+  - Eskorty mají víc taktických křesel, vědecké lodě víc vědeckých a křižníky
+    víc inženýrských.
+- **Hodnost křesla omezuje schopnosti.** Důstojník použije jen tolik schopností,
+  kolik dovolí hodnost křesla (praporčík 1, poručík 2, nadporučík 3,
+  komandér 4). Ani komandér v poručickém křesle nepoužije víc.
+  Vývojáři to v roce 2009 vysvětlili tak, že loď je postavená pro určitý účel:
+  Prometheus je stavěný na palbu, ne na vědecký výzkum.
+- **Tier 6 přidává specializace křesel**, například inženýr/zpravodajec. Takový
+  důstojník smí použít i schopnosti specializace.
+- **Duplicitní schopnosti [OFICIÁLNÍ 1059700]:**
+  - Každá schopnost má dlouhou vlastní prodlevu a kratší sdílenou prodlevu
+    se stejnými schopnostmi.
+  - Druhý důstojník se stejnou schopností jde ve vývojářském příkladu ze
+    2009 do 20s sdílené prodlevy.
+  - Víc důstojníků se stejnou schopností ji tak umožní použít častěji, ale
+    s klesajícím přínosem.
+- **Úrovně schopností:** I–III. Získávají se z výcvikových příruček a kapitán
+  je může vyrábět podle svých dovedností.
+
+**Přehled vesmírných schopností** (jen názvy a účel; podrobnosti jsou na
+komunitní wiki, snímek 2023):
+
+| Profese | Útok | Obrana a opravy | Kontrola a oslabení | Energie a ostatní |
+| --- | --- | --- | --- | --- |
+| Taktika | Fire at Will, Overload, Rapid Fire, Scatter Volley, High Yield, Spread, Attack Pattern Beta/Omega, Focused Assault, Kemocite | Tactical Team (automatické přelévání štítů) | Cílení podsystémů ×4, Attack Pattern Delta (ochrana spojence) | rozsévání min (Dispersal Pattern) |
+| Strojovna | Directed Energy Modulation (průnik štítem), Aceton Beam | Engineering Team, Auxiliary to Structural, Reverse Shield Polarity, Extend Shields | Eject Warp Plasma (oblak za lodí), Boarding Party | Emergency Power to W/S/E/A, Auxiliary to Battery, Auxiliary to Dampeners |
+| Věda | Subspace Vortex, Photonic Shockwave, Feedback Pulse | Science Team, Hazard Emitters, Transfer Shield Strength, Polarize Hull | Tractor Beam, Repulsors, Gravity Well, Tyken's Rift, Jam Targeting Sensors, Scramble Sensors, Viral Matrix, Tachyon Beam, Energy Siphon, Charged Particle Burst (odhalí maskování) | Mask Energy Signature, Photonic Officer |
+| Velení (Command) | Concentrate Firepower, Call Emergency Artillery | Rally Point, Needs of the Many, Subspace Interception | Suppression Barrage | Reroute Power, Ambush Point, Phalanx |
+| Miracle Worker | Mixed Armaments Synergy, Exceed Rated Limits | Align Shield Frequencies, Reroute Shields to Hull | Null Pointer Flood, Overwhelm Power Regulators, Gravitic Induction Platform | Narrow Sensor Bands |
+
+Další specializace (zpravodajská, pilotní, temporální) mají vlastní sady.
+
+**Příklady parametrů** [KOMUNITA, stránky schopností, snímky 2023]:
+
+- **Tractor Beam:**
+  - zpomalí a drží cíl, který se pak nemůže maskovat,
+  - dosah 5 km, aktivace 0,5 s,
+  - síla roste s pomocnou energií,
+  - sdílí 15s prodlevu s Repulsors.
+- **Gravity Well:**
+  - anomálie, která stahuje nepřátele do středu a drtí je kinetickým
+    poškozením,
+  - čím blíž středu, tím silnější tah,
+  - dosah 10 km, úhel 135°.
+- **Brace for Impact** (všichni kapitáni):
+  - krátce výrazně zvýší odolnost proti kinetice a torpédům a postupně léčí,
+  - doporučená chvíle: těsně před dopadem torpéda nebo výbuchem jádra
+    blízké lodi.
+
+**Ochrana proti řetězení kontroly [OFICIÁLNÍ 10426883, 2017]:** po skončení
+efektu „držení“ nebo „vyřazení“ dostane cíl krátkou odolnost proti dalšímu.
+Opakované zvedání zničeného podsystému (Hot Restart) je omezeno na jednou
+za 60 s.
+
+### 12.2 Kapitánské kariéry [KOMUNITA Career path 2025]
+
+- Tři kariéry: Taktik, Inženýr a Vědec. Kapitán může řídit jakoukoli loď.
+- Každá kariéra má 5 vesmírných schopností:
+
+  | Kariéra | Role | Typické schopnosti |
+  | --- | --- | --- |
+  | Taktik | poškození | Attack Pattern Alpha, Fire on my Mark, Tactical Initiative, Go Down Fighting |
+  | Inženýr | odolnost | Rotate Shield Frequency, Miraculous Repairs, EPS Power Transfer, Nadion Inversion |
+  | Vědec | podpora a oslabení | Sensor Scan, Subnucleonic Beam / Deflector Overcharge, Scattering Field, Photonic Fleet |
+
+- Společné schopnosti všech kapitánů: Evasive Maneuvers, Brace for Impact,
+  Abandon Ship (sebedestrukce s výbuchem) a další.
+- Vyvažování 2017 posílilo inženýry a vědce **[OFICIÁLNÍ 10426883]**:
+  - kariéry nemají být nerovné,
+  - schopnost vědce Deflector Overcharge posílí léčení, exotické poškození
+    a kontrolu.
+
+### 12.3 Dovednosti a progrese [OFICIÁLNÍ 1059220, 2011; 9797693, 2016]
+
+**Revize 2011** ukazuje tři chyby, kterým se vyhnout:
+
+- Dovednosti vázané na konkrétní loď odrazovaly od střídání lodí.
+- Dovednosti pro konkrétní typ zbraně odrazovaly od rozmanitosti.
+- Hráči nechápali, co dovednosti dělají.
+- Řešení: obecné dovednosti platné na všechny lodě (body trupu, body štítu,
+  rychlost a otáčení…).
+
+**Přestavba 2016** měla tři zásady:
+
+1. zjednodušit a objasnit (lepší popisky),
+2. odstranit volby, které jsou vždy horší, a zvednout minimální úroveň,
+3. hráč nesmí nic ztratit.
+
+Výsledek přestavby:
+
+- 405 stupňů dovedností se zmenšilo na 110 a každý stojí 1 bod.
+- Vesmírné a pozemní dovednosti jsou oddělené.
+- Pasivní odměny se odemykají podle investice do kategorie.
+- Za 24 bodů v jedné profesi se odemkne „ultimátní“ schopnost.
+
+**Mistrovství lodi (Starship Mastery) [KOMUNITA]:**
+
+- Loď získává úrovně používáním v boji.
+- Úrovně 1–4 dávají pasivní bonus podle typu lodi.
+- Úroveň 5 u lodí Tier 6 odemkne vlastnost (trait), kterou lze použít na
+  jakékoli lodi.
+
+**[ODVOZENO] Pro nás:**
+
+- Zasedací pořádek důstojníků je elegantní způsob, jak dát lodím odlišné
+  schopnosti a hráči volbu, koho kam posadit. Hodí se i pro příběh hry jednoho
+  hráče se jmenovanou posádkou.
+- Ponaučení z progrese STO: žádné „pasti“ ve volbách, žádné dovednosti
+  vázané na jednu loď a srozumitelné popisky od začátku.
+
+---
+
+## 13. Typy lodí, tiery a statistiky
+
+### 13.1 Statistický blok lodi [OFICIÁLNÍ 9782283, 9226533, 11579886; KOMUNITA Playable starship 2023]
+
+Oficiální stránky lodí uvádějí:
+
+- tier, frakci a potřebnou hodnost,
+- **trup** (např. 49 162 na úrovni 50 a 57 000 na úrovni 60 u Star Cruiseru),
+- **modifikátor štítů** (např. 1,15),
+- posádku (dnes jen údaj bez herního účinku),
+- počet zbraní vpředu a vzadu (např. 4/4),
+- počet slotů pro zařízení (devices),
+- křesla důstojníků s hodností a specializací,
+- konzole (taktické, inženýrské, vědecké, univerzální),
+- **základní otáčení v °/s, Impulse Modifier a Inertia**,
+- bonus k energii (např. +5 všem systémům),
+- vestavěné schopnosti (například velení křižníku),
+- unikátní konzoli a vlastnost lodi (starship trait).
+
+### 13.2 Sloty vybavení [KOMUNITA Playable starship 2023]
+
+- přední a zadní zbraně, experimentální zbraň (jen některé lodě),
+- deflektor, sekundární deflektor (vědecké lodě),
+- štít, warp nebo singularitní jádro, impulsní motor,
+- zařízení (baterie a jednorázové pomůcky),
+- konzole tří profesí a univerzální,
+- hangáry (nosiče).
+- Sady vybavení dávají bonusy za kombinaci.
+
+### 13.3 Tiery [OFICIÁLNÍ 1059790; KOMUNITA Playable starship 2023]
+
+- Tier 1–4 jsou lodě pro postup úrovněmi a hráč je dostává zdarma na úrovních
+  10, 20 a 30.
+- Tier 5 je první loď pro konec hry. Upgrady T5-U a T5-X ji udrží
+  konkurenceschopnou.
+- Tier 6 se škáluje od úrovně 1. Oproti T5-U má jednu schopnost důstojníka
+  navíc, specializovaná křesla a vlastnost lodi.
+- **Záměr 2009:** vylepšená loď nižšího tieru se přiblíží středu vyššího,
+  ale nejlepší loď vyššího tieru je lepší, protože má víc „prostoru pro růst“.
+  Staré lodě si hráč nechá a může se k nim vrátit, například s menší obratnou
+  lodí na proražení blokády.
+
+### 13.4 Typy lodí a jejich role [KOMUNITA Playable starship 2023; OFICIÁLNÍ 3030983]
+
+| Typ | Velitelské křeslo | Zbraně | Povaha | Zvláštnost |
+| --- | --- | --- | --- | --- |
+| Křižník | komandér strojovny | 8 (4/4) | odolný, pomalý, boční salva | velení křižníku (aury pro tým) |
+| Eskorta / raptor | komandér taktiky | 7 (víc vpředu) + experimentální | nejobratnější, křehká | dvojitá děla |
+| Vědecká loď | komandér vědy | 6 (3/3) | průměrný trup, velmi silné štíty, průměrné otáčení | sekundární deflektor, Sensor Analysis, cílení podsystémů |
+| Nosič | podle varianty | různé | velký, pomalý | 2 hangáry, povely stíhačkám |
+| Dreadnought | podle varianty | různé | velký | hangár, často kopí (spinal lance) |
+| Warbird (Romulané) | různé | různé | maskování | singularitní jádro, dvojitá děla |
+| Bitevní křižník | jako křižník | 8 | křižník s dvojitými děly | ztrácí Attract Fire |
+| Torpédoborec / warship / juggernaut | – | 7–8 | odolnější eskorta s horší obratností | extra zařízení nebo osmá zbraň |
+| Raider / Bird-of-Prey | – | – | útoky z boku, maskování | Raider Flanking |
+| Pilotní lodě | – | – | uhýbací manévry dvojitým poklepáním | pilotní manévry |
+| Velitelské, zpravodajské, temporální a miracle-worker lodě | – | – | specializace | vlastní vestavěné schopnosti |
+
+**Princip vývojářů [OFICIÁLNÍ 3030983]:** Nový typ lodi se navrhuje
+z „klíčových slov“. Například „transformující se vědecký torpédoborec“ začíná
+od statistik vědecké lodi a přidává mód, který prohodí taktická a vědecká
+křesla a zpřístupní zvláštní zbraň. Systémoví designéři sledují, které typy
+vznikly nedávno, aby jich nebylo moc stejných.
+
+### 13.5 Úprava lodi v loděnici (Ship Tailor) [KOMUNITA Playable starship 2023; OFICIÁLNÍ 9792703]
+
+- **Díly:** talíř, trup, gondoly, pylony, sekundární pole a misijní modul
+  (u některých lodí).
+- **Kombinace:** díly z vlastněných variant téže rodiny jdou míchat. Kvůli
+  tomu vývojáři u Odyssey rozdělili model tak, aby šly pylony gondol vyměnit.
+- **Vzhled:**
+  - materiál pláště (sdílené dlaždicové materiály, víc než 60),
+  - okna, vzor nátěru a barvy,
+  - logo flotily,
+  - jméno a registrační číslo s předponou a příponou,
+  - interiér můstku.
+- **Vizuální sloty** přepíšou vzhled štítů, motorů a deflektoru beze změny
+  statistik **[OFICIÁLNÍ 9888133]**.
+
+---
+
+## 14. Zvláštní mechaniky lodí
+
+### 14.1 Velení křižníku (Cruiser Commands) [KOMUNITA 2022]
+
+- Týmové aury: Weapon System Efficiency, Shield Frequency Modulation, Strategic
+  Maneuvering a Attract Fire (přitáhne pozornost nepřátel na křižník).
+- Bitevní křižníky a dreadnoughty mají jen část.
+- **[ODVOZENO]** Pro nás: křižník jako „vlajková loď skupiny“, která posiluje
+  své spojence.
+
+### 14.2 Nosiče a hangáry [OFICIÁLNÍ 1058730, 10426883, 9667053; KOMUNITA Hangar pet 2022]
+
+- Hangár se na lodi chová jako slot. Schopnost „vypustit“ pošle křídlo malých
+  plavidel.
+- Každý hangár drží až 2 křídla, nosič má 2 hangáry.
+- Malá plavidla mohou být stíhačky, raketoplány, runabouty i fregaty.
+- **Povely** jsou přepínací a nová plavidla je převezmou:
+  - Attack (útok na cíl),
+  - Escort (doprovod spojence),
+  - Intercept (sestřelovat torpéda, miny a malá plavidla),
+  - Recall (návrat a oprava).
+- **Dostřel stíhaček:**
+  - v roce 2012 až 12 km od nosiče, takže nosič může zůstat mimo boj
+    **[OFICIÁLNÍ]**,
+  - komunita v roce 2022 uvádí asi 20 km.
+- Mimo boj se stíhačky řadí před loď a letí s ní.
+- **Hodnosti stíhaček:** stíhačky přežívající v boji získávají hodnosti 1–5
+  (maximum za 5 minut boje). Za každou hodnost dostanou opravu trupu, víc
+  životů a víc poškození.
+- **Vyvážení 2017:**
+  - lepší AI,
+  - imunita vůči jednomu torpédu za 30 s,
+  - výbuchy jader na ně nepůsobí,
+  - víc životů a poškození.
+- Slabina stíhaček: plošné útoky.
+
+### 14.3 Singularitní jádro (Romulané) [OFICIÁLNÍ 1012660, 2013]
+
+- Měřič s 5 dílky se plní v boji.
+  - Neplní se při maskování a mimo boj pomalu klesá.
+- Síla schopnosti roste s počtem dílků, které spotřebuje. Použití vyprázdní celý
+  měřič a na chvíli zablokuje plnění.
+- Počet schopností odpovídá tieru lodi:
+  - Plasma Shockwave,
+  - Quantum Absorption,
+  - Warp Shadows (návnady a maskování),
+  - Singularity Jump (teleport a malá singularita),
+  - Singularity Overcharge.
+- **[ODVOZENO]** Dobrý vzor frakční odlišnosti: místo jiných čísel má frakce
+  jinou zdrojovou mechaniku.
+
+### 14.4 Maskování (cloak) [KOMUNITA Cloak 2023]
+
+| Typ | Použití | Účinek |
+| --- | --- | --- |
+| Standardní | jen mimo bojovou pohotovost (Red Alert) | vypne zbraně a štíty, zvýší obranu, utajení roste s pomocnou energií; po odmaskování krátký bonus k poškození (přepad) |
+| Bitevní | i v boji | rychlejší a obratnější loď, ale při maskování pod palbou spadnou štíty |
+| Vylepšené bitevní | i v boji | střelba torpéd a min ze skrytu (loď je chvíli zaměřitelná), bonus k poškození celou dobu |
+
+- Odhalení maskované lodi: schopnosti jako Charged Particle Burst, tažný paprsek
+  maskování znemožní.
+- Komunitní wiki má video maskování (přechod do neviditelnosti a zpět).
+
+### 14.5 Rozdělení lodi (Starship Separation) [KOMUNITA 2022]
+
+- **Galaxy:** oddělí talíř. Pohonná sekce dostane bonus ke zbraním a poškození,
+  ale ztratí trup a štíty. Talíř bojuje jako spojenec.
+- **Další příklady:**
+  - Intrepid vypouští aeroraketoplán,
+  - Odyssey odděluje „chevron“ a vypouští eskortu Aquarius,
+  - Prometheus se dělí na tři části (multi-vector assault),
+  - podobné mechaniky mají i lodě dalších frakcí.
+- **[ODVOZENO]** Pro naši hru je to atraktivní kánonový moment. Technicky
+  potřebuje model rozdělený na díly s vlastními body a AI (viz kapitola 17).
+
+### 14.6 Cílení podsystémů [KOMUNITA Subsystem Targeting 2023; OFICIÁLNÍ 10426883]
+
+- Na 10 s pak zásahy energetickými zbraněmi postupně vysávají energii
+  vybraného systému. Volí se pomocné systémy, motory, štíty nebo zbraně.
+- Mají šanci systém úplně vyřadit. Vyřazené štíty shodí všechny sektory.
+- Vědecké lodě to mají vestavěné, taktici jako schopnost.
+- **[ODVOZENO]** Kánonově silný moment („Zaměřte jejich motory!“) s jasným
+  taktickým smyslem.
+
+### 14.7 Další vestavěné mechaniky (jen výčet; názvy KOMUNITA, popisy účinků [NEOVĚŘENO])
+
+- Raider Flanking: bonus při útoku z boku.
+- Sensor Analysis: vědecká loď postupně zvyšuje poškození proti cíli.
+- Wingmen: doprovodné lodě.
+- Spinal lance: kopí přes celou délku lodi, například phaser na Galaxy
+  dreadnought.
+- Tactical a Siege mode: přepnutí role lodi.
+- Transwarp.
+
+### 14.8 Zbraně v čase a energie podle frakcí [ODVOZENO]
+
+STO odlišuje frakce tím, čím střílejí (druh energie, torpéda), jak se maskují
+a jaké mají zdroje energie (singularita). Pro nás je to levnější a čitelnější
+než odlišovat frakce jen čísly.
+
+> ROZPRACOVÁNO: kapitoly 15–22 budou doplněny v dalším checkpointu.
