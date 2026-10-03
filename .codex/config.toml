@@ -2,3 +2,11 @@
 url = "http://127.0.0.1:8000/mcp"
 startup_timeout_sec = 60
 tool_timeout_sec = 120
+
+# Start the AI client from the repository root.
+# Installation paths belong in ignored .local/toolchain.json.
+[mcp_servers.daedalus_apps]
+command = "node"
+args = ["Tools/apps-mcp.mjs"]
+startup_timeout_sec = 60
+tool_timeout_sec = 300

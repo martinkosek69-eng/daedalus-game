@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "unreal": {
+      "type": "http",
+      "url": "http://127.0.0.1:8000/mcp"
+    },
+    "daedalus_apps": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["Tools/apps-mcp.mjs"]
+    }
+  }
+}
