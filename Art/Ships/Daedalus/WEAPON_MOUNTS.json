@@ -3,6 +3,8 @@
   "units": "metres",
   "coordinateSystem": "ship-local, +X forward, +Z up, origin = hull bounding-box centre (same as Daedalus.glb)",
   "method": "ray-cast height maps (0.5 m grid) with top-hat (domes) / bottom-hat (recesses) detection on the unchanged hull",
+  "axisConvention": "forwardAxis = mount local +X (turret barrel rest / silo launch / bay exit); upAxis = local +Z (turret yaw axis); empties MOUNT_<id> in Daedalus.blend carry the same frame",
+  "azimuthConvention": "traverseFreeAzimuthDeg: degrees about the ship +Z, 0 = +X bow, 90 = +Y port; inclusive [start, end] ranges sampled every 5 deg at 5 deg elevation; a negative start wraps through 0 (e.g. [-295, 25] = 65..360 and 0..25)",
   "notes": [
     "Positions are measured modelled features, not canon proofs. Wiki lists 32 railguns and 16 VLS tubes; a fan sheet lists 26 twin railguns. The model contains its own dome count (see group counts).",
     "Turret mounts: centre = dome base on the hull; upAxis is the turret yaw axis; forwardAxis is the rest direction of the barrels.",
@@ -1410,7 +1412,7 @@
         1
       ],
       "upAxis": [
-        -1,
+        1,
         0,
         0
       ],
@@ -1442,7 +1444,7 @@
         1
       ],
       "upAxis": [
-        -1,
+        1,
         0,
         0
       ],
@@ -1474,7 +1476,7 @@
         1
       ],
       "upAxis": [
-        -1,
+        1,
         0,
         0
       ],
@@ -1506,7 +1508,7 @@
         1
       ],
       "upAxis": [
-        -1,
+        1,
         0,
         0
       ],
@@ -1538,7 +1540,7 @@
         1
       ],
       "upAxis": [
-        -1,
+        1,
         0,
         0
       ],
@@ -1570,7 +1572,7 @@
         1
       ],
       "upAxis": [
-        -1,
+        1,
         0,
         0
       ],
@@ -1602,7 +1604,7 @@
         1
       ],
       "upAxis": [
-        -1,
+        1,
         0,
         0
       ],
@@ -1634,7 +1636,7 @@
         1
       ],
       "upAxis": [
-        -1,
+        1,
         0,
         0
       ],
@@ -1666,7 +1668,7 @@
         1
       ],
       "upAxis": [
-        -1,
+        1,
         0,
         0
       ],
@@ -1698,7 +1700,7 @@
         1
       ],
       "upAxis": [
-        -1,
+        1,
         0,
         0
       ],
@@ -1730,7 +1732,7 @@
         1
       ],
       "upAxis": [
-        -1,
+        1,
         0,
         0
       ],
@@ -1762,7 +1764,7 @@
         1
       ],
       "upAxis": [
-        -1,
+        1,
         0,
         0
       ],
@@ -1794,7 +1796,7 @@
         1
       ],
       "upAxis": [
-        -1,
+        1,
         0,
         0
       ],
@@ -1826,7 +1828,7 @@
         1
       ],
       "upAxis": [
-        -1,
+        1,
         0,
         0
       ],
@@ -1858,7 +1860,7 @@
         1
       ],
       "upAxis": [
-        -1,
+        1,
         0,
         0
       ],
@@ -1890,7 +1892,7 @@
         1
       ],
       "upAxis": [
-        -1,
+        1,
         0,
         0
       ],
