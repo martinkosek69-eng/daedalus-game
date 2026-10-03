@@ -49,7 +49,6 @@ arrive. Rich missions/economy/crew, walkable interiors, shuttle flight, realisti
 orbits, offscreen events and planetary streaming are future implementations.
 A 2002-definition test is not a performance promise for 2002 detailed battles.
 
-Claude-client authentication/control and task 0001 remain deferred until the
-user starts them separately. The assistant's original worker checkout/branch is
+A Claude introductory report arrived through GitHub while foundation work was in progress. See AgentChecks/COORDINATOR_REVIEW.md: file/tool fallbacks are reported successful, while live client connections need verification after session restart. Task 0001 still waits for a separate user start. The assistant's original worker checkout/branch is
 retained locally; the corrected, accepted module is published in the coordinator
 branch. Source delivery does not depend on publishing that historical branch.

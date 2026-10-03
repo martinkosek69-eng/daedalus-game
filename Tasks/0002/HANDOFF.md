@@ -41,3 +41,5 @@ body overlap, unreported backlog, and repeated map replacement risk.
 Future content is implemented against these tested contracts. Performance and
 compatibility of future full battles, detailed planets or new schemas must be
 measured; they are not established by this foundation delivery.
+
+A separate Claude introductory report was retrieved from its own setup branch and reviewed in Docs/AgentChecks; source claims are distinguished from coordinator-observed Git delivery. The client needs a new-session live MCP check; numbered task 0001 was not started.

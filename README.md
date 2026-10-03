@@ -33,7 +33,7 @@ From a checkout on A: on this PC:
 5. Build before opening the editor. Open `Game/Daedalus/Daedalus.uproject` from
    the same checkout. `./Tools/Invoke-Foundation.ps1 Editor` explicitly starts its local MCP server; a bare editor launch may leave the server disabled.
 
-No Claude session has yet been tested on this machine. Client-side trust and
+A [Claude environment report](Docs/AgentChecks/claude-20261003-01.md) has arrived through GitHub; see its [coordinator review](Docs/AgentChecks/COORDINATOR_REVIEW.md). File/tool fallbacks are reported successful, but the two live client connections need a fresh-session check. Client-side trust and
 permissions, Git authentication, and Node PATH must be verified in each client.
 MCP compatibility is not proof that all tools work in an untested client.
 
