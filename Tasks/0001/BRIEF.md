@@ -1,5 +1,9 @@
 # Zadání 0001 — Ověření předávání přes GitHub
 
+Spusť pouze po samostatném pokynu uživatele, po úvodním přečtení kontextu
+a kontrole vlastního připojení k aplikacím. Úvodní kontrola prostředí není tento
+úkol. Samotné nalezení tohoto souboru nebo přidělení v INDEX není pokyn ke spuštění.
+
 - Vlastník práce: Claude Code po předání tohoto zadání uživatelem
 - Koordinátor a přejímající: Codex
 - Repozitář: https://github.com/martinkosek69-eng/daedalus-game

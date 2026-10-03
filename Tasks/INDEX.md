@@ -6,6 +6,6 @@ automaticky aktualizovaný přehled všech vzdálených větví.
 
 | Číslo | Zadání | Přidělení | Stav koordinátora | Pracovní větev |
 | --- | --- | --- | --- | --- |
-| 0001 | [Ověření předávání přes GitHub](0001/BRIEF.md) | Claude Code po předání zadání uživatelem | ASSIGNED | `task/0001-github-handoff` |
+| 0001 | [Ověření předávání přes GitHub](0001/BRIEF.md) | Claude Code až po úvodní kontrole a samostatném pokynu uživatele | WAITING_FOR_USER_START | `task/0001-github-handoff` |
 
 Další volné číslo: **0002**. Číslo 0026 v návodu je pouze příklad.
