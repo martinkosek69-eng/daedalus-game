@@ -1,6 +1,8 @@
 # 0006 — Solar lab flight domain
 
-Owner: Codex flight subagent; base e09696e7269565fff9668db5838003ba0c6f2749.
+Owner: Codex coordinator after explicit transfer on 2026-10-03; the flight
+subagent session ended at its usage limit. Partial files are preserved and
+reviewed by Codex. Base e09696e7269565fff9668db5838003ba0c6f2749.
 Assigned checkout: coordinator current checkout; branch codex/solar-flight.
 Disjoint paths ONLY: Source/DaedalusSimulation/Public/DaedalusFlightModel.h,
 Source/DaedalusSimulation/Private/DaedalusFlightModel.cpp,

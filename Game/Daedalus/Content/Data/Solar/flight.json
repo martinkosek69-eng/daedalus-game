@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "shipLengthMetres": 600,
+  "shipRadiusMetres": 360,
+  "earthRadiusMetres": 6371000,
+  "sunRadiusMetres": 695700000,
+  "sunPositionMetres": [105781669000, -105781669000, 0],
+  "startPositionMetres": [0, -12000000, 2000000],
+  "startYawDegrees": 80,
+  "startPitchDegrees": -5,
+  "turnRateDegrees": 12,
+  "angularAccelerationDegrees": 18,
+  "pitchLimitDegrees": 80,
+  "bankDegrees": 20,
+  "profiles": [
+    {"name": "Manévrování", "speed": 350, "acceleration": 60, "braking": 100, "lateralAcceleration": 80},
+    {"name": "Místní přelet", "speed": 25000, "acceleration": 2000, "braking": 5000, "lateralAcceleration": 3500}
+  ]
+}

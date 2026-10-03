@@ -1,9 +1,12 @@
 # 0007 — Recover original prototype Daedalus asset
 
-Owner: Codex asset subagent; base e09696e7269565fff9668db5838003ba0c6f2749.
+Owner: Codex coordinator after explicit transfer on 2026-10-03; the asset
+subagent session ended at its usage limit. Partial source/script preserved.
+Base e09696e7269565fff9668db5838003ba0c6f2749.
 Assigned checkout: coordinator current checkout; branch codex/solar-flight.
 Allowed paths ONLY: Art/Ships/Daedalus/**, Tools/Prepare-DaedalusSource.py,
-Tasks/0007/PROGRESS.md and HANDOFF.md; disposable outputs .local/solar-art/**.
+Tasks/0007/PROGRESS.md and HANDOFF.md; Art/Space/SolarSphere.glb and .blend;
+disposable outputs .local/solar-art/**.
 Coordinator commits/pushes. Exclusive Blender BACKGROUND ownership for this task.
 No GUI interaction, Unreal editor, import commandlet or builds.
 

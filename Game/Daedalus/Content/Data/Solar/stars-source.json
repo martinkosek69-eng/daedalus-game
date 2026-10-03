@@ -1,0 +1,18 @@
+{
+  "catalogue": "HYG 4.1",
+  "author": "David Nash / Astronexus",
+  "source": "https://raw.githubusercontent.com/astronexus/HYG-Database/main/hyg/CURRENT/hygdata_v41.csv",
+  "source_sha256": "d9f69fd86bbf90a4e4d52b4c5c53eacfa6dfc0bfdef85bfd94f095e0bebe4ebd",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "changes": "Solar entry removed; visual magnitude <= 6.5; selected and rounded columns, compact JSON.",
+  "epoch": "J2000",
+  "columns": [
+    "hyg_id",
+    "ra_hours",
+    "dec_degrees",
+    "visual_magnitude",
+    "bv_color_index"
+  ],
+  "count": 8920
+}
