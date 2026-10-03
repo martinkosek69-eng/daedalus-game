@@ -107,6 +107,12 @@ bool SegmentSphere(const FVector3d& Start, const FVector3d& End, const FVector3d
     if (EntryDistance < 0 || EntryDistance > Length) return false;
     Fraction = EntryDistance / Length; return true;
 }
+bool PlacementClear(const FSystemDefinition& System, const FVector3d& Position, double ShipRadius)
+{
+    for (const FBodyDefinition& B : System.Bodies)
+        if (FVector3d::Dist(Position, B.PositionMetres) <= B.RadiusMetres + ShipRadius) return false;
+    return true;
+}
 }
 
 bool FCatalog::LoadJson(const FString& Json, FString& Error)
@@ -127,6 +133,7 @@ bool FCatalog::LoadJson(const FString& Json, FString& Error)
     {
         TSharedPtr<FJsonObject> O; FSystemDefinition D;
         if (!Object(V, O, Error) || !TextField(O, TEXT("id"), D.Id, Error) || !TextField(O, TEXT("name"), D.Name, Error) || !TextField(O, TEXT("galaxyId"), D.GalaxyId, Error) || !VectorField(O, TEXT("positionLy"), D.PositionLy, Error)) return false;
+        if (O->TryGetField(TEXT("arrivalPositionMetres")).IsValid() && !VectorField(O, TEXT("arrivalPositionMetres"), D.ArrivalPositionMetres, Error)) return false;
         const TArray<TSharedPtr<FJsonValue>>* Bodies = nullptr;
         if (!ArrayField(O, TEXT("bodies"), Bodies, Error)) return false;
         for (const auto& B : *Bodies)
@@ -181,12 +188,13 @@ bool FCatalog::Validate(FString& Error) const
     for (const auto& P : Systems)
     {
         const FSystemDefinition& D = P.Value;
-        if (!IdValid(P.Key) || P.Key != D.Id || D.Name.IsEmpty() || !Galaxies.Contains(D.GalaxyId) || !VectorValid(D.PositionLy, 1e9) || D.Bodies.Num() > MaxEntries) return Fail(Error, TEXT("Invalid system or galaxy reference: ") + P.Key);
+        if (!IdValid(P.Key) || P.Key != D.Id || D.Name.IsEmpty() || !Galaxies.Contains(D.GalaxyId) || !VectorValid(D.PositionLy, 1e9) || !VectorValid(D.ArrivalPositionMetres) || D.Bodies.Num() > MaxEntries) return Fail(Error, TEXT("Invalid system or galaxy reference: ") + P.Key);
         for (const FBodyDefinition& B : D.Bodies)
         {
             if (!IdValid(B.Id) || BodyIds.Contains(B.Id) || B.Name.IsEmpty() || !NumberValid(B.RadiusMetres, 0.000001) || !VectorValid(B.PositionMetres)) return Fail(Error, TEXT("Invalid or duplicate body: ") + B.Id);
             BodyIds.Add(B.Id);
         }
+        if (!PlacementClear(D, D.ArrivalPositionMetres, 0)) return Fail(Error, TEXT("System arrival point intersects a celestial body: ") + D.Id);
     }
     for (const auto& P : Weapons)
     {
@@ -210,6 +218,7 @@ bool FCatalog::Validate(FString& Error) const
     for (const FInitialShip& S : InitialShips)
     {
         if (!IdValid(S.Id) || ShipIds.Contains(S.Id) || !ShipDefinitions.Contains(S.DefinitionId) || !Systems.Contains(S.SystemId) || !VectorValid(S.PositionMetres)) return Fail(Error, TEXT("Invalid initial ship or reference: ") + S.Id);
+        if (!PlacementClear(Systems.FindChecked(S.SystemId), S.PositionMetres, ShipDefinitions.FindChecked(S.DefinitionId).LengthMetres * 0.5)) return Fail(Error, TEXT("Initial ship overlaps a celestial body: ") + S.Id);
         ShipIds.Add(S.Id); Players += S.bPlayer ? 1 : 0;
     }
     if (Players != 1) return Fail(Error, TEXT("Exactly one player ship is required."));
@@ -268,6 +277,7 @@ bool FSimulation::SpawnShip(const FString& InstanceId, const FString& Definition
     Error.Reset();
     if (!bInitialized || !IdValid(InstanceId) || State.Ships.Contains(InstanceId) || State.Ships.Num() >= MaxEntries
         || !Definitions.ShipDefinitions.Contains(DefinitionId) || !Definitions.Systems.Contains(SystemId) || !VectorValid(PositionMetres)) return Fail(Error, TEXT("Spawn requires a unique stable ID, known definition/system and finite position."));
+    if (!PlacementClear(Definitions.Systems.FindChecked(SystemId), PositionMetres, Definitions.ShipDefinitions.FindChecked(DefinitionId).LengthMetres * 0.5)) return Fail(Error, TEXT("Spawn position overlaps a celestial body."));
     FInitialShip I; I.Id = InstanceId; I.DefinitionId = DefinitionId; I.SystemId = SystemId; I.PositionMetres = PositionMetres;
     State.Ships.Add(InstanceId, InitialState(I, Definitions));
     return true;
@@ -349,7 +359,9 @@ bool FSimulation::Travel(const FString& SystemId, FString& Error)
     if (!CanCommand(Error)) return false;
     FShipState& Player = State.Ships.FindChecked(State.PlayerShipId);
     if (!Definitions.Systems.Contains(SystemId) || Player.SystemId == SystemId) return Fail(Error, TEXT("Destination must be another known system."));
-    Player.SystemId = SystemId; Player.PositionMetres = FVector3d::ZeroVector; Player.VelocityMetresPerSecond = FVector3d::ZeroVector; FlightInput = FVector3d::ZeroVector; ShipFlightInputs.Reset();
+    const FSystemDefinition& Destination = Definitions.Systems.FindChecked(SystemId);
+    if (!PlacementClear(Destination, Destination.ArrivalPositionMetres, Definitions.ShipDefinitions.FindChecked(Player.DefinitionId).LengthMetres * 0.5)) return Fail(Error, TEXT("Destination arrival point is too close to a celestial body for this ship."));
+    Player.SystemId = SystemId; Player.PositionMetres = Destination.ArrivalPositionMetres; Player.VelocityMetresPerSecond = FVector3d::ZeroVector; FlightInput = FVector3d::ZeroVector; ShipFlightInputs.Reset();
     return true;
 }
 

@@ -22,9 +22,14 @@ Status: READY_FOR_REVIEW (acceptance belongs to coordinator).
   presentation-independent AI services. Inputs clear on restore and travel.
 - Planet-sphere line of sight blocks beams; swept movement prevents passing
   through bodies, using half ship length as a conservative collision radius.
-- Eight automation groups covering invalid inputs and rollback, frame partitions,
+- Optional system arrivalPositionMetres defaults to zero for older v1 catalogs.
+  Catalog rejects body-centre arrivals and initially overlapping ships; travel
+  checks the destination against the actual ship half-length before mutation.
+  Dynamic spawn likewise rejects body overlaps transactionally.
+- Nine automation groups covering invalid inputs and rollback, frame partitions,
   pause/backlog, combat, travel/transport/save, save validation and 2002-system
-  catalog/coordinate checks, catalog expansion/spawning and body obstruction.
+  catalog/coordinate checks, catalog expansion/spawning, body obstruction and
+  arrival/initial/spawn safety.
 
 ## Verification
 

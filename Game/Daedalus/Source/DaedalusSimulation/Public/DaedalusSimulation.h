@@ -15,6 +15,7 @@ struct FSystemDefinition
 {
     FString Id, Name, GalaxyId;
     FVector3d PositionLy = FVector3d::ZeroVector;
+    FVector3d ArrivalPositionMetres = FVector3d::ZeroVector;
     TArray<FBodyDefinition> Bodies;
 };
 struct FWeaponDefinition

@@ -219,4 +219,35 @@ bool FBodyObstructionTest::RunTest(const FString& Parameters)
     TestTrue(TEXT("Half-length conservative collision radius maintained"),FVector3d::Dist(Ship.PositionMetres,Body.PositionMetres)>=Body.RadiusMetres+D.LengthMetres*0.5);
     return true;
 }
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FArrivalSafetyTest, "Daedalus.Foundation.ArrivalAndSpawnSafety", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FArrivalSafetyTest::RunTest(const FString& Parameters)
+{
+    FString Error, Before, After;
+    FCatalog C=MakeCatalog();
+    TestTrue(TEXT("Absent v1 arrival defaults to zero"),C.Systems.FindChecked(TEXT("alpha")).ArrivalPositionMetres.IsNearlyZero());
+    FCatalog Parsed;
+    TestTrue(TEXT("Optional JSON arrival position accepted"),Parsed.LoadJson(Fixture.Replace(TEXT("\"id\":\"alpha\",\"name\":\"Alpha\""),TEXT("\"id\":\"alpha\",\"name\":\"Alpha\",\"arrivalPositionMetres\":[1100,0,0]")),Error));
+    TestEqual(TEXT("Explicit arrival parsed in metres"),Parsed.Systems.FindChecked(TEXT("alpha")).ArrivalPositionMetres.X,1100.0);
+    FBodyDefinition Star; Star.Id=TEXT("star"); Star.Name=TEXT("Star"); Star.RadiusMetres=1000;
+    C.Systems.FindChecked(TEXT("alpha")).Bodies={Star}; C.Systems.FindChecked(TEXT("alpha")).ArrivalPositionMetres=FVector3d(1100,0,0); C.InitialShips[2].PositionMetres=FVector3d(5000,0,0);
+    FSimulation Safe; TestTrue(TEXT("Catalog and initial instances outside bodies"),Safe.Initialize(C,Error));
+    TestTrue(TEXT("Travel arrives outside central star"),Safe.Travel(TEXT("alpha"),Error));
+    TestTrue(TEXT("Explicit safe arrival position used"),Safe.GetSnapshot().Ships.FindChecked(TEXT("player")).PositionMetres.Equals(FVector3d(1100,0,0)));
+    Safe.Serialize(Before,Error);
+    TestFalse(TEXT("Spawn at centre rejected"),Safe.SpawnShip(TEXT("inside"),TEXT("scout"),TEXT("alpha"),FVector3d::ZeroVector,Error));
+    Safe.Serialize(After,Error); TestEqual(TEXT("Failed spawn leaves state unchanged"),After,Before);
+    FCatalog Unsafe=C; Unsafe.Systems.FindChecked(TEXT("alpha")).ArrivalPositionMetres=FVector3d::ZeroVector;
+    TestFalse(TEXT("Arrival centre invalidates catalog"),Unsafe.Validate(Error));
+    TestFalse(TEXT("Unsafe initialize rejected"),Safe.Initialize(Unsafe,Error));
+    Safe.Serialize(After,Error); TestEqual(TEXT("Failed initialize leaves state unchanged"),After,Before);
+    Unsafe=C; Unsafe.InitialShips[2].PositionMetres=FVector3d::ZeroVector;
+    TestFalse(TEXT("Initial overlapping ship invalidates catalog"),Unsafe.Validate(Error));
+    Unsafe=C; Unsafe.Systems.FindChecked(TEXT("alpha")).ArrivalPositionMetres=FVector3d(1020,0,0);
+    FSimulation Near; TestTrue(TEXT("Arrival point outside body can be catalog-valid"),Near.Initialize(Unsafe,Error));
+    Near.Serialize(Before,Error);
+    TestFalse(TEXT("Travel additionally checks ship half-length"),Near.Travel(TEXT("alpha"),Error));
+    Near.Serialize(After,Error); TestEqual(TEXT("Rejected travel retains entire state"),After,Before);
+    return true;
+}
 #endif
