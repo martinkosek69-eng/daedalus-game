@@ -10,4 +10,9 @@ automaticky aktualizovaný přehled všech vzdálených větví.
 | 0002 | [Verified game foundation](0002/BRIEF.md) | Codex coordinator | ACCEPTED | `codex/game-foundation` |
 | 0003 | [Simulation module and tests](0003/BRIEF.md) | Převzato a integrováno koordinátorem Codex | ACCEPTED | `codex/game-foundation` |
 
-Další volné číslo: **0004**. Číslo 0026 v návodu je pouze příklad.
+| 0004 | [První letová scéna se Sluncem a Zemí](0004/BRIEF.md) | Codex coordinator | IN_PROGRESS | `codex/solar-flight` |
+| 0005 | [Nezávislá rešerše letu STO](0005/BRIEF.md) | Claude Code po předání pokynu uživatelem | WAITING_FOR_USER_START | `task/0005-sto-flight-reference` |
+| 0006 | [Letový model a testy](0006/BRIEF.md) | Codex flight subagent | IN_PROGRESS | `codex/solar-flight` |
+| 0007 | [Převod původního Daedala](0007/BRIEF.md) | Codex asset subagent | IN_PROGRESS | `codex/solar-flight` |
+
+Další volné číslo: **0008**. Číslo 0026 v návodu je pouze příklad.
