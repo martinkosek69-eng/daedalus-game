@@ -42,4 +42,6 @@ Private user reference images were not available to the coordinator; URLs and
 observations are recorded by Claude, and the remaining palette is an artistic
 approximation reviewed in the game's lighting. This is an initial art iteration,
 not proof of exact production textures. The attribution and CC BY-NC4.0 record
-remain intact. Full source/LFS delivery is verified after coordinator publication.
+remain intact. After coordinator publication f6a21e9, all51 tracked source/assets
+were downloaded into an independent empty LFS store and checked against SHA256
+and local source sizes. Remote coordinator HEAD matched; checkout was clean.

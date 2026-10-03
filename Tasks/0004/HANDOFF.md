@@ -65,6 +65,8 @@ tests-614dece1fc464cf297eff6533c29417c,
 visual-4436bc494a0146b29cbcfae115acc493,
 foundation-restart-ecf22534fbe6430f9feb317aad0b6aa0,
 build-claude.log and package-claude.log.
+Published source delivery f6a21e9 independently verifies all51 tracked LFS
+source/assets via a fresh remote store, SHA256 and sizes; remote HEAD matched.
 
 First user flight feedback should tune speed/turn/inertia/camera before adding
 other planets or combat. Integrate the selected flight into persistent world

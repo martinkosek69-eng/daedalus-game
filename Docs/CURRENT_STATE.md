@@ -19,6 +19,8 @@ arrived through two GitHub checkpoints and are now accepted/integrated; see
 [coordinator review](../Tasks/0008/REVIEW.md). Moving turret geometry/firing
 remain future work. Source coordinates map Blender +Y port to Unreal -Y.
 Final render/input probe also checks throttle-dependent glow and mouse orbit.
+All51 tracked source/assets were independently fetched from remote LFS and
+checked by SHA256 after final integration publication.
 Codex owns source integration and Unreal after Claude's explicit handoff.
 Use the task index and handoff when resuming. Main remains unmerged.
 
