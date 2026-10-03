@@ -46,9 +46,13 @@ ASolarFlightPawn::ASolarFlightPawn()
     RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
     Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("FlightCamera"));
     Camera->SetupAttachment(RootComponent);
-    Camera->SetFieldOfView(60);
+    Camera->SetFieldOfView(52);
     Camera->PostProcessSettings.bOverride_BloomIntensity = true;
     Camera->PostProcessSettings.BloomIntensity = .3f;
+    Camera->PostProcessSettings.bOverride_MotionBlurAmount = true;
+    Camera->PostProcessSettings.MotionBlurAmount = 0;
+    Camera->PostProcessSettings.bOverride_AmbientOcclusionIntensity = true;
+    Camera->PostProcessSettings.AmbientOcclusionIntensity = .8f;
     AutoPossessPlayer = EAutoReceiveInput::Player0;
 }
 void ASolarFlightPawn::SetupPlayerInputComponent(UInputComponent* Input)
@@ -76,8 +80,8 @@ void ASolarFlightPawn::SetupPlayerInputComponent(UInputComponent* Input)
     Input->BindKey(EKeys::P, IE_Pressed, this, &ASolarFlightPawn::PauseFlight);
     Input->BindKey(EKeys::Escape, IE_Pressed, this, &ASolarFlightPawn::ExitGame);
 }
-void ASolarFlightPawn::MouseX(float V) { if (bOrbit) OrbitYaw = FRotator::NormalizeAxis(OrbitYaw + V * 1.8f); }
-void ASolarFlightPawn::MouseY(float V) { if (bOrbit) OrbitPitch = FMath::Clamp(OrbitPitch + V * 1.8f, -60.0f, 65.0f); }
+void ASolarFlightPawn::MouseX(float V) { if (bOrbit) OrbitYaw = FRotator::NormalizeAxis(OrbitYaw + V * .344f); }
+void ASolarFlightPawn::MouseY(float V) { if (bOrbit) OrbitPitch = FMath::Clamp(OrbitPitch + V * .344f, -65.0f, 85.0f); }
 void ASolarFlightPawn::MoreThrottle() { if (auto* M = Lab(this)) M->ChangeThrottle(.2); }
 void ASolarFlightPawn::LessThrottle() { if (auto* M = Lab(this)) M->ChangeThrottle(-.2); }
 void ASolarFlightPawn::ToggleThrottle()
@@ -90,7 +94,7 @@ void ASolarFlightPawn::BrakeOn()
     bBrake = true;
     if (auto* M = Lab(this)) { FString Error; M->Flight.SetThrottle(0, Error); }
 }
-void ASolarFlightPawn::ResetCamera() { OrbitYaw = OrbitPitch = 0; }
+void ASolarFlightPawn::ResetCamera() { OrbitYaw = OrbitPitch = 0; bFollowShip = true; bCameraInitialized = false; }
 void ASolarFlightPawn::ZoomIn() { CameraDistanceMetres = FMath::Max(650.0, CameraDistanceMetres / 1.12); }
 void ASolarFlightPawn::ZoomOut() { CameraDistanceMetres = FMath::Min(6000.0, CameraDistanceMetres * 1.12); }
 void ASolarFlightPawn::Slow() { if (auto* M = Lab(this)) M->SetProfile(0); }
@@ -105,7 +109,7 @@ void ASolarFlightPawn::Tick(float DeltaSeconds)
     if (!M || !M->bReady) return;
     // Input devices command the domain; visuals never write authoritative pose.
     Daedalus::FFlightInput Input;
-    Input.Yaw = YawInput; Input.Pitch = PitchInput; Input.bBrake = bBrake;
+    Input.Yaw = YawInput; Input.Pitch = -PitchInput; Input.bBrake = bBrake;
     if (const auto* PC = Cast<APlayerController>(Controller))
     {
         // A focus loss flushes keys in Unreal; polling the brake prevents a
@@ -116,11 +120,18 @@ void ASolarFlightPawn::Tick(float DeltaSeconds)
     FString Error;
     if (!M->Flight.SetInput(Input, Error)) M->Message = Error;
     const auto& State = M->Flight.GetState();
-    const FRotator Desired(-12.0 + FMath::Clamp(State.PitchDegrees * .35, -20.0, 20.0) + OrbitPitch, State.YawDegrees + OrbitYaw, 0);
-    FRotator Rotation = bCameraInitialized ? FMath::RInterpTo(Camera->GetComponentRotation(), Desired, DeltaSeconds, 5) : Desired;
-    Rotation.Roll = 0;
+    if (!bCameraInitialized) { FollowYaw = State.YawDegrees; FollowPitch = State.PitchDegrees; }
+    if (bFollowShip)
+    {
+        const float Ease = 1 - FMath::Exp(-DeltaSeconds * 2.2f);
+        FollowYaw += FRotator::NormalizeAxis(State.YawDegrees - FollowYaw) * Ease;
+        FollowPitch += (State.PitchDegrees - FollowPitch) * Ease;
+    }
+    // Manual orbit is immediate, independent of ship turning until Home.
+    // Only the following heading has lag, as in the web prototype.
+    const FRotator Rotation(FMath::Clamp(FollowPitch - 18.3f + OrbitPitch,-85.f,85.f), FollowYaw + OrbitYaw, 0);
     bCameraInitialized = true;
-    const FVector Focus(0, 0, 6000);
+    const FVector Focus(0, 0, 0);
     Camera->SetWorldLocationAndRotation(Focus - Rotation.Vector() * CameraDistanceMetres * 100.0, Rotation);
 }
 
@@ -128,7 +139,7 @@ ASolarFlightGameMode::ASolarFlightGameMode()
 {
     PrimaryActorTick.bCanEverTick = true;
     DefaultPawnClass = ASolarFlightPawn::StaticClass(); HUDClass = ASolarFlightHUD::StaticClass();
-    static ConstructorHelpers::FObjectFinder<UStaticMesh> ShipFinder(TEXT("/Game/Ships/Daedalus/SM_Daedalus.SM_Daedalus"));
+    static ConstructorHelpers::FObjectFinder<UStaticMesh> ShipFinder(TEXT("/Game/Ships/Daedalus/WebReference/SM_WebDaedalus.SM_WebDaedalus"));
     static ConstructorHelpers::FObjectFinder<UStaticMesh> SphereFinder(TEXT("/Game/Solar/SM_SolarSphere.SM_SolarSphere"));
     static ConstructorHelpers::FObjectFinder<UStaticMesh> PlaneFinder(TEXT("/Engine/BasicShapes/Plane.Plane"));
     static ConstructorHelpers::FObjectFinder<UMaterialInterface> EarthFinder(TEXT("/Game/Solar/Materials/M_Earth.M_Earth"));
@@ -174,7 +185,7 @@ bool ASolarFlightGameMode::LoadSettings()
         Profiles.Add(P);
     }
     Bodies = {{TEXT("sol.earth"), FVector3d::ZeroVector, EarthRadius}, {TEXT("sol.sun"), SunPosition, SunRadius}};
-    return Flight.Initialize(Profiles[0].Config, InitialState, Bodies, Message);
+    return Flight.Initialize(Profiles[ProfileIndex].Config, InitialState, Bodies, Message);
 }
 void ASolarFlightGameMode::BeginPlay()
 {
@@ -184,6 +195,9 @@ void ASolarFlightGameMode::BeginPlay()
     if (!bReady) { Message = TEXT("Letovou scénu nelze načíst. Zkontroluj obsah a protokol."); UE_LOG(LogTemp, Error, TEXT("SOLAR_LOAD_FAILED")); }
     if (auto* PC = GetWorld()->GetFirstPlayerController())
     {
+        // FXAA has no frame history, so rapid orbit cannot ghost the hull.
+        PC->ConsoleCommand(TEXT("r.AntiAliasingMethod 1"));
+        PC->ConsoleCommand(TEXT("r.MotionBlurQuality 0"));
         PC->bShowMouseCursor = false;
         PC->SetInputMode(FInputModeGameOnly());
         if (PC->GetPawn()) PC->GetPawn()->AddTickPrerequisiteActor(this);
@@ -207,6 +221,9 @@ bool ASolarFlightGameMode::CreateScene()
     if (FMath::Abs(ShipAsset->GetBounds().BoxExtent.X * 2 - 60000) > 30) return false;
     Ship = MakeMesh(ShipAsset, nullptr); Ship->SetCastShadow(true);
     HullLights = MakeMesh(LightsAsset, nullptr);
+    // The restored web mesh already contains these windows; avoid doubled
+    // coplanar light boxes. Keep the separate source for the photo variant.
+    HullLights->SetVisibility(false);
     for (const auto& Asset : GlowAssets)
     {
         auto* Glow = MakeMesh(Asset,nullptr);
@@ -224,13 +241,15 @@ bool ASolarFlightGameMode::CreateScene()
     Sun = MakeMesh(SphereAsset, SunMaterial);
     auto* Light = GetWorld()->SpawnActor<ADirectionalLight>();
     auto* LC = CastChecked<UDirectionalLightComponent>(Light->GetLightComponent());
-    LC->SetMobility(EComponentMobility::Movable); LC->SetIntensity(4.5f); LC->SetLightSourceAngle(.53f);
+    LC->SetMobility(EComponentMobility::Movable); LC->SetIntensity(2.8f); LC->SetLightSourceAngle(2);
+    LC->SetLightColor(FLinearColor(1,.92f,.80f));
     Light->SetActorRotation((-FVector(SunPosition).GetSafeNormal()).Rotation());
     // A gentle camera-side fill keeps dark hull geometry readable; it is an
     // explicit artistic aid, not a second celestial light source.
     auto* Fill = GetWorld()->SpawnActor<ADirectionalLight>();
     Fill->GetLightComponent()->SetMobility(EComponentMobility::Movable);
-    Fill->GetLightComponent()->SetIntensity(.8f); Fill->GetLightComponent()->SetCastShadows(false);
+    Fill->GetLightComponent()->SetIntensity(.45f); Fill->GetLightComponent()->SetCastShadows(false);
+    Fill->GetLightComponent()->SetLightColor(FLinearColor(.55f,.72f,1));
     Fill->SetActorRotation(FRotator(-35, 110, 0));
     Stars = NewObject<UInstancedStaticMeshComponent>(this); Stars->RegisterComponent(); Stars->SetStaticMesh(PlaneAsset);
     Stars->SetMaterial(0, StarMaterial); Stars->SetCollisionEnabled(ECollisionEnabled::NoCollision); Stars->SetCastShadow(false);
@@ -347,24 +366,40 @@ void ASolarFlightHUD::DrawHUD()
     Super::DrawHUD();
     auto* M = Lab(this); if (!M || !Canvas) return;
     const float Scale = FMath::Clamp(Canvas->SizeX / 1280.0f, .8f, 1.5f);
-    DrawRect(FLinearColor(.008f,.014f,.022f,.72f), 12*Scale, 12*Scale, 420*Scale, (M->bPaused || !M->Message.IsEmpty() || !M->Flight.GetState().ContactBodyId.IsEmpty() ? 240 : 146)*Scale);
-    DrawRect(FLinearColor(.008f,.014f,.022f,.72f), 12*Scale, Canvas->SizeY-72*Scale, 775*Scale, 68*Scale);
-    const FLinearColor Pale(.77f, .86f, .92f), Cyan(.35f, .77f, 1), White(.94f, .97f, 1);
+    const float Width = Canvas->SizeX / Scale, Height = Canvas->SizeY / Scale;
+    const FLinearColor Pale(.55f,.69f,.77f), Cyan(.38f,.81f,.92f), White(.88f,.94f,.98f);
     auto Text = [&](const FString& S, float X, float Y, FLinearColor C, float Factor = 1.0f)
-    { DrawText(S, C, X * Scale, Y * Scale, GEngine->GetSmallFont(), Scale * Factor, false); };
-    Text(TEXT("DAEDALUS  /  LETOVÁ ZKOUŠKA"), 25, 22, Cyan, 1.25f);
-    if (!M->bReady) { Text(M->Message, 25, 65, FLinearColor::Red); return; }
-    const auto& S = M->Flight.GetState(); const auto& C = M->Flight.GetConfig();
-    const double Speed = S.VelocityMetresPerSecond.Size();
-    Text(M->Profiles[M->ProfileIndex].Name, 25, 48, Pale);
-    Text(FString::Printf(TEXT("RYCHLOST  %.1f m/s     TAH  %.0f %%"), Speed, S.Throttle * 100), 25, 77, White, 1.2f);
-    Text(FString::Printf(TEXT("Otáčení %.1f °/s   Sklon %.1f °   Zastavení ≈ %.0f m"), S.YawRateDegrees, S.PitchDegrees, Speed * Speed / (2 * C.Braking)), 25, 106, Pale);
-    Text(FString::Printf(TEXT("Země: nad povrchem %.1f km"), (S.PositionMetres.Size() - M->EarthRadius) / 1000), 25, 131, Pale);
-    if (M->bPaused) Text(TEXT("POZASTAVENO — P pokračovat"), 25, 163, Cyan, 1.2f);
-    if (!S.ContactBodyId.IsEmpty()) Text(TEXT("Povrchová ochrana: loď zastavena. Otoč se a odleť."), 25, 191, Cyan);
-    if (!M->Message.IsEmpty()) Text(M->Message, 25, 219, Pale);
-    const float Bottom = Canvas->SizeY / Scale;
-    Text(TEXT("W/S sklon  ·  A/D zatáčení  ·  Q/E tah  ·  R stát / plný tah  ·  MEZERNÍK nebo X brzda"), 25, Bottom - 62, Pale);
-    Text(TEXT("Pravé tlačítko + myš: rozhlížení  ·  Kolečko: kamera  ·  Home: za loď"), 25, Bottom - 42, Pale);
-    Text(TEXT("1 manévrování / 2 místní přelet (ve stoje)  ·  Backspace: začátek  ·  P pauza  ·  Esc konec"), 25, Bottom - 22, Pale);
+    { DrawText(S,C,X*Scale,Y*Scale,GEngine->GetSmallFont(),Scale*Factor,false); };
+    auto Center = [&](const FString& S,float Y,FLinearColor C,float Factor=1.0f)
+    {
+        UFont* Font = Factor>1 ? GEngine->GetLargeFont() : GEngine->GetSmallFont();
+        float W=0,H=0; GetTextSize(S,W,H,Font,1);
+        const float FontScale = Scale * (Factor>1 ? 15*Factor/FMath::Max(H,1.f) : Factor);
+        GetTextSize(S,W,H,Font,FontScale);
+        DrawText(S,C,(Canvas->SizeX-W)*.5f,Y*Scale,Font,FontScale,false);
+    };
+    Text(TEXT("DAEDALUS  /  LETOVÁ ZKOUŠKA"),22,20,Cyan);
+    if (!M->bReady) { Text(M->Message,22,45,FLinearColor::Red); return; }
+    const auto& S=M->Flight.GetState();
+    const double Speed=S.VelocityMetresPerSecond.Size();
+    Text(FString::Printf(TEXT("Země · nad povrchem %.0f km"),(S.PositionMetres.Size()-M->EarthRadius)/1000),22,43,Pale);
+    const FString SpeedText=Speed>=1000?FString::Printf(TEXT("%.0f km/s"),Speed/1000):FString::Printf(TEXT("%.0f m/s"),Speed);
+    Center(SpeedText,Height-211,White,2.8f);
+    Center(TEXT("S K U T E Č N Á   R Y C H L O S T"),Height-165,Pale,.72f);
+    const float Left=(Width-370)*.5f,Top=Height-145;
+    DrawRect(FLinearColor(.008f,.020f,.030f,.90f),Left*Scale,Top*Scale,370*Scale,86*Scale);
+    DrawRect(FLinearColor(.07f,.15f,.19f,.9f),Left*Scale,Top*Scale,370*Scale,Scale);
+    Text(TEXT("NASTAVENÝ TAH"),Left+13,Top+10,Pale,.85f);
+    Text(FString::Printf(TEXT("%.0f %%"),S.Throttle*100),Left+300,Top+10,Cyan);
+    DrawRect(FLinearColor(.15f,.20f,.23f), (Left+57)*Scale,(Top+40)*Scale,250*Scale,4*Scale);
+    const float Throttle=FMath::Clamp(float((S.Throttle+.25)/1.25),0.f,1.f);
+    DrawRect(Cyan,(Left+57)*Scale,(Top+40)*Scale,250*Throttle*Scale,4*Scale);
+    DrawRect(White,(Left+54+250*Throttle)*Scale,(Top+36)*Scale,6*Scale,12*Scale);
+    Text(TEXT("Q −"),Left+13,Top+31,Pale); Text(TEXT("+ E"),Left+322,Top+31,Pale);
+    Center(M->Profiles[M->ProfileIndex].Name,Top+62,Pale,.9f);
+    Center(TEXT("1 Přístavní / 2 Impuls (ve stoje)    R stát / plný tah    Mezerník brzda"),Height-48,Pale,.85f);
+    Center(TEXT("W/S sklon   A/D zatáčení   Pravé tlačítko + myš kamera   Kolečko zoom   Home za loď"),Height-28,Pale,.8f);
+    if (M->bPaused) Center(TEXT("POZASTAVENO — P pokračovat"),75,Cyan,1.2f);
+    if (!S.ContactBodyId.IsEmpty()) Center(TEXT("Povrchová ochrana: otoč se a odleť."),100,Cyan);
+    if (!M->Message.IsEmpty()) Center(M->Message,125,Pale);
 }

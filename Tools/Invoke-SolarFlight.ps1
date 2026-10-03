@@ -1,4 +1,5 @@
-param([ValidateSet('Build','Assets','Test','Package','Smoke','Visual','Play')][string]$Mode='Play')
+param([ValidateSet('Build','Assets','Test','Package','Smoke','Visual','Play')][string]$Mode='Play',
+      [ValidatePattern('^[A-Za-z0-9_-]+$')][string]$BuildName='Build-WebReference')
 $ErrorActionPreference='Stop'
 $root=Split-Path -Parent $PSScriptRoot
 $config=Get-Content -LiteralPath (Join-Path $root '.local/toolchain.json') -Raw | ConvertFrom-Json
@@ -7,6 +8,7 @@ if(-not $engine){throw 'Configure .local/toolchain.json first.'}
 if($config.environment){foreach($p in $config.environment.psobject.Properties){[Environment]::SetEnvironmentVariable($p.Name,[string]$p.Value,'Process')}}
 $project=Join-Path $root 'Game/Daedalus/Daedalus.uproject'
 $local=Join-Path $root '.local/solar'
+$build=Join-Path $local $BuildName
 New-Item -ItemType Directory -Path $local -Force | Out-Null
 $env:uebp_LogFolder=Join-Path $local 'AutomationLogs'
 $env:uebp_FinalLogFolder=$env:uebp_LogFolder
@@ -48,11 +50,11 @@ switch($Mode){
  }
  'Package' {
     RequireNoEditor
-    & (Join-Path $engine 'Engine/Build/BatchFiles/RunUAT.bat') BuildCookRun "-project=$project" -nop4 -platform=Win64 -clientconfig=Development -build -cook -stage -pak -iostore -archive "-archivedirectory=$(Join-Path $local 'Build')" '-map=/Game/Maps/SolarFlight+/Game/Maps/Foundation' '-ubtargs=-MaxParallelActions=1' -utf8output
+    & (Join-Path $engine 'Engine/Build/BatchFiles/RunUAT.bat') BuildCookRun "-project=$project" -nop4 -platform=Win64 -clientconfig=Development -build -cook -stage -pak -iostore -archive "-archivedirectory=$build" '-map=/Game/Maps/SolarFlight+/Game/Maps/Foundation' '-ubtargs=-MaxParallelActions=1' -utf8output
     CheckExit
  }
  'Smoke' {
-    $exe=Join-Path $local 'Build/Windows/Daedalus/Binaries/Win64/Daedalus.exe'
+    $exe=Join-Path $build 'Windows/Daedalus/Binaries/Win64/Daedalus.exe'
     if(-not(Test-Path -LiteralPath $exe)){throw 'Package first.'}
     $run=Join-Path $local ('foundation-restart-'+[guid]::NewGuid().ToString('N'))
     New-Item -ItemType Directory -Path $run -Force | Out-Null
@@ -64,7 +66,7 @@ switch($Mode){
     Write-Output "Foundation separate-process restart passed in solar package: $run"
  }
  'Visual' {
-    $exe=Join-Path $local 'Build/Windows/Daedalus/Binaries/Win64/Daedalus.exe'
+    $exe=Join-Path $build 'Windows/Daedalus/Binaries/Win64/Daedalus.exe'
     if(-not(Test-Path -LiteralPath $exe)){throw 'Package first.'}
     $run=Join-Path $local ('visual-'+[guid]::NewGuid().ToString('N'))
     New-Item -ItemType Directory -Path $run -Force | Out-Null
@@ -72,10 +74,10 @@ switch($Mode){
     RunOwnGame $exe $args
     $result=Join-Path $run 'result.json'
     if(-not(Test-Path -LiteralPath $result) -or -not(Get-Content -LiteralPath $result -Raw | ConvertFrom-Json).passed){throw "Solar input/render probe failed: $run"}
-    Write-Output "Solar input/render checks passed; inspect earth.png, turn.png, sun.png: $run"
+    Write-Output "Solar input/render checks passed; inspect earth.png, turn.png, sun.png, web-comparison.png: $run"
  }
  'Play' {
-    $exe=Join-Path $local 'Build/Windows/Daedalus.exe'
+    $exe=Join-Path $build 'Windows/Daedalus.exe'
     if(-not(Test-Path -LiteralPath $exe)){throw 'Playable package not found. Run Package first.'}
     $data=Join-Path $local 'PlayerData'
     & $exe '/Game/Maps/SolarFlight?game=/Script/Daedalus.SolarFlightGameMode' "-UserDir=$data" '-windowed' '-ResX=1280' '-ResY=720'

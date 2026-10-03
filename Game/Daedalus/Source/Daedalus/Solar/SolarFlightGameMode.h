@@ -23,16 +23,19 @@ public:
     virtual void SetupPlayerInputComponent(UInputComponent* Input) override;
     void ResetCamera();
     UPROPERTY() TObjectPtr<UCameraComponent> Camera;
-    double CameraDistanceMetres = 1100;
+    double CameraDistanceMetres = 1500;
 private:
     float YawInput = 0, PitchInput = 0;
     bool bBrake = false, bOrbit = false;
     float OrbitYaw = 0, OrbitPitch = 0;
     bool bCameraInitialized = false;
+    bool bFollowShip = true;
+    float FollowYaw = 0;
+    float FollowPitch = 0;
     void Yaw(float V) { YawInput = V; }
     void Pitch(float V) { PitchInput = V; }
     void MouseX(float V); void MouseY(float V);
-    void OrbitOn() { bOrbit = true; } void OrbitOff() { bOrbit = false; }
+    void OrbitOn() { bOrbit = true; bFollowShip = false; } void OrbitOff() { bOrbit = false; }
     void BrakeOn(); void BrakeOff() { bBrake = false; }
     void MoreThrottle(); void LessThrottle(); void ToggleThrottle();
     void ZoomIn(); void ZoomOut();
@@ -65,7 +68,7 @@ public:
     bool bReady = false, bPaused = false;
     FString Message;
     TArray<FSolarFlightProfile> Profiles;
-    int32 ProfileIndex = 0;
+    int32 ProfileIndex = 1;
     double EarthRadius = 6371000, SunRadius = 695700000;
     FVector3d SunPosition;
     double FrameMilliseconds = 0;

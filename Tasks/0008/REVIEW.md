@@ -1,5 +1,13 @@
 # Coordinator review — 0008
 
+User feedback after this technical integration rejected the pale and simplified
+in-game appearance. Technical checks below remain valid; artistic approval was
+not granted. Task0009 restores the original web presentation as the active
+comparison build, keeping these sources/effects/mounts intact. Additional worker
+checkpoint d5846a1 (orange VLS paint and four beam-mount proposals) was discovered
+on fetch; it remains on the worker branch for separate later review, not included
+in this comparison build. Do not assume its proposed mounts are already in game.
+
 ACCEPTED for the delivered reference-paint/effects/measured-mount scope,
 2026-10-03. Source branch task/0008-daedalus-engine-effects, base98c4bd1,
 checkpoints06312a0 and991a823. Codex fetched both directly and cherry-picked

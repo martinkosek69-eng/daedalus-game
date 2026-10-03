@@ -16,4 +16,6 @@ automaticky aktualizovaný přehled všech vzdálených větví.
 | 0007 | [Převod původního Daedala](0007/BRIEF.md) | Převzal Codex; základní převod, další přebarvení v0008 | ACCEPTED | `codex/solar-flight` |
 | 0008 | [Daedalus podle fotografií: barvy, zbraně a motory](0008/BRIEF.md) | Claude Code; Codex ověřil a začlenil | ACCEPTED | `task/0008-daedalus-engine-effects` |
 
-Další volné číslo: **0009**. Číslo 0026 v návodu je pouze příklad.
+| 0009 | [Návrat k původní webové podobě a řízení](0009/BRIEF.md) | Codex coordinator; comparison build checked, user feedback pending | ACCEPTED (technical) | `codex/solar-flight` |
+
+Další volné číslo: **0010**. Číslo 0026 v návodu je pouze příklad.

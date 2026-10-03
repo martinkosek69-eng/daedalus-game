@@ -8,12 +8,12 @@
   "startPositionMetres": [0, -12000000, 2000000],
   "startYawDegrees": 80,
   "startPitchDegrees": -5,
-  "turnRateDegrees": 6,
-  "angularAccelerationDegrees": 18,
-  "pitchLimitDegrees": 75,
-  "bankDegrees": 15,
+  "turnRateDegrees": 9,
+  "angularAccelerationDegrees": 24,
+  "pitchLimitDegrees": 60,
+  "bankDegrees": 22,
   "profiles": [
-    {"name": "Manévrování", "speed": 350, "acceleration": 43.75, "coastDeceleration": 43.75, "braking": 100, "lateralAcceleration": 200},
-    {"name": "Místní přelet", "speed": 25000, "acceleration": 3125, "coastDeceleration": 3125, "braking": 6250, "lateralAcceleration": 14286}
+    {"name": "Přístavní chod", "speed": 150, "acceleration": 25, "coastDeceleration": 45, "braking": 45, "lateralAcceleration": 86},
+    {"name": "Impuls", "speed": 250000, "acceleration": 18000, "coastDeceleration": 45000, "braking": 45000, "lateralAcceleration": 142860}
   ]
 }

@@ -1,5 +1,17 @@
 # Current foundation state — 2026-10-03
 
+## Visual correction in task0009
+
+The user rejected the pale photo-repaint presentation and requested the original
+web model/lighting/controls for comparison. Technical acceptance of0008 did not
+constitute user approval of art. Its saved source and branch remain intact.
+Task0009 restores a separately generated original hull, per-pixel web armor,
+compact HUD, direct manual orbit and no temporal/motion-blur smear. Its separate
+package is Build-WebReference, selected by the existing play launcher.
+Final package, all15 groups,930-frame input/render checks and two-process
+foundation restart pass. User art/control judgement remains pending; see
+[task0009 handoff](../Tasks/0009/HANDOFF.md).
+
 ## First solar flight lab
 
 `codex/solar-flight` adds a reviewed Windows playable scene using the recovered

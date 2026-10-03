@@ -7,6 +7,7 @@
 #include "HAL/FileManager.h"
 #include "Engine/Engine.h"
 #include "Camera/CameraComponent.h"
+#include "HAL/IConsoleManager.h"
 
 void ASolarFlightGameMode::TickProbe()
 {
@@ -30,7 +31,7 @@ void ASolarFlightGameMode::TickProbe()
     case 70:ProbeYaw=S.YawDegrees;Key(EKeys::D,IE_Pressed);break;
     case 200:Key(EKeys::D,IE_Released);Check(S.YawDegrees>ProbeYaw+8,TEXT("D yaw right"));Shot(TEXT("turn.png"));break;
     case 230:ProbePitch=S.PitchDegrees;Key(EKeys::W,IE_Pressed);break;
-    case 300:Key(EKeys::W,IE_Released);Check(S.PitchDegrees>ProbePitch+4,TEXT("W pitch up"));break;
+    case 300:Key(EKeys::W,IE_Released);Check(S.PitchDegrees<ProbePitch-4,TEXT("W pitch down as web"));break;
     case 350:Check(S.VelocityMetresPerSecond.Size()>100,TEXT("forward acceleration"));Key(EKeys::SpaceBar,IE_Pressed);break;
     case 610:Key(EKeys::SpaceBar,IE_Released);Check(S.VelocityMetresPerSecond.Size()<.1 && S.Throttle==0,TEXT("Space gradual brake"));break;
     case 615:Tap(EKeys::Q);Tap(EKeys::Q);break;
@@ -41,13 +42,18 @@ void ASolarFlightGameMode::TickProbe()
     case 720:Check(S.SimulationSeconds==ProbeClock,TEXT("paused clock"));Tap(EKeys::P);Key(EKeys::RightMouseButton,IE_Pressed);break;
     case 722:Key(EKeys::MouseX,IE_Axis,30);break;
     case 725:Key(EKeys::RightMouseButton,IE_Released);Tap(EKeys::MouseScrollUp);break;
-    case 750:Check(Pawn && Pawn->CameraDistanceMetres<1100 && FMath::Abs(Pawn->Camera->GetComponentRotation().Roll)<.001 && FMath::Abs(FRotator::NormalizeAxis(Pawn->Camera->GetComponentRotation().Yaw-S.YawDegrees))>1,TEXT("orbit zoom and level horizon"));Tap(EKeys::Home);break;
+    case 750:Check(Pawn && Pawn->CameraDistanceMetres<1500 && Pawn->Camera->PostProcessSettings.MotionBlurAmount==0 && FMath::Abs(Pawn->Camera->GetComponentRotation().Roll)<.001 && FMath::Abs(FRotator::NormalizeAxis(Pawn->Camera->GetComponentRotation().Yaw-S.YawDegrees))>1,TEXT("orbit zoom no blur and level horizon"));Tap(EKeys::Home);break;
     case 790:Check(Pawn && FMath::Abs(FRotator::NormalizeAxis(Pawn->Camera->GetComponentRotation().Yaw-S.YawDegrees))<1,TEXT("Home behind ship"));
         // Isolated diagnostic reposition changes domain through Initialize,
         // not by moving a visual. Face the actual Sun for visual review.
         {auto Start=S;Start.YawDegrees=(SunPosition-Start.PositionMetres).Rotation().Yaw;Start.PitchDegrees=0;FString E;Check(Flight.Initialize(Profiles[0].Config,Start,Bodies,E),TEXT("sun look diagnostic"));}break;
     case 850:Shot(TEXT("sun.png"));break;
-    case 880:
+    case 860:Key(EKeys::RightMouseButton,IE_Pressed);break;
+    case 862:Key(EKeys::MouseX,IE_Axis,400);Key(EKeys::MouseY,IE_Axis,-35);break;
+    case 865:Key(EKeys::RightMouseButton,IE_Released);break;
+    case 900:Shot(TEXT("web-comparison.png"));break;
+    case 930:
+        Check(IConsoleManager::Get().FindConsoleVariable(TEXT("r.AntiAliasingMethod"))->GetInt()==1 && IConsoleManager::Get().FindConsoleVariable(TEXT("r.MotionBlurQuality"))->GetInt()==0,TEXT("non temporal AA and motion blur disabled"));
         Check(Flight.GetPendingSeconds()<.02 && Flight.GetError().IsEmpty(),TEXT("stable fixedstep"));
         Check(IFileManager::Get().FileSize(*FPaths::Combine(ProbeDirectory,TEXT("earth.png")))>100 && IFileManager::Get().FileSize(*FPaths::Combine(ProbeDirectory,TEXT("turn.png")))>100 && IFileManager::Get().FileSize(*FPaths::Combine(ProbeDirectory,TEXT("sun.png")))>100,TEXT("rendered images written"));
         bProbePassed=FFileHelper::SaveStringToFile(FString::Printf(TEXT("{\"passed\":%s,\"stars\":%d,\"profile\":%d,\"frames\":%d}"),bProbePassed?TEXT("true"):TEXT("false"),StarCount(),ProfileIndex,ProbeFrame),*FPaths::Combine(ProbeDirectory,TEXT("result.json"))) && bProbePassed;

@@ -1,0 +1,26 @@
+{
+  "sourceSHA256": "c7c670ff703842e2d9e1525bcfba44682de05705defbc74743d1cd66fd8335cd",
+  "blendSHA256": "219d9826bcec88f2992db212f58c549fa8b4fd18f68df16bd5c4c7dc088c6227",
+  "glbSHA256": "ea3e8422c7215f6347fc0044161e9a19e15847c0e89cf459905390e8d0f7811c",
+  "dimensionsMetres": [
+    600.0000610351562,
+    378.5321044921875,
+    92.60707092285156
+  ],
+  "originalTriangles": 222330,
+  "finalTriangles": 223458,
+  "vertices": 504598,
+  "materialSlots": [
+    "Daedalus_Armor",
+    "Daedalus_Recess",
+    "Daedalus_Trim",
+    "Daedalus_Glass"
+  ],
+  "fittings": {
+    "launchHatches": 14,
+    "ventSlats": 36,
+    "windows": 30
+  },
+  "coordinateMapping": "source (x,y,z) -> Unreal/Blender (-z,-x,y)",
+  "checkedReopen": true
+}

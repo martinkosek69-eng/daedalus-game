@@ -8,9 +8,12 @@ def main():
     for source in [base/'Art/Ships/Daedalus'/f for f in ['Daedalus.glb','DaedalusEngineGlow.glb','DaedalusLights.glb','ENGINE_MOUNTS.json']]+[base/'Art/Space/SolarSphere.glb']+sorted((base/'Art/Space/Textures').glob('*.jpg')):
         fingerprint.update(source.read_bytes())
     recipe=fingerprint.hexdigest()
+    web_source=base/'Art/Ships/Daedalus/WebReference/WebDaedalus.glb'
+    fingerprint.update(web_source.read_bytes())
+    recipe=fingerprint.hexdigest()
     existing=unreal.load_asset('/Game/Ships/Daedalus/SM_Daedalus')
     required=['M_Earth','M_Sun','M_Atmosphere','M_Star','M_Dust','M_Daedalus_EngineGlowCore','M_Daedalus_EngineGlowPlume','M_Daedalus_Glass']
-    if existing and unreal.EditorAssetLibrary.get_metadata_tag(existing,'SolarRecipe')==recipe and all(unreal.EditorAssetLibrary.does_asset_exist('/Game/Solar/Materials/'+name) for name in required) and unreal.EditorAssetLibrary.does_asset_exist('/Game/Maps/SolarFlight'):
+    if existing and unreal.EditorAssetLibrary.get_metadata_tag(existing,'SolarRecipe')==recipe and all(unreal.EditorAssetLibrary.does_asset_exist('/Game/Solar/Materials/'+name) for name in required) and unreal.EditorAssetLibrary.does_asset_exist('/Game/Maps/SolarFlight') and unreal.EditorAssetLibrary.does_asset_exist('/Game/Ships/Daedalus/WebReference/SM_WebDaedalus'):
         print('SOLAR_CONTENT_PASS cached verified recipe')
         return
     root=Path(unreal.Paths.project_dir()).resolve().parent.parent
@@ -34,6 +37,10 @@ def main():
     
     ship=imported(root/'Art/Ships/Daedalus/Daedalus.glb','/Game/Ships/Daedalus','SM_Daedalus',unreal.StaticMesh)
     assert abs(ship.get_bounds().box_extent.x*2-60000)<30,ship.get_bounds()
+    web=imported(web_source,'/Game/Ships/Daedalus/WebReference','SM_WebDaedalus',unreal.StaticMesh)
+    assert abs(web.get_bounds().box_extent.x*2-60000)<30,web.get_bounds()
+    ns=web.get_editor_property('nanite_settings');ns.set_editor_property('enabled',False)
+    web.set_editor_property('nanite_settings',ns)
     sphere=imported(root/'Art/Space/SolarSphere.glb','/Game/Solar','SM_SolarSphere',unreal.StaticMesh)
     assert abs(sphere.get_bounds().box_extent.x-100)<.01
     # Preserve the full smooth sphere. Nanite fallback simplification makes the
@@ -100,7 +107,7 @@ def main():
             fields.append(field)
         c=node(mat,unreal.MaterialExpressionCustom,code=code,output_type=output,
             inputs=fields)
-        for name,(expr,channel) in inputs.items():assert lib.connect_material_expressions(expr,channel,c,name)
+        for name,(expr,channel) in inputs.items():assert lib.connect_material_expressions(expr,channel,c,name),(name,expr.get_class().get_name(),channel)
         return c
     def finish(mat,expr,prop=unreal.MaterialProperty.MP_EMISSIVE_COLOR):
         assert lib.connect_material_property(expr,'',prop)
@@ -148,7 +155,7 @@ def main():
     finish(dust,vector(dust,(.17,.23,.28,1)))
     
     # Stable owned materials on every slot, preserving imported vertex colors.
-    def assign_source_materials(mesh,filename,effect=False):
+    def assign_source_materials(mesh,filename,effect=False,web_recipe=False):
       source=(root/'Art/Ships/Daedalus'/filename).read_bytes()
       doc=json.loads(source[20:20+struct.unpack_from('<I',source,12)[0]])
       source_mats={m['name']:m for m in doc['materials']}
@@ -156,19 +163,51 @@ def main():
         name=str(slot.material_slot_name)
         assert name in source_mats,(name,list(source_mats))
         src=source_mats[name];pbr=src['pbrMetallicRoughness']
-        m=material('M_'+name,effect,unreal.BlendMode.BLEND_TRANSLUCENT if src.get('alphaMode')=='BLEND' else unreal.BlendMode.BLEND_OPAQUE,src.get('doubleSided',False))
+        m=material(('M_Web_' if web_recipe else 'M_')+name,effect,unreal.BlendMode.BLEND_TRANSLUCENT if src.get('alphaMode')=='BLEND' else unreal.BlendMode.BLEND_OPAQUE,src.get('doubleSided',False))
         if not effect:lib.set_base_material_usage(m,unreal.MaterialUsage.MATUSAGE_NANITE)
         base=vector(m,tuple(pbr.get('baseColorFactor',[1,1,1,1])))
         color=node(m,unreal.MaterialExpressionVertexColor)
         mul=node(m,unreal.MaterialExpressionMultiply)
         assert lib.connect_material_expressions(base,'',mul,'A')
         assert lib.connect_material_expressions(color,'',mul,'B')
+        if web_recipe and name=='Daedalus_Armor':
+            position=node(m,unreal.MaterialExpressionWorldPosition)
+            local=node(m,unreal.MaterialExpressionTransformPosition,
+                transform_source_type=unreal.MaterialPositionTransformSource.TRANSFORMPOSSOURCE_WORLD,
+                transform_type=unreal.MaterialPositionTransformSource.TRANSFORMPOSSOURCE_LOCAL)
+            assert lib.connect_material_expressions(position,'',local,'')
+            normal=node(m,unreal.MaterialExpressionPixelNormalWS)
+            normal_local=node(m,unreal.MaterialExpressionTransform,
+                transform_source_type=unreal.MaterialVectorCoordTransformSource.TRANSFORMSOURCE_WORLD,
+                transform_type=unreal.MaterialVectorCoordTransform.TRANSFORM_LOCAL)
+            assert lib.connect_material_expressions(normal,'',normal_local,'')
+            # Original web livery.mjs recipe, including derivative AA seams.
+            # Imported UE (x,y,z) maps back to source (y,z,-x), cm / 600m.
+            mul=custom(m,'''float3 p=float3(P.y,P.z,-P.x)/60000.;
+                float3 n=normalize(float3(N.y,N.z,-N.x)),an=abs(n);
+                float2 uv=an.y>max(an.x,an.z)?p.xz:an.x>an.z?p.zy:p.xy;
+                float2 grid=uv*float2(27.,43.);
+                grid.x+=fmod(floor(grid.y)+10000.,2.)*.37;
+                float2 cell=frac(grid),edge=min(cell,1.-cell),aa=max(fwidth(grid),float2(.006,.006));
+                float seam=1.-smoothstep(.014,.014+max(aa.x,aa.y),min(edge.x,edge.y));
+                float panel=.76+frac(sin(dot(floor(grid),float2(127.1,311.7)))*43758.5453)*.22;
+                float wear=sin(p.x*583.)*sin(p.z*769.)*sin(p.y*677.)*.012;
+                float3 c=(panel+wear)*lerp(1.,.27,seam*.8);
+                c*=p.y<-.018?.69:1.;
+                if(p.z>.33)c*=float3(.58,.61,.65);
+                if(abs(p.x)<.010&&p.z<.23&&p.z>-.32)c*=.55;
+                if(abs(p.x)>.18&&abs(p.x)<.295&&p.z<.015&&abs(n.z)>.7&&p.y<.016)c*=.28;
+                if(p.y>.04&&abs(n.y)<.35)c*=.64;
+                return Base*c;''',{'P':(local,''),'N':(normal_local,''),'Base':(base,'')})
         assert lib.connect_material_property(mul,'',unreal.MaterialProperty.MP_BASE_COLOR)
         assert lib.connect_material_property(constant(m,pbr.get('metallicFactor',0)),'',unreal.MaterialProperty.MP_METALLIC)
         assert lib.connect_material_property(constant(m,pbr.get('roughnessFactor',.6)),'',unreal.MaterialProperty.MP_ROUGHNESS)
         strength=src.get('extensions',{}).get('KHR_materials_emissive_strength',{}).get('emissiveStrength',1)
         emission=[v*strength for v in src.get('emissiveFactor',[0,0,0])]
         emit=vector(m,(*emission,1))
+        if web_recipe:
+            # The web's blue ambient light remains readable in black space.
+            emit=custom(m,'return C*float3(.025,.043,.070)+E;',{'C':(mul,''),'E':(emit,'')})
         if filename=='DaedalusEngineGlow.glb':
             level=node(m,unreal.MaterialExpressionScalarParameter,parameter_name='EngineLevel',default_value=.08)
             mod=node(m,unreal.MaterialExpressionMultiply)
@@ -183,6 +222,7 @@ def main():
       assert unreal.EditorAssetLibrary.save_loaded_asset(mesh)
       return len(source_mats)
     count=assign_source_materials(ship,'Daedalus.glb')
+    assign_source_materials(web,'WebReference/WebDaedalus.glb',web_recipe=True)
     assign_source_materials(lights,'DaedalusLights.glb',True)
     for mesh in glows:assign_source_materials(mesh,'DaedalusEngineGlow.glb',True)
     editor=unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)
