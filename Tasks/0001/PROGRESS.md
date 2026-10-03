@@ -1,20 +1,31 @@
 # Průběžný stav úkolu 0001
 
-- Stav: NOT_STARTED
-- Pracovník: Claude Code po předání zadání uživatelem
+- Stav: IN_PROGRESS
+- Pracovník: Claude Code (na pokyn uživatele)
 - Pracovní větev: `task/0001-github-handoff`
-- Poslední aktualizace: 2026-10-03, Europe/Prague
-- Sdílení posledního checkpointu: dosud žádný pracovní checkpoint
+- Poslední aktualizace: 2026-10-03 17:47, Europe/Prague
+- Sdílení posledního checkpointu: tento commit je první checkpoint; push a shoda
+  SHA se ověřují hned po jeho vytvoření
 
-## Hotové části
+## Hotové části a uložené soubory
 
-Codex připravil zadání a společný způsob předávání. Claude zatím tento úkol
-neprovedl; přístup jeho klienta a skutečný push nejsou ověřené.
+- Ověřeno zadání, Git a možnost push (dry-run).
+- Založena pracovní větev z `e097331d24e234e3997cd1fccba333521e4ad57d`.
+- Vytvořen `Tasks/0001/RESULT.md` s číslem úkolu, klientem, výchozím commitem,
+  potvrzením vlastní kopie, seznamem přečtených pokynů a potvrzovacím řádkem.
+
+## Stručný záznam postupu
+
+1. Načtení vzdáleného stavu a kontrola, že pracovní větev ještě neexistuje.
+2. Založení větve přímo z výchozího commitu, bez sledování cizí větve.
+3. Vytvoření RESULT.md a aktualizace tohoto souboru.
 
 ## Rozpracované části a překážky
 
-Čeká na předání zadání uživatelem do Claude Code a ověření přístupu.
+Zbývá doplnit RESULT (výsledek prvního checkpointu, postup pro Codex),
+vyplnit HANDOFF a odeslat druhý checkpoint. Překážky žádné.
 
-## Další krok
+## Přesný další krok pro pokračování
 
-Přečíst BRIEF.md ze správné větve, ověřit vlastní pracovní kopii a začít krokem 1.
+Ověřit, že vzdálená větev `task/0001-github-handoff` obsahuje první checkpoint.
+Potom pokračovat krokem 4 z BRIEF.md.
