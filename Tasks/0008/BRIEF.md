@@ -74,3 +74,8 @@ materials/import and rendering in its own Unreal copy before acceptance.
 
 This enhancement is independent of initial flight code. A clean checkpoint can
 be resumed after quota exhaustion; record incompleteness honestly.
+
+Coordinator ownership transfer,2026-10-03: Claude handed off final991a823 as
+READY_FOR_REVIEW. Codex retrieved both worker checkpoints and now owns source
+review and integration in codex/solar-flight. Do not modify the reviewed source
+concurrently. The user's preview GUI copy remains unrelated to source ownership.

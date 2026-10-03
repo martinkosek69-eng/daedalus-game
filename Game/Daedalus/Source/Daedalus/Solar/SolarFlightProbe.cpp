@@ -23,9 +23,9 @@ void ASolarFlightGameMode::TickProbe()
     const auto& S=Flight.GetState();
     switch(ProbeFrame)
     {
-    case 30:Check(bReady && Ship && Earth && Sun && StarCount()==8920,TEXT("staged model Earth Sun stars"));Shot(TEXT("earth.png"));break;
+    case 30:Check(bReady && Ship && HullLights && EngineOutletCount()==6 && Earth && Sun && StarCount()==8920,TEXT("staged model lights engines Earth Sun stars"));Shot(TEXT("earth.png"));break;
     case 40:Tap(EKeys::E);break;
-    case 45:Check(FMath::Abs(S.Throttle-.2)<.001,TEXT("E persistent20pct"));Tap(EKeys::R);break;
+    case 45:Check(FMath::Abs(S.Throttle-.2)<.001 && FMath::Abs(EngineGlowLevel-.264)<.001,TEXT("E persistent20pct and motor brightness"));Tap(EKeys::R);break;
     case 50:Check(S.Throttle==0,TEXT("R stops throttle"));Tap(EKeys::R);break;
     case 70:ProbeYaw=S.YawDegrees;Key(EKeys::D,IE_Pressed);break;
     case 200:Key(EKeys::D,IE_Released);Check(S.YawDegrees>ProbeYaw+8,TEXT("D yaw right"));Shot(TEXT("turn.png"));break;
@@ -41,7 +41,7 @@ void ASolarFlightGameMode::TickProbe()
     case 720:Check(S.SimulationSeconds==ProbeClock,TEXT("paused clock"));Tap(EKeys::P);Key(EKeys::RightMouseButton,IE_Pressed);break;
     case 722:Key(EKeys::MouseX,IE_Axis,30);break;
     case 725:Key(EKeys::RightMouseButton,IE_Released);Tap(EKeys::MouseScrollUp);break;
-    case 750:Check(Pawn && Pawn->CameraDistanceMetres<1100 && FMath::Abs(Pawn->Camera->GetComponentRotation().Roll)<.001,TEXT("zoom and level horizon"));Tap(EKeys::Home);break;
+    case 750:Check(Pawn && Pawn->CameraDistanceMetres<1100 && FMath::Abs(Pawn->Camera->GetComponentRotation().Roll)<.001 && FMath::Abs(FRotator::NormalizeAxis(Pawn->Camera->GetComponentRotation().Yaw-S.YawDegrees))>1,TEXT("orbit zoom and level horizon"));Tap(EKeys::Home);break;
     case 790:Check(Pawn && FMath::Abs(FRotator::NormalizeAxis(Pawn->Camera->GetComponentRotation().Yaw-S.YawDegrees))<1,TEXT("Home behind ship"));
         // Isolated diagnostic reposition changes domain through Initialize,
         // not by moving a visual. Face the actual Sun for visual review.

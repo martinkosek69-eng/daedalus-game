@@ -14,6 +14,6 @@ automaticky aktualizovaný přehled všech vzdálených větví.
 | 0005 | [Nezávislá rešerše letu STO](0005/BRIEF.md) | Claude Code; převzal a ověřil Codex | ACCEPTED | `task/0005-sto-flight-reference` |
 | 0006 | [Letový model a testy](0006/BRIEF.md) | Převzal Codex po přerušení pomocné relace | ACCEPTED | `codex/solar-flight` |
 | 0007 | [Převod původního Daedala](0007/BRIEF.md) | Převzal Codex; základní převod, další přebarvení v0008 | ACCEPTED | `codex/solar-flight` |
-| 0008 | [Daedalus podle fotografií: barvy, zbraně a motory](0008/BRIEF.md) | Claude Code po pokynu uživatele | WAITING_FOR_USER_START | `task/0008-daedalus-engine-effects` |
+| 0008 | [Daedalus podle fotografií: barvy, zbraně a motory](0008/BRIEF.md) | Claude Code; Codex ověřil a začlenil | ACCEPTED | `task/0008-daedalus-engine-effects` |
 
 Další volné číslo: **0009**. Číslo 0026 v návodu je pouze příklad.

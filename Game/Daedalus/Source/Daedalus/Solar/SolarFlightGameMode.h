@@ -74,10 +74,14 @@ public:
     void ResetFlight();
     void TogglePause();
     int32 StarCount() const;
+    int32 EngineOutletCount() const { return EngineGlows.Num(); }
+    double EngineGlowLevel = .08;
 private:
     Daedalus::FFlightState InitialState;
     TArray<Daedalus::FFlightBody> Bodies;
     UPROPERTY() TObjectPtr<UStaticMesh> ShipAsset;
+    UPROPERTY() TObjectPtr<UStaticMesh> LightsAsset;
+    UPROPERTY() TArray<TObjectPtr<UStaticMesh>> GlowAssets;
     UPROPERTY() TObjectPtr<UStaticMesh> SphereAsset;
     UPROPERTY() TObjectPtr<UStaticMesh> PlaneAsset;
     UPROPERTY() TObjectPtr<UMaterialInterface> EarthMaterial;
@@ -86,6 +90,9 @@ private:
     UPROPERTY() TObjectPtr<UMaterialInterface> StarMaterial;
     UPROPERTY() TObjectPtr<UMaterialInterface> DustMaterial;
     UPROPERTY() TObjectPtr<UStaticMeshComponent> Ship;
+    UPROPERTY() TObjectPtr<UStaticMeshComponent> HullLights;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> EngineGlows;
+    UPROPERTY() TArray<TObjectPtr<UMaterialInstanceDynamic>> EngineDynamics;
     UPROPERTY() TObjectPtr<UStaticMeshComponent> Earth;
     UPROPERTY() TObjectPtr<UStaticMeshComponent> Sun;
     UPROPERTY() TObjectPtr<UStaticMeshComponent> Atmosphere;

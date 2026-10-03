@@ -53,13 +53,18 @@ or measured exact STO physics. Static reference bodies have no gravity/orbits.
 Surface safety uses a conservative ship sphere. No warp, combat, system travel,
 landing, atmospheric simulation or flight-lab save is claimed.
 
-Baseline ship coloring does not yet meet the user's photo-based request.
-Task0008 is published for Claude: original SG BC-304 repaint/details, engine
-outlets/effects, separate movable weapon pieces and measured mount manifests.
-No worker branch/delivery existed at last fetch. User relays START_CLAUDE.txt;
-Codex will inspect source, scale, material dependencies and import before
-accepting. No permanent world/ship role split. Background Blender and source
-binaries are reserved for Claude; Codex uses its own Unreal baseline import.
+Task0008 subsequently arrived and is ACCEPTED/integrated: photo-based SG BC-304
+paint, separate lights, six throttle-responsive engine effects and measured
+weapon/bay points. Codex owns source integration after handoff. Moving turret
+geometry/firing are later work. Review/limits in Tasks/0008/REVIEW.md; there are
+no permanent world/ship roles. Final checks rerun after the new art: all15 tests,
+render/controller probe including actual orbit/zoom and motor brightness,
+foundation separate-process restart through Windows PowerShell5.1, cached asset
+recipe and unchanged map SHA256. Current evidence supersedes the baseline logs:
+tests-614dece1fc464cf297eff6533c29417c,
+visual-4436bc494a0146b29cbcfae115acc493,
+foundation-restart-ecf22534fbe6430f9feb317aad0b6aa0,
+build-claude.log and package-claude.log.
 
 First user flight feedback should tune speed/turn/inertia/camera before adding
 other planets or combat. Integrate the selected flight into persistent world

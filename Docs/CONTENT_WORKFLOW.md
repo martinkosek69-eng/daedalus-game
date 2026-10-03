@@ -21,8 +21,22 @@ just the LFS pointer. Assign the binary owner before concurrent work.
 The current original cruiser is a reusable synthetic geometry fixture, generated
 by Tools/Create-FoundationAssets.py and imported by Prepare-FoundationContent.py.
 The importer verifies scale and reconciles its flat color from the GLB into the owned material, including reimport. The initial adapter maps two fixture types; add and review the production mesh mapping when integrating new ship models. It has no third-party models/textures. Publication does not establish a new
-license for unrelated franchise content; the old prototype assets remain outside
-this public repository.
+license for unrelated franchise content. The separate SolarFlight lab now uses
+the recovered, attributed prototype Daedalus under Art/Ships/Daedalus and solar
+textures under Art/Space. The full old prototype backup remains outside the repo.
+
+### Blender / Unreal handedness for Daedalus mounts
+
+Daedalus source/mount JSON uses Blender metres,+X forward,+Y port,+Z up.
+Interchange converts glTF into Unreal's left-handed frame: source (x,y,z)
+becomes engine (x,-y,z), then metres become centimetres. The importer verifies
+the actual baked outlet bounds, including this Y sign. Hull, window lights and
+six glow meshes are already baked into the same engine ship frame and receive
+the same ship rotation without a second positional offset. Future weapon mount
+positions/axes must apply the source-to-engine Y conversion exactly once before
+constructing engine transforms. Raw source manifests are not domain save poses.
+Measured turret domes/VLS zones are attachment proposals, not canonical weapon
+counts, moving turret meshes or finished firing behavior.
 
 ## Location / mission / behavior
 

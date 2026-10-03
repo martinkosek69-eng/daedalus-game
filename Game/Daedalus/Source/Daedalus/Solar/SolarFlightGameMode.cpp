@@ -137,6 +137,14 @@ ASolarFlightGameMode::ASolarFlightGameMode()
     static ConstructorHelpers::FObjectFinder<UMaterialInterface> StarFinder(TEXT("/Game/Solar/Materials/M_Star.M_Star"));
     static ConstructorHelpers::FObjectFinder<UMaterialInterface> DustFinder(TEXT("/Game/Solar/Materials/M_Dust.M_Dust"));
     ShipAsset = ShipFinder.Object; SphereAsset = SphereFinder.Object; PlaneAsset = PlaneFinder.Object;
+    ConstructorHelpers::FObjectFinder<UStaticMesh> LightsFinder(TEXT("/Game/Ships/Daedalus/Effects/SM_DaedalusLights.SM_DaedalusLights"));
+    LightsAsset = LightsFinder.Object;
+    for (const TCHAR* Name : {TEXT("ENG_Main_Port_Glow"),TEXT("ENG_Main_Starboard_Glow"),TEXT("ENG_Pod_Port_Inner_Glow"),TEXT("ENG_Pod_Port_Outer_Glow"),TEXT("ENG_Pod_Starboard_Inner_Glow"),TEXT("ENG_Pod_Starboard_Outer_Glow")})
+    {
+        const FString Path = FString::Printf(TEXT("/Game/Ships/Daedalus/Effects/DaedalusEngineGlow/StaticMeshes/%s.%s"),Name,Name);
+        ConstructorHelpers::FObjectFinder<UStaticMesh> Finder(*Path);
+        GlowAssets.Add(Finder.Object);
+    }
     EarthMaterial = EarthFinder.Object; SunMaterial = SunFinder.Object; AtmosphereMaterial = AtmosFinder.Object;
     StarMaterial = StarFinder.Object; DustMaterial = DustFinder.Object;
 }
@@ -195,9 +203,20 @@ UStaticMeshComponent* ASolarFlightGameMode::MakeMesh(UStaticMesh* Asset, UMateri
 }
 bool ASolarFlightGameMode::CreateScene()
 {
-    if (!ShipAsset || !SphereAsset || !PlaneAsset || !EarthMaterial || !SunMaterial || !AtmosphereMaterial || !StarMaterial || !DustMaterial) return false;
+    if (!ShipAsset || !LightsAsset || GlowAssets.Num()!=6 || GlowAssets.Contains(nullptr) || !SphereAsset || !PlaneAsset || !EarthMaterial || !SunMaterial || !AtmosphereMaterial || !StarMaterial || !DustMaterial) return false;
     if (FMath::Abs(ShipAsset->GetBounds().BoxExtent.X * 2 - 60000) > 30) return false;
     Ship = MakeMesh(ShipAsset, nullptr); Ship->SetCastShadow(true);
+    HullLights = MakeMesh(LightsAsset, nullptr);
+    for (const auto& Asset : GlowAssets)
+    {
+        auto* Glow = MakeMesh(Asset,nullptr);
+        for (int32 Slot=0;Slot<Glow->GetNumMaterials();++Slot)
+        {
+            auto* Dynamic = UMaterialInstanceDynamic::Create(Glow->GetMaterial(Slot),this);
+            Glow->SetMaterial(Slot,Dynamic); EngineDynamics.Add(Dynamic);
+        }
+        EngineGlows.Add(Glow);
+    }
     EarthDynamic = UMaterialInstanceDynamic::Create(EarthMaterial, this);
     AtmosphereDynamic = UMaterialInstanceDynamic::Create(AtmosphereMaterial, this);
     Earth = MakeMesh(SphereAsset, EarthDynamic);
@@ -276,6 +295,12 @@ void ASolarFlightGameMode::UpdateScene(float DeltaSeconds)
 {
     const auto& S = Flight.GetState();
     Ship->SetWorldLocationAndRotation(FVector::ZeroVector, FQuat(S.Attitude()));
+    HullLights->SetWorldLocationAndRotation(FVector::ZeroVector, FQuat(S.Attitude()));
+    // The exported glow centres are baked in the same ship frame as the hull.
+    // Change brightness, not scale/pose, so outlets remain exactly registered.
+    EngineGlowLevel = .08 + .92 * FMath::Max(0.0,S.Throttle);
+    for (const auto& Glow : EngineGlows) Glow->SetWorldLocationAndRotation(FVector::ZeroVector,FQuat(S.Attitude()));
+    for (const auto& Dynamic : EngineDynamics) Dynamic->SetScalarParameterValue(TEXT("EngineLevel"),EngineGlowLevel);
     const auto* Pawn = Cast<ASolarFlightPawn>(GetWorld()->GetFirstPlayerController()->GetPawn());
     const FVector CameraPosition = Pawn ? Pawn->Camera->GetComponentLocation() : FVector::ZeroVector;
     // Render far spheres nearer while retaining their angular radius. Domain

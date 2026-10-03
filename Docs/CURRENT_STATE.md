@@ -13,12 +13,14 @@ existing SolarFlight map. Flight-lab pose is intentionally not saved yet.
 
 Task0005 research is accepted with explicit source/measurement limitations.
 The broader STO research is advisory, not approval of future combat or UI.
-Task0007 original model recovery is technically verified; this is not approval
-of the final paint. Task0008 assigns photo-based repaint/detail, engines and
-weapon attachment points to Claude after the user starts it. No0008 delivery
-was present on the remote at review time. Codex owns Unreal, Claude has reserved
-background Blender/source ownership. Use the task index and current worker
-handoff when resuming. Main remains unmerged.
+Task0007 original model recovery is technically verified. Task0008 photo-based
+paint, separate lights, six engine effects and58 measured weapon/bay points
+arrived through two GitHub checkpoints and are now accepted/integrated; see
+[coordinator review](../Tasks/0008/REVIEW.md). Moving turret geometry/firing
+remain future work. Source coordinates map Blender +Y port to Unreal -Y.
+Final render/input probe also checks throttle-dependent glow and mouse orbit.
+Codex owns source integration and Unreal after Claude's explicit handoff.
+Use the task index and handoff when resuming. Main remains unmerged.
 
 ## Existing accepted foundation
 

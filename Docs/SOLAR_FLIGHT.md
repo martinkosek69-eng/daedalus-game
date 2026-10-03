@@ -53,15 +53,19 @@ Trvalé uložení původního základu funguje dál ve své původní scéně.
 
 - `Art/Ships/Daedalus`: skutečný původní GLB, původový záznam, upravitelný
   Blender soubor a export 600 m, +X vpřed, +Z nahoru. 600 m je projektová volba.
-  Aktuální základní přebarvení se ještě neshoduje s požadovanými fotografiemi.
-  Claude má úkol 0008 na nové barvy, detaily, motory a změřené body zbraní.
-  Do jeho výslovného předání nepřepisovat tyto zdrojové soubory.
+  Claudeův úkol 0008 je převzatý: nové barvy, samostatná světla, šest motorových
+  efektů a změřené body zbraní/hangárů. Zachovává původní trup a proporce;
+  odstranil dodatečné tmavé čtverce a lišty základního převodu. Barvy zůstávají
+  prvním výtvarným přiblížením předloze, které můžeme dál ladit.
 - `Art/Space`: vlastní hladká koule, původní textury Slunce/Země s původovým
   záznamem; hvězdy používají stejný HYG podvýběr jako webová předloha.
 - `Content/Ships/Daedalus`, `Content/Solar`: importované Unreal assety přes LFS.
   `Tools/Prepare-SolarContent.py` zkontroluje rozměry a přiřadí materiály.
   Základní import nyní podporuje vertex color a konstantní PBR materiály.
-  Dodá-li Claude UV textury či samostatné pohyblivé díly, nejprve rozšířit
+  Motorová záře mění jas podle tahu. Zdrojové body jsou v Blenderu +Y vlevo;
+  import je převádí na Unreal -Y. Viz CONTENT_WORKFLOW. Pohyblivé věže a skutečná
+  střelba dosud nejsou implementované. Dodá-li někdo UV textury či pohyblivé díly,
+  nejprve rozšířit
   a ověřit import; neslučovat je slepě do trupu.
 
 Vzdálená Země/Slunce se vykreslují blíž ke kameře se stejně zmenšeným poloměrem,
@@ -101,3 +105,5 @@ data jsou lokální pod `.local/solar` na A:, ne veřejná součást GitHubu.
 Visual spouští vlastní izolovaný proces, posílá klávesy přes PlayerController,
 kontroluje odezvu a uloží skutečné screenshoty. Jeho řízený čas není měření FPS.
 Výsledky aktuální kontroly jsou v [předání 0004](../Tasks/0004/HANDOFF.md).
+Zdrojové předání lze nezávisle zkontrolovat přes
+`node Tools/Validate-DaedalusDelivery.mjs`; nevyžaduje Blender ani Unreal.

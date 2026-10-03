@@ -1,3 +1,6 @@
+HISTORICKÝ SPOUŠTĚCÍ TEXT: úkol0008 už Claude dokončil a Codex převzal.
+Viz REVIEW.md a aktuální INDEX. Nespouštěj tento úkol znovu bez nového přidělení.
+
 Převezmi úkol 0008 v repozitáři https://github.com/martinkosek69-eng/daedalus-game .
 Aktualizované zadání je Tasks/0008/BRIEF.md na větvi codex/solar-flight,
 nikoli na main. Nejprve fetch a přečti poslední publikované zadání a společná

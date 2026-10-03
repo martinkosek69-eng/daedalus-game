@@ -5,11 +5,11 @@ from pathlib import Path
 def main():
     base=Path(unreal.Paths.project_dir()).resolve().parent.parent
     fingerprint=hashlib.sha256(Path(__file__).read_bytes())
-    for source in [base/'Art/Ships/Daedalus/Daedalus.glb',base/'Art/Space/SolarSphere.glb']+sorted((base/'Art/Space/Textures').glob('*.jpg')):
+    for source in [base/'Art/Ships/Daedalus'/f for f in ['Daedalus.glb','DaedalusEngineGlow.glb','DaedalusLights.glb','ENGINE_MOUNTS.json']]+[base/'Art/Space/SolarSphere.glb']+sorted((base/'Art/Space/Textures').glob('*.jpg')):
         fingerprint.update(source.read_bytes())
     recipe=fingerprint.hexdigest()
     existing=unreal.load_asset('/Game/Ships/Daedalus/SM_Daedalus')
-    required=['M_Earth','M_Sun','M_Atmosphere','M_Star','M_Dust']
+    required=['M_Earth','M_Sun','M_Atmosphere','M_Star','M_Dust','M_Daedalus_EngineGlowCore','M_Daedalus_EngineGlowPlume','M_Daedalus_Glass']
     if existing and unreal.EditorAssetLibrary.get_metadata_tag(existing,'SolarRecipe')==recipe and all(unreal.EditorAssetLibrary.does_asset_exist('/Game/Solar/Materials/'+name) for name in required) and unreal.EditorAssetLibrary.does_asset_exist('/Game/Maps/SolarFlight'):
         print('SOLAR_CONTENT_PASS cached verified recipe')
         return
@@ -42,6 +42,32 @@ def main():
     nanite.set_editor_property('enabled',False)
     sphere.set_editor_property('nanite_settings',nanite)
     assert unreal.EditorAssetLibrary.save_loaded_asset(sphere)
+    lights=imported(root/'Art/Ships/Daedalus/DaedalusLights.glb','/Game/Ships/Daedalus/Effects','SM_DaedalusLights',unreal.StaticMesh)
+    glowtask=unreal.AssetImportTask()
+    glowtask.filename=str(root/'Art/Ships/Daedalus/DaedalusEngineGlow.glb')
+    glowtask.destination_path='/Game/Ships/Daedalus/Effects'
+    glowtask.automated=True;glowtask.replace_existing=True;glowtask.save=True
+    tools.import_asset_tasks([glowtask])
+    glows=[unreal.load_asset(p) for p in glowtask.imported_object_paths if isinstance(unreal.load_asset(p),unreal.StaticMesh)]
+    mounts=json.loads((root/'Art/Ships/Daedalus/ENGINE_MOUNTS.json').read_text())['outlets']
+    assert len(glows)==len(mounts)==6
+    for mesh in glows:
+        matches=[m for m in mounts if mesh.get_name().endswith(m['glowObject'])]
+        assert len(matches)==1,(mesh.get_name(),mounts)
+        mount=matches[0]
+        # Keep the importer's stable scene folder. Renaming a member of a
+        # multi-mesh import makes subsequent imports create duplicate targets.
+        assert mesh.get_path_name().split('.')[0].endswith('/DaedalusEngineGlow/StaticMeshes/'+mount['glowObject']),mesh.get_path_name()
+        origin=mesh.get_bounds().origin
+        expected=mount['centreMetres']
+        # Default Interchange bake transforms preserves the complete ship frame.
+        # Reject a local nozzle import instead of silently offsetting it twice.
+        # Blender source +Y is port; Unreal +Y is starboard. Interchange's
+        # handedness conversion maps (x,y,z) -> (x,-y,z), including baked nodes.
+        assert abs(origin.x-expected[0]*100)<1000 and abs(origin.y+expected[1]*100)<1 and abs(origin.z-expected[2]*100)<1,(mesh.get_name(),origin,expected)
+    for mesh in [lights]+glows:
+        ns=mesh.get_editor_property('nanite_settings');ns.set_editor_property('enabled',False)
+        mesh.set_editor_property('nanite_settings',ns)
     textures={}
     for name in ['earth_daymap','earth_nightmap','earth_clouds','sun']:
         textures[name]=imported(root/f'Art/Space/Textures/{name}.jpg','/Game/Solar/Textures','T_'+name,unreal.Texture2D)
@@ -122,15 +148,16 @@ def main():
     finish(dust,vector(dust,(.17,.23,.28,1)))
     
     # Stable owned materials on every slot, preserving imported vertex colors.
-    source=(root/'Art/Ships/Daedalus/Daedalus.glb').read_bytes()
-    doc=json.loads(source[20:20+struct.unpack_from('<I',source,12)[0]])
-    source_mats={m['name']:m for m in doc['materials']}
-    for index,slot in enumerate(ship.get_editor_property('static_materials')):
+    def assign_source_materials(mesh,filename,effect=False):
+      source=(root/'Art/Ships/Daedalus'/filename).read_bytes()
+      doc=json.loads(source[20:20+struct.unpack_from('<I',source,12)[0]])
+      source_mats={m['name']:m for m in doc['materials']}
+      for index,slot in enumerate(mesh.get_editor_property('static_materials')):
         name=str(slot.material_slot_name)
         assert name in source_mats,(name,list(source_mats))
         src=source_mats[name];pbr=src['pbrMetallicRoughness']
-        m=material('M_'+name)
-        lib.set_base_material_usage(m,unreal.MaterialUsage.MATUSAGE_NANITE)
+        m=material('M_'+name,effect,unreal.BlendMode.BLEND_TRANSLUCENT if src.get('alphaMode')=='BLEND' else unreal.BlendMode.BLEND_OPAQUE,src.get('doubleSided',False))
+        if not effect:lib.set_base_material_usage(m,unreal.MaterialUsage.MATUSAGE_NANITE)
         base=vector(m,tuple(pbr.get('baseColorFactor',[1,1,1,1])))
         color=node(m,unreal.MaterialExpressionVertexColor)
         mul=node(m,unreal.MaterialExpressionMultiply)
@@ -141,15 +168,28 @@ def main():
         assert lib.connect_material_property(constant(m,pbr.get('roughnessFactor',.6)),'',unreal.MaterialProperty.MP_ROUGHNESS)
         strength=src.get('extensions',{}).get('KHR_materials_emissive_strength',{}).get('emissiveStrength',1)
         emission=[v*strength for v in src.get('emissiveFactor',[0,0,0])]
-        finish(m,vector(m,(*emission,1)))
+        emit=vector(m,(*emission,1))
+        if filename=='DaedalusEngineGlow.glb':
+            level=node(m,unreal.MaterialExpressionScalarParameter,parameter_name='EngineLevel',default_value=.08)
+            mod=node(m,unreal.MaterialExpressionMultiply)
+            assert lib.connect_material_expressions(emit,'',mod,'A')
+            assert lib.connect_material_expressions(level,'',mod,'B')
+            emit=mod
+        if src.get('alphaMode')=='BLEND':
+            assert lib.connect_material_property(constant(m,pbr.get('baseColorFactor',[1,1,1,1])[3]),'',unreal.MaterialProperty.MP_OPACITY)
+        finish(m,emit)
         # set_material edits the real StaticMesh slot, not a transient component.
-        ship.set_material(index,m)
-    assert unreal.EditorAssetLibrary.save_loaded_asset(ship)
+        mesh.set_material(index,m)
+      assert unreal.EditorAssetLibrary.save_loaded_asset(mesh)
+      return len(source_mats)
+    count=assign_source_materials(ship,'Daedalus.glb')
+    assign_source_materials(lights,'DaedalusLights.glb',True)
+    for mesh in glows:assign_source_materials(mesh,'DaedalusEngineGlow.glb',True)
     editor=unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)
     if not unreal.EditorAssetLibrary.does_asset_exist('/Game/Maps/SolarFlight'):
         assert editor.new_level('/Game/Maps/SolarFlight')
         assert editor.save_current_level()
-    print('SOLAR_CONTENT_PASS',ship.get_path_name(),len(source_mats))
+    print('SOLAR_CONTENT_PASS',ship.get_path_name(),count,'glows',len(glows),'lights',lights.get_path_name())
     
     unreal.EditorAssetLibrary.set_metadata_tag(ship,'SolarRecipe',recipe)
     assert unreal.EditorAssetLibrary.save_loaded_asset(ship)
