@@ -96,16 +96,16 @@ FShipState InitialState(const FInitialShip& I, const FCatalog& Catalog)
 bool SegmentSphere(const FVector3d& Start, const FVector3d& End, const FVector3d& Center, double Radius, double& Fraction)
 {
     const FVector3d Offset = Start - Center, Delta = End - Start;
-    const double C = Offset.SizeSquared() - Radius * Radius;
-    if (C <= 0) { Fraction = 0; return true; }
-    const double A = Delta.SizeSquared();
-    if (A <= 1e-20) return false;
-    const double B = FVector3d::DotProduct(Offset, Delta);
-    const double Discriminant = B * B - A * C;
-    if (Discriminant < 0) return false;
-    const double T = (-B - FMath::Sqrt(Discriminant)) / A;
-    if (T < 0 || T > 1) return false;
-    Fraction = T; return true;
+    if (Offset.SizeSquared() <= Radius * Radius) { Fraction = 0; return true; }
+    const double Length = Delta.Size();
+    if (Length <= 1e-10) return false;
+    const FVector3d Direction = Delta / Length;
+    const double Along = FVector3d::DotProduct(-Offset, Direction);
+    const double PerpendicularSquared = (Offset + Direction * Along).SizeSquared();
+    if (PerpendicularSquared > Radius * Radius) return false;
+    const double EntryDistance = Along - FMath::Sqrt(FMath::Max(0.0, Radius * Radius - PerpendicularSquared));
+    if (EntryDistance < 0 || EntryDistance > Length) return false;
+    Fraction = EntryDistance / Length; return true;
 }
 }
 
