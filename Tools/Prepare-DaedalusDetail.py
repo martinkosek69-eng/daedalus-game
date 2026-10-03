@@ -195,6 +195,24 @@ for idx in np.nonzero(hang_mask)[0]:
     c = Vector(pc[idx])
     for d in (Vector((0, 0, -1)), Vector((0, 0, 1)), Vector((0, 1, 0)), Vector((0, -1, 0)), Vector((1, 0, 0))):
         if bvh.ray_cast(c - d * 800, d, 2000)[2] == idx: hang_mask[idx] = False; break
+# Bow VLS: each silo door sits on a raised hatch plate (about 0.6 m above the deck). Walk out from the
+# door centre until the deck level to get the plate, then select the plate faces (top and sides).
+def silo_plate(s):
+    x0, y0, top = s['a'], s['b'], s['surface']
+    def zt(x, y):
+        hit = bvh.ray_cast(Vector((x, y, top + 50)), Vector((0, 0, -1)), 200)[0]
+        return hit.z if hit is not None else -1e9
+    ext = []
+    for dx, dy in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+        t = 0.0
+        while t < 15 and zt(x0 + dx * (t + 0.25), y0 + dy * (t + 0.25)) > top - 0.3: t += 0.25
+        ext.append(t)
+    return x0 - ext[0], x0 + ext[1], y0 - ext[2], y0 + ext[3]
+silo_mask = np.zeros(npoly, bool)
+for s in silos:
+    s['plate'] = silo_plate(s); x0, x1, y0, y1 = s['plate']
+    silo_mask |= ((pc[:, 0] > x0 - 0.3) & (pc[:, 0] < x1 + 0.3) & (pc[:, 1] > y0 - 0.3) & (pc[:, 1] < y1 + 0.3)
+                  & (pc[:, 2] > s['surface'] - 0.5) & (pc[:, 2] < s['surface'] + 1.0) & (pn[:, 2] > -0.3))
 slot_mask = np.zeros(npoly, bool)
 for s in bow_slot:
     slot_mask |= ((pc[:, 1] > s['aMin']) & (pc[:, 1] < s['aMax']) & (pc[:, 2] > s['bMin']) & (pc[:, 2] < s['bMax'])
@@ -204,12 +222,13 @@ matidx[hull & hang_mask] = SLOT['Hangar']
 matidx[hull & slot_mask] = SLOT['LightWhite']
 mesh.polygons.foreach_set('material_index', matidx)
 assign_stats = {'engineMetalFaces': int((hull & eng_mask).sum()), 'hangarInteriorFaces': int((hull & hang_mask).sum()),
-                'bowLightFaces': int((hull & slot_mask).sum())}
+                'bowLightFaces': int((hull & slot_mask).sum()), 'siloOrangeFaces': int((hull & silo_mask).sum())}
 
 # ---------------------------------------------------------------- 4. reference palette into COLOR_0
 # Stills show a dark charcoal hull with a slight olive/green cast, a lighter sunlit
 # deck with dark and light plate patches, very dark recesses and dark greebles.
 TOP, SIDE, UNDER = srgb('777d7a'), srgb('5a605d'), srgb('3f4442')
+SILO_ORANGE = 'c98f35'   # amber-orange of the VLS hatch markings in the user's reference sheet (shade estimated by eye)
 def hashf(ix, iy, seed):
     h = np.sin(ix * 127.1 + iy * 311.7 + seed * 74.7) * 43758.5453
     return h - np.floor(h)
@@ -234,6 +253,7 @@ k = np.where((sec == 3) & (up > 0.55), k * 1.06, k)                   # sunlit b
 albedo = np.clip(base * k[:, None], 0, 1)
 tint = np.array(srgb('868f8a')) / max(srgb('868f8a'))                  # olive-green cast on sides/undersides
 albedo = np.where((up[:, None] < 0.55), albedo * tint, albedo)
+albedo[silo_mask] = srgb(SILO_ORANGE)                                   # user art direction: orange VLS hatch plates, plain paint (not emissive)
 non_hull = matidx != SLOT['Armor']
 albedo[non_hull] = 1.0                                                   # other slots carry their own base colour
 # Ambient occlusion baked per corner gives recess/panel-edge contrast.
@@ -294,11 +314,20 @@ def add_turret(b, zsign, prefix):
                    'intendedMovingMesh': 'SM_Daedalus_RailgunTurret (to be authored; not part of hull)',
                    'weaponHint': 'railgun turret (references: twin-barrel dome turrets along deck and bow edges)',
                    'referenceURL': REF_DECK, 'confidence': 'medium: modelled dome present; exact canon placement/count unconfirmed'})
-for b in sorted(top_turrets, key=lambda b: (b['a'], b['b'])): add_turret(b, +1, 'dorsal_railguns')
+# The bow's lower side ledges (z about -18.6, below the main deck) carry two domes per side. The SGA
+# "Tech Journal" schematic (REFERENCES.md U12) labels the Asgard beam turret exactly there: the outer
+# dome of each side becomes the bow Asgard beam turret, the inner one stays a railgun proposal.
+ledge = [b for b in top_turrets if b['a'] > 150 and b['surface'] < 0]
+asg_bow = [max((b for b in ledge if b['b'] * side > 0), key=lambda b: abs(b['b'])) for side in (+1, -1)]
+assert len(ledge) == 4 and all(abs(b['b']) > 40 for b in asg_bow), [(b['a'], b['b'], b['surface']) for b in ledge]
+for b in sorted(top_turrets, key=lambda b: (b['a'], b['b'])):
+    if not any(b is c for c in asg_bow): add_turret(b, +1, 'dorsal_railguns')
 for b in sorted(bottom_turrets, key=lambda b: (b['a'], b['b'])): add_turret(b, -1, 'ventral_railguns')
 for i, s in enumerate(sorted(silos, key=lambda s: (-s['a'], s['b']))):
     mounts.append({'kind': 'missile_silo', 'group': 'bow_vls', 'centerMetres': [round(s['a'], 2), round(s['b'], 2), round(s['surface'], 2)],
-                   'hatchSizeMetres': [round(s['extentA'], 2), round(s['extentB'], 2)], 'forwardAxis': [0, 0, 1], 'upAxis': [1, 0, 0],
+                   'hatchSizeMetres': [round(s['extentA'], 2), round(s['extentB'], 2)],
+                   'hatchPlateBoundsXY': [round(c, 2) for c in s['plate']], 'hatchPlateColour': '#' + SILO_ORANGE,
+                   'forwardAxis': [0, 0, 1], 'upAxis': [1, 0, 0],
                    'launchDirection': [0, 0, 1], 'intendedMovingMesh': 'hatch door optional; missile spawns at centre',
                    'referenceURL': 'https://stargate.fandom.com/wiki/BC-304#Missiles (16 VLS missile tubes; archived 2024-01-12)',
                    'confidence': 'high for zone and count (16 modelled recesses match 16 VLS); door detail interpretive'})
@@ -308,9 +337,43 @@ for h in sorted(hangars, key=lambda h: -h['a']):
                    'forwardAxis': [1, 0, 0], 'upAxis': [0, 0, 1], 'intendedMovingMesh': 'fighter spawn point (no moving hull part)',
                    'referenceURL': 'https://stargate.fandom.com/wiki/BC-304#Battle_complement (F-302 launch from side bays)',
                    'confidence': 'high: opening measured from mesh'})
+# Asgard plasma beam weapons (4 per wiki): a mirrored pair at the bow and a mirrored pair under the hull
+# between the hangar pods (user, from on-screen stills U9/U10; bow position labelled on schematic U12).
+ASG_URL = 'https://stargate.fandom.com/wiki/BC-304#Asgard_beam_weapons (4 Asgard plasma beam weapons; archived 2024-01-12)'
+for b in asg_bow:
+    x, y = b['a'], b['b']; top = b['surface']; basez = top - b['relief']
+    arc, total = free_arc(Vector((x, y, top + 0.5)), +1)
+    mounts.append({'kind': 'beam_turret', 'group': 'asgard_beams', 'zone': 'bow, outer dome on the lower side ledge',
+                   'centerMetres': [round(x, 2), round(y, 2), round(basez, 2)], 'domeTopMetres': round(top, 2),
+                   'domeDiameterMetres': round(b['diam'], 2), 'forwardAxis': [1, 0, 0], 'upAxis': [0, 0, 1],
+                   'traverseFreeAzimuthDeg': arc, 'freeAzimuthTotalDeg': total,
+                   'arcNote': 'rays at 5 deg elevation; hull occlusion only, no game rules',
+                   'intendedMovingMesh': 'SM_Daedalus_AsgardBeamTurret (to be authored; not part of hull)', 'referenceURL': ASG_URL,
+                   'evidence': 'SGA Tech Journal schematic (U12) labels the Asgard beam turret on the bow lower side; user stills U9/U10 show beams leaving the bow',
+                   'confidence': 'medium: labelled zone matches a modelled dome; which of the two ledge domes is the emitter is a choice'})
+# The ventral pair has no dedicated emitter on the model: each mount snaps (ray cast) to the chamfered
+# front of the block between the hangar pods, between its two capsules. That face points forward and down.
+for side in (+1, -1):
+    hit = bvh.ray_cast(Vector((-20.0, side * 79.5, -300)), Vector((0, 0, 1)), 1000)[0]          # between the capsules
+    nrm = bvh.ray_cast(Vector((-20.0, side * 66.0, -300)), Vector((0, 0, 1)), 1000)[1]          # plain chamfer inboard of them
+    assert hit is not None and nrm.z < -0.3 and nrm.x > 0.3 and abs(nrm.y) < 0.05, (side, hit, nrm)
+    arc, total = free_arc(hit + nrm * 0.5, -1)
+    mounts.append({'kind': 'beam_emitter', 'group': 'asgard_beams', 'zone': 'ventral, chamfered front of the block between the hangar pods',
+                   'centerMetres': [round(c, 2) for c in hit], 'surfaceNormal': [round(c, 3) for c in nrm],
+                   'forwardAxis': [1, 0, 0], 'upAxis': [0, 0, -1], 'traverseFreeAzimuthDeg': arc, 'freeAzimuthTotalDeg': total,
+                   'arcNote': 'rays at 5 deg below the horizon; hull occlusion only, no game rules',
+                   'intendedMovingMesh': 'none (fixed emitter; the beam effect starts here)', 'referenceURL': ASG_URL,
+                   'evidence': 'user, from on-screen stills U9/U10: one beam leaves the underside between the hangar pods; mirrored on both sides',
+                   'confidence': 'low-medium: zone from stills; exact emitter not modelled'})
+GROUP_EFFECTS = {'dorsal_railguns': 'orange tracer projectiles (user, from on-screen footage)',
+                 'ventral_railguns': 'orange tracer projectiles (user, from on-screen footage)',
+                 'bow_vls': 'missiles leave the dorsal bow silos upward (+Z), then turn to the target (user)',
+                 'asgard_beams': 'continuous blue-white beam: near-white core with a blue halo (user stills U9, U10)',
+                 'f302_bays': 'F-302 fighters exit along +X'}
+for m in mounts: m['fireEffectHint'] = GROUP_EFFECTS[m['group']]
 counters = {}
 for m in mounts:
-    key = {'dorsal_railguns': 'RG_D', 'ventral_railguns': 'RG_V', 'bow_vls': 'VLS', 'f302_bays': 'BAY'}[m['group']]
+    key = {'dorsal_railguns': 'RG_D', 'ventral_railguns': 'RG_V', 'bow_vls': 'VLS', 'f302_bays': 'BAY', 'asgard_beams': 'ASG'}[m['group']]
     counters[key] = counters.get(key, 0) + 1
     side = '' if key in ('VLS',) else ('_P' if m['centerMetres'][1] > 0.5 else '_S' if m['centerMetres'][1] < -0.5 else '_C')
     m['mountID'] = f'{key}_{counters[key]:02d}{side}'
@@ -384,9 +447,10 @@ weapon_manifest = {
     'notes': ['Positions are measured modelled features, not canon proofs. Wiki lists 32 railguns and 16 VLS tubes; a fan sheet lists 26 twin railguns. The model contains its own dome count (see group counts).',
               'Turret mounts: centre = dome base on the hull; upAxis is the turret yaw axis; forwardAxis is the rest direction of the barrels.',
               'No turret/barrel geometry was added (user instruction: do not change the model). intendedMovingMesh names are proposals for later separate meshes.',
-              'Asgard plasma beam emitters (4 per wiki) and the two forward bow rods visible in stills are not identifiable on this model; left unplaced.'],
+              'Asgard plasma beam weapons (4 per wiki): bow pair = outer dome on each lower side ledge (labelled on the SGA Tech Journal schematic); ventral pair = chamfered block fronts between the hangar pods (user, from stills; no dedicated emitter modelled, see zone and surfaceNormal).',
+              'fireEffectHint describes the look of each weapon as reported by the user from on-screen footage; it is not a game rule.'],
     'groupCounts': {g: sum(1 for m in mounts if m['group'] == g) for g in sorted({m['group'] for m in mounts})},
-    'unplacedReferenceSystems': [{'system': 'Asgard plasma beam emitters', 'count': 4, 'referenceURL': 'https://stargate.fandom.com/wiki/BC-304#Asgard_beam_weapons', 'reason': 'location not visible on available stills/model'}],
+    'unplacedReferenceSystems': [{'system': 'two long forward rods at the bow', 'count': 2, 'referenceURL': REF_DECK, 'reason': 'visible in stills but not modelled; no geometry is added (user instruction)'}],
     'mounts': mounts}
 (OUT / 'WEAPON_MOUNTS.json').write_text(json.dumps(weapon_manifest, indent=2) + '\n')
 report = {'sourceSHA256': hashlib.sha256(SOURCE.read_bytes()).hexdigest(), 'blendSHA256': hashlib.sha256(blend.read_bytes()).hexdigest(),

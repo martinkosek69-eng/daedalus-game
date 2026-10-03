@@ -24,17 +24,32 @@ dimensions, import and rendering in its own Unreal copy.
      export.
    - The hull is therefore exactly the Astrofossil geometry: 222330 triangles,
      against 223458 in the baseline.
+3. After the first READY_FOR_REVIEW push (`991a823`), the user supplied more
+   references (REFERENCES.md U9–U12) and asked for two more changes:
+   - **Bow silos in the orange of U11** ("same shade, natural intensity").
+     The 16 raised hatch plates are painted `#c98f35` in COLOR_0, as plain
+     paint with no emission. The shade was matched by eye, because the image was
+     only shown in chat.
+   - **Asgard beam weapons:**
+     - 2 at the bow and 2 under the hull between the hangars, mirrored. This
+       comes from the user's stills U9/U10.
+     - The bow position is labelled "Asgard beam turret" on the SGA Tech Journal
+       schematic U12.
+     - The user said to ignore the red forum circles on that image.
+   - The user also described the weapon effects: orange railgun projectiles,
+     missiles from the dorsal bow silos, and blue beams. These are recorded as
+     `fireEffectHint`.
 
 ## Deliverables (Art/Ships/Daedalus)
 
 | File | Role |
 | --- | --- |
-| `Daedalus.blend` | Source scene. Contains:<br>• `SM_Daedalus` (hull, applied transforms, metres)<br>• collection `EngineGlow` (6 objects)<br>• `HullLights` (`Daedalus_WindowLights`)<br>• `WeaponMounts` (58 `MOUNT_<id>` empties) |
+| `Daedalus.blend` | Source scene. Contains:<br>• `SM_Daedalus` (hull, applied transforms, metres)<br>• collection `EngineGlow` (6 objects)<br>• `HullLights` (`Daedalus_WindowLights`)<br>• `WeaponMounts` (60 `MOUNT_<id>` empties) |
 | `Daedalus.glb` | One hull mesh `SM_Daedalus` with 222330 triangles, COLOR_0 and slots `Daedalus_Armor`, `Daedalus_EngineMetal`, `Daedalus_HangarInterior`, `Daedalus_LightWhite`. No textures, no UVs needed. |
 | `DaedalusEngineGlow.glb` | Six `<outletID>_Glow` objects. Each has an emissive core disc inside the nozzle plus a short translucent haze (length 0.35 × aperture radius). Origin = outlet centre on the lip plane; exhaust = local −X; extras `outlet_id`, `exhaust_axis`, `throttle_hint`. |
 | `DaedalusLights.glb` | `Daedalus_WindowLights`: the 30 window boxes, cool white emissive (`Daedalus_Glass`, strength 4). |
 | `ENGINE_MOUNTS.json` | 6 outlets with centre, outward axis, aperture, lip outer diameter and recess depth. |
-| `WEAPON_MOUNTS.json` | 58 mounts with axis and azimuth conventions, notes, group counts and unplaced systems. |
+| `WEAPON_MOUNTS.json` | 60 mounts with axis and azimuth conventions, notes, group counts, `fireEffectHint` and unplaced systems. |
 | `asset-metadata.json` | Hashes, counts, checks, removed fittings, export list. |
 | `REFERENCES.md` | Source URLs, observations with evidence class, mapping to the model. |
 | `SOURCE.md` | Astrofossil CC BY-NC 4.0 credit retained, plus the modification notice. |
@@ -86,13 +101,17 @@ Conventions:
 
 | Group | Count | IDs | Basis | Confidence |
 | --- | --- | --- | --- | --- |
-| dorsal_railguns | 28 | `RG_D_xx_P/S` | Modelled dome turrets (≈3.5 m diameter, ≈3.7 m tall). Centre = dome base. x −283…225, free arc 165–360° | medium: dome present, canon count unconfirmed (wiki 32 railguns) |
-| ventral_railguns | 12 | `RG_V_xx_P/S` | Ventral domes, upAxis [0,0,−1]. Free arc 350–360° | medium |
-| bow_vls | 16 | `VLS_01…16` | Bow dorsal recesses at x 116…222, y −10.75 / +12.8, z 16.63. Launch +Z | high: 16 matches the wiki VLS count |
+| dorsal_railguns | 26 | `RG_D_xx_P/S` | Modelled dome turrets (≈3.5 m diameter, ≈3.7 m tall). Centre = dome base. x −283…225 | medium: dome present, canon count unconfirmed (wiki 32 railguns, fan sheet 26) |
+| ventral_railguns | 12 | `RG_V_xx_P/S` | Ventral domes, upAxis [0,0,−1] | medium |
+| bow_vls | 16 | `VLS_01…16` | Bow dorsal hatch doors at x 116…222, y −10.75 / +12.75, z 16.63. Launch +Z. `hatchPlateBoundsXY` = the orange plate | high: 16 matches the wiki VLS count |
 | f302_bays | 2 | `BAY_01_P/S` | Pod front openings, rim x 23.0, opening 83 × 20.5 m, depth 134.5 m. Exit +X | high: measured |
+| asgard_beams | 4 | `ASG_01…04_P/S` | Bow: the outer dome on each lower side ledge (x ≈ 223, y ±44, base z −18.6). This is the "Asgard beam turret" of U12; the inner dome there stays a railgun. Ventral: chamfered front of the block between the hangar pods (x ≈ −20, y ±79.5), with `surfaceNormal` pointing forward and down | bow medium, ventral low-medium (no dedicated emitter modelled) |
 
-The 4 Asgard plasma beam emitters are listed in `unplacedReferenceSystems`.
-They are not identifiable on the stills or the model.
+Mount IDs were renumbered after `991a823`: two former `RG_D` domes are now
+`ASG`. Every mount has a `fireEffectHint`.
+
+The only remaining `unplacedReferenceSystems` entry is the two bow rods, which
+are not modelled.
 
 Turret moving meshes do not exist yet. `intendedMovingMesh` proposes
 `SM_Daedalus_RailgunTurret` as a separate later asset. Nothing here implies that
@@ -126,7 +145,7 @@ outlet. Topology is unusable, because the STL-derived mesh is triangle soup.
   - lights: 1 object.
 - Mount axes, checked by reopening the `.blend` and comparing it with
   `WEAPON_MOUNTS.json`:
-  - all 58 empties are present, with no extras,
+  - all 60 empties are present, with no extras,
   - worst deviation of position or axis is 1e-7,
   - all frames are right-handed (determinant 1).
 - Glow origins sit within 0.6 mm of `ENGINE_MOUNTS.json`; the JSON is rounded
@@ -143,6 +162,10 @@ outlet. Topology is unusable, because the STL-derived mesh is triangle soup.
   - windows lit,
   - warm light only inside the hangar openings,
   - small engine glow with no oversized flame.
+
+  Close views of the orange silo plates and of the 4 Asgard mounts (blue
+  markers with a direction line) are in `.local/daedalus-detail/asg`. They are
+  also ignored and not published.
 
 ## Limitations
 

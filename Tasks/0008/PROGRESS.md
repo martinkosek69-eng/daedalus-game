@@ -18,6 +18,15 @@
   - The 30 window boxes moved to a separate `DaedalusLights.glb`.
   - The hull is now the exact Astrofossil geometry: 222330 triangles at
     600 m, with proportions unchanged.
+- After `991a823` the user added references U9–U12 and asked for two more
+  changes:
+  - Bow silo hatch plates in the orange of U11 (plain paint, natural
+    intensity).
+  - 4 Asgard beam weapons: 2 at the bow (the "Asgard beam turret" on the U12
+    schematic) and 2 under the hull between the hangars. Each still shows one
+    side; the other mirrors it.
+  - The user also described the weapon effects: orange railgun projectiles,
+    missiles from the bow silos, blue beams.
 
 ## Done
 
@@ -39,9 +48,10 @@
   glow library. It can also run standalone.
 - **Measured:**
   - 6 engine outlets,
-  - 28 dorsal and 12 ventral turret domes,
-  - 16 bow VLS silos (matches the wiki count),
-  - 2 F-302 bays.
+  - 26 dorsal and 12 ventral railgun domes,
+  - 16 bow VLS silos (matches the wiki count) with their orange hatch plates,
+  - 2 F-302 bays,
+  - 4 Asgard beam weapons.
 - **Mount axes.** Conventions are documented in WEAPON_MOUNTS.json. The
   empties in the .blend were verified against the JSON after reopening.
 - **Checks.** Final renders were made in .local/daedalus-detail/renders
@@ -52,8 +62,10 @@
 ## Checkpoints
 
 - `06312a0`: first checkpoint (exports and mounts)
-- final: READY_FOR_REVIEW (SOURCE/REFERENCES notes, mount axis conventions and
-  assertions, HANDOFF)
+- `991a823`: READY_FOR_REVIEW (SOURCE/REFERENCES notes, mount axis conventions
+  and assertions, HANDOFF)
+- next commit: READY_FOR_REVIEW again, with orange silos, the Asgard beam
+  mounts and the weapon effect hints
 
 ## Next
 

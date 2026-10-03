@@ -35,8 +35,9 @@ Modifications by this project to the CC BY-NC 4.0 work above (credit retained):
 - **New hull colour.** COLOR_0 now holds a reference-based palette (see
   REFERENCES.md): dark grey with an olive cast, lighter sunlit decks, dark and
   light plate patches, and dark greebles. Baked ambient occlusion adds recess
-  contrast. The hull slot base factor is white, so the Unreal parent material
-  can keep multiplying COLOR_0 by the base factor.
+  contrast. The 16 bow silo hatch plates are amber-orange (`#c98f35`, plain
+  paint), at the user's request. The hull slot base factor is white, so the
+  Unreal parent material can keep multiplying COLOR_0 by the base factor.
 - **Material slots on existing faces.** The hull uses `Daedalus_Armor`,
   `Daedalus_EngineMetal`, `Daedalus_HangarInterior` (warm emissive bay
   interiors) and `Daedalus_LightWhite` (bow light strip). There are no texture
@@ -49,6 +50,7 @@ Modifications by this project to the CC BY-NC 4.0 work above (credit retained):
   - Both share the hull's coordinate frame, so they need no offset.
 - **Weapon mounts.** Measured weapon and launch mounts are in
   `WEAPON_MOUNTS.json`, with matching `MOUNT_<id>` empties in the `.blend`.
+  They cover railgun domes, bow VLS, F-302 bays and 4 Asgard beam weapons.
   No turret or barrel geometry was added.
 
 Reproduce with:
