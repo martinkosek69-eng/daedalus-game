@@ -3,7 +3,8 @@
 - Author: Claude Code, independent research for Codex (task 0005)
 - Base: `d492d94ea2e522c1651461f898ba1426bd58df01` (`codex/solar-flight`)
 - Researched: 2026-10-03. Web sources change, so re-check before relying on details.
-- Status: DRAFT checkpoint. Sections may still be refined before READY_FOR_REVIEW.
+- Status: READY_FOR_REVIEW. This is independent research and does not gate
+  the 0004 build.
 
 Scope: normal (sub-warp) flight of Star Trek Online (STO) on PC. Covers throttle,
 reverse, braking, turn rate versus inertia, pitch limit, banking, mouse
@@ -56,11 +57,15 @@ studio statement in an interview; **COMMUNITY** = player wiki, guide or forum;
 | C5 | Steam discussions: [Ship movement](https://steamcommunity.com/app/9900/discussions/0/627457521122396558/) (2015-01), [Pitch, Roll, Yaw](https://steamcommunity.com/app/9900/discussions/0/618463446160408412/) (2015-05), [mouse movement](https://steamcommunity.com/app/9900/discussions/0/527273983049171241/) (2015-09), [controller configuration](https://steamcommunity.com/app/9900/discussions/0/2765630416824385181/) (2017-09) | COMMUNITY | 2015–2017 | No loops, roll not player controlled, mouse steering method, custom throttle bindings; no developer posts in these threads |
 | T1 | Tropedia "Star Trek Online", [archived snapshot](https://web.archive.org/web/20230904224045/https://tropedia.fandom.com/wiki/Star_Trek_Online) | TERTIARY | snapshot 2023-09-04 | Pitch limit of about 75° relative to the ecliptic; ecliptic used as camera reference |
 
-Not accessible during this research:
+Not accessible or not found during this research:
 - stowiki.net and forum.arcgames.com: Cloudflare bot check, not bypassed.
 - Live sto.fandom.com: HTTP 402.
+- An official STO manual or official controls page: none found.
+- The official game guide page (playstartrekonline.com/en/welcomeback) covers
+  content, not controls.
 
 The archived copies above were used instead and are identified by snapshot date.
+Default key bindings therefore rest on community documentation only.
 
 ## 3. Findings by topic
 
