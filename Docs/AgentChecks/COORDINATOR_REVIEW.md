@@ -22,6 +22,9 @@ assume a plain editor start enables its HTTP server.
 The report's LFS note describes its older base snapshot. The foundation now
 publishes and independently downloads five real LFS assets with SHA256 matching.
 Server-side locks remain unverified; use explicit binary ownership.
-Task 0001 remains WAITING_FOR_USER_START: introductory environment checks are
-not that numbered task. Current game development base is codex/game-foundation;
-new task briefs must name the actual published commit/branch.
+Task 0001 was subsequently delivered separately on task/0001-github-handoff
+and accepted by Codex after the user requested review. See Tasks/0001/REVIEW.md
+for the two checkpoints, scope checks and independent GitHub retrieval. This
+acceptance does not resolve the live-client connection limitations above.
+Current game development base is codex/game-foundation; new task briefs must
+name the actual published commit/branch.
