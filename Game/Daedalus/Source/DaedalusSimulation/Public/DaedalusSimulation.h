@@ -78,7 +78,10 @@ public:
     static constexpr int32 MaxStepsPerAdvance = 600;
     bool Initialize(const FCatalog& Catalog, FString& Error);
     int32 Advance(double RealSeconds);
+    const FString& GetLastAdvanceError() const { return LastAdvanceError; }
     void SetFlightInput(const FVector3d& Input);
+    bool SetShipFlightInput(const FString& InstanceId, const FVector3d& Input, FString& Error);
+    bool SpawnShip(const FString& InstanceId, const FString& DefinitionId, const FString& SystemId, const FVector3d& PositionMetres, FString& Error);
     void SetPaused(bool bPaused) { State.bPaused = bPaused; }
     bool FireAt(const FString& TargetId, FString& Error);
     bool Travel(const FString& SystemId, FString& Error);
@@ -93,6 +96,8 @@ private:
     FCatalog Definitions;
     FSnapshot State;
     FVector3d FlightInput = FVector3d::ZeroVector;
+    TMap<FString, FVector3d> ShipFlightInputs;
+    FString LastAdvanceError;
     bool bInitialized = false;
     void Step(double Seconds);
     bool CanCommand(FString& Error, bool bRequireAboard = true) const;

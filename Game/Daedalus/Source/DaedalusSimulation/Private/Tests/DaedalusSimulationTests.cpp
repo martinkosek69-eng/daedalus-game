@@ -13,7 +13,7 @@ using namespace Daedalus;
 const FString Fixture = TEXT(R"JSON({
 "version":1,
 "galaxies":[{"id":"milky-way","name":"Milky Way"}],
-"systems":[{"id":"sol","name":"Sol","galaxyId":"milky-way","positionLy":[0,0,0],"bodies":[{"id":"earth","name":"Earth","radiusMetres":6371000,"positionMetres":[1000000,0,0]}]},
+"systems":[{"id":"sol","name":"Sol","galaxyId":"milky-way","positionLy":[0,0,0],"bodies":[{"id":"earth","name":"Earth","radiusMetres":6371000,"positionMetres":[1000000000,0,0]}]},
 {"id":"alpha","name":"Alpha","galaxyId":"milky-way","positionLy":[4.3,0,0],"bodies":[]}],
 "weapons":[{"id":"beam","damage":70,"rangeMetres":10000,"energyCost":20,"cooldownSeconds":1}],
 "ships":[{"id":"scout","name":"Scout","lengthMetres":100,"maxSpeedMetresPerSecond":1000,"accelerationMetresPerSecondSquared":100,"hullCapacity":100,"shieldCapacity":50,"energyCapacity":100,"weaponId":"beam"}],
@@ -69,6 +69,7 @@ bool FFixedStepPauseTest::RunTest(const FString& Parameters)
     TestEqual(TEXT("Pause rejects travel"), A.Travel(TEXT("alpha"), Error), false);
     A.SetPaused(false);
     TestEqual(TEXT("Negative delta rejected"), A.Advance(-1), 0);
+    TestFalse(TEXT("Rejected advance explains failure"), A.GetLastAdvanceError().IsEmpty());
     TestEqual(TEXT("Non-finite delta rejected"), A.Advance(std::numeric_limits<double>::infinity()), 0);
     TestEqual(TEXT("Overload is bounded per update"), A.Advance(20), FSimulation::MaxStepsPerAdvance);
     TestTrue(TEXT("Overload retains backlog"), A.GetSnapshot().PendingSeconds > 9);
@@ -144,7 +145,7 @@ bool FSaveValidationTest::RunTest(const FString& Parameters)
     Reject(ModifySave(Save, [](TSharedPtr<FJsonObject> O) { O->SetStringField(TEXT("playerId"), TEXT("enemy")); }), TEXT("Player identity substitution rejected"));
     Reject(ModifySave(Save, [](TSharedPtr<FJsonObject> O) { O->SetStringField(TEXT("locationId"), TEXT("distant")); }), TEXT("Wrong-system location rejected"));
     Reject(ModifySave(Save, [](TSharedPtr<FJsonObject> O) { auto A=O->GetArrayField(TEXT("ships")); A.Add(A[0]); O->SetArrayField(TEXT("ships"),A); }), TEXT("Duplicate saved instance rejected"));
-    Reject(ModifySave(Save, [](TSharedPtr<FJsonObject> O) { auto A=O->GetArrayField(TEXT("ships")); A.RemoveAt(0); O->SetArrayField(TEXT("ships"),A); }), TEXT("Missing saved instance rejected"));
+    Reject(ModifySave(Save, [](TSharedPtr<FJsonObject> O) { auto A=O->GetArrayField(TEXT("ships")); A.RemoveAll([](const TSharedPtr<FJsonValue>& V) { return V->AsObject()->GetStringField(TEXT("id"))==TEXT("player"); }); O->SetArrayField(TEXT("ships"),A); }), TEXT("Missing player instance rejected"));
     Reject(ModifySave(Save, [](TSharedPtr<FJsonObject> O) { O->GetArrayField(TEXT("ships"))[0]->AsObject()->SetNumberField(TEXT("energy"),1000); }), TEXT("Capacity overflow rejected"));
     Reject(ModifySave(Save, [](TSharedPtr<FJsonObject> O) { O->GetArrayField(TEXT("ships"))[0]->AsObject()->SetStringField(TEXT("systemId"),TEXT("unknown")); }), TEXT("Unknown saved system rejected"));
     TestTrue(TEXT("Valid snapshot accepted"), S.Restore(Save, Error));
@@ -172,6 +173,50 @@ bool FLargeCatalogTest::RunTest(const FString& Parameters)
     TestTrue(TEXT("Coordinate roundtrip at astronomical offset"),CentimetresRelativeToMetres(Relative,Origin).Equals(Position,1e-8));
     TestTrue(TEXT("Travel to arbitrary catalog system"),S.Travel(TEXT("system-1999"),Error));
     TestEqual(TEXT("Unpopulated systems need only player instance"),S.GetActiveShipIds().Num(),1);
+    return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FCatalogExpansionTest, "Daedalus.Foundation.CatalogExpansionAndSpawn", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FCatalogExpansionTest::RunTest(const FString& Parameters)
+{
+    FCatalog C=MakeCatalog(); FString Error, Save; FSimulation Old; Old.Initialize(C,Error);
+    TestTrue(TEXT("Old world receives damage"),Old.FireAt(TEXT("enemy"),Error));
+    TestTrue(TEXT("Dynamic instance spawned"),Old.SpawnShip(TEXT("dynamic"),TEXT("scout"),TEXT("sol"),FVector3d(400,0,0),Error));
+    TestFalse(TEXT("Duplicate spawn rejects without overwrite"),Old.SpawnShip(TEXT("dynamic"),TEXT("scout"),TEXT("sol"),FVector3d::ZeroVector,Error));
+    TestFalse(TEXT("Unknown spawn definition rejected"),Old.SpawnShip(TEXT("invalid"),TEXT("unknown"),TEXT("sol"),FVector3d::ZeroVector,Error));
+    TestTrue(TEXT("NPC control accepted"),Old.SetShipFlightInput(TEXT("dynamic"),FVector3d(0,1,0),Error));
+    Old.Advance(0.5);
+    TestTrue(TEXT("NPC flight independent from presentation"),Old.GetSnapshot().Ships.FindChecked(TEXT("dynamic")).PositionMetres.Y>0);
+    Old.Serialize(Save,Error);
+    const FSnapshot Before=Old.GetSnapshot();
+    FInitialShip New; New.Id=TEXT("new-arrival"); New.DefinitionId=TEXT("scout"); New.SystemId=TEXT("alpha"); New.PositionMetres=FVector3d(1000,0,0); C.InitialShips.Add(New);
+    FSimulation Current; Current.Initialize(C,Error);
+    TestTrue(TEXT("Old save restores into expanded catalog"),Current.Restore(Save,Error));
+    TestEqual(TEXT("New content initialized while all saved ships retained"),Current.GetSnapshot().Ships.Num(),5);
+    TestEqual(TEXT("Existing damage never reset"),Current.GetSnapshot().Ships.FindChecked(TEXT("enemy")).Hull,Before.Ships.FindChecked(TEXT("enemy")).Hull);
+    TestTrue(TEXT("Saved dynamic NPC position retained"),Current.GetSnapshot().Ships.FindChecked(TEXT("dynamic")).PositionMetres.Equals(Before.Ships.FindChecked(TEXT("dynamic")).PositionMetres));
+    const FVector3d Velocity=Current.GetSnapshot().Ships.FindChecked(TEXT("dynamic")).VelocityMetresPerSecond;
+    Current.Advance(0.5);
+    TestTrue(TEXT("Restore clears NPC acceleration input but preserves velocity"),Current.GetSnapshot().Ships.FindChecked(TEXT("dynamic")).VelocityMetresPerSecond.Equals(Velocity));
+    TestFalse(TEXT("Unknown NPC flight instance rejected"),Current.SetShipFlightInput(TEXT("absent"),FVector3d(1,0,0),Error));
+    return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FBodyObstructionTest, "Daedalus.Foundation.BodyObstruction", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FBodyObstructionTest::RunTest(const FString& Parameters)
+{
+    FCatalog C=MakeCatalog(); FString Error; FSimulation S;
+    FBodyDefinition Body; Body.Id=TEXT("obstacle"); Body.Name=TEXT("Obstacle"); Body.PositionMetres=FVector3d(1000,0,0); Body.RadiusMetres=10;
+    C.Systems.FindChecked(TEXT("sol")).Bodies={Body}; C.InitialShips[1].PositionMetres=FVector3d(2000,0,0);
+    auto& D=C.ShipDefinitions.FindChecked(TEXT("scout")); D.LengthMetres=10; D.MaxSpeedMetresPerSecond=60000; D.AccelerationMetresPerSecondSquared=1e9;
+    S.Initialize(C,Error);
+    TestFalse(TEXT("Beam cannot pass through planet"),S.FireAt(TEXT("enemy"),Error));
+    TestEqual(TEXT("Occluded shot does not spend energy"),S.GetSnapshot().Ships.FindChecked(TEXT("player")).Energy,100.0);
+    S.SetFlightInput(FVector3d(1,0,0)); S.Advance(FSimulation::FixedStepSeconds);
+    const FShipState& Ship=S.GetSnapshot().Ships.FindChecked(TEXT("player"));
+    TestTrue(TEXT("Swept collision catches body despite crossing in one tick"),Ship.PositionMetres.X<985 && Ship.PositionMetres.X>984);
+    TestTrue(TEXT("Collision clears velocity"),Ship.VelocityMetresPerSecond.IsNearlyZero());
+    TestTrue(TEXT("Half-length conservative collision radius maintained"),FVector3d::Dist(Ship.PositionMetres,Body.PositionMetres)>=Body.RadiusMetres+D.LengthMetres*0.5);
     return true;
 }
 #endif

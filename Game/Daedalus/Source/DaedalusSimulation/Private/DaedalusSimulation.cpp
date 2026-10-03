@@ -85,6 +85,28 @@ void PutVector(const TSharedRef<FJsonObject>& O, const TCHAR* Key, const FVector
     A.Add(MakeShared<FJsonValueNumber>(V.X)); A.Add(MakeShared<FJsonValueNumber>(V.Y)); A.Add(MakeShared<FJsonValueNumber>(V.Z));
     O->SetArrayField(Key, A);
 }
+FShipState InitialState(const FInitialShip& I, const FCatalog& Catalog)
+{
+    const FShipDefinition& D = Catalog.ShipDefinitions.FindChecked(I.DefinitionId);
+    FShipState S;
+    S.Id = I.Id; S.DefinitionId = I.DefinitionId; S.SystemId = I.SystemId; S.PositionMetres = I.PositionMetres;
+    S.Hull = D.HullCapacity; S.Shield = D.ShieldCapacity; S.Energy = D.EnergyCapacity;
+    return S;
+}
+bool SegmentSphere(const FVector3d& Start, const FVector3d& End, const FVector3d& Center, double Radius, double& Fraction)
+{
+    const FVector3d Offset = Start - Center, Delta = End - Start;
+    const double C = Offset.SizeSquared() - Radius * Radius;
+    if (C <= 0) { Fraction = 0; return true; }
+    const double A = Delta.SizeSquared();
+    if (A <= 1e-20) return false;
+    const double B = FVector3d::DotProduct(Offset, Delta);
+    const double Discriminant = B * B - A * C;
+    if (Discriminant < 0) return false;
+    const double T = (-B - FMath::Sqrt(Discriminant)) / A;
+    if (T < 0 || T > 1) return false;
+    Fraction = T; return true;
+}
 }
 
 bool FCatalog::LoadJson(const FString& Json, FString& Error)
@@ -203,14 +225,11 @@ bool FSimulation::Initialize(const FCatalog& Catalog, FString& Error)
     FSnapshot Initial;
     for (const FInitialShip& I : Catalog.InitialShips)
     {
-        const FShipDefinition& D = Catalog.ShipDefinitions.FindChecked(I.DefinitionId);
-        FShipState S;
-        S.Id = I.Id; S.DefinitionId = I.DefinitionId; S.SystemId = I.SystemId; S.PositionMetres = I.PositionMetres;
-        S.Hull = D.HullCapacity; S.Shield = D.ShieldCapacity; S.Energy = D.EnergyCapacity;
+        FShipState S = InitialState(I, Catalog);
         Initial.Ships.Add(S.Id, S);
         if (I.bPlayer) Initial.PlayerShipId = I.Id;
     }
-    Definitions = Catalog; State = MoveTemp(Initial); FlightInput = FVector3d::ZeroVector; bInitialized = true;
+    Definitions = Catalog; State = MoveTemp(Initial); FlightInput = FVector3d::ZeroVector; ShipFlightInputs.Reset(); LastAdvanceError.Reset(); bInitialized = true;
     return true;
 }
 
@@ -230,10 +249,37 @@ void FSimulation::SetFlightInput(const FVector3d& Input)
     FlightInput = VectorValid(Input, MaxScalar) ? Input.GetClampedToMaxSize(1.0) : FVector3d::ZeroVector;
 }
 
+bool FSimulation::SetShipFlightInput(const FString& InstanceId, const FVector3d& Input, FString& Error)
+{
+    if (!CanCommand(Error, false)) return false;
+    const FShipState* Ship = State.Ships.Find(InstanceId);
+    if (!Ship || !Ship->IsAlive() || !VectorValid(Input, MaxScalar)) return Fail(Error, TEXT("Flight input requires a live known ship and finite vector."));
+    if (InstanceId == State.PlayerShipId)
+    {
+        if (!CanCommand(Error)) return false;
+        SetFlightInput(Input);
+    }
+    else ShipFlightInputs.Add(InstanceId, Input.GetClampedToMaxSize(1.0));
+    return true;
+}
+
+bool FSimulation::SpawnShip(const FString& InstanceId, const FString& DefinitionId, const FString& SystemId, const FVector3d& PositionMetres, FString& Error)
+{
+    Error.Reset();
+    if (!bInitialized || !IdValid(InstanceId) || State.Ships.Contains(InstanceId) || State.Ships.Num() >= MaxEntries
+        || !Definitions.ShipDefinitions.Contains(DefinitionId) || !Definitions.Systems.Contains(SystemId) || !VectorValid(PositionMetres)) return Fail(Error, TEXT("Spawn requires a unique stable ID, known definition/system and finite position."));
+    FInitialShip I; I.Id = InstanceId; I.DefinitionId = DefinitionId; I.SystemId = SystemId; I.PositionMetres = PositionMetres;
+    State.Ships.Add(InstanceId, InitialState(I, Definitions));
+    return true;
+}
+
 int32 FSimulation::Advance(double RealSeconds)
 {
-    if (!bInitialized || State.bPaused || !NumberValid(RealSeconds, 0, 86400)) return 0;
-    if (!NumberValid(State.PendingSeconds + RealSeconds, 0, 1e9)) return 0;
+    LastAdvanceError.Reset();
+    if (!bInitialized) { LastAdvanceError = TEXT("Simulation is not initialized."); return 0; }
+    if (!NumberValid(RealSeconds, 0, 86400)) { LastAdvanceError = TEXT("Delta must be finite and between zero and one day."); return 0; }
+    if (State.bPaused) return 0;
+    if (!NumberValid(State.PendingSeconds + RealSeconds, 0, 1e9)) { LastAdvanceError = TEXT("Pending elapsed time exceeds supported range."); return 0; }
     State.PendingSeconds += RealSeconds;
     const int32 Steps = static_cast<int32>(FMath::Min<double>(FMath::FloorToDouble((State.PendingSeconds + 1e-10) / FixedStepSeconds), MaxStepsPerAdvance));
     for (int32 I = 0; I < Steps; ++I) Step(FixedStepSeconds);
@@ -249,9 +295,25 @@ void FSimulation::Step(double Seconds)
         FShipState& S = P.Value;
         if (!S.IsAlive() || S.SystemId != ActiveSystem) continue;
         const FShipDefinition& D = Definitions.ShipDefinitions.FindChecked(S.DefinitionId);
-        if (S.Id == State.PlayerShipId && State.PlayerLocationId.IsEmpty()) S.VelocityMetresPerSecond = (S.VelocityMetresPerSecond + FlightInput * D.AccelerationMetresPerSecondSquared * Seconds).GetClampedToMaxSize(D.MaxSpeedMetresPerSecond);
+        FVector3d Input = FVector3d::ZeroVector;
+        if (S.Id == State.PlayerShipId && State.PlayerLocationId.IsEmpty()) Input = FlightInput;
+        else if (S.Id != State.PlayerShipId) if (const FVector3d* Control = ShipFlightInputs.Find(S.Id)) Input = *Control;
+        S.VelocityMetresPerSecond = (S.VelocityMetresPerSecond + Input * D.AccelerationMetresPerSecondSquared * Seconds).GetClampedToMaxSize(D.MaxSpeedMetresPerSecond);
         const FVector3d Next = S.PositionMetres + S.VelocityMetresPerSecond * Seconds;
-        if (VectorValid(Next)) S.PositionMetres = Next;
+        double ContactFraction = 1; bool bContact = false;
+        for (const FBodyDefinition& B : Definitions.Systems.FindChecked(S.SystemId).Bodies)
+        {
+            double T = 0;
+            if (SegmentSphere(S.PositionMetres, Next, B.PositionMetres, B.RadiusMetres + D.LengthMetres * 0.5, T)) { ContactFraction = FMath::Min(ContactFraction, T); bContact = true; }
+        }
+        if (bContact)
+        {
+            const double Length = (Next - S.PositionMetres).Size();
+            const double SafeFraction = FMath::Max(0.0, ContactFraction - (Length > 0 ? 0.01 / Length : 0));
+            S.PositionMetres += (Next - S.PositionMetres) * SafeFraction;
+            S.VelocityMetresPerSecond = FVector3d::ZeroVector;
+        }
+        else if (VectorValid(Next)) S.PositionMetres = Next;
         else S.VelocityMetresPerSecond = FVector3d::ZeroVector;
         S.WeaponCooldownSeconds = FMath::Max(0.0, S.WeaponCooldownSeconds - Seconds);
         S.Energy = FMath::Min(D.EnergyCapacity, S.Energy + D.EnergyCapacity * 0.01 * Seconds);
@@ -270,6 +332,11 @@ bool FSimulation::FireAt(const FString& TargetId, FString& Error)
     if (FVector3d::Dist(Player.PositionMetres, Target->PositionMetres) > W.RangeMetres) return Fail(Error, TEXT("Target is outside weapon range."));
     if (Player.WeaponCooldownSeconds > 1e-10) return Fail(Error, TEXT("Weapon is cooling down."));
     if (Player.Energy < W.EnergyCost) return Fail(Error, TEXT("Insufficient weapon energy."));
+    for (const FBodyDefinition& B : Definitions.Systems.FindChecked(Player.SystemId).Bodies)
+    {
+        double Fraction = 0;
+        if (SegmentSphere(Player.PositionMetres, Target->PositionMetres, B.PositionMetres, B.RadiusMetres, Fraction)) return Fail(Error, TEXT("Weapon line of sight is blocked by a celestial body."));
+    }
     Player.Energy -= W.EnergyCost; Player.WeaponCooldownSeconds = W.CooldownSeconds;
     const double Absorbed = FMath::Min(Target->Shield, W.Damage);
     Target->Shield -= Absorbed; Target->Hull = FMath::Max(0.0, Target->Hull - (W.Damage - Absorbed));
@@ -282,7 +349,7 @@ bool FSimulation::Travel(const FString& SystemId, FString& Error)
     if (!CanCommand(Error)) return false;
     FShipState& Player = State.Ships.FindChecked(State.PlayerShipId);
     if (!Definitions.Systems.Contains(SystemId) || Player.SystemId == SystemId) return Fail(Error, TEXT("Destination must be another known system."));
-    Player.SystemId = SystemId; Player.PositionMetres = FVector3d::ZeroVector; Player.VelocityMetresPerSecond = FVector3d::ZeroVector; FlightInput = FVector3d::ZeroVector;
+    Player.SystemId = SystemId; Player.PositionMetres = FVector3d::ZeroVector; Player.VelocityMetresPerSecond = FVector3d::ZeroVector; FlightInput = FVector3d::ZeroVector; ShipFlightInputs.Reset();
     return true;
 }
 
@@ -315,11 +382,10 @@ TArray<FString> FSimulation::GetActiveShipIds() const
 bool FSimulation::ValidateSnapshot(const FSnapshot& C, FString& Error) const
 {
     if (!bInitialized) return Fail(Error, TEXT("Load a validated catalog before restoring a save."));
-    if (!NumberValid(C.SimulationSeconds, 0, 1e12) || !NumberValid(C.PendingSeconds, 0, 1e9) || C.Ships.Num() != Definitions.InitialShips.Num() || !C.Ships.Contains(C.PlayerShipId)) return Fail(Error, TEXT("Invalid clock, ship count or player reference."));
+    if (!NumberValid(C.SimulationSeconds, 0, 1e12) || !NumberValid(C.PendingSeconds, 0, 1e9) || C.Ships.IsEmpty() || C.Ships.Num() > MaxEntries || !C.Ships.Contains(C.PlayerShipId)) return Fail(Error, TEXT("Invalid clock, ship count or player reference."));
     for (const FInitialShip& I : Definitions.InitialShips)
     {
-        const FShipState* Saved = C.Ships.Find(I.Id);
-        if (!Saved || Saved->DefinitionId != I.DefinitionId || (I.bPlayer && C.PlayerShipId != I.Id)) return Fail(Error, TEXT("Saved ship identities do not match this catalog."));
+        if (I.bPlayer && C.PlayerShipId != I.Id) return Fail(Error, TEXT("Saved player identity does not match this catalog."));
     }
     for (const auto& P : C.Ships)
     {
@@ -383,7 +449,10 @@ bool FSimulation::Restore(const FString& Json, FString& Error)
             || !NumberField(O, TEXT("weaponCooldownSeconds"), S.WeaponCooldownSeconds, Error) || !Insert(Candidate.Ships, MoveTemp(S), Error)) return false;
     }
     if (!ValidateSnapshot(Candidate, Error)) return false;
-    State = MoveTemp(Candidate); FlightInput = FVector3d::ZeroVector;
+    for (const FInitialShip& I : Definitions.InitialShips)
+        if (!Candidate.Ships.Contains(I.Id)) Candidate.Ships.Add(I.Id, InitialState(I, Definitions));
+    if (!ValidateSnapshot(Candidate, Error)) return false;
+    State = MoveTemp(Candidate); FlightInput = FVector3d::ZeroVector; ShipFlightInputs.Reset(); LastAdvanceError.Reset();
     return true;
 }
 }

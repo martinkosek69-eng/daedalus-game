@@ -7,8 +7,10 @@ Status: READY_FOR_REVIEW (acceptance belongs to coordinator).
 - DaedalusSimulation module: Core public dependency, Json private dependency.
 - Public catalog definitions, ship instance snapshots and single-player domain
   simulation. No Actor, UObject, network, asset or GUI dependencies.
-- Validated transactional catalog/save JSON v1, stable IDs and same-catalog ship
-  identity checks. Sorted ship serialization; restore resets transient input.
+- Validated transactional catalog/save JSON v1, stable IDs and compatible-catalog
+  reference checks. Existing saved instances are preserved, newly introduced
+  initial NPCs are initialized; unknown definitions/systems still reject.
+  Sorted ship serialization; restore resets transient input.
 - Fixed 60 Hz flight with maximum 600 steps per call; excess elapsed time stays
   pending and can be drained by subsequent Advance calls. Pause accumulates no
   elapsed time. Active-system motion, cooldowns and capacity-limited recovery.
@@ -16,9 +18,13 @@ Status: READY_FOR_REVIEW (acceptance belongs to coordinator).
 - System travel, retained inactive ships, transport to a local surface/interior
   and return aboard. The ship remains a separate instance while the player is away.
 - Local metre/relative centimetre coordinate conversion helpers.
-- Six automation groups covering invalid inputs and rollback, frame partitions,
+- Dynamic ship spawning and controlled per-ship transient flight inputs permit
+  presentation-independent AI services. Inputs clear on restore and travel.
+- Planet-sphere line of sight blocks beams; swept movement prevents passing
+  through bodies, using half ship length as a conservative collision radius.
+- Eight automation groups covering invalid inputs and rollback, frame partitions,
   pause/backlog, combat, travel/transport/save, save validation and 2002-system
-  catalog/coordinate checks.
+  catalog/coordinate checks, catalog expansion/spawning and body obstruction.
 
 ## Verification
 
@@ -33,8 +39,9 @@ Transport range is currently 50 km, damage is an instantaneous beam and active
 shield/energy recovery is 1% capacity per simulation second. Inactive ships retain
 state without offscreen behavior. Catalog supports up to 100000 entries per
 category, bounded finite local positions/capacities, and bounded input text.
-Version 1 saves require the same catalog initial-ship identity set; catalog/save
-migrations and runtime spawning are future additions, not silently assumed.
+Version 1 saves can survive additive catalog content when their existing stable
+definitions/systems/player identity remain valid. Actual format migrations need
+an explicit implementation before schema v2; future versions reject safely.
 Interactive flight input is transient and deliberately clears after restore.
 
 Commit b9f1078 provides the module and tests; this handoff is a separate checkpoint.
