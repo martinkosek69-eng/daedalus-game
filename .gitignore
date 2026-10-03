@@ -27,3 +27,4 @@
 *.tmp
 *.tar.gz
 *.zip
+**/Content/Developers/

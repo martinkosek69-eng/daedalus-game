@@ -1,0 +1,11 @@
+{
+  "studio": "<absolute-path-to-Visual-Studio>",
+  "blender": "<absolute-path-to-blender.exe>",
+  "engine": "<absolute-path-to-Unreal-installation>",
+  "environment": {
+    "TEMP": "<absolute-path-to-user-temp>",
+    "TMP": "<absolute-path-to-user-temp>",
+    "UE-LocalDataCachePath": "<absolute-path-to-Unreal-DDC>",
+    "UE-ZenDataPath": "<absolute-path-to-Zen-data>"
+  }
+}
