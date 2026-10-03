@@ -1117,5 +1117,418 @@ vznikly nedávno, aby jich nebylo moc stejných.
 STO odlišuje frakce tím, čím střílejí (druh energie, torpéda), jak se maskují
 a jaké mají zdroje energie (singularita). Pro nás je to levnější a čitelnější
 než odlišovat frakce jen čísly.
+---
 
-> ROZPRACOVÁNO: kapitoly 15–22 budou doplněny v dalším checkpointu.
+## 15. Nepřátelé, AI a návrh střetnutí
+
+### 15.1 Žebříček nepřátel [KOMUNITA Non-playable starship 2022; OFICIÁLNÍ 3029673]
+
+| Třída NPC | Charakter |
+| --- | --- |
+| Stíhačka | nejslabší; vypouštějí ji nosiče, NPC i hráčské |
+| Fregata | malá a obratná, 3–4 zbraně, málo schopností, obvykle ve skupině po třech |
+| Vědecká loď | malý trup, silné štíty |
+| Eskorta | malý trup, slabé štíty, rychlá a velmi obratná |
+| Křižník | velký trup, střední štíty, pomalý |
+| Bitevní loď | velmi silný trup a štíty, 5–6 zbraní, mnoho schopností, velmi pomalá; někdy nosič |
+| Dreadnought | ještě silnější trup a štíty; na jednu loď obvykle příliš silný; někdy nosič |
+| Capital / zvláštní | bossové (například Borg, zabijáci planet) |
+
+**Zásada vývojářů [OFICIÁLNÍ 3029673, 2014]:**
+
+- Každá vyšší třída musí být znatelně nebezpečnější. Když bitevní loď Undine
+  dávala menší poškození než křižník, přidali jí zbraně a přepsali AI.
+- Frakce má ve hře působit tak hrozivě jako v seriálu. Undine byli slabší
+  než Borg, a proto je upravili.
+
+### 15.2 Vzorce chování AI [OFICIÁLNÍ 3029673, 1002780, 1059700]
+
+- **Nálety (strafing runs).** Fregaty a křižníky Undine nalétávají na cíl
+  vysokou rychlostí, na pár sekund zapojí přední i zadní zbraně a pak odletí.
+  Fregaty krouží na okraji boje.
+- **Řetězení schopností.** Lepší AI používá schopnosti častěji a v kombinacích.
+  Pomalá AI působí neschopně.
+- **Povolávání posil.** Dreadnought Undine má menší vlastní palbu, ale
+  povolává fregaty.
+- **Léčení ve vesmíru (Voth):**
+  - Umírající loď může zavolat opravnou loď.
+  - Ta se odmaskuje, přiletí, obnoví trup a pak léčí štíty spojenců.
+  - Hráč ji proto musí rozpoznat jako prioritní cíl.
+- **Směrová imunita (Voth).** Pole kolem lodi ji chrání před poškozením
+  z jednoho směru, pokročilá verze energii odráží. Hráč musí manévrovat.
+- **Odběr energie** dronami nebo zbraněmi, dočasná nezranitelnost vůči energii
+  a podobně.
+- **Preferovaná vzdálenost.** Pravidlo z pozemního boje (2009) se hodí
+  i do vesmíru: útočníci zblízka se přibližují, střelci na dálku si drží odstup.
+  Různá AI preferuje různé schopnosti (léčitelé, přivolávači).
+- **Kánon upravený pro zábavu [OFICIÁLNÍ 1002780].** Voth v seriálu umějí
+  vyřadit loď „kdykoli“. Ve hře by to nebylo zábavné, takže to vývojáři pojali
+  jako „kontrolu nad energií a časoprostorem“.
+
+### 15.3 Další pravidla [OFICIÁLNÍ 10426883; KOMUNITA]
+
+- Po skončení efektu držení nebo vyřazení dostane cíl krátkou odolnost proti
+  dalšímu, aby kontrola nešla řetězit donekonečna.
+- NPC si při střelbě neubírají energii zbraní. Zjednodušení pro AI.
+- Obtížnosti Normal, Advanced a Elite mění sílu nepřátel a odměny (viz 4.3).
+- Obtížnost v bojové zóně se přizpůsobuje počtu hráčů (viz 4.3).
+
+### 15.4 [ODVOZENO] Pro nás
+
+- Pro první bojový prototyp stačí dva nepřátelé:
+  - fregata s nálety ve skupině,
+  - křižník s boční palbou a jednou schopností.
+- Nepřítel s jasnou slabinou nutí hráče manévrovat a volit priority: léčitel,
+  směrový štít, povolávač.
+- Žebříček tříd s výrazným rozdílem hrozby usnadní tvorbu misí z dat
+  (třída → statistiky → chování).
+
+---
+
+## 16. Zničení lodí [KOMUNITA Warp speed 2023; OFICIÁLNÍ 1059740, 10426883]
+
+- **Výbuch warp jádra:**
+  - nastane asi 5 s po ztrátě celého trupu,
+  - poškodí lodě v okruhu několika kilometrů,
+  - velikost a síla výbuchu závisí na lodi.
+- **Jádro hmota/antihmota:** po smrtelném zásahu přijdou vnitřní výbuchy
+  a pak jasný záblesk.
+- **Singularitní jádro:**
+  - loď se zhroutí do dočasné černé díry,
+  - ta přitahuje okolní lodě,
+  - po pár sekundách exploduje s odhozením.
+  - Poškození je stejné jako u výbuchu antihmoty.
+- **Ochrana před výbuchem:** Brace for Impact, nebo odtlačení umírající lodi
+  odpuzovacím paprskem (záměr 2009).
+- **Sebedestrukce (Abandon Ship).** Silnější výbuch, podle výsledku vyhledávání
+  asi 5 000 kinetického poškození v okruhu 1 km plus výbuch jádra
+  **[NEOVĚŘENO, souhrn z vyhledávání]**.
+- Stíhačky nosičů výbuchy jader od roku 2017 nepoškozují **[OFICIÁLNÍ]**.
+- Rada hráčům: vybuchující loď poškozuje okolí, takže je třeba odletět
+  **[KOMUNITA Space combat]**.
+- **[ODVOZENO]** Pro nás je výbuch jádra skvělý dramatický i taktický moment:
+  pětisekundové varování, viditelná řetězová exploze a plošné poškození.
+  V prototypu Three.js už existuje rozpad lodí na úlomky a pravděpodobnostní
+  výbuch reaktoru. Na to lze navázat.
+
+---
+
+## 17. Modely lodí a jejich výroba
+
+### 17.1 Postup výroby lodi [OFICIÁLNÍ 3030983, 10434133, 9075673; VÝVOJÁŘ Versiga 2021, Marrone 2020/2026]
+
+1. **Rozhodnutí.** Vedení určí, že loď je potřeba, i 6 a víc měsíců předem.
+   Ohlíží se, jaké typy lodí vznikly nedávno.
+2. **Parametry.** Kdo loď staví, k čemu slouží, jaké má schopnosti, velikost
+   a rodinu, do které patří.
+3. **Koncept:**
+   - stylové prvky frakce (u Federace talíř a gondoly),
+   - schopnosti lodi se musí promítnout do tvaru: eskorta má útočný „postoj“
+     vpřed, vědecká loď výrazný deflektor,
+   - jako vzor stylu, velikosti a „postoje“ slouží kánonová loď,
+   - mnoho rychlých náčrtků siluet, ze kterých se vyberou a zkombinují nejlepší.
+4. **3D blokování (koncept).** Hrubý 3D model v 3ds Max pro proporce a „povahu“
+   lodi. Přes něj se kreslí ve Photoshopu, což šetří ortografické výkresy
+   a umožní rychlé iterace. Výsledkem je barevná „předloha“ pro výtvarníka lodí.
+5. **Model pro hru:**
+   - počítá s variantami, animacemi, zvláštními zbraněmi a schopnostmi,
+   - drží se rozpočtu paměti a polygonů pro PC i konzole,
+   - tvary musí na sebe navazovat, aby loď působila věrohodně ze všech úhlů.
+6. **Materiály a textury** (viz 17.2).
+7. **Data ve hře:**
+   - textové soubory určují díly, efekty a jejich názvy,
+   - **přes 80 uzlů pro efekty na loď**: místa zbraní, motorů, světel, warpu
+     a podobně,
+   - určí se, které díly jdou upravovat.
+8. **Statistiky a schopnosti** dodá systémový designér, efekty efektový
+   výtvarník (FX), animace animátor a ikony UI.
+9. **QA:**
+   - standardní testovací plán lodi,
+   - průzkumné testy nových schopností brzy, ještě s provizorními efekty,
+   - ověřuje se, jak loď působí při ovládání a jestli plní svou roli,
+   - testují i vybraní hráči.
+10. **Čas:** od 1 měsíce po několik měsíců podle rozsahu. Nejdéle trvá nový
+    design s animacemi a novým materiálem **[VÝVOJÁŘ Marrone 2020]**.
+
+### 17.2 Materiály: technika STO [OFICIÁLNÍ 3030983 (2014), 10434133 (2017)]
+
+- **Dlaždicové (opakovatelné) textury sdílené napříč loděmi.**
+  - Jedna sekce textury se na modelu opakuje zrcadlená, zvětšená nebo otočená,
+    takže nepůsobí jako opakování.
+  - Výsledek: vysoký detail při nízkých nárocích na hardware.
+  - Téměř každá loď může použít kterýkoli z víc než 60 materiálů, a z toho
+    vzniká úprava vzhledu v loděnici.
+- **Hlavní šablona materiálu.** Všechny lodě dodržují stejná pravidla
+  rozložení, aby šly materiály zaměnit.
+- **Nástroje (2017):** 3ds Max (modely a panely), ZBrush (organické pláty,
+  například šupinatý pancíř Tzenkethi), Substance Designer (skládání materiálu).
+- **Zdrojové mapy:** okolní stínění (AO), ID materiálů, normálová mapa
+  a pomocné mapy (cavity, height).
+- **Výstupní textury (4):**
+  - difuzní (v alfa kanálu odrazivost),
+  - normálová,
+  - svítivost (okna a světla),
+  - barevná specularita (v alfa kanálu lesk).
+  Rozdělení usnadňuje pozdější přebarvení a úpravy.
+- **Okna, nápisy a světla** jsou na samostatném listu, který se mapuje na
+  „plovoucí geometrii“ těsně nad povrchem lodi. Proto jdou registrace,
+  okna i barvy nezávisle měnit.
+- **Rozdělení na díly.** Variantám se dělají vyměnitelné díly. Starší model se
+  kvůli tomu přestavěl (u Odyssey se oddělily pylony). Lodě bez vyměnitelných
+  dílů se staví jako jeden kus, což je jednodušší (lodě 26. století).
+
+### 17.3 Tvarový jazyk a design [OFICIÁLNÍ 9245593, 7005503, 9075673, 10389143, 10434133, 10038053, 9792703]
+
+- **Funkce určuje tvar.** Inspiruje se přírodou, vozidly, letadly i loděmi
+  **[VÝVOJÁŘ Marrone 2026]**:
+  - pilotní lodě: letadla (SR-71, šípová křídla dopředu),
+  - zpravodajské lodě: stealth stíhačky a nízké závodní vozy,
+  - Tzenkethi: želvy a krokodýli.
+- **Zpravodajské lodě** mají jednotný „vizuální jazyk“ pro všechny frakce
+  a velikosti. Ze schopností vyvodili vlastnosti:
+  - kradmé: ostré hrany, tmavé materiály se vzorem,
+  - obratné: šípovité zužující se linie,
+  - agresivní: čepelovité tvary, málo oken, viditelné zbraně.
+- **Velitelské lodě** dostaly pravidla napříč frakcemi:
+  - zřetelný rotující disk,
+  - 4 gondoly, které působí jako 2 rozdělené,
+  - u Federace druhý trup mezi krkem a talířem.
+- **Variace rodiny.** Varianty zachovají siluetu rodiny a mění klíčové prvky
+  (pylony, gondoly, impulsní motory), aby ukázaly vývoj technologie. Proporce
+  si můžou vypůjčit z jiných tříd (Sojourner od Galaxy). Design odráží
+  schopnosti: dok pro eskortu, motory pro oddělení.
+- **Měřítko a díly v rodině** musí sedět (Marrone 2026). Vedle sebe musí lodě
+  působit konzistentně.
+- **Kánonová věrohodnost.** Lodě mají vypadat přirozeně vedle fyzických modelů
+  ILM z 90. let. Vychází se i z nepoužitých kánonových návrhů (Sternbach
+  pro Pathfinder).
+- **Siluetu frakce nesmí ztratit.** Klingonská pilotní loď v jednom náčrtku
+  vypadala „moc romulansky“, a tak ji zahodili. Federační lodě potřebovaly
+  nejvíc iterací, aby zůstaly rozpoznatelně federační.
+- **Mimozemské frakce.** Tvar lodí navazuje na postavy druhu. Tzenkethi mají
+  uzavřené, tupé tvary jako skořápky a grafické dekorace navíc.
+
+### 17.4 Kvalita v čase [VÝVOJÁŘ Marrone 2020, 2025; Versiga 2021]
+
+- Nové modely jsou 4–5× detailnější než před deseti lety.
+- Staré lodě se remasterují. Při remasteru lodí z dřívějších her se zachovává
+  i to, jak se chovaly.
+- Enterprise-F se kvůli Picardovi přestavovala od nuly (3 týdny intenzivní
+  práce).
+- Zdokonalení starého modelu má být nenápadné a nesmí změnit charakteristické
+  rysy (Odyssey 2016).
+
+### 17.5 Stanice a velké objekty [OFICIÁLNÍ 3041603, 10878734, 11572869]
+
+- **Whitebox.** Prostor se nejdřív postaví z jednoduchých bloků bez textur
+  s pomocnou mřížkou pro měřítko. Dokud nemá rekvizity, velikosti se špatně
+  odhadují.
+- **Kánonová rekonstrukce DS9:**
+  - plány a rozměry ateliéru Stage 17,
+  - víc než 2 600 snímků obrazovky ze seriálu,
+  - chybějící části se dotvořily ve stylu seriálu.
+- **Earth Spacedock:**
+  - Při vydání měl vlastní nekánonový design.
+  - Hráči v roce 2011 prosadili kánonový vzhled (Star Trek III / TNG).
+  - V roce 2025 přišla nová podoba podle Picarda.
+  - Poučení: kánonová věrnost ikonických míst je pro fanoušky důležitá.
+
+### 17.6 [ODVOZENO] Pro náš postup v Blenderu a Unrealu
+
+| Princip STO | Naše obdoba |
+| --- | --- |
+| Hlavní šablona materiálu, sdílené dlaždicové materiály | Sada sdílených materiálů v Unrealu (master material + instance), v Blenderu jednotné pojmenování slotů materiálu |
+| Okna, nápisy a světla na samostatné vrstvě | Samostatná mesh vrstva nebo decaly. Registrace a jméno lodi jako data, ne textura. |
+| Přes 80 uzlů pro efekty | Pojmenované sockety nebo empties v Blenderu (zbraně, motory, deflektor, světla, warp, výbuchy), exportované do Unrealu a evidované v datech lodi |
+| Vyměnitelné díly | Rodiny lodí stavět z dílů s pevnými připojovacími body a společným měřítkem |
+| Rozpočty paměti a polygonů | Definovat rozpočet a LOD pro 600 m loď. Ověřit výkonem na RTX 3070 / 16 GiB. |
+| Měřítko v rodině | Tabulka délek lodí v metrech (kánon nebo vlastní) jako jediný zdroj pravdy |
+| Funkce určuje tvar, vizuální jazyk frakce | Krátký stylový list pro každou frakci (tvary, barvy, světla, okna) |
+
+Vlastní lodě STO (Odyssey, Jupiter…) jsou návrhy STO. Nepřebíráme je.
+
+---
+
+## 18. Vizuální efekty a animace
+
+### 18.1 Zásady [OFICIÁLNÍ 1055330 (2009), 3030983 (2014)]
+
+- **Modernizovat, ale zachovat poznatelnost.** Efekty z TOS měly malý rozpočet.
+  Hra je musí udělat lépe, ale tak, aby je fanoušek okamžitě poznal (vedoucí
+  efektového týmu, 2009).
+- **Čitelný vizuální jazyk.** Každý mód a každá schopnost musí mít svůj
+  rozpoznatelný vzhled, aby hráč mohl reagovat. Inspirace je v seriálech.
+  Cílem je, aby se po stisku tlačítka stalo „něco skvělého“ (efektový
+  výtvarník, 2014).
+
+### 18.2 Přehled efektů a animací ze zdrojů
+
+| Prvek | Co víme | Zdroj |
+| --- | --- | --- |
+| Paprsky a střely | barva podle druhu energie (kapitola 9) | KOMUNITA |
+| Torpéda | samonaváděcí střely; některá jdou sestřelit | KOMUNITA |
+| Štíty | vzhled je ze štítového vybavení nebo z vizuálního slotu; kosmetické štíty | OFICIÁLNÍ |
+| Motory a deflektor | vzhled je z vybavení nebo z vizuálního slotu | OFICIÁLNÍ |
+| Warp | efekt vstupu a výstupu podle frakce; zvláštní animace lodí (Intrepid zvedá gondoly), vlastní animace transwarpu | KOMUNITA |
+| Maskování | animace přechodu do a z neviditelnosti (video na wiki) | KOMUNITA |
+| Oddělení lodi | animace oddělení talíře, MVAM a dalších (video na wiki) | KOMUNITA |
+| Výbuch jádra | vnitřní exploze a záblesk; singularitní kolaps a černá díra | KOMUNITA |
+| Transformace lodi | módy lodí potřebují vlastní animace, efekty a schopnosti | OFICIÁLNÍ |
+| Náklon při zatáčení | automatický, hráč ho neovládá | KOMUNITA |
+| Světla a okna | svítivostní mapa a list oken a světel | OFICIÁLNÍ |
+| Kamera | zámek cíle drží obě lodě v záběru (ovladač) | OFICIÁLNÍ |
+
+### 18.3 Nepodařilo se doložit [NEOVĚŘENO]
+
+- Jak přesně vypadá zásah do štítu (bublina, rozvlnění, barva podle sektoru).
+- Vizuální stavy poškození trupu (ohně, úniky plazmy, spáleniny).
+- Animace startu stíhaček z hangáru.
+- Prostředí soustav: hvězdná obloha, planety v pozadí, velikost a hranice map.
+
+Tyhle věci je nutné zjistit přímým pozorováním (kapitola 21). Prototyp Three.js
+už má vlastní řešení některých z nich (štít podle vrcholů modelu, úlomky
+a výbuchy).
+
+### 18.4 [ODVOZENO] Pro nás
+
+- Každému druhu zbraně dát jasnou barvu a rytmus, sladěný se zvukem.
+- Štít zobrazovat hlavně při zásahu a podle sektoru, aby hráč viděl, kde ho
+  zasáhli.
+- Události (warp, maskování, oddělení, výbuch jádra) jsou „momenty“, které
+  stojí za vlastní animace. Plánovat je už v modelu (sockety, díly).
+- Efekty oddělit od statistik, aby šel vzhled měnit bez zásahu do pravidel.
+  STO to zavedlo až dodatečně (2016).
+
+---
+
+## 19. Principy designu a vyvažování podle vývojářů STO
+
+| Princip | Odkud | Co to znamená pro nás [ODVOZENO] |
+| --- | --- | --- |
+| Hra má být hlavně zábavná; hráčova „zábava“ nesmí být „špatně“ | OFICIÁLNÍ 10426883 (2017) | Netrestat styly hry |
+| Investice hráče si udrží hodnotu | 10426883 | Změny nesmí zničit uložené lodě a postupy |
+| Žádná volba nesmí být vždy správná ani vždy špatná | 10426883, 9797693 | Testovat volby, odstraňovat pasti |
+| Zjednodušit a vysvětlit; lepší popisky | 9797693 (2016) | Začátečník musí rozumět |
+| Dovednosti nevázat na jednu loď ani typ zbraně | 1059220 (2011) | Volnost střídat lodě |
+| Kánonovou schopnost upravit, pokud není zábavná | 1002780 (2013) | Kánon je předloha, ne zákon |
+| Hráč musí cítit postup (přepočet warpu) | 1011770 (2013) | Pokrok musí být viditelný |
+| Po vypršení omezujícího efektu krátká odolnost proti dalšímu | 10426883 | Žádná nekonečná kontrola |
+| Nový typ lodi z klíčových slov a s ohledem na existující typy | 3030983 | Plánovat portfolio lodí |
+| Rychle prototypovat ovládání, testovat a automatizovat | 10010203 (2016) | Hráč má hrát hru, ne UI |
+| Testovat „pocit“ lodi brzy, s provizorními efekty | 3030983 | Prototyp letu a boje před grafikou |
+| Kánonová věrnost ikonických míst | 11572869, 10878734, 9078783 | Sol, Země, Spacedock a DS9 věrně podle kánonu |
+| Mechanika, která nepřidává zábavu, může odejít (posádka 2015) | KOMUNITA | Odvaha škrtat |
+| Rozpočty výkonu od začátku | Versiga 2021 | Měřit výkon průběžně |
+
+---
+
+## 20. Co převzít pro Daedalus
+
+Doporučení podle fáze. Jsou to podněty pro rozhodnutí uživatele a Codexu,
+ne hotové rozhodnutí. **[ODVOZENO]**
+
+### 20.1 Teď: sluneční letová laboratoř (úkoly 0004 a 0006)
+
+- Let jako u velké lodi: 6 °/s, reakce kolem 0,5 s, mírné klouzání,
+  automatický náklon, kopání omezené na 75–80°. Podrobně v úkolu 0005.
+- Nižší rychlost otáčení při velmi malém plynu, plná od 25 %.
+- Kamera: vodorovný horizont, Home vrací kameru za loď, myš ovládá kameru,
+  ne loď.
+- HUD: plyn včetně couvání, rychlost, kurz a náklon.
+- Volitelně plný impuls jako cestovní režim s cenou.
+
+### 20.2 Další krok: první bojový prototyp
+
+1. Štíty se 4 sektory, 10% prosakováním, regenerací v taktech a přeléváním.
+2. Energie a kinetika: energie působí na štít i trup stejně, kinetika má proti
+   štítu jen 25 %.
+3. Tři zbraně s úhly: paprsek (250°, vpředu i vzadu), dělo (45–90°, vpředu)
+   a torpédo (90°, s prodlevou). Pevný 5s cyklus. Poškození klesá se
+   vzdáleností.
+4. Energie ve 3–4 systémech s předvolbami a postupným přeléváním. Střelba
+   ubírá energii zbraní.
+5. Obrana z pohybu a jednoduchá šance zásahu s dolní hranicí.
+6. Dva nepřátelé: fregaty s nálety a křižník s boční palbou.
+7. Výbuch jádra s 5s varováním a plošným poškozením.
+8. Měřítko boje: STO bojuje na 2–10 km s loďmi o délce zhruba stovek metrů až
+   kilometru, tedy na desítky délek lodi. Pro 600 m Daedalus odpovídá dostřel
+   asi 6–15 km. Hodnoty jsou k vyladění v testech.
+
+### 20.3 Později
+
+- Důstojníci na můstku se zasedacím pořádkem lodi a sdílenými prodlevami.
+- Kapitánská kariéra nebo role.
+- Typy lodí s rolemi (křižník, eskorta, vědecká loď, nosič) a vestavěnými
+  mechanikami.
+- Nosiče a stíhačky s povely.
+- Maskování pro frakce Klingonů a Romulanů.
+- Oddělení talíře jako kánonový moment.
+- Cílení podsystémů.
+- Mapa sektoru s warpem, náhodnými setkáními, hlídkami a „živou frontou“.
+- Úprava lodi (díly, materiály, registrace) a vizuální sloty.
+- Ovládání na ovladači (radiální menu, zámek cíle, volitelná automatizace).
+
+### 20.4 Výroba assetů
+
+- Sdílené materiály a stylové listy frakcí.
+- Díly lodí se socket body pro efekty.
+- Tabulka měřítek lodí v metrech.
+- Rozpočty výkonu a LOD.
+- Whitebox pro velké stanice.
+- Kánonové podklady pro ikonická místa (Země, Spacedock).
+
+### 20.5 Co nepřebírat
+
+- Monetizaci MMO: lockboxy, prémiové lodě, pay-to-win.
+- Inflaci síly a desítky vzácností a úrovní předmětů (Mk I–XV, Common–Epic).
+  Pro hru jednoho hráče stačí jednodušší vybavení.
+- Desítky aktivních schopností naráz. STO používá skoro 72 kláves. My chceme
+  menší a hlubší sadu, srozumitelnou pro začátečníka.
+- Honbu za poškozením za sekundu jako měřítko obtížnosti (Elite 30–50 k DPS).
+- Vlastní lodě, texty a assety STO. Kánonové lodě Star Treku zůstávají fikční
+  značkou CBS/Paramount. Platí dosavadní opatrnost s licencemi
+  (README a ENVIRONMENT).
+
+---
+
+## 21. Otevřené otázky a co ověřit přímým pozorováním
+
+Tyhle údaje veřejné texty nedávají. Nejlépe je zjistit nahrávkou hry STO
+(60 FPS) s poznamenanými časy, nebo měřením na kvalitním videu.
+
+| Otázka | Proč je důležitá |
+| --- | --- |
+| Úhel a rychlost automatického náklonu při zatáčení, rychlost vyrovnání | vizuální pocit letu |
+| Vyrovnává se kopání samo po puštění W/S? Jaký je skutečný limit kopání? | ovládání a kamera |
+| Časy zrychlení a zastavení u velké lodi, skutečné klouzání | ladění inertie |
+| Rychlost plného impulsu a warpu ve viditelných jednotkách | měřítko vesmíru |
+| Velikost map soustav, hranice, vzdálenosti planet | návrh soustavy Slunce–Země |
+| Vzhled zásahu štítu (tvar, rozvlnění, barva, sektor) | efekt štítu |
+| Vizuální stavy poškození trupu | čitelnost stavu lodi |
+| Vzdálenosti a úhly kamery, chování kamery v zámku cíle | kamera |
+| Zvuky zbraní a lodí | atmosféra (ve zdrojích chybí) |
+
+Dále je vhodné:
+
+- přečíst živou wiki stowiki.net, pokud k ní uživatel získá přístup
+  (nové stránky po roce 2023),
+- projít oficiální patch notes Season 13 (velké vyvážení),
+- přečíst vývojářské blogy, které jsem jen indexoval. Rejstřík 6 026 článků
+  lze znovu stáhnout přes API (kapitola 2.1).
+
+---
+
+## 22. Poznámky k rozsahu a postupu
+
+- Přečtené zdroje:
+  - přes 30 oficiálních článků (2008–2026) z rejstříku 6 026 článků,
+  - 6 rozhovorů s vývojáři,
+  - asi 35 archivních stránek komunitní wiki,
+  - několik hráčských diskusí.
+- Unreal, Blender, kompilaci ani hru jsem nespouštěl. Codex mezitím na stejném
+  počítači pracuje na letové scéně.
+- Dokument je samostatná rešerše na vlastní větvi. Neměnil jsem INDEX, zadání
+  ani společné soubory. Pokud ji Codex chce vést jako číslovaný úkol, může jí
+  přidělit číslo.
+- Žádný text, obrázek ani model STO jsem do repozitáře nekopíroval. Citace jsou
+  krátké a ostatní je převyprávěné.
