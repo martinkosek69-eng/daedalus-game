@@ -1,7 +1,7 @@
 {
   "sourceSHA256": "c7c670ff703842e2d9e1525bcfba44682de05705defbc74743d1cd66fd8335cd",
-  "blendSHA256": "d068ecec4ab70f312f5c3e09bac21990ea0741af1712e591a08fa2c81ee78e6b",
-  "glbSHA256": "10c14b8f245bb736662e1b2b9b436ddbdb88d52da87797fda959b5e16006825b",
+  "blendSHA256": "8f5c884e02c1d0f0b8f16a67d7bc0a3b340d006fea487bf33da46e8b8ed3aab8",
+  "glbSHA256": "9db590a7a56606ad40ddcbb0bc093732ea8f73726139f846e65be698b86e612c",
   "engineGlowGlbSHA256": "1326b654f5ccedc7fb89295af038adbbdfddbc2a7cd609c83f593d4ecfe3b1a4",
   "dimensionsMetres": [
     600.0001,
@@ -28,12 +28,14 @@
   "materialAssignment": {
     "engineMetalFaces": 7916,
     "hangarInteriorFaces": 156,
-    "bowLightFaces": 38
+    "bowLightFaces": 38,
+    "siloOrangeFaces": 2336
   },
   "engineOutlets": 6,
   "mountGroups": {
+    "asgard_beams": 4,
     "bow_vls": 16,
-    "dorsal_railguns": 28,
+    "dorsal_railguns": 26,
     "f302_bays": 2,
     "ventral_railguns": 12
   },
