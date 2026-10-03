@@ -298,7 +298,7 @@ for b in sorted(top_turrets, key=lambda b: (b['a'], b['b'])): add_turret(b, +1, 
 for b in sorted(bottom_turrets, key=lambda b: (b['a'], b['b'])): add_turret(b, -1, 'ventral_railguns')
 for i, s in enumerate(sorted(silos, key=lambda s: (-s['a'], s['b']))):
     mounts.append({'kind': 'missile_silo', 'group': 'bow_vls', 'centerMetres': [round(s['a'], 2), round(s['b'], 2), round(s['surface'], 2)],
-                   'hatchSizeMetres': [round(s['extentA'], 2), round(s['extentB'], 2)], 'forwardAxis': [0, 0, 1], 'upAxis': [-1, 0, 0],
+                   'hatchSizeMetres': [round(s['extentA'], 2), round(s['extentB'], 2)], 'forwardAxis': [0, 0, 1], 'upAxis': [1, 0, 0],
                    'launchDirection': [0, 0, 1], 'intendedMovingMesh': 'hatch door optional; missile spawns at centre',
                    'referenceURL': 'https://stargate.fandom.com/wiki/BC-304#Missiles (16 VLS missile tubes; archived 2024-01-12)',
                    'confidence': 'high for zone and count (16 modelled recesses match 16 VLS); door detail interpretive'})
@@ -317,12 +317,17 @@ for m in mounts:
 mount_col = bpy.data.collections.new('WeaponMounts'); scene.collection.children.link(mount_col)
 for m in mounts:
     e = bpy.data.objects.new('MOUNT_' + m['mountID'], None); mount_col.objects.link(e)
-    e.empty_display_type = 'SINGLE_ARROW' if m['kind'] != 'turret' else 'ARROWS'; e.empty_display_size = 6
-    e.location = m['centerMetres']
+    e.empty_display_type = 'ARROWS'; e.empty_display_size = 6
     fwd = Vector(m['forwardAxis']); upv = Vector(m['upAxis']); rgt = upv.cross(fwd)
-    e.matrix_world = Matrix((list(fwd) + [0], list(rgt) + [0], list(upv) + [0], [0, 0, 0, 1])).transposed() @ Matrix.Identity(4)
-    e.location = m['centerMetres']
+    M = Matrix.Identity(4)
+    M.col[0] = (*fwd, 0); M.col[1] = (*rgt, 0); M.col[2] = (*upv, 0); M.col[3] = (*m['centerMetres'], 1)
+    e.matrix_world = M
     for k2 in ('mountID', 'kind', 'group'): e[k2] = m[k2]
+bpy.context.view_layer.update()
+for m in mounts:   # empties must carry exactly the JSON frame (local +X = forwardAxis, +Z = upAxis)
+    mw = bpy.data.objects['MOUNT_' + m['mountID']].matrix_world
+    assert (mw.col[0].xyz - Vector(m['forwardAxis'])).length < 1e-4 and (mw.col[2].xyz - Vector(m['upAxis'])).length < 1e-4
+    assert (mw.translation - Vector(m['centerMetres'])).length < 1e-3, m['mountID']
 live('Krok 4: zmerene body zbrani (sipky)')
 
 # ---------------------------------------------------------------- 7. save, export, reopen checks
@@ -374,6 +379,8 @@ engine_manifest = FX['engine_manifest'](engines)
 weapon_manifest = {
     'version': 1, 'units': 'metres', 'coordinateSystem': 'ship-local, +X forward, +Z up, origin = hull bounding-box centre (same as Daedalus.glb)',
     'method': 'ray-cast height maps (0.5 m grid) with top-hat (domes) / bottom-hat (recesses) detection on the unchanged hull',
+    'axisConvention': 'forwardAxis = mount local +X (turret barrel rest / silo launch / bay exit); upAxis = local +Z (turret yaw axis); empties MOUNT_<id> in Daedalus.blend carry the same frame',
+    'azimuthConvention': 'traverseFreeAzimuthDeg: degrees about the ship +Z, 0 = +X bow, 90 = +Y port; inclusive [start, end] ranges sampled every 5 deg at 5 deg elevation; a negative start wraps through 0 (e.g. [-295, 25] = 65..360 and 0..25)',
     'notes': ['Positions are measured modelled features, not canon proofs. Wiki lists 32 railguns and 16 VLS tubes; a fan sheet lists 26 twin railguns. The model contains its own dome count (see group counts).',
               'Turret mounts: centre = dome base on the hull; upAxis is the turret yaw axis; forwardAxis is the rest direction of the barrels.',
               'No turret/barrel geometry was added (user instruction: do not change the model). intendedMovingMesh names are proposals for later separate meshes.',

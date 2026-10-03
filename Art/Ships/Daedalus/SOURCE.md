@@ -23,23 +23,33 @@ with the source base factor; imported dimensions must be60000cm along +X.
 
 Modifications by this project to the CC BY-NC 4.0 work above (credit retained):
 
-- **Geometry unchanged.** The hull is rebuilt from `Original/daedalus.glb`
-  with the same steps and fittings as the baseline. The script asserts the
-  baseline counts: 223458 triangles and 504598 vertices, 600 × 378.53 × 92.61 m.
+- **Hull = exact Astrofossil geometry.** The hull is rebuilt from
+  `Original/daedalus.glb` (axis conversion and join only). The script asserts
+  exactly 222330 triangles, 600 × 378.53 × 92.61 m, and the same count after
+  re-importing the export. Proportions are unchanged.
+- **Baseline fittings removed or split (user decision).** The baseline added
+  14 dark hatch squares and 36 vent slats that are not part of the original
+  model. At the user's request they are removed. The 30 baseline window boxes
+  keep their positions but are no longer welded into the hull. They are the
+  separate object `Daedalus_WindowLights` in `DaedalusLights.glb`.
 - **New hull colour.** COLOR_0 now holds a reference-based palette (see
-  REFERENCES.md): dark charcoal with an olive cast, lighter sunlit decks,
-  dark and light plate patches, dark greebles. Baked ambient occlusion adds
-  recess contrast. The hull slot base factor is white.
-- **Material slots.** The baseline names stay first, then new slots:
+  REFERENCES.md): dark grey with an olive cast, lighter sunlit decks, dark and
+  light plate patches, and dark greebles. Baked ambient occlusion adds recess
+  contrast. The hull slot base factor is white, so the Unreal parent material
+  can keep multiplying COLOR_0 by the base factor.
+- **Material slots on existing faces.** The hull uses `Daedalus_Armor`,
   `Daedalus_EngineMetal`, `Daedalus_HangarInterior` (warm emissive bay
-  interiors) and `Daedalus_LightWhite` (bow light strip). These are assigned to
-  existing faces only.
-- **Engine glow.** A separate effect, `DaedalusEngineGlow.glb`, with six
-  `<id>_Glow` objects sized from the measured outlets (`ENGINE_MOUNTS.json`).
-  It is not welded into the hull.
+  interiors) and `Daedalus_LightWhite` (bow light strip). There are no texture
+  files.
+- **Effects outside the hull.**
+  - `DaedalusEngineGlow.glb` holds six `<id>_Glow` objects sized from the
+    measured outlets (`ENGINE_MOUNTS.json`). Each has its origin at the outlet
+    centre and exhausts along local −X.
+  - `DaedalusLights.glb` holds the window lights.
+  - Both share the hull's coordinate frame, so they need no offset.
 - **Weapon mounts.** Measured weapon and launch mounts are in
-  `WEAPON_MOUNTS.json`, with empties in the `.blend`. No turret or barrel
-  geometry was added.
+  `WEAPON_MOUNTS.json`, with matching `MOUNT_<id>` empties in the `.blend`.
+  No turret or barrel geometry was added.
 
 Reproduce with:
 

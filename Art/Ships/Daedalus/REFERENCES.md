@@ -48,17 +48,24 @@ colour or counts.
 ## Mapping to the model (approximations)
 
 - **Hull colour.** Encoded in vertex colour COLOR_0 per face. Orientation
-  palette: top `#5c615e`, sides `#464b48`, under `#2f3433`. Sides and undersides
-  get an olive tint. Plates are ×0.62 for a dark patch and ×1.20 for a light
-  patch over 23 × 17 m cells, with fine 6.5 × 4.5 m variation. Small deck
-  greebles are ×0.66. Baked ambient occlusion (7 m distance) darkens recesses.
-  This is an artistic approximation of the stills, not sampled colour.
+  palette: top `#777d7a`, sides `#5a605d`, under `#3f4442`. Sides and
+  undersides get an olive tint from `#868f8a`.
+  - Plates: ×0.55 for a dark patch and ×1.25 for a light patch over 23 × 17 m
+    cells, with fine 6.5 × 4.5 m variation.
+  - Small deck greebles are ×0.66.
+  - The engine section is ×0.82 and the pods ×0.93.
+  - Baked ambient occlusion (7 m distance) darkens recesses.
+  This is an artistic approximation of the stills, not sampled colour. The
+  first, darker attempt read too green and too black in renders, so it was
+  lightened.
 - **Hangar interiors.** `Daedalus_HangarInterior` is a warm emissive material
   on the faces inside the measured bay openings.
 - **Bow light strip.** `Daedalus_LightWhite` on the back face of the measured
   horizontal bow slot.
-- **Windows.** The baseline fitting windows stay at the same positions, now
-  brighter cool white.
+- **Windows.** The 30 baseline window boxes keep their positions as a
+  separate cool-white emissive object in `DaedalusLights.glb`. The baseline
+  dark hatch squares and vent slats are not in the original model, so they were
+  removed at the user's request. Their dark squares did not match the stills.
 - **Engines.** Nozzle faces use darker metal. The glow is a separate effect
   (`DaedalusEngineGlow.glb`) sized from the measured outlets.
 - **Not done.** Lilac and red point lights are not placed; they would need a
