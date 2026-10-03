@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "units": "metres",
+  "coordinateSystem": "ship-local, +X forward, +Z up, origin = hull bounding-box centre",
+  "method": "ray-cast depth map from behind; radial profile of 24 rays per radius; lip = most rearward ring",
+  "glowExport": "DaedalusEngineGlow.glb (objects <id>_Glow; origin at outlet centre, exhaust along local -X)",
+  "outlets": [
+    {
+      "id": "ENG_Pod_Port_Outer",
+      "centreMetres": [
+        -277.208,
+        154.14,
+        -27.878
+      ],
+      "outwardAxis": [
+        -1,
+        0,
+        0
+      ],
+      "upAxis": [
+        0,
+        0,
+        1
+      ],
+      "apertureDiameterMetres": 13.0,
+      "lipOuterDiameterMetres": 15.0,
+      "recessDepthMetres": 5.22,
+      "glowObject": "ENG_Pod_Port_Outer_Glow"
+    },
+    {
+      "id": "ENG_Pod_Port_Inner",
+      "centreMetres": [
+        -277.208,
+        127.02,
+        -27.885
+      ],
+      "outwardAxis": [
+        -1,
+        0,
+        0
+      ],
+      "upAxis": [
+        0,
+        0,
+        1
+      ],
+      "apertureDiameterMetres": 13.0,
+      "lipOuterDiameterMetres": 15.0,
+      "recessDepthMetres": 5.22,
+      "glowObject": "ENG_Pod_Port_Inner_Glow"
+    },
+    {
+      "id": "ENG_Main_Port",
+      "centreMetres": [
+        -300.0,
+        53.575,
+        -24.064
+      ],
+      "outwardAxis": [
+        -1,
+        0,
+        0
+      ],
+      "upAxis": [
+        0,
+        0,
+        1
+      ],
+      "apertureDiameterMetres": 17.5,
+      "lipOuterDiameterMetres": 21.5,
+      "recessDepthMetres": 6.66,
+      "glowObject": "ENG_Main_Port_Glow"
+    },
+    {
+      "id": "ENG_Main_Starboard",
+      "centreMetres": [
+        -300.0,
+        -53.575,
+        -24.064
+      ],
+      "outwardAxis": [
+        -1,
+        0,
+        0
+      ],
+      "upAxis": [
+        0,
+        0,
+        1
+      ],
+      "apertureDiameterMetres": 17.5,
+      "lipOuterDiameterMetres": 21.5,
+      "recessDepthMetres": 6.66,
+      "glowObject": "ENG_Main_Starboard_Glow"
+    },
+    {
+      "id": "ENG_Pod_Starboard_Inner",
+      "centreMetres": [
+        -277.208,
+        -126.971,
+        -27.894
+      ],
+      "outwardAxis": [
+        -1,
+        0,
+        0
+      ],
+      "upAxis": [
+        0,
+        0,
+        1
+      ],
+      "apertureDiameterMetres": 13.0,
+      "lipOuterDiameterMetres": 15.0,
+      "recessDepthMetres": 5.22,
+      "glowObject": "ENG_Pod_Starboard_Inner_Glow"
+    },
+    {
+      "id": "ENG_Pod_Starboard_Outer",
+      "centreMetres": [
+        -277.208,
+        -154.103,
+        -27.882
+      ],
+      "outwardAxis": [
+        -1,
+        0,
+        0
+      ],
+      "upAxis": [
+        0,
+        0,
+        1
+      ],
+      "apertureDiameterMetres": 13.0,
+      "lipOuterDiameterMetres": 15.0,
+      "recessDepthMetres": 5.22,
+      "glowObject": "ENG_Pod_Starboard_Outer_Glow"
+    }
+  ]
+}
