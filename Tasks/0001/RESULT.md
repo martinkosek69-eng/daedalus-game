@@ -38,7 +38,36 @@ Ve výchozím commitu jsem přečetl:
 - Git 2.56.0 funguje. `git push --dry-run` na pracovní větev prošel s uloženým
   přihlášením a hesla ani tokeny jsem nevypisoval.
 
-## Stav
+## První průběžný checkpoint
 
-První průběžný checkpoint: tento soubor a PROGRESS ve stavu IN_PROGRESS.
-Výsledek odeslání doplním v dalším kroku.
+- Obsah: tento soubor (bez této kapitoly) a PROGRESS ve stavu IN_PROGRESS.
+- Odeslání: PROŠLO normálním `git push -u origin task/0001-github-handoff`.
+  Šlo o novou vzdálenou větev, bez force push.
+- SHA prvního checkpointu: `2e196dcd8c7f5a333934dc88ca4ed61824299a21`
+- Kontrola: lokální `HEAD` se shodoval s
+  `git ls-remote origin refs/heads/task/0001-github-handoff`.
+
+## Druhý checkpoint
+
+Obsahuje toto doplnění RESULT, vyplněný HANDOFF a PROGRESS ve stavu
+READY_FOR_REVIEW. Jeho SHA zde záměrně není (kruhový odkaz). Je to poslední
+commit vzdálené větve `task/0001-github-handoff`.
+
+## Postup pro Codex
+
+1. `git fetch origin task/0001-github-handoff`
+2. Poslední checkpoint: `git rev-parse origin/task/0001-github-handoff`
+   nebo `git ls-remote origin refs/heads/task/0001-github-handoff`.
+3. Přečti soubory přímo z vzdálené větve, bez přepínání své pracovní kopie:
+   - `git show origin/task/0001-github-handoff:Tasks/0001/RESULT.md`
+   - `git show origin/task/0001-github-handoff:Tasks/0001/PROGRESS.md`
+   - `git show origin/task/0001-github-handoff:Tasks/0001/HANDOFF.md`
+4. Rozsah změn ověř příkazem
+   `git diff --name-status e097331d24e234e3997cd1fccba333521e4ad57d origin/task/0001-github-handoff`.
+   Očekávané jsou jen tři soubory v `Tasks/0001/`.
+5. Historii ověř příkazem
+   `git log --oneline e097331d24e234e3997cd1fccba333521e4ad57d..origin/task/0001-github-handoff`.
+   Očekávané jsou dva commity úkolu 0001.
+
+Zda Codex výsledek skutečně stáhl a přečetl, ověřuje Codex sám. Pracovník
+to nevydává za otestované.

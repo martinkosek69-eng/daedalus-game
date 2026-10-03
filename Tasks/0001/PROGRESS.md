@@ -1,31 +1,34 @@
 # Průběžný stav úkolu 0001
 
-- Stav: IN_PROGRESS
+- Stav: READY_FOR_REVIEW
 - Pracovník: Claude Code (na pokyn uživatele)
 - Pracovní větev: `task/0001-github-handoff`
-- Poslední aktualizace: 2026-10-03 17:47, Europe/Prague
-- Sdílení posledního checkpointu: tento commit je první checkpoint; push a shoda
-  SHA se ověřují hned po jeho vytvoření
+- Poslední aktualizace: 2026-10-03 17:50, Europe/Prague
+- Sdílení posledního checkpointu: první checkpoint
+  `2e196dcd8c7f5a333934dc88ca4ed61824299a21` odeslán a ověřen; tento druhý
+  checkpoint je poslední HEAD vzdálené větve
 
 ## Hotové části a uložené soubory
 
-- Ověřeno zadání, Git a možnost push (dry-run).
-- Založena pracovní větev z `e097331d24e234e3997cd1fccba333521e4ad57d`.
-- Vytvořen `Tasks/0001/RESULT.md` s číslem úkolu, klientem, výchozím commitem,
-  potvrzením vlastní kopie, seznamem přečtených pokynů a potvrzovacím řádkem.
+- `Tasks/0001/RESULT.md`: kompletní, včetně postupu pro Codex
+- `Tasks/0001/HANDOFF.md`: vyplněný, READY_FOR_REVIEW
+- `Tasks/0001/PROGRESS.md`: tento soubor
 
 ## Stručný záznam postupu
 
-1. Načtení vzdáleného stavu a kontrola, že pracovní větev ještě neexistuje.
-2. Založení větve přímo z výchozího commitu, bez sledování cizí větve.
-3. Vytvoření RESULT.md a aktualizace tohoto souboru.
+1. Ověřeno zadání na `codex/shared-agent-workflow` (`e097331d24e2...`), Git
+   a možnost push. Pracovní větev předtím na GitHubu neexistovala.
+2. Založena větev `task/0001-github-handoff` přímo z výchozího commitu.
+3. První checkpoint (RESULT + PROGRESS IN_PROGRESS) odeslán normálním push.
+   Lokální a vzdálené SHA se shodovaly.
+4. Doplněn RESULT a HANDOFF, PROGRESS nastaven na READY_FOR_REVIEW, odeslán
+   druhý checkpoint.
 
 ## Rozpracované části a překážky
 
-Zbývá doplnit RESULT (výsledek prvního checkpointu, postup pro Codex),
-vyplnit HANDOFF a odeslat druhý checkpoint. Překážky žádné.
+Žádné. Čeká se na kontrolu Codexem.
 
 ## Přesný další krok pro pokračování
 
-Ověřit, že vzdálená větev `task/0001-github-handoff` obsahuje první checkpoint.
-Potom pokračovat krokem 4 z BRIEF.md.
+Codex stáhne `origin/task/0001-github-handoff` a postupuje podle kapitoly
+„Postup pro Codex“ v RESULT.md. Potom rozhodne o přijetí v INDEX.
