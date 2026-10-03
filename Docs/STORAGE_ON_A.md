@@ -31,3 +31,5 @@ Windows, SDK a malé soubory klientských aplikací mohou zůstat na systémové
   kořen nových pracovních kopií lze zvolit v nastavení aplikace.
 - [Unreal Zen storage](https://dev.epicgames.com/documentation/en-us/unreal-engine/using-zen-storage-server-as-cooked-output-store-for-unreal-engine):
   místní cesty a proměnné pro umístění cache.
+
+Revize základů doplnila explicitní A-based UserDir/SaveDir pro samostatnou hru a uebp_LogFolder/uebp_FinalLogFolder pro balení. Logy prvního balení vzniklé v původní výchozí složce byly zachovány na A; další balení používá ignorovanou .local/foundation/AutomationLogs. Ověření je v CURRENT_STATE.md.

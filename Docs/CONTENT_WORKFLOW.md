@@ -20,7 +20,7 @@ just the LFS pointer. Assign the binary owner before concurrent work.
 
 The current original cruiser is a reusable synthetic geometry fixture, generated
 by Tools/Create-FoundationAssets.py and imported by Prepare-FoundationContent.py.
-It has no third-party models/textures. Publication does not establish a new
+The importer verifies scale and reconciles its flat color from the GLB into the owned material, including reimport. The initial adapter maps two fixture types; add and review the production mesh mapping when integrating new ship models. It has no third-party models/textures. Publication does not establish a new
 license for unrelated franchise content; the old prototype assets remain outside
 this public repository.
 
