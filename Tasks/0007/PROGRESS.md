@@ -1,5 +1,7 @@
 # Task 0007 progress
 
-IN_PROGRESS. Original prototype GLB and provenance copied without editing backup.
-Background Blender import confirmed 222330 triangles, six hull sections, no UVs.
-Recovering orientation and runtime livery into one editable/exported mesh.
+READY_FOR_REVIEW — Codex completed original source recovery after ownership
+transfer. Saved/reopened Blender source, exported GLB and inspected neutral
+preview. Unreal verifies60000cm and renders the actual detailed mesh. Original
+backup untouched. Photo-based repaint and engine/weapons refinements belong to
+separate task0008; Blender/source ownership explicitly reserved for Claude.

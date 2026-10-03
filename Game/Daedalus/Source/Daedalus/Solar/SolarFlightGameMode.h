@@ -1,0 +1,107 @@
+#pragma once
+#include "CoreMinimal.h"
+#include "GameFramework/GameModeBase.h"
+#include "GameFramework/Pawn.h"
+#include "GameFramework/HUD.h"
+#include "DaedalusFlightModel.h"
+#include "SolarFlightGameMode.generated.h"
+
+class UCameraComponent;
+class UStaticMeshComponent;
+class UInstancedStaticMeshComponent;
+class UMaterialInterface;
+class UMaterialInstanceDynamic;
+class UStaticMesh;
+
+UCLASS()
+class DAEDALUS_API ASolarFlightPawn : public APawn
+{
+    GENERATED_BODY()
+public:
+    ASolarFlightPawn();
+    virtual void Tick(float DeltaSeconds) override;
+    virtual void SetupPlayerInputComponent(UInputComponent* Input) override;
+    void ResetCamera();
+    UPROPERTY() TObjectPtr<UCameraComponent> Camera;
+    double CameraDistanceMetres = 1100;
+private:
+    float YawInput = 0, PitchInput = 0;
+    bool bBrake = false, bOrbit = false;
+    float OrbitYaw = 0, OrbitPitch = 0;
+    bool bCameraInitialized = false;
+    void Yaw(float V) { YawInput = V; }
+    void Pitch(float V) { PitchInput = V; }
+    void MouseX(float V); void MouseY(float V);
+    void OrbitOn() { bOrbit = true; } void OrbitOff() { bOrbit = false; }
+    void BrakeOn(); void BrakeOff() { bBrake = false; }
+    void MoreThrottle(); void LessThrottle(); void ToggleThrottle();
+    void ZoomIn(); void ZoomOut();
+    void Slow(); void Fast(); void ResetFlight(); void PauseFlight(); void ExitGame();
+};
+
+UCLASS()
+class DAEDALUS_API ASolarFlightHUD : public AHUD
+{
+    GENERATED_BODY()
+public:
+    virtual void DrawHUD() override;
+};
+
+struct FSolarFlightProfile
+{
+    FString Name;
+    Daedalus::FFlightConfig Config;
+};
+
+UCLASS()
+class DAEDALUS_API ASolarFlightGameMode : public AGameModeBase
+{
+    GENERATED_BODY()
+public:
+    ASolarFlightGameMode();
+    virtual void BeginPlay() override;
+    virtual void Tick(float DeltaSeconds) override;
+    Daedalus::FFlightModel Flight;
+    bool bReady = false, bPaused = false;
+    FString Message;
+    TArray<FSolarFlightProfile> Profiles;
+    int32 ProfileIndex = 0;
+    double EarthRadius = 6371000, SunRadius = 695700000;
+    FVector3d SunPosition;
+    double FrameMilliseconds = 0;
+    void ChangeThrottle(double Step);
+    void SetProfile(int32 Index);
+    void ResetFlight();
+    void TogglePause();
+    int32 StarCount() const;
+private:
+    Daedalus::FFlightState InitialState;
+    TArray<Daedalus::FFlightBody> Bodies;
+    UPROPERTY() TObjectPtr<UStaticMesh> ShipAsset;
+    UPROPERTY() TObjectPtr<UStaticMesh> SphereAsset;
+    UPROPERTY() TObjectPtr<UStaticMesh> PlaneAsset;
+    UPROPERTY() TObjectPtr<UMaterialInterface> EarthMaterial;
+    UPROPERTY() TObjectPtr<UMaterialInterface> SunMaterial;
+    UPROPERTY() TObjectPtr<UMaterialInterface> AtmosphereMaterial;
+    UPROPERTY() TObjectPtr<UMaterialInterface> StarMaterial;
+    UPROPERTY() TObjectPtr<UMaterialInterface> DustMaterial;
+    UPROPERTY() TObjectPtr<UStaticMeshComponent> Ship;
+    UPROPERTY() TObjectPtr<UStaticMeshComponent> Earth;
+    UPROPERTY() TObjectPtr<UStaticMeshComponent> Sun;
+    UPROPERTY() TObjectPtr<UStaticMeshComponent> Atmosphere;
+    UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Stars;
+    UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Dust;
+    UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> EarthDynamic;
+    UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> AtmosphereDynamic;
+    TArray<FVector3d> DustPositions;
+    bool LoadSettings();
+    bool CreateScene();
+    void UpdateScene(float DeltaSeconds);
+    UStaticMeshComponent* MakeMesh(UStaticMesh* Asset, UMaterialInterface* Material);
+    FString ProbeDirectory;
+    int32 ProbeFrame = 0;
+    bool bProbePassed = true;
+    double ProbeYaw = 0, ProbePitch = 0, ProbeClock = 0;
+    TArray<double> ProbeFrameTimes;
+    void TickProbe();
+};

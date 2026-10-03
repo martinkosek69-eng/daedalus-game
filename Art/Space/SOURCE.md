@@ -2,8 +2,13 @@
 
 Earth day/night/cloud maps and Sun surface: Solar System Scope / INOVE,
 https://www.solarsystemscope.com/textures/ , CC BY 4.0,
-https://creativecommons.org/licenses/by/4.0/ . Existing 2k files recovered from
-the user's original prototype; imported as engine textures. Colors/shading are
+https://creativecommons.org/licenses/by/4.0/ . Sun2k recovered from
+the user's original prototype. Earth maps replaced with the provider's unchanged
+8k originals for sharper rendering on 2026-10-03:
+https://www.solarsystemscope.com/textures/download/8k_earth_daymap.jpg ,
+https://www.solarsystemscope.com/textures/download/8k_earth_nightmap.jpg ,
+https://www.solarsystemscope.com/textures/download/8k_earth_clouds.jpg .
+These are imported as engine textures. Colors/shading are
 adapted for the Unreal flight laboratory; clouds are a static texture layer.
 
 Stars: David Nash / Astronexus HYG 4.1, CC BY-SA 4.0. The original prototype's

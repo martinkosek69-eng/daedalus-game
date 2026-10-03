@@ -54,6 +54,13 @@ Advance preserves backlog; pause queues no new time. Backlog and unsupported
 input must be visible to diagnostics. This is not a promise of unlimited CPU
 capacity. Introduce interpolation/adaptive scheduling based on measured needs.
 
+The separate solar flight laboratory uses `FFlightModel` at 1/120 s for assisted
+steering and swept surface safety. Its authoritative state is a value owned by
+the solar adapter; it has no persistent world identity yet. It does not replace
+or write the foundation subsystem's saved ship state. Integrating the chosen
+flight tuning into persistent world ships is an explicit future change; do not
+keep two independently editable persistent versions of the same ship.
+
 Inactive-system ships currently retain their state and do not run detailed AI,
 movement or regeneration. Offscreen fleets/economy will need a separate coarse
 time/event policy, not full scene Actors in every system. Per-system ship indexes exclude remote instances from each detailed step; active queries and

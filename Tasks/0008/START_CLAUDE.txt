@@ -1,0 +1,25 @@
+Převezmi úkol 0008 v repozitáři https://github.com/martinkosek69-eng/daedalus-game .
+Aktualizované zadání je Tasks/0008/BRIEF.md na větvi codex/solar-flight,
+nikoli na main. Nejprve fetch a přečti poslední publikované zadání a společná
+pravidla. Pracuj ve své vlastní kopii na A: a větvi
+task/0008-daedalus-engine-effects. Pokud jsi už začal, zachovej svou větev a
+výchozí commit, jen načti rozšířené zadání a zaznamenej jeho commit.
+
+Úkol se nově týká celé úpravy původního Daedala v Blenderu podle internetových
+fotografií: správnější barvy a materiály, detaily trupu, motory, místa věží
+a přední raketová sila. Jde o SG BC-304 Daedalus ze Stargate, model Astrofossil
+z našeho původního webového prototypu, nikoli federální třídu Daedalus ze STO.
+Zachovej základní siluetu a délku 600 m. Prostuduj fotografie z více stran,
+uveď odkazy a odděl potvrzené detaily od nejistých návrhů.
+
+Místa zbraní a motorů zaměř do samostatných přehledů podle BRIEF. Budoucí
+otáčivé věže musejí mít samostatné díly a správné středy otáčení; raketová sila
+vyznač tak, aby z nich později mohly skutečně odlétat rakety. Samotnou střelbu
+zatím neprogramuj. Motorové efekty exportuj odděleně a střídmě.
+
+Ty máš vyhrazený Blender na pozadí a zdroje Art/Ships/Daedalus podle povolených
+cest v BRIEF. Codex současně pracuje v Unrealu: neotevírej ani neovládej Unreal,
+nekompiluj hru a nesahej do jeho pracovní kopie. Ulož skutečné .blend a exporty,
+ověř opětovné načtení, rozměry, materiály a obrázky ze všech hlavních stran.
+Průběžně commituj a pushuj malé použitelné kroky včetně LFS. Závěrem předej
+PROGRESS a HANDOFF s výsledky kontrol a limity. Neslučuj do main.

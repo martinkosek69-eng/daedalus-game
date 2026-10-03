@@ -1,5 +1,27 @@
 # Current foundation state — 2026-10-03
 
+## First solar flight lab
+
+`codex/solar-flight` adds a reviewed Windows playable scene using the recovered
+600 m Daedalus, Earth, Sun,8920 prototype HYG stars and STO-inspired assisted
+flight. See [SOLAR_FLIGHT](SOLAR_FLIGHT.md) and [task0004 handoff](../Tasks/0004/HANDOFF.md).
+The final15 automation groups succeed (11 foundation +4 flight), packaged
+controller/render probe passes and actual Earth/turn/Sun images were inspected.
+The new IoStore package also passes the foundation's separate-process restart
+write/read checks. Repeat asset preparation hits SHA256 cache and preserves the
+existing SolarFlight map. Flight-lab pose is intentionally not saved yet.
+
+Task0005 research is accepted with explicit source/measurement limitations.
+The broader STO research is advisory, not approval of future combat or UI.
+Task0007 original model recovery is technically verified; this is not approval
+of the final paint. Task0008 assigns photo-based repaint/detail, engines and
+weapon attachment points to Claude after the user starts it. No0008 delivery
+was present on the remote at review time. Codex owns Unreal, Claude has reserved
+background Blender/source ownership. Use the task index and current worker
+handoff when resuming. Main remains unmerged.
+
+## Existing accepted foundation
+
 The implemented foundation is ACCEPTED by the coordinator on
 `codex/game-foundation`. It is a reviewable delivery; main has not been merged.
 Use this branch and its latest published commit when resuming foundation work.
