@@ -8,7 +8,9 @@ constitute user approval of art. Its saved source and branch remain intact.
 Task0009 restores a separately generated original hull, per-pixel web armor,
 compact HUD, direct manual orbit and no temporal/motion-blur smear. Its separate
 package is Build-WebReference, selected by the existing play launcher.
-Final package, all15 groups,930-frame input/render checks and two-process
+All62 tracked source/assets were independently downloaded from GitHub and
+checked by SHA256/size after publication ca31f8e. Final package, all15 groups,
+930-frame input/render checks and two-process
 foundation restart pass. User art/control judgement remains pending; see
 [task0009 handoff](../Tasks/0009/HANDOFF.md).
 

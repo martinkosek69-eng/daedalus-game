@@ -53,3 +53,9 @@ d5846a1 stays on its worker branch and is not part of this comparison.
 
 Final foundation restart passed via WindowsPowerShell5.1:
 foundation-restart-76381027e16a4d52bec1be0ce7e95abe.
+
+Publication ca31f8e verified: remote branch HEAD matches. All62 tracked source/assets
+were fetched into a fresh independent LFS store and checked by SHA256 and size.
+Cached repeat Assets succeeds; checkout was clean. Existing draft PR3 was updated
+to describe the restored web presentation. The first upload timed out on its last
+object; normal retry completed without force push or loss of the prior objects.

@@ -6,3 +6,6 @@ probe pass; separate-process foundation restart passes through WindowsPowerShell
 Source export hashes/dependency closure and original dimensions verified.
 The launcher selects Build-WebReference; the running old Build stays untouched.
 See HANDOFF for evidence and remaining differences. No further helper work pending.
+
+Published ca31f8e; all62 tracked binary/source assets independently downloaded and
+verified from GitHub. Normal upload retry recovered a server timeout. PR3 updated.
