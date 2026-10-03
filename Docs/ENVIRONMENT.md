@@ -31,7 +31,7 @@ Codex používá `AGENTS.md`. `CLAUDE.md` importuje tento stejný soubor, aby
 nevznikaly dvě rozdílné sady pravidel. Registrace konfigurace vyžaduje načtení
 novou relací/restart MCP klienta. Oprava souboru již běžící Node proces nezmění.
 
-Unreal MCP běží v otevřeném editoru na loopback adrese. Je experimentální;
+Unreal MCP běží v otevřeném editoru na loopback adrese. Spouštěč `Tools/Invoke-Foundation.ps1 Editor` předává `-ModelContextProtocolStartServer`, takže spojení nezávisí na nezveřejněném osobním nastavení editoru. Samotné otevření projektu nemusí server zapnout. Je experimentální;
 seznam nástrojů není zárukou funkčnosti všech operací. V této revizi fungovaly
 čtení a změny kamery, vytvoření/odstranění objektu, PIE a snímek viewportu.
 Před použitím načtěte skutečné schéma. CaptureViewport v této instalaci potřebuje
@@ -73,7 +73,7 @@ testované ani doporučený výchozí režim pro tento projekt.
 
 Binární .umap, .uasset a .blend soubory nemají běžné textové slučování.
 Přidělte každému jednoho vlastníka. Git LFS již používáme; jeho serverové zámky
-a skutečný přenos LFS objektu na GitHub zatím ověřené nejsou. Před souběžným
+zatím ověřené nejsou; skutečný přenos zdrojového modelu a čtyř dalších binárních souborů ověřuje revize základů v CURRENT_STATE.md. Před souběžným
 vývojem obsahu doplňte a otestujte zámky nebo důsledné přidělování souborů.
 
 Výsledky předávejte přes změny ve větvi a kontrolu před sloučením do main.
@@ -130,4 +130,3 @@ Systémové komponenty a malé soubory klientských aplikací na C: přetrvají.
 - [Codex AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md): společné projektové pokyny.
 - [Claude Code MCP](https://code.claude.com/docs/en/mcp): projektová .mcp.json a klientská oprávnění.
 - [Claude Code memory](https://code.claude.com/docs/en/memory): import společných pokynů přes CLAUDE.md.
-

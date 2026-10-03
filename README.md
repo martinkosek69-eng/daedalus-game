@@ -31,7 +31,7 @@ From a checkout on A: on this PC:
 4. Start the AI client in the repository root. Claude Code uses `.mcp.json`.
    Codex uses `.codex/config.toml`. Both directly start the same Node helper.
 5. Build before opening the editor. Open `Game/Daedalus/Daedalus.uproject` from
-   the same checkout. MCP is available while this editor is running.
+   the same checkout. `./Tools/Invoke-Foundation.ps1 Editor` explicitly starts its local MCP server; a bare editor launch may leave the server disabled.
 
 No Claude session has yet been tested on this machine. Client-side trust and
 permissions, Git authentication, and Node PATH must be verified in each client.

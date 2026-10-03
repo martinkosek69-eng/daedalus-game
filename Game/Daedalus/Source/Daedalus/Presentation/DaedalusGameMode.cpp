@@ -81,26 +81,26 @@ void ADaedalusHUD::DrawHUD()
     auto* D = DomainFor(this);
     if (!Canvas || !D) return;
     DrawRect(FLinearColor(0.015f, 0.025f, 0.045f, 0.95f), 12, 12, 760, 222);
-    DrawText(TEXT("DAEDALUS | FOUNDATION | original diagnostic scene"), FLinearColor(0.4f, 0.8f, 1), 24, 22);
+    DrawText(TEXT("DAEDALUS | ZKUSEBNI ZAKLAD HRY"), FLinearColor(0.4f, 0.8f, 1), 24, 22);
     if (!D->bReady) { DrawText(D->LastMessage, FLinearColor::Red, 24, 48); return; }
     const auto& State = D->Simulation.GetSnapshot();
     const auto& Player = State.Ships.FindChecked(State.PlayerShipId);
-    DrawText(FString::Printf(TEXT("System: %s | Location: %s | Time: %.2f s %s"),
-        *Player.SystemId, State.PlayerLocationId.IsEmpty() ? TEXT("aboard ship") : *State.PlayerLocationId,
-        State.SimulationSeconds, State.bPaused ? TEXT("PAUSED") : TEXT("")), FLinearColor::White, 24, 47);
-    DrawText(FString::Printf(TEXT("Hull %.1f | Shield %.1f | Energy %.1f | Speed %.1f m/s | Active ships %d"),
+    DrawText(FString::Printf(TEXT("Soustava: %s | Misto: %s | Cas: %.2f s %s"),
+        *Player.SystemId, State.PlayerLocationId.IsEmpty() ? TEXT("na lodi") : *State.PlayerLocationId,
+        State.SimulationSeconds, State.bPaused ? TEXT("POZASTAVENO") : TEXT("")), FLinearColor::White, 24, 47);
+    DrawText(FString::Printf(TEXT("Trup %.1f | Stit %.1f | Energie %.1f | Rychlost %.1f m/s | Lodi v soustave %d"),
         Player.Hull, Player.Shield, Player.Energy, Player.VelocityMetresPerSecond.Length(), D->Simulation.GetActiveShipIds().Num()),
         FLinearColor::White, 24, 72);
-    DrawText(TEXT("WASD: translation | Q/E: down/up | SPACE: fire | T: test travel | B: transport/return"),
+    DrawText(TEXT("WASD: pohyb | Q/E: dolu/nahoru | MEZERNIK: strelba | T: presun | B: transport/zpet"),
         FLinearColor(0.8f, 0.85f, 0.9f), 24, 98);
-    DrawText(TEXT("F5: save | F9: load | P: pause | close window: quit"), FLinearColor(0.8f, 0.85f, 0.9f), 24, 122);
+    DrawText(TEXT("F5: ulozit | F9: nacist | P: pauza | zavreni okna: konec"), FLinearColor(0.8f, 0.85f, 0.9f), 24, 122);
     DrawText(D->LastMessage, FLinearColor(0.9f, 0.8f, 0.45f), 24, 149);
-    DrawText(FString::Printf(TEXT("Pending time: %.3f s | %s"), State.PendingSeconds, *D->Simulation.GetLastAdvanceError()),
+    DrawText(FString::Printf(TEXT("Nevypocteny cas: %.3f s | %s"), State.PendingSeconds, *D->Simulation.GetLastAdvanceError()),
         State.PendingSeconds > 1 ? FLinearColor::Yellow : FLinearColor::White, 24, 174);
     for (const FString& Id : D->Simulation.GetActiveShipIds()) if (Id != State.PlayerShipId)
     {
         const auto& Target = State.Ships.FindChecked(Id);
-        DrawText(FString::Printf(TEXT("Target: %s | Hull %.1f | Shield %.1f"), *Id, Target.Hull, Target.Shield), FLinearColor::White, 24, 198); break;
+        DrawText(FString::Printf(TEXT("Cil: %s | Trup %.1f | Stit %.1f"), *Id, Target.Hull, Target.Shield), FLinearColor::White, 24, 198); break;
     }
 }
 
@@ -119,6 +119,9 @@ void ADaedalusGameMode::BeginPlay()
 {
     Super::BeginPlay();
     Domain = DomainFor(this);
+    if (Domain && Domain->bReady)
+        for (const auto& Initial : Domain->Simulation.GetCatalog().InitialShips)
+            if (!Initial.bPlayer) GuardAnchors.Add(Initial.Id, Initial.PositionMetres);
     FString Smoke;
     if (FParse::Value(FCommandLine::Get(), TEXT("DaedalusSmoke="), Smoke)) { RunSmoke(Smoke); return; }
     FParse::Value(FCommandLine::Get(), TEXT("DaedalusVisualProbe="), ProbeDirectory);
@@ -144,6 +147,7 @@ void ADaedalusGameMode::RebuildScene()
     const auto& State = Domain->Simulation.GetSnapshot();
     const auto& Player = State.Ships.FindChecked(State.PlayerShipId);
     ADirectionalLight* Light = GetWorld()->SpawnActor<ADirectionalLight>();
+    Light->GetLightComponent()->SetMobility(EComponentMobility::Movable);
     Light->SetActorRotation(FRotator(-35, -20, 0)); Light->GetLightComponent()->SetIntensity(5); Environment.Add(Light);
     if (State.PlayerLocationId.IsEmpty())
     {
@@ -173,13 +177,14 @@ void ADaedalusGameMode::Tick(float DeltaSeconds)
     const auto& Before = Domain->Simulation.GetSnapshot();
     const FString ActiveSystem = Before.Ships.FindChecked(Before.PlayerShipId).SystemId;
     if (!Before.bPaused)
-        for (const auto& Initial : Domain->Simulation.GetCatalog().InitialShips)
+        for (const FString& Id : Domain->Simulation.GetActiveShipIds())
         {
-            const auto* Ship = Before.Ships.Find(Initial.Id);
-            if (Initial.bPlayer || !Ship || !Ship->IsAlive() || Ship->SystemId != ActiveSystem) continue;
+            const auto* Anchor = GuardAnchors.Find(Id);
+            const auto* Ship = Before.Ships.Find(Id);
+            if (!Anchor || !Ship || !Ship->IsAlive() || Ship->SystemId != ActiveSystem) continue;
             const auto& Definition = Domain->Simulation.GetCatalog().ShipDefinitions.FindChecked(Ship->DefinitionId);
             FString PilotError;
-            Domain->Simulation.SetShipFlightInput(Ship->Id, Daedalus::HoldPositionInput(*Ship, Definition, Initial.PositionMetres), PilotError);
+            Domain->Simulation.SetShipFlightInput(Ship->Id, Daedalus::HoldPositionInput(*Ship, Definition, *Anchor), PilotError);
         }
     Domain->Simulation.Advance(DeltaSeconds);
     bool Changed = AppliedRevision != Domain->SceneRevision;
@@ -231,6 +236,20 @@ void ADaedalusGameMode::RunSmoke(const FString& Mode)
     else if (Ok) { Error = TEXT("Unknown smoke mode"); Ok = false; }
     RebuildScene();
     Ok = Ok && bVisualAssetsValid && Ships.Num() == (Domain->Simulation.GetSnapshot().PlayerLocationId.IsEmpty() ? Domain->Simulation.GetActiveShipIds().Num() : 0);
+    if (Ok && Mode == TEXT("read"))
+    {
+        TArray<AActor*> Actors;
+        UGameplayStatics::GetAllActorsOfClass(GetWorld(), AActor::StaticClass(), Actors);
+        const int32 Baseline = Actors.Num();
+        for (int32 I = 0; I < 20 && Ok; ++I)
+        {
+            Ok = Domain->Travel(); RebuildScene();
+            Ok = Ok && bVisualAssetsValid && Ships.Num() == Domain->Simulation.GetActiveShipIds().Num();
+        }
+        UGameplayStatics::GetAllActorsOfClass(GetWorld(), AActor::StaticClass(), Actors);
+        Ok = Ok && Actors.Num() == Baseline && Domain->Simulation.GetSnapshot().Ships.FindChecked(TEXT("ship.origin.target")).Shield < 50;
+        UE_LOG(LogTemp, Display, TEXT("DAEDALUS_REVISIT %s live actors %d -> %d"), Ok ? TEXT("PASS") : TEXT("FAIL"), Baseline, Actors.Num());
+    }
     FString Output;
     FParse::Value(FCommandLine::Get(), TEXT("DaedalusSmokeResult="), Output);
     if (Output.IsEmpty()) { Error = TEXT("Smoke requires explicit result path"); Ok = false; }

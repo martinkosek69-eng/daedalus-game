@@ -56,7 +56,7 @@ capacity. Introduce interpolation/adaptive scheduling based on measured needs.
 
 Inactive-system ships currently retain their state and do not run detailed AI,
 movement or regeneration. Offscreen fleets/economy will need a separate coarse
-time/event policy, not full scene Actors in every system. Active queries and
+time/event policy, not full scene Actors in every system. Per-system ship indexes exclude remote instances from each detailed step; active queries and
 hashed ID lookup are the initial tools; a spatial index comes after measurement.
 
 ## Minimal interaction contracts
@@ -95,4 +95,3 @@ Procedural generation later needs stable seeds AND generator versions. Freeze
 visited-world definitions or migrate them explicitly; reseeding must not erase
 player history. Graphics presets and detail budgets are configurable; catalog
 size does not imply simultaneous detailed battles or fully realized planets.
-

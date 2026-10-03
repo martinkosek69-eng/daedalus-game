@@ -98,9 +98,11 @@ private:
     FSnapshot State;
     FVector3d FlightInput = FVector3d::ZeroVector;
     TMap<FString, FVector3d> ShipFlightInputs;
+    TMap<FString, TArray<FString>> ShipsBySystem;
     FString LastAdvanceError;
     bool bInitialized = false;
     void Step(double Seconds);
+    void RebuildShipIndex();
     bool CanCommand(FString& Error, bool bRequireAboard = true) const;
     bool ValidateSnapshot(const FSnapshot& Candidate, FString& Error) const;
 };

@@ -1,4 +1,4 @@
-param([ValidateSet('Build','Assets','Test','Package','Smoke','Visual','Play')][string]$Mode='Build')
+param([ValidateSet('Build','Assets','Test','Package','Smoke','Visual','Play','Editor')][string]$Mode='Build')
 $ErrorActionPreference='Stop'
 $root=Split-Path -Parent $PSScriptRoot
 $config=Get-Content -LiteralPath (Join-Path $root '.local/toolchain.json') -Raw | ConvertFrom-Json
@@ -9,6 +9,8 @@ if($config.environment){foreach($p in $config.environment.psobject.Properties){[
 $project=Join-Path $root 'Game/Daedalus/Daedalus.uproject'
 $local=Join-Path $root '.local/foundation'
 New-Item -ItemType Directory -Path $local -Force | Out-Null
+$env:uebp_LogFolder=Join-Path $local 'AutomationLogs'
+$env:uebp_FinalLogFolder=$env:uebp_LogFolder
 $editor=Join-Path $engine 'Engine/Binaries/Win64/UnrealEditor-Cmd.exe'
 function CheckExit {if($LASTEXITCODE -ne 0){throw "Tool failed with exit code $LASTEXITCODE"}}
 function RunTestGame([string]$Exe,[string[]]$GameArguments) {
@@ -20,6 +22,7 @@ function RunTestGame([string]$Exe,[string[]]$GameArguments) {
         throw 'Test game exceeded five minutes.'
     }
     $process.Refresh()
+    $global:LASTEXITCODE=$process.ExitCode
     if($process.ExitCode -ne 0){throw "Test game exited with $($process.ExitCode)"}
 }
 function RequireNoEditor {
@@ -27,6 +30,11 @@ function RequireNoEditor {
     if($busy){throw 'An Unreal editor is running. Coordinate ownership and close the applicable editor before this operation.'}
 }
 switch($Mode){
+ 'Editor' {
+    RequireNoEditor
+    $editorArguments=@(('"'+$project+'"'),'-ModelContextProtocolStartServer',('-abslog="'+(Join-Path $local 'editor.log')+'"'))
+    Start-Process -FilePath (Join-Path $engine 'Engine/Binaries/Win64/UnrealEditor.exe') -ArgumentList $editorArguments -WindowStyle Hidden
+ }
  'Build' {
     RequireNoEditor
     & (Join-Path $engine 'Engine/Build/BatchFiles/Build.bat') DaedalusEditor Win64 Development "-Project=$project" -WaitMutex -NoHotReloadFromIDE -MaxParallelActions=1

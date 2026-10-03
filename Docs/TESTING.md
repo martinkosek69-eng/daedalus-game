@@ -12,7 +12,9 @@ root in PowerShell. Tools/Invoke-Foundation.ps1 derives its own checkout.
 5. `./Tools/Invoke-Foundation.ps1 Smoke` starts TWO independent packaged processes.
    First loads packaged catalog, fires/moves/travels/transports and saves; second
    restores and checks identity/damage/time/location/revisit and active visuals.
-6. `./Tools/Invoke-Foundation.ps1 Play` for actual visual/input inspection.
+6. `./Tools/Invoke-Foundation.ps1 Visual` sends controller key events through actual bindings and captures rendered space/location images. Inspect both images; a nonempty PNG alone does not establish visual correctness.
+7. `./Tools/Invoke-Foundation.ps1 Play` or Tools/SPUSTIT_ZKUSEBNI_HRU.cmd for interactive play.
+8. `./Tools/Test-SourceDelivery.ps1` after push checks every tracked LFS asset through a fresh remote store and SHA256 comparison.
 
 All outputs are ignored .local/foundation, test saves unique. Runtime user/save
 paths come from this checkout on A: via launcher, not machine paths in Git.

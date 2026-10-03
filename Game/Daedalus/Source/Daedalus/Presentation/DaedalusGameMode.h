@@ -52,6 +52,7 @@ private:
     UPROPERTY() TObjectPtr<UStaticMesh> SphereMesh;
     UPROPERTY() TObjectPtr<UStaticMesh> CruiserMesh;
     bool bVisualAssetsValid = true;
+    TMap<FString, FVector3d> GuardAnchors;
     uint64 AppliedRevision = MAX_uint64;
     void RebuildScene();
     AActor* Shape(const FVector& Position, const FVector& Scale, bool bSphere, bool bCruiser = false);

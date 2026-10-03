@@ -49,4 +49,3 @@ Epic references: [subsystems](https://dev.epicgames.com/documentation/en-us/unre
 Deferred deliberately: multiplayer, GAS/Mass adoption, whole-planet streaming,
 full realistic orbital physics, final mission/economy/crew systems and final art.
 If scope changes, record the tradeoff and validate a small experiment first.
-

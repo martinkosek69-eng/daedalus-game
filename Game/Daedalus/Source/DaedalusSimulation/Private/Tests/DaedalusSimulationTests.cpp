@@ -192,6 +192,13 @@ bool FCatalogExpansionTest::RunTest(const FString& Parameters)
     TestTrue(TEXT("NPC control accepted"),Old.SetShipFlightInput(TEXT("dynamic"),FVector3d(0,1,0),Error));
     Old.Advance(0.5);
     TestTrue(TEXT("NPC flight independent from presentation"),Old.GetSnapshot().Ships.FindChecked(TEXT("dynamic")).PositionMetres.Y>0);
+    FSimulation Burst; Burst.Initialize(C, Error);
+    for (int32 I=0; I<300; ++I)
+    {
+        const auto& Player = Burst.GetSnapshot().Ships.FindChecked(TEXT("player"));
+        TestTrue(TEXT("Borrowed arguments survive container growth"), Burst.SpawnShip(FString::Printf(TEXT("burst-%d"), I), Player.DefinitionId, Player.SystemId, FVector3d(500+I*2,0,0), Error));
+    }
+    TestEqual(TEXT("System index includes every burst instance"), Burst.GetActiveShipIds().Num(), 302);
     Old.Serialize(Save,Error);
     const FSnapshot Before=Old.GetSnapshot();
     FInitialShip New; New.Id=TEXT("new-arrival"); New.DefinitionId=TEXT("scout"); New.SystemId=TEXT("alpha"); New.PositionMetres=FVector3d(1000,0,0); C.InitialShips.Add(New);
@@ -276,4 +283,3 @@ bool FGuardPilotTest::RunTest(const FString&)
 }
 
 #endif
-

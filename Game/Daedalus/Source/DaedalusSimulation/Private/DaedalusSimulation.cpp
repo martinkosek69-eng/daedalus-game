@@ -247,6 +247,7 @@ bool FSimulation::Initialize(const FCatalog& Catalog, FString& Error)
         if (I.bPlayer) Initial.PlayerShipId = I.Id;
     }
     Definitions = Catalog; State = MoveTemp(Initial); FlightInput = FVector3d::ZeroVector; ShipFlightInputs.Reset(); LastAdvanceError.Reset(); bInitialized = true;
+    RebuildShipIndex();
     return true;
 }
 
@@ -288,6 +289,8 @@ bool FSimulation::SpawnShip(const FString& InstanceId, const FString& Definition
     if (!PlacementClear(Definitions.Systems.FindChecked(SystemId), PositionMetres, Definitions.ShipDefinitions.FindChecked(DefinitionId).LengthMetres * 0.5)) return Fail(Error, TEXT("Spawn position overlaps a celestial body."));
     FInitialShip I; I.Id = InstanceId; I.DefinitionId = DefinitionId; I.SystemId = SystemId; I.PositionMetres = PositionMetres;
     State.Ships.Add(InstanceId, InitialState(I, Definitions));
+    // Adding to the ship map may invalidate caller arguments borrowed from it.
+    ShipsBySystem.FindOrAdd(I.SystemId).Add(I.Id);
     return true;
 }
 
@@ -308,10 +311,11 @@ int32 FSimulation::Advance(double RealSeconds)
 void FSimulation::Step(double Seconds)
 {
     const FString ActiveSystem = State.Ships.FindChecked(State.PlayerShipId).SystemId;
-    for (auto& P : State.Ships)
+    const TArray<FString>& ActiveIds = ShipsBySystem.FindChecked(ActiveSystem);
+    for (const FString& Id : ActiveIds)
     {
-        FShipState& S = P.Value;
-        if (!S.IsAlive() || S.SystemId != ActiveSystem) continue;
+        FShipState& S = State.Ships.FindChecked(Id);
+        if (!S.IsAlive()) continue;
         const FShipDefinition& D = Definitions.ShipDefinitions.FindChecked(S.DefinitionId);
         FVector3d Input = FVector3d::ZeroVector;
         if (S.Id == State.PlayerShipId && State.PlayerLocationId.IsEmpty()) Input = FlightInput;
@@ -369,6 +373,8 @@ bool FSimulation::Travel(const FString& SystemId, FString& Error)
     if (!Definitions.Systems.Contains(SystemId) || Player.SystemId == SystemId) return Fail(Error, TEXT("Destination must be another known system."));
     const FSystemDefinition& Destination = Definitions.Systems.FindChecked(SystemId);
     if (!PlacementClear(Destination, Destination.ArrivalPositionMetres, Definitions.ShipDefinitions.FindChecked(Player.DefinitionId).LengthMetres * 0.5)) return Fail(Error, TEXT("Destination arrival point is too close to a celestial body for this ship."));
+    ShipsBySystem.FindChecked(Player.SystemId).Remove(Player.Id);
+    ShipsBySystem.FindOrAdd(SystemId).Add(Player.Id);
     Player.SystemId = SystemId; Player.PositionMetres = Destination.ArrivalPositionMetres; Player.VelocityMetresPerSecond = FVector3d::ZeroVector; FlightInput = FVector3d::ZeroVector; ShipFlightInputs.Reset();
     return true;
 }
@@ -395,8 +401,13 @@ TArray<FString> FSimulation::GetActiveShipIds() const
 {
     TArray<FString> Result;
     const FShipState* Player = State.Ships.Find(State.PlayerShipId);
-    if (Player) for (const auto& P : State.Ships) if (P.Value.SystemId == Player->SystemId) Result.Add(P.Key);
+    if (Player) if (const auto* Ids = ShipsBySystem.Find(Player->SystemId)) Result = *Ids;
     Result.Sort(); return Result;
+}
+void FSimulation::RebuildShipIndex()
+{
+    ShipsBySystem.Reset();
+    for (const auto& Pair : State.Ships) ShipsBySystem.FindOrAdd(Pair.Value.SystemId).Add(Pair.Key);
 }
 
 bool FSimulation::ValidateSnapshot(const FSnapshot& C, FString& Error) const
@@ -474,6 +485,7 @@ bool FSimulation::Restore(const FString& Json, FString& Error)
         if (!Candidate.Ships.Contains(I.Id)) Candidate.Ships.Add(I.Id, InitialState(I, Definitions));
     if (!ValidateSnapshot(Candidate, Error)) return false;
     State = MoveTemp(Candidate); FlightInput = FVector3d::ZeroVector; ShipFlightInputs.Reset(); LastAdvanceError.Reset();
+    RebuildShipIndex();
     return true;
 }
 }

@@ -6,7 +6,7 @@
   ],
   "systems": [
     {"id": "fixture.origin", "name": "Origin", "galaxyId": "fixture.galaxy_a", "positionLy": [0, 0, 0],
-     "bodies": [{"id": "fixture.origin.planet", "name": "Test planet", "radiusMetres": 8000, "positionMetres": [-20000, 12000, -6000]}]},
+     "bodies": [{"id": "fixture.origin.planet", "name": "Test planet", "radiusMetres": 8000, "positionMetres": [20000, 12000, -6000]}]},
     {"id": "fixture.remote", "name": "Remote", "galaxyId": "fixture.galaxy_b", "positionLy": [3000000, 0, 0],
      "bodies": [{"id": "fixture.remote.planet", "name": "Remote planet", "radiusMetres": 12000, "positionMetres": [-30000, -16000, -9000]}]}
   ],
@@ -20,12 +20,12 @@
      "accelerationMetresPerSecondSquared": 30, "hullCapacity": 100, "shieldCapacity": 50, "energyCapacity": 100, "weaponId": "fixture.beam"}
   ],
   "locations": [
-    {"id": "fixture.outpost", "name": "Transport outpost", "systemId": "fixture.origin", "positionMetres": [-20000, 12000, 2000], "kind": "surface"},
+    {"id": "fixture.outpost", "name": "Transport outpost", "systemId": "fixture.origin", "positionMetres": [20000, 12000, 2000], "kind": "surface"},
     {"id": "fixture.station", "name": "Station interior", "systemId": "fixture.remote", "positionMetres": [10000, 0, 0], "kind": "interior"}
   ],
   "initialShips": [
     {"id": "ship.player", "definitionId": "fixture.cruiser", "systemId": "fixture.origin", "positionMetres": [0, 0, 0], "player": true},
-    {"id": "ship.origin.target", "definitionId": "fixture.target", "systemId": "fixture.origin", "positionMetres": [2000, 200, 0], "player": false},
+    {"id": "ship.origin.target", "definitionId": "fixture.target", "systemId": "fixture.origin", "positionMetres": [300, 250, 0], "player": false},
     {"id": "ship.remote.target", "definitionId": "fixture.target", "systemId": "fixture.remote", "positionMetres": [1800, -200, 0], "player": false}
   ]
 }
