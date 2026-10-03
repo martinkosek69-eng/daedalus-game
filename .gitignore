@@ -1,0 +1,29 @@
+# Generated Unreal / IDE data
+**/Binaries/
+**/Intermediate/
+**/Saved/
+**/DerivedDataCache/
+**/.vs/
+*.sln
+*.slnx
+*.pdb
+*.obj
+*.log
+# Local dependencies, deployment metadata and credentials
+**/node_modules/
+**/.pnpm-store/
+**/.openai/
+**/artifacts/
+.local/
+*.local.ps1
+.env
+.env.*
+!.env.example
+*.pem
+*.pfx
+# Reproducible exports may be tracked; temporary Blender data may not
+*.blend1
+*.blend2
+*.tmp
+*.tar.gz
+*.zip
