@@ -39,6 +39,11 @@ struct PQ
         return frac(p.x * p.y * p.z * (p.x + p.y + p.z));
     }
     // Value noise in [0,1] with analytic gradient (Quilez).
+    // Relief code -> metres: Earth 16 + 239*sqrt(h/8848) (0 = water); other bodies linear 0..255.
+    float Height(float e, float Base, float Power, float Range)
+    {
+        return pow(saturate((e - Base) / (255.0 - Base)), Power) * Range;
+    }
     float4 Noise(float3 x)
     {
         float3 i = floor(x), f = frac(x);
@@ -74,8 +79,9 @@ float3 E = rxy > 1e-5 ? float3(n.y, -n.x, 0.0) / rxy : float3(0.0, -1.0, 0.0);
 float3 North = cross(E, n);
 float3 albedo = Day.SampleGrad(DaySampler, uv, dx, dy).rgb;
 
-// Data relief: 0 = water, land = 16 + 239*sqrt(h/8848 m). Central differences at the larger of the
-// texel and pixel footprint; water neighbours reuse the centre height (no false coastal cliffs).
+// Data relief (code decoded by ReliefBase/Power/Range). Central differences at the larger of the
+// texel and pixel footprint; with a water mask, water neighbours reuse the centre height (no false
+// coastal cliffs).
 float2 st = max(1.0 / ReliefSize.xy, max(abs(dx), abs(dy)));
 float ec = Relief.SampleGrad(ReliefSampler, uv, dx, dy).r * 255.0;
 float eE = Relief.SampleGrad(ReliefSampler, uv + float2(st.x, 0.0), dx, dy).r * 255.0;
@@ -83,11 +89,12 @@ float eW = Relief.SampleGrad(ReliefSampler, uv - float2(st.x, 0.0), dx, dy).r * 
 float eN = Relief.SampleGrad(ReliefSampler, uv - float2(0.0, st.y), dx, dy).r * 255.0;
 float eS = Relief.SampleGrad(ReliefSampler, uv + float2(0.0, st.y), dx, dy).r * 255.0;
 float water = (1.0 - saturate((ec - 3.0) / 9.0)) * WaterMask;
-float hc = pow(saturate((ec - 16.0) / 239.0), 2.0) * 8848.0;
-float hE = eE < 9.0 ? hc : pow(saturate((eE - 16.0) / 239.0), 2.0) * 8848.0;
-float hW = eW < 9.0 ? hc : pow(saturate((eW - 16.0) / 239.0), 2.0) * 8848.0;
-float hN = eN < 9.0 ? hc : pow(saturate((eN - 16.0) / 239.0), 2.0) * 8848.0;
-float hS = eS < 9.0 ? hc : pow(saturate((eS - 16.0) / 239.0), 2.0) * 8848.0;
+bool wet = WaterMask > 0.5;
+float hc = F.Height(ec, ReliefBase, ReliefPower, ReliefRange);
+float hE = wet && eE < 9.0 ? hc : F.Height(eE, ReliefBase, ReliefPower, ReliefRange);
+float hW = wet && eW < 9.0 ? hc : F.Height(eW, ReliefBase, ReliefPower, ReliefRange);
+float hN = wet && eN < 9.0 ? hc : F.Height(eN, ReliefBase, ReliefPower, ReliefRange);
+float hS = wet && eS < 9.0 ? hc : F.Height(eS, ReliefBase, ReliefPower, ReliefRange);
 float sx = (hE - hW) / (2.0 * st.x * 6.2831853 * RadiusMetres * cl);
 float sy = (hN - hS) / (2.0 * st.y * 3.1415927 * RadiusMetres);
 float3 N = normalize(n - (sx * E + sy * North) * ReliefScale);
@@ -224,7 +231,7 @@ return CloudColor.rgb * thick * (saturate(ndl * 0.92 + 0.08) * day * tint * Brig
 '''
 
 SCALARS = {
-    'surface': dict(MeshUV=0, RadiusMetres=6.371e6, ReliefScale=0, WaterMask=0, DetailStrength=0, DetailAlbedo=.12,
+    'surface': dict(MeshUV=0, RadiusMetres=6.371e6, ReliefScale=0, ReliefBase=16, ReliefPower=2, ReliefRange=8848, WaterMask=0, DetailStrength=0, DetailAlbedo=.12,
                     CloudHeight=CLOUD_SHELL_SCALE - 1, CloudShadow=0, CloudOpacity=1, OceanGlint=0, SkyReflection=0,
                     HazeDepth=.035, HazeStrength=0, NightStrength=0, Brightness=.96, Ambient=.026),
     'gas': dict(MeshUV=0, DetailStrength=0, DetailAlbedo=.10, Limb=1.08, HazeDepth=.05, HazeStrength=0, NightStrength=0,
@@ -245,8 +252,10 @@ MASTER_NAMES = {'surface': 'M_PlanetSurface', 'gas': 'M_PlanetGas', 'star': 'M_P
 
 MANIFEST = 'Art/Space/PlanetQuality/planets.json'
 SOURCE_KEYS = ('day', 'night', 'clouds', 'relief')
-NUMBER_KEYS = {'reliefScale': (0, 20), 'oceanGlint': (0, 10), 'cloudShadow': (0, 1), 'cloudOpacity': (0, 2),
-               'cloudDetail': (0, 2), 'detail': (0, 2), 'nightStrength': (0, 4)}
+NUMBER_KEYS = {'reliefScale': (0, 20), 'reliefBase': (0, 254), 'reliefPower': (.25, 4), 'reliefRange': (1, 1e5),
+               'oceanGlint': (0, 10), 'cloudShadow': (0, 1), 'cloudOpacity': (0, 2), 'cloudDetail': (0, 2), 'detail': (0, 2),
+               'nightStrength': (0, 4)}
+LIST_KEYS = {'cloudColor': 3}
 
 
 def load_manifest(root, catalog_ids=None):
@@ -260,7 +269,7 @@ def load_manifest(root, catalog_ids=None):
     assert isinstance(bodies, dict)
     for ident, entry in bodies.items():
         assert catalog_ids is None or ident in catalog_ids, ('planets.json names an unknown body', ident)
-        unknown = set(entry) - set(SOURCE_KEYS) - set(NUMBER_KEYS)
+        unknown = set(entry) - set(SOURCE_KEYS) - set(NUMBER_KEYS) - set(LIST_KEYS)
         assert not unknown, (ident, unknown)
         for key in SOURCE_KEYS:
             if key in entry:
@@ -269,6 +278,9 @@ def load_manifest(root, catalog_ids=None):
         for key, (low, high) in NUMBER_KEYS.items():
             if key in entry:
                 assert isinstance(entry[key], (int, float)) and low <= entry[key] <= high, (ident, key, entry[key])
+        for key, length in LIST_KEYS.items():
+            if key in entry:
+                assert len(entry[key]) == length and all(isinstance(v, (int, float)) and 0 <= v <= 1 for v in entry[key]), (ident, key)
     return data
 
 
@@ -489,8 +501,10 @@ class Recipe:
             vectors = dict(AtmosphereColor=(*atmosphere, 1), DaySize=(*size, 0, 0))
             if relief:
                 textures['Relief'] = relief
-                scalars.update(ReliefScale=q.get('reliefScale', 4), WaterMask=1, OceanGlint=q.get('oceanGlint', 3),
-                               SkyReflection=1)
+                scalars.update(ReliefScale=q.get('reliefScale', 4), ReliefBase=q.get('reliefBase', 16), ReliefPower=q.get('reliefPower', 2),
+                               ReliefRange=q.get('reliefRange', 8848))
+                if q.get('oceanGlint'):
+                    scalars.update(WaterMask=1, OceanGlint=q['oceanGlint'], SkyReflection=1)
                 vectors['ReliefSize'] = (relief.blueprint_get_size_x(), relief.blueprint_get_size_y(), 0, 0)
             if night:
                 textures['Night'] = night
@@ -505,5 +519,6 @@ class Recipe:
         if clouds and kind == 'surface':
             cloud = self.apply(self.instance('M_Cloud_' + key, self.master('clouds')), 'clouds',
                                dict(CloudSize=clouds.blueprint_get_size_y(), CloudDetail=q.get('cloudDetail', .8),
-                                    CloudOpacity=q.get('cloudOpacity', 1)), {}, {'Clouds': clouds})
+                                    CloudOpacity=q.get('cloudOpacity', 1)),
+                               dict(CloudColor=(*q.get('cloudColor', (.95, .96, .97)), 1)), {'Clouds': clouds})
         return mi, cloud

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "rollout": false,
+  "rollout": true,
   "bodies": {
     "sol.earth": {
       "day": "Art/Space/PlanetQuality/Earth/earth_day_16k.jpg",
@@ -12,7 +12,116 @@
       "cloudShadow": 0.55,
       "cloudDetail": 0.8,
       "detail": 0.3,
-      "nightStrength": 1.0
+      "nightStrength": 1
+    },
+    "sol.moon": {
+      "relief": "Art/Space/PlanetQuality/Sol/moon_relief_4k.png",
+      "reliefBase": 0,
+      "reliefPower": 1,
+      "reliefRange": 19920,
+      "reliefScale": 1.5,
+      "detail": 0.4
+    },
+    "sol.mars": {
+      "relief": "Art/Space/PlanetQuality/Sol/mars_relief_4k.png",
+      "reliefBase": 0,
+      "reliefPower": 1,
+      "reliefRange": 29319,
+      "reliefScale": 1.5,
+      "detail": 0.4
+    },
+    "sol.io": {
+      "day": "Art/Space/PlanetQuality/Sol/io_8k.jpg"
+    },
+    "sol.europa": {
+      "day": "Art/Space/PlanetQuality/Sol/europa_8k.jpg"
+    },
+    "sol.ganymede": {
+      "day": "Art/Space/PlanetQuality/Sol/ganymede_8k.jpg"
+    },
+    "sol.callisto": {
+      "day": "Art/Space/PlanetQuality/Sol/callisto_8k.jpg"
+    },
+    "sol.enceladus": {
+      "day": "Art/Space/PlanetQuality/Sol/enceladus_4k.jpg"
+    },
+    "fic.asterion.calyx": {
+      "clouds": "Art/Space/PlanetQuality/Fictional/fic_asterion_calyx_clouds.png",
+      "cloudColor": [
+        0.95,
+        0.751,
+        0.428
+      ]
+    },
+    "fic.asterion.tessaly": {
+      "clouds": "Art/Space/PlanetQuality/Fictional/fic_asterion_tessaly_clouds.png",
+      "cloudColor": [
+        0.95,
+        0.688,
+        0.473
+      ]
+    },
+    "fic.caelum.verdance": {
+      "clouds": "Art/Space/PlanetQuality/Fictional/fic_caelum_verdance_clouds.png",
+      "cloudColor": [
+        0.95,
+        0.95,
+        0.95
+      ]
+    },
+    "fic.caelum.sere": {
+      "clouds": "Art/Space/PlanetQuality/Fictional/fic_caelum_sere_clouds.png",
+      "cloudColor": [
+        0.95,
+        0.523,
+        0.216
+      ]
+    },
+    "fic.caelum.haze": {
+      "clouds": "Art/Space/PlanetQuality/Fictional/fic_caelum_haze_clouds.png",
+      "cloudColor": [
+        0.95,
+        0.422,
+        0.067
+      ]
+    },
+    "fic.morava.serein": {
+      "clouds": "Art/Space/PlanetQuality/Fictional/fic_morava_serein_clouds.png",
+      "cloudColor": [
+        0.95,
+        0.95,
+        0.95
+      ]
+    },
+    "fic.nivara.iris": {
+      "clouds": "Art/Space/PlanetQuality/Fictional/fic_nivara_iris_clouds.png",
+      "cloudColor": [
+        0.95,
+        0.95,
+        0.95
+      ]
+    },
+    "fic.velara.thalassa": {
+      "clouds": "Art/Space/PlanetQuality/Fictional/fic_velara_thalassa_clouds.png",
+      "cloudColor": [
+        0.95,
+        0.95,
+        0.95
+      ]
+    },
+    "fic.velara.nimbus": {
+      "clouds": "Art/Space/PlanetQuality/Fictional/fic_velara_nimbus_clouds.png",
+      "cloudColor": [
+        0.876,
+        0.839,
+        0.95
+      ]
+    },
+    "sol.venus": {
+      "detail": 0.1
+    },
+    "sol.titan": {
+      "detail": 0.05
     }
   }
 }

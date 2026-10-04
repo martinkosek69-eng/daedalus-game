@@ -157,12 +157,26 @@ void ASolarFlightGameMode::TickPlanetProbe()
             ApplySharpRenderingSettings();
             SetShipVisible(Shot.bShip);
             for (const auto& Mesh : CloudMeshes) if (Mesh) Mesh->SetVisibility(Shot.bClouds);
-            if (Shot.Body != INDEX_NONE) Check(ActivateSystem(Shot.System, Shot.Body), TEXT("inspect ") + Shot.Name);
-            else if (!Shot.bMoving)
+            FPlanetShot Pose = Shot;
+            if (Shot.Body != INDEX_NONE)
             {
-                if (ActiveSystem != 0) ActivateSystem(0, 0);
-                Daedalus::FFlightState Start; Start.PositionMetres = Shot.Camera; Start.SimulationSeconds = Shot.Clock;
-                const FRotator Look = FVector(Shot.Look).Rotation();
+                // Switch system through the game's own path, then a centred side-lit pose (~60 deg
+                // phase, three radii) so shading, relief and the terminator are visible.
+                Check(ActivateSystem(Shot.System, Shot.Body), TEXT("inspect ") + Shot.Name);
+                const auto& Body = Systems[Shot.System].Bodies[Shot.Body];
+                FVector3d ToSun = (SunPosition - Body.Position).GetSafeNormal();
+                if (ToSun.IsNearlyZero()) ToSun = FVector3d(1, 0, 0);
+                FVector3d Side = FVector3d::CrossProduct(ToSun, FVector3d::UpVector).GetSafeNormal();
+                if (Side.IsNearlyZero()) Side = FVector3d(0, 1, 0);
+                const FVector3d Dir = (ToSun * .5 + Side * .866 + FVector3d::UpVector * .15).GetSafeNormal();
+                Pose.Camera = Body.Position + Dir * (Body.Radius * Body.Shape.GetMax() * 3.0 + 3000);
+                Pose.Look = -Dir; Pose.Clock = Flight.GetState().SimulationSeconds;
+            }
+            if (!Shot.bMoving)
+            {
+                if (Shot.Body == INDEX_NONE && ActiveSystem != 0) ActivateSystem(0, 0);
+                Daedalus::FFlightState Start; Start.PositionMetres = Pose.Camera; Start.SimulationSeconds = Pose.Clock;
+                const FRotator Look = FVector(Pose.Look).Rotation();
                 // The follow camera looks 18.3 degrees below the ship heading (SolarFlightGameMode.cpp).
                 Start.YawDegrees = Look.Yaw; Start.PitchDegrees = FMath::Clamp(double(Look.Pitch) + 18.3, -59., 59.);
                 FString Error; ProfileIndex = 1;

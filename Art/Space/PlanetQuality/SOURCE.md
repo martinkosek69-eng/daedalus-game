@@ -41,6 +41,34 @@ the "brushed" streak pattern reported in task 0022. A real single-day snapshot r
 The result is real weather from one day, not a climatology. Small transition artefacts can
 remain where the two passes, about 50 minutes apart, differ.
 
+## Other bodies (rollout)
+
+Every placed textured body of the six systems uses the shared masters: stars `M_PlanetStar`,
+planets of 15 000 km radius or more `M_PlanetGas`, all others `M_PlanetSurface`. Existing
+catalogue maps keep their stable assets and are re-encoded BC7 in the planet group. The
+replacements and additions below are listed in `planets.json`.
+
+| File | Content | Source and licence |
+| --- | --- | --- |
+| `Sol/io_8k.jpg` | Io colour, 8192 × 4096 | USGS Astrogeology, Io Galileo SSI / Voyager global colour mosaic, 1 km. US Government work. |
+| `Sol/europa_8k.jpg`, `ganymede_8k.jpg`, `callisto_8k.jpg` | Greyscale, 8192 × 4096 | USGS Astrogeology Voyager / Galileo SSI global mosaics (Europa 500 m, Ganymede and Callisto 1 km). |
+| `Sol/enceladus_4k.jpg` | Greyscale, 4096 × 2048 | USGS Astrogeology Cassini global mosaic, 110 m. |
+| `Sol/moon_relief_4k.png` | Linear height, 0–255 over 19.92 km | LRO LOLA via NASA SVS CGI Moon Kit (`ldem_16_uint`, 16 px/deg). |
+| `Sol/mars_relief_4k.png` | Linear height, 0–255 over 29.32 km | MGS MOLA MEGDR 16 px/deg (`megt90n000eb`), NASA PDS Geosciences Node. |
+| `Fictional/<id>_clouds.png` | Cloud coverage | The authored alpha of each fictional `*_clouds.png`, unchanged. The tint is the coverage-weighted mean authored cloud colour (`cloudColor`). |
+
+The replaced Sol maps were 1440 × 720 greyscale JPL maps. The mosaics are aligned to them in
+longitude and east-west mirroring by cross-correlation of edge images
+(`.local/planet-work/moons_alignment.json`). Where the old map is too sparse to match (the
+Voyager-era Enceladus map is mostly blank) the convention of the confident matches is used:
+east-positive, centred on 180°. The mosaics keep the previous maps' mean brightness and
+contrast, and structure above about 60 km is lifted ×1.8 to match the old maps' local contrast.
+
+Small or partial bodies keep their catalogue maps: Saturn's smaller moons, the Uranian moons,
+Triton, Phobos, Deimos, the schematic minor bodies and the partial New Horizons maps.
+Untextured catalogue entries keep the fallback schematic materials; nothing is invented for
+them.
+
 ## Artistic supplements (not geographic data)
 
 - **Noise below the texel.** The planet materials add fine noise, faded in only where one
