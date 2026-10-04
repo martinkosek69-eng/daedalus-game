@@ -1,0 +1,354 @@
+{
+  "version": 1,
+  "id": "fic.caelum",
+  "name": "Caelum",
+  "source": "fictional",
+  "galaxyPositionLightYears": [
+    -28000,
+    14000,
+    180
+  ],
+  "primaryStarId": "fic.caelum.sun",
+  "stellarColor": "#eaf0ff",
+  "bodies": [
+    {
+      "id": "fic.caelum.sun",
+      "name": "Caelum",
+      "parentId": "",
+      "kind": "star",
+      "radiusMetres": 987894000.0,
+      "positionMetres": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "texture": "Textures/sun.jpg",
+      "rotationHours": 96.0,
+      "tiltDegrees": 8.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    },
+    {
+      "id": "fic.caelum.pyrrhus",
+      "name": "Pyrrhus",
+      "parentId": "fic.caelum.sun",
+      "kind": "planet",
+      "radiusMetres": 108362050.0,
+      "positionMetres": [
+        5577260032.0,
+        6646628864.0,
+        34801984.0
+      ],
+      "texture": "Textures/pyrrhus.jpg",
+      "rotationHours": 105.36,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "nightTexture": "Textures/pyrrhus_night.jpg"
+    },
+    {
+      "id": "fic.caelum.solace",
+      "name": "Solace",
+      "parentId": "fic.caelum.sun",
+      "kind": "planet",
+      "radiusMetres": 4459700.0,
+      "positionMetres": [
+        -89914417152.0,
+        89859645440.0,
+        3137967872.0
+      ],
+      "texture": "Textures/solace.jpg",
+      "rotationHours": 1250.0,
+      "tiltDegrees": 1.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    },
+    {
+      "id": "fic.caelum.verdance",
+      "name": "Verdance",
+      "parentId": "fic.caelum.sun",
+      "kind": "planet",
+      "radiusMetres": 7645200.0,
+      "positionMetres": [
+        -233200009216.0,
+        -134628032512.0,
+        -1644873600.0
+      ],
+      "texture": "Textures/verdance.jpg",
+      "rotationHours": 27.3,
+      "tiltDegrees": 31.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "cloudTexture": "Textures/verdance_clouds.png",
+      "atmosphereColor": "#9fc6ff"
+    },
+    {
+      "id": "fic.caelum.sere",
+      "name": "Sere",
+      "parentId": "fic.caelum.sun",
+      "kind": "planet",
+      "radiusMetres": 3950020.0,
+      "positionMetres": [
+        106476642304.0,
+        -397221298176.0,
+        -11095395328.0
+      ],
+      "texture": "Textures/sere.jpg",
+      "rotationHours": 30.5,
+      "tiltDegrees": 19.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "cloudTexture": "Textures/sere_clouds.png",
+      "atmosphereColor": "#e0b07a"
+    },
+    {
+      "id": "fic.caelum.caelestis",
+      "name": "Caelestis",
+      "parentId": "fic.caelum.sun",
+      "kind": "planet",
+      "radiusMetres": 65716340.0,
+      "positionMetres": [
+        1040262496256.0,
+        -378554810368.0,
+        -7268623872.0
+      ],
+      "texture": "Textures/caelestis.jpg",
+      "rotationHours": 10.1,
+      "tiltDegrees": 21.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "ringInnerMetres": 80173934.8,
+      "ringOuterMetres": 193863203.0,
+      "ringTexture": "Textures/caelestis_ring.png"
+    },
+    {
+      "id": "fic.caelum.azurine",
+      "name": "Azurine",
+      "parentId": "fic.caelum.sun",
+      "kind": "planet",
+      "radiusMetres": 25165450.0,
+      "positionMetres": [
+        1181823139840.0,
+        2045852385280.0,
+        67867914240.0
+      ],
+      "texture": "Textures/azurine.jpg",
+      "rotationHours": 16.8,
+      "tiltDegrees": 29.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "ringInnerMetres": 41522992.5,
+      "ringOuterMetres": 56622262.5,
+      "ringTexture": "Textures/azurine_ring.png"
+    },
+    {
+      "id": "fic.caelum.kyra",
+      "name": "Kyra",
+      "parentId": "fic.caelum.sun",
+      "kind": "planet",
+      "radiusMetres": 5224220.0,
+      "positionMetres": [
+        -3795552305152.0,
+        1378102935552.0,
+        96366346240.0
+      ],
+      "texture": "Textures/kyra.jpg",
+      "rotationHours": 41.0,
+      "tiltDegrees": 64.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    },
+    {
+      "id": "fic.caelum.geyser",
+      "name": "Geyser",
+      "parentId": "fic.caelum.caelestis",
+      "kind": "moon",
+      "radiusMetres": 290000.0,
+      "positionMetres": [
+        1040503996416.0,
+        -378494418944.0,
+        -7245435904.0
+      ],
+      "texture": "Textures/geyser.jpg",
+      "rotationHours": 21.02,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    },
+    {
+      "id": "fic.caelum.lumen",
+      "name": "Lumen",
+      "parentId": "fic.caelum.verdance",
+      "kind": "moon",
+      "radiusMetres": 1310000.0,
+      "positionMetres": [
+        -233020014592.0,
+        -134895271936.0,
+        -1805446528.0
+      ],
+      "texture": "Textures/lumen.jpg",
+      "rotationHours": 471.47,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    },
+    {
+      "id": "fic.caelum.tethra",
+      "name": "Tethra",
+      "parentId": "fic.caelum.caelestis",
+      "kind": "moon",
+      "radiusMetres": 660000.0,
+      "positionMetres": [
+        1040231104512.0,
+        -378219986944.0,
+        -7140102144.0
+      ],
+      "texture": "Textures/tethra.jpg",
+      "rotationHours": 36.33,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    },
+    {
+      "id": "fic.caelum.triss",
+      "name": "Triss",
+      "parentId": "fic.caelum.azurine",
+      "kind": "moon",
+      "radiusMetres": 1360000.0,
+      "positionMetres": [
+        1181484843008.0,
+        2045744644096.0,
+        67808219136.0
+      ],
+      "texture": "Textures/triss.jpg",
+      "rotationHours": 149.26,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    },
+    {
+      "id": "fic.caelum.veil",
+      "name": "Veil",
+      "parentId": "fic.caelum.caelestis",
+      "kind": "moon",
+      "radiusMetres": 880000.0,
+      "positionMetres": [
+        1039714615296.0,
+        -378510049280.0,
+        -7251445248.0
+      ],
+      "texture": "Textures/veil.jpg",
+      "rotationHours": 68.6,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    },
+    {
+      "id": "fic.caelum.haze",
+      "name": "Haze",
+      "parentId": "fic.caelum.caelestis",
+      "kind": "moon",
+      "radiusMetres": 2520000.0,
+      "positionMetres": [
+        1039834939392.0,
+        -379651424256.0,
+        -7689568256.0
+      ],
+      "texture": "Textures/haze.jpg",
+      "rotationHours": 235.04,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "cloudTexture": "Textures/haze_clouds.png",
+      "atmosphereColor": "#e0a050"
+    },
+    {
+      "id": "fic.caelum.nyx",
+      "name": "Nyx",
+      "parentId": "fic.caelum.caelestis",
+      "kind": "moon",
+      "radiusMetres": 720000.0,
+      "positionMetres": [
+        1042330812416.0,
+        -380175056896.0,
+        -7890580992.0
+      ],
+      "texture": "Textures/nyx.jpg",
+      "rotationHours": 746.19,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    }
+  ],
+  "belts": [
+    {
+      "id": "fic.caelum.main_belt",
+      "parentId": "fic.caelum.sun",
+      "innerMetres": 508632760380.0,
+      "outerMetres": 673190418150.0,
+      "count": 600,
+      "seed": 4301,
+      "kind": "asteroid"
+    }
+  ]
+}
