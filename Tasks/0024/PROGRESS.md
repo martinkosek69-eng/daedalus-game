@@ -1,6 +1,10 @@
 # 0024 progress
 
-- Status: IN_PROGRESS. Owner: Codex.
+- Current status: READY_FOR_REVIEW; coordinator technically accepted via0025.
+- Editor build,20/20 tests including radar,Windows package and actual native4K
+  HUD render passed. Normal launcher now selects the integrated delivery.
+  Source/history checkpoints below are historical; see0025/HANDOFF.
+- Historical status: IN_PROGRESS. Owner: Codex.
 - Inspected HUD location and0023 allowed paths: HUD implementation.cpp is
   separate from Claude's assigned header/planet/system sources.
 - Current1280x720-based scale makes HUD three times larger at native4K.

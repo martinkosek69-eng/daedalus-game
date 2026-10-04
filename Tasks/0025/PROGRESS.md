@@ -25,5 +25,6 @@ Status: READY_FOR_REVIEW; coordinator technically accepted. Owner: Codex, codex/
   real HUD/planet/galaxy renders checked. No probe errors. Actual screenshots
   inspected; labels fit and hangar structure is visible.
 - Launcher now selects Build-Integrated25; prior Build-SolarSystem and same
-  PlayerData retained. No test processes remain. Final publication follows
-  this checkpoint; remote commit is read from the branch, never inferred.
+  PlayerData retained. No test processes remain. Integration checkpoint5c8d12d
+  published with successful LFS upload. Final documentation follows; remote
+  commit is read from the branch, never inferred.
