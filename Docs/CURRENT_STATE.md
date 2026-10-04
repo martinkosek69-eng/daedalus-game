@@ -1,22 +1,30 @@
 # Current development state — 2026-10-04
 
-## Current solar flight playground0010
+## Current six-system lab0016
 
-DefaultplaylauncherusesBuild-SolarSystem/native monitorresolution. Sun,eight
-planets,24mainmoons,fournamedasteroids,ringsandbelt areimplemented fromtheweb
-layout/authoritativesurfacemaps. ActivehullislatestClaude3effacatexturedplating,
-38turrets,addons,62mounts,windowsand6glows; originalwebcomparisonpreserved.
-Fullspeed2.5s,strictno drift,smoothbank/pitchlimits,brighterstars/MilkyWay,
-500relative-motion cues,non-temporalAA/100%pixelsandnativeCzechfontHUD.
-PgUp/PgDnselect,Fdevelopmentinspection; nothyperspacetravel.
-Final15tests,WindowsIoStorepackage,2150-frameactual3840x2160input/renderprobe,
-all37visitsandfoundationseparateprocessrestartPASS. See0010HANDOFFforpaths.
-Source6c8db7bpublishedwithLFS;all237source/assetsindependentlydownloadedandSHA256/sizeverified. SeeTasks/0010/DELIVERY.md.
-Staticrepresentativeepochnotcurrentephemerides;unknownphotomapsareschematic.
-Solarposepersistence isfuturework; existingfoundationpersistenceremainsverified.
-Rootnowworking0016realisticSolcatalogand3Dgalaxy/navigation. Claude0015 owns
-fivefictionalsystemassets only; rootintegratesafterreview. No hyperspacevisuals,
-combat orenergy inthismilestone. JPLavailablemoonradiusgapsremainexplicit.
+Singleplayer Windows delivery on `codex/solar-flight`, main unmerged. Launch
+Tools/SPUSTIT_LET_DAEDALA.cmd after packaging. M opens the3D galaxy/database;
+right orbit, middle pan, wheel zoom, top/side/Home, search and deep planet focus.
+Expanded Sol506 plus five accepted Claude systems63 give569catalog entries
+and167physical bodies. Unknown sizes/positions are explicit; no fake measurements.
+Four giant rings, sparse populations and faint zodiacal cue use sourced/labelled
+bounds. Galaxy is authored, systems fictional, source epoch static/illustrative.
+
+Reviewed3effaca Daedalus,38turrets,39details,62mounts,6glows. Fullspeed2.5s,
+no side drift, smooth limits, bright sky/motion cues and native4K/no temporal blur.
+Planet surface residency and texture pool were checked after actual rendering;
+map labels no longer overlap deep body detail. Navigation selection leaves flight
+unchanged; distances/current/fullimpulseETA and required speed are read-only.
+Explicit TEST reposition permits scene testing; actual hyperdrive is future work.
+
+All19tests, packaged3950frame4K controller/render, all5systems/two planets each,
+scene return/cleanup, source/unit/210imported texture bindings and separate-process
+foundation save/load PASS. Paths and details: Tasks/0016/HANDOFF.md.
+All696 remote LFS objects downloaded and SHA256/size checked at e3ecef6.
+Repeat asset preparation used the verified cache. See Tasks/0016/DELIVERY.md.
+No new flight-lab persistence, combat, energy or hyperspace visuals. Performance
+and style/flight feel await user assessment; fixed-time probe is not an FPS claim.
+Claude0015 accepted; monitoring paused. Sources/shared instructions are resumable.
 
 ## Historical comparison build
 
