@@ -63,7 +63,10 @@
 - `991a823`: first READY_FOR_REVIEW
 - `d5846a1`: Asgard mounts and silo plates (later reworked)
 - `3effaca`: series-look pass (plating, palette, look-dev)
-- next commit: final pass, READY_FOR_REVIEW
+- `1d1b442`: final pass (hatches, hangars, windows, beacons, engines)
+- next commit: fixes from user screenshots U26–U31 (clipped hangar wall, bay
+  detail and lights, forward superstructure window and units, darker hull),
+  READY_FOR_REVIEW
 
 ## Next
 

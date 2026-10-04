@@ -190,10 +190,11 @@ def hatch_maps(N=2048, seed=16):
     paint(R(0.25 * L, 0.75 * L, 0.80 * W, 0.845 * W), (40, 40, 40), -0.8)          # dark slot
     for u0 in np.arange(0.27 * L, 0.73 * L, 0.32):
         paint(R(u0, u0 + 0.12, 0.81 * W, 0.835 * W), (128, 128, 122))             # tick marks
+    col *= 0.9                                                         # matches the darker hull
     plain = col.copy()
     # striped variant: 45 deg yellow/black stripes, 0.5 m period, on both tabs
     stripe = ((((U + V) / 0.25).astype(int)) % 2 == 0)
-    col[tabs & stripe] = np.array([196, 154, 44]) / 255; col[tabs & ~stripe] = np.array([36, 33, 29]) / 255
+    col[tabs & stripe] = np.array([180, 142, 40]) / 255; col[tabs & ~stripe] = np.array([33, 30, 27]) / 255
     striped = col
     for c in (plain, striped):                                          # tab outlines and bolts
         c[ring(0.15, tab, 0.22 * W, 0.78 * W, 0.08) | ring(L - tab, L - 0.15, 0.22 * W, 0.78 * W, 0.08)] = np.array([58, 58, 56]) / 255
@@ -284,7 +285,7 @@ TEX_NAMES = {k: img.name for k, img in PLATING.items()}     # names survive scen
 MAT = {
     'Armor': pbr('Daedalus_Armor', 'ffffff', .35, .55, vertex=True, tex=PLATING),
     'EngineMetal': pbr('Daedalus_EngineMetal', '2e2f30', .82, .42, vertex=True),
-    'Hangar': pbr('Daedalus_HangarInterior', 'ffffff', .35, .6, 'e6eef5', 0.08, vertex=True, tex=PLATING),
+    'Hangar': pbr('Daedalus_HangarInterior', 'ffffff', .35, .6, 'e6eef5', 0.0, vertex=True, tex=PLATING),
     # bow window band: dark recess; its small cyan windows are separate light objects (stills U18)
     'LightWhite': pbr('Daedalus_LightWhite', '15191c', .3, .4, '3aa8c8', 0.0, vertex=True),
     # nozzle turbine (faces of the radial vanes and hub, facing aft): warm-lit metal with a yellow glow (U21)
@@ -423,8 +424,8 @@ assign_stats = {'engineMetalFaces': int((hull & eng_mask & ~inner_mask).sum()), 
 # very slightly warm grey (R >= G >= B by a few levels), lit decks around sRGB 145-170, sides around
 # 105-110, strong plate-to-plate contrast. COLOR_0 carries the large-scale tone (orientation, plate
 # patches, AO); the plating texture (mean about 0.8 sRGB) multiplies it with the per-plate detail.
-TOP, SIDE, UNDER = srgb('9a9a98'), srgb('8c8c8a'), srgb('7c7c7a')
-HANGAR_GREY = srgb('7a7c7e')
+TOP, SIDE, UNDER = srgb('8c8c8a'), srgb('7f7f7d'), srgb('707070')   # user: overall a bit darker
+HANGAR_GREY = srgb('6a6c6e')
 def hashf(ix, iy, seed):
     h = np.sin(ix * 127.1 + iy * 311.7 + seed * 74.7) * 43758.5453
     return h - np.floor(h)
@@ -606,14 +607,15 @@ def down(x, y):
 
 HATCH = hatch_maps()
 MAT_ADD = {'Armor': MAT['Armor'], 'Hangar': MAT['Hangar'],
-           'Trim': pbr('Daedalus_TrimLight', '7d7f80', .5, .45),
+           'Trim': pbr('Daedalus_TrimLight', '7d7f80', .5, .45), 'DarkPanel': pbr('Daedalus_DarkPanel', '1a1e21', .4, .4),
            'HangarGlass': pbr('Daedalus_HangarWindow', '0b1514', .2, .12, '2f6a62', 0.08),
            'HatchPlain': pbr('Daedalus_SiloHatch_Plain', 'ffffff', .3, .6, tex={'base': HATCH['plain'], 'normal': HATCH['normal']}),
            'HatchStriped': pbr('Daedalus_SiloHatch_Striped', 'ffffff', .3, .6, tex={'base': HATCH['striped'], 'normal': HATCH['normal']})}
 LMAT = {'WindowCyan': pbr('Daedalus_WindowCyan', '0e1c22', .2, .25, '57c6dd', 0.32),      # small faint blue windows (U18-U20)
         'SpotWhite': pbr('Daedalus_SpotWhite', 'e8eef5', .1, .3, 'f2f6ff', 8.0),        # spot and flood lights (U17)
         'NavGreen': pbr('Daedalus_NavGreen', '1f5a2c', .1, .3, '39ff6a', 8.0),          # starboard (U15, U17)
-        'NavRed': pbr('Daedalus_NavRed', '5a1f1f', .1, .3, 'ff3a30', 8.0)}              # port, by convention
+        'NavRed': pbr('Daedalus_NavRed', '5a1f1f', .1, .3, 'ff3a30', 8.0),              # port, by convention
+        'CyanUnit': pbr('Daedalus_CyanUnit', '123a3a', .2, .3, '3fe0d0', 2.5)}          # small cyan-lit deck units (U19)
 BEACON_MAT = pbr('Daedalus_Beacon', '5a2a1a', .1, .3, 'ff6a2a', 8.0)                     # orange mast-tip beacons (U20)
 add, lit, bea = Geo(), Geo(), Geo()
 addon_info = {'masts': [], 'rods': [], 'siloHatches': [], 'hangarInserts': [], 'lights': {}}
@@ -658,26 +660,69 @@ for i, s in enumerate(sorted(silos, key=lambda s: (-s['a'], s['b']))):
              uv=[(0, 0), (0, 1), (1, 1), (1, 0)])
     addon_info['siloHatches'].append({'centreMetres': [round(cx, 2), round(cy, 2), round(zt, 2)], 'sizeMetres': [round(W, 2), round(L, 2)], 'hazardStripes': striped})
 
-# Hangar bays like U17: the model's bays end in an older X-truss frame; a new back wall just in front of it
-# carries the long split observation window (dark green glass, light frame bars) and small fixtures.
+# Hangar bays like U17/U26-U27: the model's bays end in an older X-truss frame. A new back wall just in front
+# of it is clipped to the measured bay cross-section (the bay is asymmetric: vertical inboard wall, sloped
+# outboard wall) and carries the split observation window with a heavy frame, a ledge, wall ribs and
+# fixtures; the bay also gets wall ribs, floor rails and ceiling beams so it does not read as bare skin.
+BAY_LIGHTS = []
+def bay_span(x, yc, z, reach=120):
+    """Free y interval at (x, z) seen from the bay centre line (inboard, outboard wall hits)."""
+    out = []
+    for sg in (-1, 1):
+        hit = bvh.ray_cast(Vector((x, yc, z)), Vector((0, sg, 0)), reach)[0]
+        out.append(hit.y if hit is not None else yc + sg * reach)
+    return out
 for h in hangars:
-    c = (h['aMin'] + h['aMax']) / 2; B = h['aMax'] - h['aMin']; z0, z1 = h['bMin'], h['bMax']; H = z1 - z0
+    c = (h['aMin'] + h['aMax']) / 2; B = h['aMax'] - h['aMin']; z0, z1 = h['bMin'], h['bMax']; H = z1 - z0; zc = (z0 + z1) / 2
     hits = [bvh.ray_cast(Vector((h['rimX'] - 1, y, z)), Vector((-1, 0, 0)), 400)[0]
             for y in np.arange(h['aMin'] + 12, h['aMax'] - 12, 4) for z in np.arange(z0 + 5, z1 - 4, 2)]   # central region (corners are chamfered)
     xw = max(p.x for p in hits if p is not None and p.x < h['rimX'] - 30) + 0.8
     assert h['rimX'] - xw > 35, (h['rimX'], xw)
-    add.poly([(xw, h['aMin'] + 0.3, z0 + 0.2), (xw, h['aMax'] - 0.3, z0 + 0.2), (xw, h['aMax'] - 0.3, z1 - 0.2), (xw, h['aMin'] + 0.3, z1 - 0.2)], 'Hangar')
+    # back wall: star polygon from the bay centre to the measured walls, 0.15 m inset (never pokes out)
+    ctr = Vector((xw + 0.3, c, zc)); ring = []
+    for k in range(72):
+        d = Vector((0, math.cos(2 * math.pi * k / 72), math.sin(2 * math.pi * k / 72)))
+        hit = bvh.ray_cast(ctr, d, 120)[0]
+        p = hit if hit is not None else ctr + d * 0.5 * H
+        ring.append(Vector((xw, ctr.y + (p.y - ctr.y) * 0.995 - d.y * 0.15, ctr.z + (p.z - ctr.z) * 0.995 - d.z * 0.15)))
+    add.poly(ring, 'Hangar')
+    # window fitted between the walls at its three heights
     gb, gt = z0 + 0.40 * H, z0 + 0.86 * H; gm = (gb + gt) / 2
-    hexa = [(c - 0.38 * B, gb), (c + 0.38 * B, gb), (c + 0.43 * B, gm), (c + 0.41 * B, gt), (c - 0.41 * B, gt), (c - 0.43 * B, gm)]
+    (lb, rb), (lm, rm), (lt, rt) = (bay_span(xw + 0.3, c, z) for z in (gb, gm, gt))
+    hexa = [(lb + 2.0, gb), (rb - 2.0, gb), (rm - 1.0, gm), (rt - 2.0, gt), (lt + 2.0, gt), (lm + 1.0, gm)]
     add.poly([(xw + 0.12, y, z) for y, z in hexa], 'HangarGlass')
-    for k in range(6): add.bar(xw, hexa[k], hexa[(k + 1) % 6], 0.45, 0.45, 'Trim')
+    for k in range(6): add.bar(xw, hexa[k], hexa[(k + 1) % 6], 0.9, 0.7, 'Trim')          # heavy window surround
+    cw, Wm = (lm + rm) / 2, rm - lm
     zmid = gb + 0.45 * (gt - gb); ztr = gt - 0.12 * (gt - gb)
-    prof = [(c - 0.42 * B, zmid), (c - 0.13 * B, zmid), (c - 0.08 * B, ztr), (c + 0.08 * B, ztr), (c + 0.13 * B, zmid), (c + 0.42 * B, zmid)]
-    for k in range(5): add.bar(xw, prof[k], prof[k + 1], 0.4, 0.4, 'Trim')
-    for sg in (-1, 1): add.bar(xw, (c + sg * 0.30 * B, gb), (c + sg * 0.22 * B, zmid), 0.35, 0.35, 'Trim')
-    for k in (-1, 0, 1): add.box(Vector((xw + 0.4, c + k * 0.2 * B, gt + 0.06 * H)), (0.8, 3.5, 0.9), 'Trim')
-    for k in (-0.5, 0.5): add.box(Vector((xw + 0.4, c + k * 0.3 * B, gb - 0.12 * H)), (0.8, 4.5, 0.9), 'Trim')
-    addon_info['hangarInserts'].append({'bayCentreY': round(c, 2), 'backWallX': round(xw, 2), 'windowZ': [round(gb, 2), round(gt, 2)]})
+    prof = [(lm + 1.5, zmid), (cw - 0.13 * Wm, zmid), (cw - 0.08 * Wm, ztr), (cw + 0.08 * Wm, ztr), (cw + 0.13 * Wm, zmid), (rm - 1.5, zmid)]
+    for k in range(5): add.bar(xw, prof[k], prof[k + 1], 0.45, 0.45, 'Trim')
+    for sg in (-1, 1): add.bar(xw, (cw + sg * 0.30 * Wm, gb), (cw + sg * 0.22 * Wm, zmid), 0.4, 0.4, 'Trim')
+    for k in (-1, 0, 1): add.box(Vector((xw + 0.45, cw + k * 0.2 * Wm, gt + 0.06 * H)), (0.9, 3.5, 0.9), 'Trim')
+    lz = gb - 1.2; ll, lr = bay_span(xw + 0.3, c, lz)
+    add.box(Vector((xw + 0.35, (ll + lr) / 2, lz)), (0.7, lr - ll - 1.0, 0.8), 'Trim')     # ledge under the window
+    for k in (-0.5, 0.5): add.box(Vector((xw + 0.9, cw + k * 0.3 * Wm, lz - 1.3)), (1.0, 4.5, 1.0), 'Trim')
+    for y in np.arange(ll + 3.0, lr - 2.9, 7.0):                                             # wall ribs below the ledge
+        add.box(Vector((xw + 0.3, y, (z0 + 0.4 + lz - 0.4) / 2)), (0.6, 0.7, lz - 0.4 - (z0 + 0.4)), 'Trim')
+    # bay: vertical ribs on the vertical walls, floor rails and ceiling beams
+    for x in np.arange(h['rimX'] - 5, xw + 2.5, -7.0):
+        for sg in (-1, 1):
+            hit, n, _, _ = bvh.ray_cast(Vector((x, c, zc)), Vector((0, sg, 0)), 120)
+            if hit is not None and abs(n.y) > 0.9:
+                add.box(Vector((x, hit.y - sg * 0.35, zc)), (0.8, 0.7, H - 5.0), 'Trim')
+        top = bvh.ray_cast(Vector((x, c, zc)), Vector((0, 0, 1)), 60)[0]
+        if top is not None:
+            yl, yr = bay_span(x, c, top.z - 0.8)
+            add.box(Vector((x, (yl + yr) / 2, top.z - 0.5)), (0.9, yr - yl - 0.6, 0.8), 'Trim')
+    floor = bvh.ray_cast(Vector((h['rimX'] - 5, c, zc)), Vector((0, 0, -1)), 60)[0]
+    if floor is not None:
+        for k in (-0.18, 0.18):
+            add.box(Vector(((h['rimX'] - 2 + xw + 1) / 2, c + k * B, floor.z + 0.2)), (h['rimX'] - 2 - xw - 1, 0.8, 0.4), 'Trim')
+    for k, lx in enumerate((h['rimX'] - 15, xw + 12)):                                       # dim teal interior lights (U17, U26-U27)
+        bl = bpy.data.lights.new(f'BayLight_{"P" if c > 0 else "S"}_{k + 1}', 'POINT'); bl.energy = 6000; bl.color = (0.6, 0.85, 0.8)
+        bl.use_custom_distance = True; bl.cutoff_distance = 70; bl.shadow_soft_size = 3
+        lo = bpy.data.objects.new(bl.name, bl); lo.location = (lx, cw, z1 - 3); BAY_LIGHTS.append(lo)
+    addon_info['hangarInserts'].append({'bayCentreY': round(c, 2), 'backWallX': round(xw, 2), 'windowZ': [round(gb, 2), round(gt, 2)],
+                                        'windowY': [round(min(lb, lt) + 2, 2), round(max(rb, rt) - 2, 2)]})
     # lights on the pod: two round spotlights above the opening, floodlights under the front edge, nav light
     for dy in (-0.25 * B, 0.25 * B):
         hit, n, _, _ = bvh.ray_cast(Vector((200, c + dy, z1 + 2.5)), Vector((-1, 0, 0)), 1000)
@@ -688,6 +733,20 @@ for h in hangars:
     sg = 1 if c > 0 else -1
     hit, n, _, _ = bvh.ray_cast(Vector((h['rimX'] - 12, sg * 400, (z0 + z1) / 2 - 4)), Vector((0, -sg, 0)), 1000)
     if hit is not None: lit.box(hit + n * 0.45, (1.0, 1.0, 1.0), 'NavRed' if sg > 0 else 'NavGreen')
+
+# Forward superstructure (U19, U31): a dark window panel with faint cyan windows on the front face of the
+# upper tier, and two small cyan-lit units on the deck in front of it.
+hit, n, _, _ = bvh.ray_cast(Vector((110, 0, 22.0)), Vector((-1, 0, 0)), 200)
+assert hit is not None and n.x > 0.9 and 55 < hit.x < 75, hit
+add.obox(Vector((hit.x + 0.08, 0, 22.0)), Vector((1, 0, 0)), Vector((0, 1, 0)), (0.08, 4.6, 0.9), 'DarkPanel')
+for y in np.linspace(-3.6, 3.6, 5):
+    lit.obox(Vector((hit.x + 0.18, y, 22.0)), Vector((1, 0, 0)), Vector((0, 1, 0)), (0.03, 0.55, 0.4), 'WindowCyan')
+front = bvh.ray_cast(Vector((110, 0, 18.0)), Vector((-1, 0, 0)), 200)[0]
+for y in (-6.0, 6.0):
+    deck = bvh.ray_cast(Vector((front.x + 4.5, y, 60)), Vector((0, 0, -1)), 200)[0]
+    add.box(Vector((front.x + 4.5, y, deck.z + 0.5)), (2.0, 1.8, 1.0), 'Trim')
+    lit.box(Vector((front.x + 4.5, y, deck.z + 1.15)), (1.4, 1.2, 0.3), 'CyanUnit')
+addon_info['forwardSuperstructure'] = {'windowFaceX': round(hit.x, 2), 'cyanUnitsX': round(front.x + 4.5, 2)}
 
 # Small faint blue windows (U18-U20): a row in the dark bow band and rows around the bridge tower tiers.
 for s in bow_slot:
@@ -739,7 +798,8 @@ addon_me = add.build('Daedalus_AddOns', MAT_ADD, {'Armor': tuple(np.array(SIDE) 
 addon_obj = bpy.data.objects.new('Daedalus_AddOns', addon_me); addon_col.objects.link(addon_obj)
 addon_obj['note'] = 'detail seen in the stills but absent from the Astrofossil model: bridge masts, forward bow rods, U16-style VLS hatches, U17-style hangar back walls'
 lights_obj = bpy.data.objects.new('Daedalus_DetailLights', lit.build('Daedalus_DetailLights', LMAT, {})); lights_col.objects.link(lights_obj)
-lights_obj['note'] = 'faint blue windows (bow band, bridge), pod spot and flood lights, nav lights (port red, starboard green)'
+lights_obj['note'] = 'faint blue windows (bow band, bridge, forward superstructure), pod spot and flood lights, nav lights (port red, starboard green), cyan deck units'
+for lo in BAY_LIGHTS: lights_col.objects.link(lo)
 beacon_col = bpy.data.collections.new('Beacons'); scene.collection.children.link(beacon_col)
 beacon_obj = bpy.data.objects.new('Daedalus_Beacons', bea.build('Daedalus_Beacons', {'Beacon': BEACON_MAT}, {})); beacon_col.objects.link(beacon_obj)
 BLINK = {'blinkPeriodSeconds': 5.0, 'onSeconds': 1 / 3, 'colour': '#ff6a2a', 'emissionOn': 8.0, 'emissionOff': 0.0}
@@ -810,7 +870,7 @@ def export(path, objs, **kw):
     bpy.ops.export_scene.gltf(filepath=str(path), export_format='GLB', use_selection=True, export_extras=True, **kw)
 export(glb, [ship], export_vertex_color='ACTIVE', export_materials='EXPORT')
 export(glow_glb, glow_objs + [c for o in glow_objs for c in o.children], export_lights=True)
-export(lights_glb, [bpy.data.objects['Daedalus_WindowLights'], lights_obj])
+export(lights_glb, [bpy.data.objects['Daedalus_WindowLights'], lights_obj] + BAY_LIGHTS, export_lights=True)
 export(addons_glb, [addon_obj], export_vertex_color='ACTIVE', export_materials='EXPORT')
 export(beacons_glb, [beacon_obj], export_animations=False)
 bpy.ops.wm.open_mainfile(filepath=str(blend))
@@ -847,6 +907,8 @@ assert check['beaconBlinkExtras'], check
 bpy.ops.wm.read_factory_settings(use_empty=True)
 bpy.ops.import_scene.gltf(filepath=str(lights_glb))
 check['lightsObjects'] = sorted(o.name for o in bpy.context.scene.objects if o.type == 'MESH')
+check['bayLights'] = sum(1 for o in bpy.context.scene.objects if o.type == 'LIGHT')
+assert check['bayLights'] == 2 * len(hangars), check['bayLights']
 bpy.ops.wm.read_factory_settings(use_empty=True)
 bpy.ops.import_scene.gltf(filepath=str(glow_glb))
 gl = [o for o in bpy.context.scene.objects if o.type == 'MESH']

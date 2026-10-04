@@ -12,7 +12,7 @@ No reference images are stored in this public repository.
 | R1 | Stargate wiki, "BC-304", archived 2024-01-12: https://web.archive.org/web/20240112040915/https://stargate.fandom.com/wiki/BC-304 | fan wiki text summarising on-screen facts with episode citations | specifications only |
 | R2 | Infobox still `Daedalus.jpg` from R1: https://static.wikia.nocookie.net/stargate/images/0/03/Daedalus.jpg (archived copy https://web.archive.org/web/2024im_/https://static.wikia.nocookie.net/stargate/images/0/03/Daedalus.jpg) | on-screen CG still, dorsal three-quarter view above Earth | primary visual |
 | R3 | R1 gallery captions identifying stills: "Railguns firing" (`The_Hive.jpg`), "VLS missile tubes firing" (`Odyssey_1.jpg`), "Asgard plasma beams firing", "The George Hammond's engines" | wiki image captions | identified, images not retrievable (archive 404) |
-| U1–U25, F1 | Images supplied by the user in chat, original URLs unknown | mix (see below) | local study only, not redistributed |
+| U1–U31, F1 | Images supplied by the user in chat, original URLs unknown | mix (see below) | local study only, not redistributed |
 
 User images (sources not stated, kept local):
 
@@ -79,6 +79,12 @@ User images (sources not stated, kept local):
   95–115 with a blue-green cast.
 - U23–U25: the user's Blender screenshots. They show that the added twin
   barrels duplicated the original turrets' own guns.
+- U26–U27: the user's Blender screenshots of the hangar. The back wall
+  protruded at the top-left, and the surroundings looked unfinished.
+- U28–U29: hangar stills (series), with the window frame, wall structure and
+  lights.
+- U30–U31: forward superstructure in the user's Blender and in the series, with
+  its window panel and two cyan units.
 
 The user rejected the first detailed result in Blender. The hull was too light,
 cool and flat. The orange read as "gold bricks", but should be almost
@@ -145,8 +151,8 @@ silhouettes and never for counts.
   the hangar interiors.
 - **Hull colour.** COLOR_0 carries the large-scale tone, which the texture
   multiplies:
-  - orientation palette: top `#9a9a98`, sides `#8c8c8a`, under `#7c7c7a`,
-    neutral,
+  - orientation palette: top `#8c8c8a`, sides `#7f7f7d`, under `#707070`,
+    neutral (darkened about 9 % at the user's request),
   - plate patches: ×0.70 or ×1.15 over 23 × 17 m cells,
   - darker greebles: ×0.80,
   - engine section: ×0.88,
@@ -165,15 +171,27 @@ silhouettes and never for counts.
 
   Yellow/black hazard stripes cover the tabs on alternate hatches, in a
   checkerboard as in U16. The earlier faint ochre tint on the hull is gone.
-- **Hangar interiors (U17).** `Daedalus_HangarInterior` is dark plated grey
-  with a weak emission. In each bay a new back wall (`DaedalusAddOns.glb`) sits
-  just in front of the model's older X-truss frame, about 46 m behind the rim.
-  It carries:
-  - the long hexagonal observation window in dark green glass
-    (`Daedalus_HangarWindow`),
-  - light frame bars with the raised centre section and diagonals
-    (`Daedalus_TrimLight`),
-  - small fixtures.
+- **Hangar interiors (U17, U26–U29).** `Daedalus_HangarInterior` is dark
+  plated grey with no emission. Each bay gets a new back wall
+  (`DaedalusAddOns.glb`):
+  - It sits just in front of the model's older X-truss frame, about 46.5 m
+    behind the rim.
+  - It is clipped to the measured, asymmetric bay cross-section (72 rays), so it
+    never pokes through the pod skin. An earlier rectangle did, and the user
+    spotted it.
+
+  The wall carries:
+  - the hexagonal observation window in dark green glass
+    (`Daedalus_HangarWindow`), fitted between the walls,
+  - a heavy frame and the raised centre bars (`Daedalus_TrimLight`),
+  - a ledge, ribs and fixtures.
+
+  The bay also gets:
+  - vertical ribs on its vertical walls,
+  - ceiling beams,
+  - two floor rails,
+  - two dim teal point lights, so the interior reads as finished rather than
+    bare skin.
 - **Lights (`DaedalusLights.glb`).** All windows are small and faint cyan
   (`#57c6dd`): the 30 baseline windows at strength 0.4, plus
   `Daedalus_DetailLights`:
@@ -195,6 +213,9 @@ silhouettes and never for counts.
   - the haze is shorter and fainter.
 
   The turbine therefore reads as structure, not as a flat orange disc.
+- **Forward superstructure (U19, U31).** On the front face of its upper tier
+  (x ≈ 66 m) there is a dark window panel with 5 faint cyan windows. Two small
+  cyan-lit units stand on the deck in front of it.
 - **Railgun turrets.** These are the model's own domes with their barrels. The
   twin barrels added in the previous pass duplicated those guns and were
   removed at the user's request (U23–U25).
