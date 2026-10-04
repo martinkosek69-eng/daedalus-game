@@ -11,13 +11,13 @@ Astrofossil geometry (222330 triangles). Baseline hatch squares and vent slats a
 not original and are omitted; baseline window cubes become DaedalusLights.glb.
 Hull vertices never move: the look comes from a procedural plating texture set
 (box-projected UVMap), vertex colours, material assignment, and separate objects
-for parts the stills show but the model lacks (masts, bow rods, turret barrels).
+for parts the stills show but the model lacks (masts, bow rods, hatches, hangar walls, lights).
 Prepare-DaedalusSource.py is the baseline reconstruction and must not be run
 over the accepted detailed source (it would overwrite these outputs).
 
 Outputs (Art/Ships/Daedalus): Daedalus.blend (with LookDev_Series lighting),
 Daedalus.glb (one 600 m hull mesh, textures embedded), Textures/*.png,
-DaedalusEngineGlow.glb, DaedalusLights.glb, DaedalusAddOns.glb, DaedalusTurrets.glb,
+DaedalusEngineGlow.glb, DaedalusLights.glb, DaedalusAddOns.glb, DaedalusBeacons.glb,
 ENGINE_MOUNTS.json, WEAPON_MOUNTS.json, asset-metadata.json.
 Previews: .local/daedalus-detail (ignored).
 """
@@ -136,11 +136,11 @@ def plating_maps(N=TEX_N, tile=TILE_M, seed=304):
 
 
 def save_map(name, rgb, colorspace):
-    """rgb: (N, N, 3) values as stored (sRGB-encoded for 'sRGB', raw for 'Non-Color'); row 0 = bottom."""
-    N = rgb.shape[0]
-    img = bpy.data.images.get(name) or bpy.data.images.new(name, N, N, alpha=False)
+    """rgb: (H, W, 3) values as stored (sRGB-encoded for 'sRGB', raw for 'Non-Color'); row 0 = bottom."""
+    H, W = rgb.shape[:2]
+    img = bpy.data.images.get(name) or bpy.data.images.new(name, W, H, alpha=False)
     img.colorspace_settings.name = colorspace
-    px = np.ones((N, N, 4), np.float32); px[:, :, :3] = rgb
+    px = np.ones((H, W, 4), np.float32); px[:, :, :3] = rgb
     img.pixels.foreach_set(px.ravel())
     TEX_DIR.mkdir(parents=True, exist_ok=True)
     img.filepath_raw = str(TEX_DIR / f'{name}.png'); img.file_format = 'PNG'; img.save()
@@ -155,6 +155,56 @@ def build_plating_images():
             'orm': save_map('T_Daedalus_Plating_ORM', np.stack([np.ones_like(rgh), rgh, metal], -1), 'Non-Color'),
             'normal': save_map('T_Daedalus_Plating_Normal', n * 0.5 + 0.5, 'Non-Color')}
     return imgs, {'plates': nrect, 'albedoMeanSRGB': round(float(alb.mean()), 3), 'roughnessMean': round(float(rgh.mean()), 3)}
+
+
+HATCH_L, HATCH_W = 15.45, 6.2      # silo hatch overlay size in metres (length across the bow, width along it)
+
+
+def hatch_maps(N=2048, seed=16):
+    """BC-304 VLS hatch after the close-up still U16: a long worn taupe door in a dark frame with a raised
+    grey lip, a dark slot with tick marks along one long side, and an end tab at each short end with two
+    bolts. The striped variant has yellow/black hazard stripes on both tabs. Final albedo (sRGB),
+    isotropic pixels; u (columns) = hatch length, v (rows) = width."""
+    rng = np.random.default_rng(seed); M = int(round(N * HATCH_W / HATCH_L)); ppm = N / HATCH_L
+    U, V = np.meshgrid((np.arange(N) + 0.5) / HATCH_L / ppm, (np.arange(M) + 0.5) / ppm)   # metres along length / width
+    def R(u0, u1, v0, v1): return (U >= u0) & (U < u1) & (V >= v0) & (V < v1)
+    def ring(u0, u1, v0, v1, t): return R(u0, u1, v0, v1) & ~R(u0 + t, u1 - t, v0 + t, v1 - t)
+    U = U * HATCH_L; L, W = HATCH_L, HATCH_W; tab = 2.0
+    col = np.ones((M, N, 3), np.float32) * np.array([104, 104, 102]) / 255; hgt = np.zeros((M, N), np.float32)
+    def paint(mask, rgb, h=None):
+        col[mask] = np.array(rgb) / 255
+        if h is not None: hgt[mask] = h
+    grime = 1.0 + 0.07 * periodic_noise(max(M, N), 10, 30, rng)[:M, :N] + rng.normal(0, 0.03, (M, N))
+    # end tabs
+    tabs = R(0.15, tab, 0.22 * W, 0.78 * W) | R(L - tab, L - 0.15, 0.22 * W, 0.78 * W)
+    paint(tabs, (124, 124, 120), 0.3)
+    # door frame: dark outline, raised grey lip, recessed worn taupe door
+    paint(R(tab - 0.1, L - tab + 0.1, 0.03 * W, 0.97 * W), (48, 48, 48), -0.6)
+    paint(R(tab, L - tab, 0.06 * W, 0.94 * W), (117, 116, 112), 0.5)
+    door = R(tab + 0.35, L - tab - 0.35, 0.06 * W + 0.35, 0.94 * W - 0.35)
+    paint(door, (96, 88, 80), -0.3)
+    col[door] *= grime[door][:, None]
+    for u0 in np.arange(tab + 0.6, L - tab - 0.6, 1.9):              # worn plate lines across the door
+        paint(door & R(u0, u0 + 0.05, 0, W), (78, 72, 66), -0.45)
+    paint(ring(0.38 * L, 0.62 * L, 0.38 * W, 0.62 * W, 0.12), (66, 60, 55), -0.55)   # inner access plate
+    paint(R(0.25 * L, 0.75 * L, 0.80 * W, 0.845 * W), (40, 40, 40), -0.8)          # dark slot
+    for u0 in np.arange(0.27 * L, 0.73 * L, 0.32):
+        paint(R(u0, u0 + 0.12, 0.81 * W, 0.835 * W), (128, 128, 122))             # tick marks
+    plain = col.copy()
+    # striped variant: 45 deg yellow/black stripes, 0.5 m period, on both tabs
+    stripe = ((((U + V) / 0.25).astype(int)) % 2 == 0)
+    col[tabs & stripe] = np.array([196, 154, 44]) / 255; col[tabs & ~stripe] = np.array([36, 33, 29]) / 255
+    striped = col
+    for c in (plain, striped):                                          # tab outlines and bolts
+        c[ring(0.15, tab, 0.22 * W, 0.78 * W, 0.08) | ring(L - tab, L - 0.15, 0.22 * W, 0.78 * W, 0.08)] = np.array([58, 58, 56]) / 255
+        for uc in (tab / 2 + 0.05, L - tab / 2 - 0.05):
+            for vc in (0.36 * W, 0.64 * W):
+                bolt = (U - uc) ** 2 + (V - vc) ** 2 < 0.12 ** 2; c[bolt] = np.array([45, 45, 44]) / 255; hgt[bolt] = -0.6
+    gy, gx = np.gradient(hgt)
+    n = np.stack([-3.0 * gx, -3.0 * gy, np.ones_like(gx)], -1); n /= np.linalg.norm(n, axis=-1, keepdims=True)
+    return {'plain': save_map('T_Daedalus_SiloHatch_Plain_BaseColor', np.clip(plain, 0, 1), 'sRGB'),
+            'striped': save_map('T_Daedalus_SiloHatch_Striped_BaseColor', np.clip(striped, 0, 1), 'sRGB'),
+            'normal': save_map('T_Daedalus_SiloHatch_Normal', n * 0.5 + 0.5, 'Non-Color')}
 
 
 def box_uv(me, tile=TILE_M):
@@ -208,9 +258,10 @@ def pbr(name, hexcol, metal, rough, emission=None, strength=0.0, vertex=False, t
         def img(key):
             n = nt.nodes.new('ShaderNodeTexImage'); n.image = tex[key]; n.name = 'TEX_' + key
             nt.links.new(uvn.outputs['UV'], n.inputs['Vector']); return n
-        base = img('base'); orm = img('orm'); nrm = img('normal')
-        sep = nt.nodes.new('ShaderNodeSeparateColor'); nt.links.new(orm.outputs['Color'], sep.inputs['Color'])
-        nt.links.new(sep.outputs['Green'], bs.inputs['Roughness']); nt.links.new(sep.outputs['Blue'], bs.inputs['Metallic'])
+        base = img('base'); nrm = img('normal')
+        if 'orm' in tex:
+            orm = img('orm'); sep = nt.nodes.new('ShaderNodeSeparateColor'); nt.links.new(orm.outputs['Color'], sep.inputs['Color'])
+            nt.links.new(sep.outputs['Green'], bs.inputs['Roughness']); nt.links.new(sep.outputs['Blue'], bs.inputs['Metallic'])
         nm = nt.nodes.new('ShaderNodeNormalMap'); nm.uv_map = 'UVMap'
         nt.links.new(nrm.outputs['Color'], nm.inputs['Color']); nt.links.new(nm.outputs['Normal'], bs.inputs['Normal'])
     if vertex:
@@ -234,13 +285,16 @@ MAT = {
     'Armor': pbr('Daedalus_Armor', 'ffffff', .35, .55, vertex=True, tex=PLATING),
     'EngineMetal': pbr('Daedalus_EngineMetal', '2e2f30', .82, .42, vertex=True),
     'Hangar': pbr('Daedalus_HangarInterior', 'ffffff', .35, .6, 'e6eef5', 0.08, vertex=True, tex=PLATING),
-    'LightWhite': pbr('Daedalus_LightWhite', 'cfe6ff', .1, .3, 'a9d6ff', 2.5, vertex=True),
+    # bow window band: dark recess; its small cyan windows are separate light objects (stills U18)
+    'LightWhite': pbr('Daedalus_LightWhite', '15191c', .3, .4, '3aa8c8', 0.0, vertex=True),
+    # nozzle turbine (faces of the radial vanes and hub, facing aft): warm-lit metal with a yellow glow (U21)
+    'EngineInner': pbr('Daedalus_EngineInner', 'a08a60', .3, .5, 'ffc070', 0.6, vertex=True),
 }
 SLOT = {k: i for i, k in enumerate(MAT)}
 for m in MAT.values(): mesh.materials.append(m)
 for poly in mesh.polygons: poly.material_index = SLOT['Armor']
 box_uv(mesh)
-GLASS = pbr('Daedalus_Glass', '20323a', .2, .25, 'bfe3ff', 3.0)   # small cool blue-white windows as in the stills
+GLASS = pbr('Daedalus_Glass', '0e1c22', .2, .25, '57c6dd', 0.4)   # small, faint blue windows (stills U18-U20)
 
 # Hull = exact Astrofossil geometry. The baseline script added 14 black hatch squares and
 # 36 black vent slats that are not in the original model: both omitted (user request).
@@ -335,7 +389,7 @@ for idx in np.nonzero(hang_mask)[0]:
     for d in (Vector((0, 0, -1)), Vector((0, 0, 1)), Vector((0, 1, 0)), Vector((0, -1, 0)), Vector((1, 0, 0))):
         if bvh.ray_cast(c - d * 800, d, 2000)[2] == idx: hang_mask[idx] = False; break
 # Bow VLS: each silo door sits on a raised hatch plate (about 0.6 m above the deck). Walk out from the
-# door centre until the deck level to get the plate, then select the plate faces (top and sides).
+# door centre until the deck level to get the plate; the series-style hatch overlay (6b) covers it.
 def silo_plate(s):
     x0, y0, top = s['a'], s['b'], s['surface']
     def zt(x, y):
@@ -347,23 +401,22 @@ def silo_plate(s):
         while t < 15 and zt(x0 + dx * (t + 0.25), y0 + dy * (t + 0.25)) > top - 0.3: t += 0.25
         ext.append(t)
     return x0 - ext[0], x0 + ext[1], y0 - ext[2], y0 + ext[3]
-# In the stills the hatches stay hull grey; only a faint ochre spray marks their edges. Here that is
-# the outer raised frame ridge around each door (about 0.4 m above the plate), not the whole plate.
-silo_mask = np.zeros(npoly, bool)
-for s in silos:
-    s['plate'] = silo_plate(s); x0, x1, y0, y1 = s['plate']
-    silo_mask |= ((pc[:, 0] > x0 - 0.3) & (pc[:, 0] < x1 + 0.3) & (pc[:, 1] > y0 - 0.3) & (pc[:, 1] < y1 + 0.3)
-                  & (pc[:, 2] > s['surface'] + 0.35) & (pc[:, 2] < s['surface'] + 1.0) & (pn[:, 2] > -0.3))
+for s in silos: s['plate'] = silo_plate(s)
 slot_mask = np.zeros(npoly, bool)
 for s in bow_slot:
     slot_mask |= ((pc[:, 1] > s['aMin']) & (pc[:, 1] < s['aMax']) & (pc[:, 2] > s['bMin']) & (pc[:, 2] < s['bMax'])
                   & (pn[:, 0] > 0.7) & (pc[:, 0] < s['surface'] + 0.2) & (pc[:, 0] > s['surface'] - 3.0))
+inner_mask = np.zeros(npoly, bool)
+for e in engines:   # inside the aperture, behind the lip, facing along the axis: the turbine vanes and hub
+    r = np.hypot(pc[:, 1] - e['y'], pc[:, 2] - e['z'])     # (the inner cylinder walls stay dark EngineMetal)
+    inner_mask |= (r < e['apertureRadius'] - 0.05) & (pc[:, 0] > e['lipX'] + 0.3) & (pc[:, 0] < e['coreX'] + 0.5) & (np.abs(pn[:, 0]) > 0.5)
 matidx[hull & eng_mask] = SLOT['EngineMetal']
+matidx[hull & inner_mask] = SLOT['EngineInner']
 matidx[hull & hang_mask] = SLOT['Hangar']
 matidx[hull & slot_mask] = SLOT['LightWhite']
 mesh.polygons.foreach_set('material_index', matidx)
-assign_stats = {'engineMetalFaces': int((hull & eng_mask).sum()), 'hangarInteriorFaces': int((hull & hang_mask).sum()),
-                'bowLightFaces': int((hull & slot_mask).sum()), 'siloMarkingFaces': int((hull & silo_mask).sum())}
+assign_stats = {'engineMetalFaces': int((hull & eng_mask & ~inner_mask).sum()), 'engineInnerFaces': int((hull & inner_mask).sum()), 'hangarInteriorFaces': int((hull & hang_mask).sum()),
+                'bowLightFaces': int((hull & slot_mask).sum())}
 
 # ---------------------------------------------------------------- 4. reference palette into COLOR_0
 # Sampled from the on-screen still U13 (sunlit dorsal three-quarter view above Earth): a neutral,
@@ -371,7 +424,6 @@ assign_stats = {'engineMetalFaces': int((hull & eng_mask).sum()), 'hangarInterio
 # 105-110, strong plate-to-plate contrast. COLOR_0 carries the large-scale tone (orientation, plate
 # patches, AO); the plating texture (mean about 0.8 sRGB) multiplies it with the per-plate detail.
 TOP, SIDE, UNDER = srgb('9a9a98'), srgb('8c8c8a'), srgb('7c7c7a')
-SILO_TINT = np.array((1.12, 0.98, 0.74), np.float32)   # faint ochre (U13: marking pixels ~ grey x (0.95, 0.87, 0.67) in sRGB; tiny area)
 HANGAR_GREY = srgb('7a7c7e')
 def hashf(ix, iy, seed):
     h = np.sin(ix * 127.1 + iy * 311.7 + seed * 74.7) * 43758.5453
@@ -394,9 +446,8 @@ k = np.where((pa < 5.0) & (up > 0.3) & (sec != 6), k * 0.80, k)          # darke
 k = np.where(sec == 4, k * 0.88, k)                                   # engine section darker metal
 k = np.where((sec == 3) & (up > 0.55), k * 1.04, k)                   # sunlit bridge deck
 albedo = np.clip(base * k[:, None], 0, 1)
-albedo[silo_mask] = np.clip(albedo[silo_mask] * SILO_TINT, 0, 1)        # user: "almost imperceptible orange spray around", as in the series
 albedo[matidx == SLOT['Hangar']] = HANGAR_GREY                          # dark plated bay interior (texture adds the plates)
-non_hull = (matidx != SLOT['Armor']) & (matidx != SLOT['Hangar'])
+non_hull = (matidx != SLOT['Armor']) & (matidx != SLOT['Hangar'])   # EngineMetal, EngineInner, LightWhite
 albedo[non_hull] = 1.0                                                   # untextured slots carry their own base colour
 # Ambient occlusion baked per corner gives recess/panel-edge contrast.
 ao_attr = mesh.color_attributes.new(name='AO_BAKE', type='FLOAT_COLOR', domain='CORNER')
@@ -453,7 +504,7 @@ def add_turret(b, zsign, prefix):
                    'domeTopMetres': round(top, 2), 'domeDiameterMetres': round(b['diam'], 2),
                    'forwardAxis': [1, 0, 0], 'upAxis': [0, 0, zsign], 'traverseFreeAzimuthDeg': arc,
                    'freeAzimuthTotalDeg': total, 'arcNote': 'rays at 5 deg elevation; superstructure occlusion only, no game rules',
-                   'intendedMovingMesh': 'SM_Daedalus_RailgunTurret (to be authored; not part of hull)',
+                   'intendedMovingMesh': 'none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)',
                    'weaponHint': 'railgun turret (references: twin-barrel dome turrets along deck and bow edges)',
                    'referenceURL': REF_DECK, 'confidence': 'medium: modelled dome present; exact canon placement/count unconfirmed'})
 # The bow's lower side ledges (z about -18.6, below the main deck) carry two domes per side. The SGA
@@ -509,50 +560,150 @@ for side in (+1, -1):
                    'confidence': 'low-medium: zone from stills; exact emitter not modelled'})
 
 # ---------------------------------------------------------------- 6b. add-on detail seen in the stills
-# User: "free hand, make it look as close to the series as possible". Parts the stills show but the
-# Astrofossil model lacks are SEPARATE objects in the hull frame, so Daedalus.glb stays the exact 600 m
-# hull: bridge masts and the two long forward rods at the bow (DaedalusAddOns.glb), and twin barrels on
-# every railgun dome (DaedalusTurrets.glb, one object per mount, pivot = mount frame).
-def tube(vs, fs, p0, p1, r0, r1, seg=10):
-    d = (p1 - p0).normalized(); a = Vector((0, 0, 1)) if abs(d.z) < 0.9 else Vector((1, 0, 0))
-    b1 = d.cross(a).normalized(); b2 = d.cross(b1); s = len(vs)
-    for p, r in ((p0, r0), (p1, r1)):
-        for k in range(seg):
-            t = 2 * math.pi * k / seg; vs.append(tuple(p + (b1 * math.cos(t) + b2 * math.sin(t)) * r))
-    fs.extend((s + k, s + (k + 1) % seg, s + seg + (k + 1) % seg, s + seg + k) for k in range(seg))
-    fs.append(tuple(s + seg + k for k in range(seg))); fs.append(tuple(s + k for k in reversed(range(seg))))
-def box(vs, fs, c, size):
-    s = len(vs); h = Vector(size) * 0.5
-    vs.extend(tuple(c + Vector((sx * h.x, sy * h.y, sz * h.z))) for sx in (-1, 1) for sy in (-1, 1) for sz in (-1, 1))
-    fs.extend(tuple(s + i for i in f) for f in [(0, 1, 3, 2), (4, 6, 7, 5), (0, 4, 5, 1), (2, 3, 7, 6), (0, 2, 6, 4), (1, 5, 7, 3)])
-def mesh_from(name, vs, fs, mat):
-    me = bpy.data.meshes.new(name); me.from_pydata(vs, [], fs); me.validate()
-    bm = bmesh.new(); bm.from_mesh(me); bmesh.ops.recalc_face_normals(bm, faces=bm.faces); bm.to_mesh(me); bm.free()
-    me.materials.append(mat); return me
-add_v, add_f = [], []
-# Bridge masts (U13, R2): two tall thin masts and two short ones on the bridge tower top (port side).
-MASTS = [(-230.0, 47.0, 34.0, 0.55), (-230.0, 55.0, 24.0, 0.45), (-201.0, 36.0, 9.0, 0.3), (-201.0, 64.0, 9.0, 0.3)]
-addon_info = {'masts': [], 'rods': []}
-for x, y, h, r in MASTS:
-    hit = bvh.ray_cast(Vector((x, y, 300)), Vector((0, 0, -1)), 1000)[0]
-    assert hit is not None and hit.z > 38, (x, y, hit)
-    tube(add_v, add_f, Vector((x, y, hit.z - 0.3)), Vector((x, y, hit.z + h)), r, r * 0.4, 8)
-    addon_info['masts'].append({'baseMetres': [x, y, round(hit.z, 2)], 'heightMetres': h})
-box(add_v, add_f, Vector((MASTS[0][0], MASTS[0][1], addon_info['masts'][0]['baseMetres'][2] + 0.7 * MASTS[0][2])), (0.3, 7.0, 0.3))
-# Two long forward rods at the bow (R2, U2, U13: thin rods well ahead of the bow; their tips glow when firing).
+# User: "free hand, make it look as close to the series as possible" (reference: the 4K still U15 and
+# close-ups U16-U20). Parts the stills show but the Astrofossil model lacks are SEPARATE objects in the
+# hull frame, so Daedalus.glb stays the exact 600 m hull. The model's own dome turrets (with their
+# barrels) are kept as they are; no extra barrels are added (user).
+class Geo:
+    """Face soup with a material key and an optional COLOR_0 per face; outward winding by construction."""
+    def __init__(self): self.v, self.f, self.mat, self.col, self.uv = [], [], [], [], {}
+    def poly(self, pts, mat, col=None, uv=None):
+        s = len(self.v); self.v.extend(tuple(p) for p in pts); self.f.append(tuple(range(s, s + len(pts))))
+        self.mat.append(mat); self.col.append(col)
+        if uv: self.uv[len(self.f) - 1] = uv
+    def obox(self, c, ex, ey, half, mat, col=None):          # oriented box, right-handed (ex, ey, ex x ey)
+        ez = ex.cross(ey); c = Vector(c); hx, hy, hz = half
+        P = [c + ex * (sx * hx) + ey * (sy * hy) + ez * (sz * hz) for sx in (-1, 1) for sy in (-1, 1) for sz in (-1, 1)]
+        for f in [(0, 1, 3, 2), (4, 6, 7, 5), (0, 4, 5, 1), (2, 3, 7, 6), (0, 2, 6, 4), (1, 5, 7, 3)]: self.poly([P[i] for i in f], mat, col)
+    def box(self, c, size, mat, col=None): self.obox(c, Vector((1, 0, 0)), Vector((0, 1, 0)), Vector(size) * 0.5, mat, col)
+    def tube(self, p0, p1, r0, r1, mat, col=None, seg=10):
+        d = (p1 - p0).normalized(); a = Vector((0, 0, 1)) if abs(d.z) < 0.9 else Vector((1, 0, 0))
+        b1 = d.cross(a).normalized(); b2 = d.cross(b1)
+        ring = lambda p, r: [p + (b1 * math.cos(2 * math.pi * k / seg) + b2 * math.sin(2 * math.pi * k / seg)) * r for k in range(seg)]
+        R0, R1 = ring(p0, r0), ring(p1, r1)
+        for k in range(seg): self.poly([R0[k], R0[(k + 1) % seg], R1[(k + 1) % seg], R1[k]], mat, col)
+        self.poly(R1, mat, col); self.poly(list(reversed(R0)), mat, col)
+    def bar(self, x, p0, p1, w, depth, mat, col=None):        # bar standing on a wall that faces +X at plane x
+        a = Vector((0, p0[0], p0[1])); b = Vector((0, p1[0], p1[1])); ey = (b - a).normalized()
+        self.obox(Vector((x + depth / 2, (a.y + b.y) / 2, (a.z + b.z) / 2)), Vector((1, 0, 0)), ey, ((depth / 2), (b - a).length / 2 + w / 2, w / 2), mat, col)
+    def disc(self, c, n, r, mat, col=None, seg=12):
+        n = n.normalized(); a = Vector((0, 0, 1)) if abs(n.z) < 0.9 else Vector((1, 0, 0)); b1 = n.cross(a).normalized(); b2 = n.cross(b1)
+        self.poly([c + (b1 * math.cos(2 * math.pi * k / seg) + b2 * math.sin(2 * math.pi * k / seg)) * r for k in range(seg)], mat, col)
+    def build(self, name, mats, default_col):
+        me = bpy.data.meshes.new(name); me.from_pydata(self.v, [], self.f)
+        keys = list(dict.fromkeys(self.mat))
+        for k in keys: me.materials.append(mats[k])
+        me.polygons.foreach_set('material_index', [keys.index(k) for k in self.mat]); me.update()
+        box_uv(me); uvl = me.uv_layers['UVMap']
+        for fi, uvs in self.uv.items():
+            for j, li in enumerate(me.polygons[fi].loop_indices): uvl.data[li].uv = uvs[j]
+        cols = np.array([list(c if c is not None else default_col.get(m, (1.0, 1.0, 1.0))) + [1.0] for c, m in zip(self.col, self.mat)], np.float32)
+        ca = me.color_attributes.new(name='COLOR_0', type='FLOAT_COLOR', domain='CORNER')
+        ca.data.foreach_set('color', np.repeat(cols, [len(f) for f in self.f], axis=0).ravel())
+        return me
+def down(x, y):
+    hit = bvh.ray_cast(Vector((x, y, 300)), Vector((0, 0, -1)), 1000)[0]; assert hit is not None, (x, y); return hit.z
+
+HATCH = hatch_maps()
+MAT_ADD = {'Armor': MAT['Armor'], 'Hangar': MAT['Hangar'],
+           'Trim': pbr('Daedalus_TrimLight', '7d7f80', .5, .45),
+           'HangarGlass': pbr('Daedalus_HangarWindow', '0b1514', .2, .12, '2f6a62', 0.08),
+           'HatchPlain': pbr('Daedalus_SiloHatch_Plain', 'ffffff', .3, .6, tex={'base': HATCH['plain'], 'normal': HATCH['normal']}),
+           'HatchStriped': pbr('Daedalus_SiloHatch_Striped', 'ffffff', .3, .6, tex={'base': HATCH['striped'], 'normal': HATCH['normal']})}
+LMAT = {'WindowCyan': pbr('Daedalus_WindowCyan', '0e1c22', .2, .25, '57c6dd', 0.32),      # small faint blue windows (U18-U20)
+        'SpotWhite': pbr('Daedalus_SpotWhite', 'e8eef5', .1, .3, 'f2f6ff', 8.0),        # spot and flood lights (U17)
+        'NavGreen': pbr('Daedalus_NavGreen', '1f5a2c', .1, .3, '39ff6a', 8.0),          # starboard (U15, U17)
+        'NavRed': pbr('Daedalus_NavRed', '5a1f1f', .1, .3, 'ff3a30', 8.0)}              # port, by convention
+BEACON_MAT = pbr('Daedalus_Beacon', '5a2a1a', .1, .3, 'ff6a2a', 8.0)                     # orange mast-tip beacons (U20)
+add, lit, bea = Geo(), Geo(), Geo()
+addon_info = {'masts': [], 'rods': [], 'siloHatches': [], 'hangarInserts': [], 'lights': {}}
+
+# Bridge masts (U15, U20): two thin masts on the top tier with blinking tip lights, and a cluster of three
+# very tall thin masts beside the tower; the tallest carries a beacon too.
+for x, y, h, r, beacon in [(-215.0, 40.0, 14.0, 0.35, True), (-215.0, 60.0, 14.0, 0.35, True), (-246.0, 76.0, 50.0, 0.45, True),
+                           (-248.5, 78.0, 44.0, 0.4, False), (-244.0, 79.5, 38.0, 0.4, False)]:
+    z0 = down(x, y); add.tube(Vector((x, y, z0 - 0.3)), Vector((x, y, z0 + h)), r, r * 0.4, 'Armor', seg=8)
+    addon_info['masts'].append({'baseMetres': [x, y, round(z0, 2)], 'heightMetres': h, 'beacon': beacon})
+    if beacon: bea.tube(Vector((x, y, z0 + h)), Vector((x, y, z0 + h + 0.9)), 0.45, 0.45, 'Beacon', seg=8)
+
+# Two long forward rods at the bow (R2, U2, U15: thin rods well ahead of the bow; their tips glow when firing).
 ROD_Y, ROD_Z, ROD_LEN = 29.5, -14.0, 40.0
 for side in (+1, -1):
     hit = bvh.ray_cast(Vector((400, side * ROD_Y, ROD_Z)), Vector((-1, 0, 0)), 1000)[0]
     assert hit is not None and hit.x > 280, (side, hit)
     b0 = Vector((hit.x - 0.5, side * ROD_Y, ROD_Z)); tip = b0 + Vector((ROD_LEN, 0, 0))
-    tube(add_v, add_f, b0, b0 + Vector((3.5, 0, 0)), 1.4, 1.1, 12)
-    tube(add_v, add_f, b0 + Vector((3.0, 0, 0)), tip, 0.6, 0.35, 10)
-    tube(add_v, add_f, tip - Vector((1.6, 0, 0)), tip, 0.5, 0.5, 10)
+    add.tube(b0, b0 + Vector((3.5, 0, 0)), 1.4, 1.1, 'Armor', seg=12)
+    add.tube(b0 + Vector((3.0, 0, 0)), tip, 0.6, 0.35, 'Armor')
+    add.tube(tip - Vector((1.6, 0, 0)), tip, 0.5, 0.5, 'Armor')
     addon_info['rods'].append({'baseMetres': [round(c, 2) for c in b0], 'tipMetres': [round(c, 2) for c in tip]})
     mounts.append({'kind': 'fixed_barrel', 'group': 'bow_rods', 'centerMetres': [round(c, 2) for c in tip],
                    'forwardAxis': [1, 0, 0], 'upAxis': [0, 0, 1], 'intendedMovingMesh': 'none (static rod in DaedalusAddOns.glb)',
-                   'referenceURL': REF_DECK, 'evidence': 'long rods ahead of the bow in R2, U2 and U13; U13/U14 show glowing tips',
+                   'referenceURL': REF_DECK, 'evidence': 'long rods ahead of the bow in R2, U2 and U15; U15/U21 show glowing tips',
                    'confidence': 'low: rods are visible, their exact base and function are an interpretation'})
+
+# VLS hatches like the close-up U16: an overlay slab on each measured hatch plate (covering the model's
+# older door design) with a long taupe door, end tabs and, in a checkerboard, yellow/black hazard stripes.
+for i, s in enumerate(sorted(silos, key=lambda s: (-s['a'], s['b']))):
+    x0, x1, y0, y1 = s['plate']; zt, zb = s['surface'] + 0.55, s['surface'] - 0.1
+    cx, cy = (x0 + x1) / 2, (y0 + y1) / 2; L = min(HATCH_L, y1 - y0 - 0.6); W = min(HATCH_W, x1 - x0 - 1.0)
+    hx0, hx1, hy0, hy1 = cx - W / 2, cx + W / 2, cy - L / 2, cy + L / 2
+    for a, b in (((x0, y0), (x1, y0)), ((x1, y0), (x1, y1)), ((x1, y1), (x0, y1)), ((x0, y1), (x0, y0))):
+        add.poly([(a[0], a[1], zb), (b[0], b[1], zb), (b[0], b[1], zt), (a[0], a[1], zt)], 'Armor', tuple(np.array(SIDE) * 0.9))
+    top = tuple(np.array(TOP) * 0.95)
+    for q in ([(x0, y0), (hx0, y0), (hx0, y1), (x0, y1)], [(hx1, y0), (x1, y0), (x1, y1), (hx1, y1)],
+              [(hx0, y0), (hx1, y0), (hx1, hy0), (hx0, hy0)], [(hx0, hy1), (hx1, hy1), (hx1, y1), (hx0, y1)]):
+        add.poly([(p[0], p[1], zt) for p in q], 'Armor', top)
+    striped = (i // 2 + (1 if cy > 0 else 0)) % 2 == 0
+    add.poly([(hx0, hy0, zt), (hx1, hy0, zt), (hx1, hy1, zt), (hx0, hy1, zt)], 'HatchStriped' if striped else 'HatchPlain',
+             uv=[(0, 0), (0, 1), (1, 1), (1, 0)])
+    addon_info['siloHatches'].append({'centreMetres': [round(cx, 2), round(cy, 2), round(zt, 2)], 'sizeMetres': [round(W, 2), round(L, 2)], 'hazardStripes': striped})
+
+# Hangar bays like U17: the model's bays end in an older X-truss frame; a new back wall just in front of it
+# carries the long split observation window (dark green glass, light frame bars) and small fixtures.
+for h in hangars:
+    c = (h['aMin'] + h['aMax']) / 2; B = h['aMax'] - h['aMin']; z0, z1 = h['bMin'], h['bMax']; H = z1 - z0
+    hits = [bvh.ray_cast(Vector((h['rimX'] - 1, y, z)), Vector((-1, 0, 0)), 400)[0]
+            for y in np.arange(h['aMin'] + 12, h['aMax'] - 12, 4) for z in np.arange(z0 + 5, z1 - 4, 2)]   # central region (corners are chamfered)
+    xw = max(p.x for p in hits if p is not None and p.x < h['rimX'] - 30) + 0.8
+    assert h['rimX'] - xw > 35, (h['rimX'], xw)
+    add.poly([(xw, h['aMin'] + 0.3, z0 + 0.2), (xw, h['aMax'] - 0.3, z0 + 0.2), (xw, h['aMax'] - 0.3, z1 - 0.2), (xw, h['aMin'] + 0.3, z1 - 0.2)], 'Hangar')
+    gb, gt = z0 + 0.40 * H, z0 + 0.86 * H; gm = (gb + gt) / 2
+    hexa = [(c - 0.38 * B, gb), (c + 0.38 * B, gb), (c + 0.43 * B, gm), (c + 0.41 * B, gt), (c - 0.41 * B, gt), (c - 0.43 * B, gm)]
+    add.poly([(xw + 0.12, y, z) for y, z in hexa], 'HangarGlass')
+    for k in range(6): add.bar(xw, hexa[k], hexa[(k + 1) % 6], 0.45, 0.45, 'Trim')
+    zmid = gb + 0.45 * (gt - gb); ztr = gt - 0.12 * (gt - gb)
+    prof = [(c - 0.42 * B, zmid), (c - 0.13 * B, zmid), (c - 0.08 * B, ztr), (c + 0.08 * B, ztr), (c + 0.13 * B, zmid), (c + 0.42 * B, zmid)]
+    for k in range(5): add.bar(xw, prof[k], prof[k + 1], 0.4, 0.4, 'Trim')
+    for sg in (-1, 1): add.bar(xw, (c + sg * 0.30 * B, gb), (c + sg * 0.22 * B, zmid), 0.35, 0.35, 'Trim')
+    for k in (-1, 0, 1): add.box(Vector((xw + 0.4, c + k * 0.2 * B, gt + 0.06 * H)), (0.8, 3.5, 0.9), 'Trim')
+    for k in (-0.5, 0.5): add.box(Vector((xw + 0.4, c + k * 0.3 * B, gb - 0.12 * H)), (0.8, 4.5, 0.9), 'Trim')
+    addon_info['hangarInserts'].append({'bayCentreY': round(c, 2), 'backWallX': round(xw, 2), 'windowZ': [round(gb, 2), round(gt, 2)]})
+    # lights on the pod: two round spotlights above the opening, floodlights under the front edge, nav light
+    for dy in (-0.25 * B, 0.25 * B):
+        hit, n, _, _ = bvh.ray_cast(Vector((200, c + dy, z1 + 2.5)), Vector((-1, 0, 0)), 1000)
+        if hit is not None and n.x > 0.3: lit.disc(hit + n * 0.06, n, 0.9, 'SpotWhite')
+    for k in (-1, 0, 1):
+        hit = bvh.ray_cast(Vector((h['rimX'] - 4, c + k * 0.3 * B, -300)), Vector((0, 0, 1)), 1000)[0]
+        if hit is not None: lit.box(Vector((h['rimX'] - 4, c + k * 0.3 * B, hit.z - 0.2)), (1.6, 2.6, 0.3), 'SpotWhite')
+    sg = 1 if c > 0 else -1
+    hit, n, _, _ = bvh.ray_cast(Vector((h['rimX'] - 12, sg * 400, (z0 + z1) / 2 - 4)), Vector((0, -sg, 0)), 1000)
+    if hit is not None: lit.box(hit + n * 0.45, (1.0, 1.0, 1.0), 'NavRed' if sg > 0 else 'NavGreen')
+
+# Small faint blue windows (U18-U20): a row in the dark bow band and rows around the bridge tower tiers.
+for s in bow_slot:
+    zc = (s['bMin'] + s['bMax']) / 2
+    for y in np.linspace(s['aMin'] + 1.5, s['aMax'] - 1.5, 7):
+        lit.obox(Vector((s['surface'] + 0.05, y, zc)), Vector((1, 0, 0)), Vector((0, 1, 0)), (0.04, 0.6, 0.35), 'WindowCyan')
+nwin = 0
+for z in (35.0, 40.0, 44.0):
+    rays = ([(Vector((0, y, z)), Vector((-1, 0, 0))) for y in np.arange(26, 74, 1.8)] +
+            [(Vector((x, -100, z)), Vector((0, 1, 0))) for x in np.arange(-238, -160, 1.8)] +
+            [(Vector((x, 200, z)), Vector((0, -1, 0))) for x in np.arange(-238, -160, 1.8)])
+    for k, (o, d) in enumerate(rays):
+        hit, n, _, _ = bvh.ray_cast(o, d, 1000)
+        if hit is None or not (-240 < hit.x < -150 and 20 < hit.y < 80) or abs(n.z) > 0.3 or k % 4 == 3: continue
+        lit.obox(hit + n * 0.04, n, Vector((0, 0, 1)).cross(n).normalized(), (0.03, 0.5, 0.25), 'WindowCyan'); nwin += 1
+addon_info['lights'] = {'bridgeWindows': nwin, 'bowWindows': 7 * len(bow_slot), 'faces': len(lit.f)}
 GROUP_EFFECTS = {'dorsal_railguns': 'orange tracer projectiles (user, from on-screen footage)',
                  'ventral_railguns': 'orange tracer projectiles (user, from on-screen footage)',
                  'bow_vls': 'missiles leave the dorsal bow silos upward (+Z), then turn to the target (user)',
@@ -582,44 +733,31 @@ for m in mounts:   # empties must carry exactly the JSON frame (local +X = forwa
     assert (mw.translation - Vector(m['centerMetres'])).length < 1e-3, m['mountID']
 live('Krok 4: zmerene body zbrani (sipky)')
 
-# Add-on object (masts, rods): same Armor material, box UVs and a uniform hull-side COLOR_0.
+# Add-on object (masts, rods, silo hatches, hangar inserts), detail lights and blinking beacons.
 addon_col = bpy.data.collections.new('AddOns'); scene.collection.children.link(addon_col)
-addon_me = mesh_from('Daedalus_AddOns', add_v, add_f, MAT['Armor']); box_uv(addon_me)
-ac = addon_me.color_attributes.new(name='COLOR_0', type='FLOAT_COLOR', domain='CORNER')
-ac.data.foreach_set('color', np.tile(np.array([*(np.array(SIDE) * 0.85), 1.0], np.float32), len(addon_me.loops)))
+addon_me = add.build('Daedalus_AddOns', MAT_ADD, {'Armor': tuple(np.array(SIDE) * 0.85), 'Hangar': tuple(HANGAR_GREY)})
 addon_obj = bpy.data.objects.new('Daedalus_AddOns', addon_me); addon_col.objects.link(addon_obj)
-addon_obj['note'] = 'static detail seen in the stills but absent from the Astrofossil model (bridge masts, forward bow rods)'
-# Railgun barrels: one shared mesh, one object per railgun mount. Pivot = dome base (mount centre),
-# barrels along local +X at dome-centre height. Rest yaw: +X unless the barrels would touch the hull,
-# then the centre of the widest free arc (recorded as restYawDeg in WEAPON_MOUNTS.json).
-TURRET_MAT = pbr('Daedalus_TurretMetal', '3e3f40', .7, .4)
-tv, tf = [], []
-box(tv, tf, Vector((1.55, 0, 1.9)), (1.5, 2.1, 1.25))
-for yy in (-0.45, 0.45):
-    tube(tv, tf, Vector((2.2, yy, 1.9)), Vector((7.6, yy, 1.9)), 0.24, 0.19, 10)
-    tube(tv, tf, Vector((7.0, yy, 1.9)), Vector((7.7, yy, 1.9)), 0.28, 0.28, 10)
-turret_me = mesh_from('SM_Daedalus_RailgunBarrels', tv, tf, TURRET_MAT)
-turret_col = bpy.data.collections.new('Turrets'); scene.collection.children.link(turret_col)
-turret_objs = []
-for m in mounts:
-    if m['group'] not in ('dorsal_railguns', 'ventral_railguns'): continue
-    frame = bpy.data.objects['MOUNT_' + m['mountID']].matrix_world.copy()
-    def clear(yaw):   # rays along each barrel, from its root just outside the dome to beyond the muzzle
-        rot = frame @ Matrix.Rotation(yaw, 4, 'Z')
-        d = (rot.to_3x3() @ Vector((1, 0, 0))).normalized()
-        return all(bvh.ray_cast(rot @ Vector((2.2, dy, 1.9)), d, 6.0)[0] is None for dy in (-0.45, 0.45))
-    yaw = 0.0
-    if not clear(0.0):
-        rng_ = max(m['traverseFreeAzimuthDeg'], key=lambda r: r[1] - r[0], default=[0, 0])
-        yaw = math.radians((rng_[0] + rng_[1]) / 2) * (1 if m['upAxis'][2] > 0 else -1)
-        for step in range(0, 360, 10):
-            if clear(yaw): break
-            yaw += math.radians(10)
-    m['restYawDeg'] = round(math.degrees(yaw) % 360, 1)
-    m['intendedMovingMesh'] = 'SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)'
-    t = bpy.data.objects.new('TURRET_' + m['mountID'], turret_me); turret_col.objects.link(t)
-    t.matrix_world = frame @ Matrix.Rotation(yaw, 4, 'Z'); t['mountID'] = m['mountID']
-    turret_objs.append(t)
+addon_obj['note'] = 'detail seen in the stills but absent from the Astrofossil model: bridge masts, forward bow rods, U16-style VLS hatches, U17-style hangar back walls'
+lights_obj = bpy.data.objects.new('Daedalus_DetailLights', lit.build('Daedalus_DetailLights', LMAT, {})); lights_col.objects.link(lights_obj)
+lights_obj['note'] = 'faint blue windows (bow band, bridge), pod spot and flood lights, nav lights (port red, starboard green)'
+beacon_col = bpy.data.collections.new('Beacons'); scene.collection.children.link(beacon_col)
+beacon_obj = bpy.data.objects.new('Daedalus_Beacons', bea.build('Daedalus_Beacons', {'Beacon': BEACON_MAT}, {})); beacon_col.objects.link(beacon_obj)
+BLINK = {'blinkPeriodSeconds': 5.0, 'onSeconds': 1 / 3, 'colour': '#ff6a2a', 'emissionOn': 8.0, 'emissionOff': 0.0}
+for k, v in BLINK.items(): beacon_obj[k] = v
+# Preview animation in Blender (24 fps): on for 8 frames, off for 112 frames, repeating. Unreal reads BLINK.
+scene.render.fps = 24; scene.frame_start, scene.frame_end = 1, 240
+inp = BEACON_MAT.node_tree.nodes['Principled BSDF'].inputs['Emission Strength']
+for frame, val in ((1, 8.0), (8, 8.0), (9, 0.0), (120, 0.0)):
+    inp.default_value = val; inp.keyframe_insert('default_value', frame=frame)
+ad = BEACON_MAT.node_tree.animation_data
+try: fcurves = ad.action.fcurves
+except AttributeError:
+    from bpy_extras import anim_utils
+    fcurves = anim_utils.action_get_channelbag_for_slot(ad.action, ad.action_slot).fcurves
+for fc in fcurves:
+    for kp in fc.keyframe_points: kp.interpolation = 'CONSTANT'
+    fc.modifiers.new('CYCLES')
+inp.default_value = 8.0
 
 # Look-development lighting like the stills (not exported): hard key sun from port-aft above, a blue
 # Earth bounce from below-starboard that keeps the sides readable (U13 sides ~105-110 sRGB), a weak
@@ -630,11 +768,11 @@ def sun(name, energy, color, travel, angle):
     l = bpy.data.lights.new(name, 'SUN'); l.energy = energy; l.color = color; l.angle = math.radians(angle)
     o = bpy.data.objects.new(name, l); look_col.objects.link(o)
     o.rotation_euler = (-Vector(travel)).normalized().to_track_quat('Z', 'Y').to_euler(); return o
-sun('SUN_Key', 4.6, (1.0, 0.99, 0.975), (0.3, -0.5, -0.81), 0.5)
-sun('SUN_EarthBounce', 2.0, (0.78, 0.87, 1.0), (-0.25, 0.6, 0.6), 3.0)
-sun('SUN_CamFill', 0.5, (0.9, 0.93, 1.0), (-0.65, 0.45, -0.5), 5.0)
+sun('SUN_Key', 4.6, (1.0, 0.98, 0.95), (0.3, -0.5, -0.81), 0.5)
+sun('SUN_EarthBounce', 2.4, (0.62, 0.8, 1.0), (-0.25, 0.6, 0.6), 3.0)     # cool blue sky/Earth light (U22 tone)
+sun('SUN_CamFill', 0.6, (0.8, 0.9, 1.0), (-0.65, 0.45, -0.5), 5.0)
 scene.world = bpy.data.worlds.new('Space_Dark'); scene.world.use_nodes = True
-scene.world.node_tree.nodes['Background'].inputs[0].default_value = (0.006, 0.007, 0.009, 1)
+scene.world.node_tree.nodes['Background'].inputs[0].default_value = (0.008, 0.011, 0.016, 1)
 scene.view_settings.view_transform = 'AgX'
 try: scene.view_settings.look = 'AgX - Medium High Contrast'
 except TypeError: pass
@@ -648,18 +786,19 @@ live('Krok 5: textura plat, stozary, tyce a hlavne vezi')
 # ---------------------------------------------------------------- 7. save, export, reopen checks
 ship['source_creator'] = 'Astrofossil'; ship['source_url'] = 'https://www.thingiverse.com/thing:2256025'
 ship['license'] = 'CC BY-NC 4.0'; ship['forward_axis'] = '+X'; ship['up_axis'] = '+Z'; ship['length_metres'] = 600.0
-ship['detail_pass'] = 'task 0008: plating texture (box UVs), reference palette, AO, lights; exact Astrofossil geometry; add-ons and turret barrels are separate objects'
+ship['detail_pass'] = 'task 0008: plating texture (box UVs), reference palette, AO, lights; exact Astrofossil geometry; add-ons, detail lights and beacons are separate objects'
 
 scene.render.engine = 'BLENDER_EEVEE'
 blend = OUT / 'Daedalus.blend'; glb = OUT / 'Daedalus.glb'; glow_glb = OUT / 'DaedalusEngineGlow.glb'; lights_glb = OUT / 'DaedalusLights.glb'
-addons_glb = OUT / 'DaedalusAddOns.glb'; turrets_glb = OUT / 'DaedalusTurrets.glb'
+addons_glb = OUT / 'DaedalusAddOns.glb'; beacons_glb = OUT / 'DaedalusBeacons.glb'
 bpy.ops.wm.save_as_mainfile(filepath=str(blend), compress=True)
-for k, n in TEX_NAMES.items(): bpy.data.images[n].filepath = '//Textures/' + n + '.png'   # relative, forward slashes (portable)
+TEX_FILES = sorted(img.name for img in bpy.data.images if img.filepath_raw and Path(img.filepath_raw).parent == TEX_DIR)
+for n in TEX_FILES: bpy.data.images[n].filepath = '//Textures/' + n + '.png'   # relative, forward slashes (portable)
 bpy.ops.wm.save_mainfile(compress=True)
 assert all(bpy.data.images[PLATING[k].name].filepath.startswith('//') for k in PLATING)
 # glTF: textured slots export the plating maps (baseColorTexture x COLOR_0 per the glTF spec);
 # untextured slots export a constant base colour; COLOR_0 is the active colour attribute.
-for m in list(mesh.materials) + [TURRET_MAT]:
+for m in {*mesh.materials, *addon_me.materials}:
     nt = m.node_tree; bs = nt.nodes.get('Principled BSDF')
     for link in list(bs.inputs['Base Color'].links): nt.links.remove(link)
     if m['textured']: nt.links.new(nt.nodes['TEX_base'].outputs['Color'], bs.inputs['Base Color'])
@@ -670,14 +809,14 @@ def export(path, objs, **kw):
     bpy.context.view_layer.objects.active = objs[0]
     bpy.ops.export_scene.gltf(filepath=str(path), export_format='GLB', use_selection=True, export_extras=True, **kw)
 export(glb, [ship], export_vertex_color='ACTIVE', export_materials='EXPORT')
-export(glow_glb, glow_objs)
-export(lights_glb, [bpy.data.objects['Daedalus_WindowLights']])
+export(glow_glb, glow_objs + [c for o in glow_objs for c in o.children], export_lights=True)
+export(lights_glb, [bpy.data.objects['Daedalus_WindowLights'], lights_obj])
 export(addons_glb, [addon_obj], export_vertex_color='ACTIVE', export_materials='EXPORT')
-export(turrets_glb, turret_objs)
+export(beacons_glb, [beacon_obj], export_animations=False)
 bpy.ops.wm.open_mainfile(filepath=str(blend))
 ship = bpy.data.objects['SM_Daedalus']
 assert abs(ship.dimensions.x - 600) < .01
-skip = {o.name for c in ('EngineGlow', 'HullLights', 'AddOns', 'Turrets') for o in bpy.data.collections[c].objects}
+skip = {o.name for c in ('EngineGlow', 'HullLights', 'AddOns', 'Beacons') for o in bpy.data.collections[c].objects}
 hull_meshes = [o for o in bpy.data.objects if o.type == 'MESH' and o.name not in skip]
 assert [o.name for o in hull_meshes] == ['SM_Daedalus'], [o.name for o in hull_meshes]
 missing = [i.name for i in bpy.data.images if i.source == 'FILE' and not Path(bpy.path.abspath(i.filepath)).exists()]
@@ -698,11 +837,13 @@ assert check['glbUVMaps'] and check['glbImages'] >= 3, check
 bpy.ops.wm.read_factory_settings(use_empty=True)
 bpy.ops.import_scene.gltf(filepath=str(addons_glb))
 check['addOnObjects'] = sorted(o.name for o in bpy.context.scene.objects if o.type == 'MESH')
+check['addOnMaterials'] = sorted({m.name for o in bpy.context.scene.objects if o.type == 'MESH' for m in o.data.materials})
+assert 'Daedalus_SiloHatch_Striped' in check['addOnMaterials'] and 'Daedalus_HangarWindow' in check['addOnMaterials'], check['addOnMaterials']
 bpy.ops.wm.read_factory_settings(use_empty=True)
-bpy.ops.import_scene.gltf(filepath=str(turrets_glb))
-tob = [o for o in bpy.context.scene.objects if o.type == 'MESH']
-check['turretObjects'] = len(tob); check['turretMeshes'] = len({o.data.name for o in tob})
-assert check['turretObjects'] == sum(1 for m in mounts if m['group'] in ('dorsal_railguns', 'ventral_railguns'))
+bpy.ops.import_scene.gltf(filepath=str(beacons_glb))
+bo = [o for o in bpy.context.scene.objects if o.type == 'MESH']
+check['beaconObjects'] = sorted(o.name for o in bo); check['beaconBlinkExtras'] = bool(bo) and 'blinkPeriodSeconds' in bo[0]
+assert check['beaconBlinkExtras'], check
 bpy.ops.wm.read_factory_settings(use_empty=True)
 bpy.ops.import_scene.gltf(filepath=str(lights_glb))
 check['lightsObjects'] = sorted(o.name for o in bpy.context.scene.objects if o.type == 'MESH')
@@ -711,6 +852,8 @@ bpy.ops.import_scene.gltf(filepath=str(glow_glb))
 gl = [o for o in bpy.context.scene.objects if o.type == 'MESH']
 check['glowObjects'] = sorted(o.name for o in gl)
 check['glowMaterials'] = sorted({m.name for o in gl for m in o.data.materials})
+check['glowLights'] = sum(1 for o in bpy.context.scene.objects if o.type == 'LIGHT')
+assert check['glowLights'] == len(engines), check['glowLights']
 
 engine_manifest = FX['engine_manifest'](engines)
 (OUT / 'ENGINE_MOUNTS.json').write_text(json.dumps(engine_manifest, indent=2) + '\n')
@@ -721,7 +864,7 @@ weapon_manifest = {
     'azimuthConvention': 'traverseFreeAzimuthDeg: degrees about the ship +Z, 0 = +X bow, 90 = +Y port; inclusive [start, end] ranges sampled every 5 deg at 5 deg elevation; a negative start wraps through 0 (e.g. [-295, 25] = 65..360 and 0..25)',
     'notes': ['Positions are measured modelled features, not canon proofs. Wiki lists 32 railguns and 16 VLS tubes; a fan sheet lists 26 twin railguns. The model contains its own dome count (see group counts).',
               'Turret mounts: centre = dome base on the hull; upAxis is the turret yaw axis; forwardAxis is the rest direction of the barrels.',
-              'Railgun barrels are separate objects TURRET_<mountID> in DaedalusTurrets.glb (shared mesh SM_Daedalus_RailgunBarrels, pivot = mount frame, rotated by restYawDeg about the mount up axis); the domes stay on the hull.',
+              'Railgun turrets are the original dome turrets with their barrels (part of the hull mesh); no extra barrels are added (user). A rotating version would need the dome extracted as a separate mesh.',
               'ROD mounts sit at the tips of the two forward bow rods (static, DaedalusAddOns.glb).',
               'Asgard plasma beam weapons (4 per wiki): bow pair = outer dome on each lower side ledge (labelled on the SGA Tech Journal schematic); ventral pair = chamfered block fronts between the hangar pods (user, from stills; no dedicated emitter modelled, see zone and surfaceNormal).',
               'fireEffectHint describes the look of each weapon as reported by the user from on-screen footage; it is not a game rule.'],
@@ -733,16 +876,17 @@ report = {'sourceSHA256': hashlib.sha256(SOURCE.read_bytes()).hexdigest(), 'blen
           'glbSHA256': hashlib.sha256(glb.read_bytes()).hexdigest(), 'engineGlowGlbSHA256': hashlib.sha256(glow_glb.read_bytes()).hexdigest(),
           'dimensionsMetres': check['dimensionsMetres'], 'originalTriangles': 222330, 'finalTriangles': FINAL['finalTriangles'],
           'vertices': FINAL['vertices'], 'originalAstrofossilGeometryChanged': False,
-          'changesFromBaseline': 'hull is the exact Astrofossil geometry: the baseline hatch squares and vent slats (not in the original) were removed at the user request; baseline window cubes moved to the separate DaedalusLights.glb; parts the stills show but the model lacks (bridge masts, bow rods, railgun barrels) are separate add-on exports', 'materialSlots': check['materialSlots'],
+          'changesFromBaseline': 'hull is the exact Astrofossil geometry: the baseline hatch squares and vent slats (not in the original) were removed at the user request; baseline window cubes moved to the separate DaedalusLights.glb; parts the stills show but the model lacks (bridge masts, bow rods, U16-style VLS hatches, U17-style hangar back walls, detail lights, blinking mast beacons) are separate exports', 'materialSlots': check['materialSlots'],
           'vertexColour': 'COLOR_0 linear large-scale albedo x baked AO; textured slots multiply it with the plating base colour (glTF rule), untextured slots carry their base colour',
           'textures': {'files': {k: 'Textures/' + n + '.png' for k, n in TEX_NAMES.items()}, 'sizePixels': TEX_N, 'tileMetres': TILE_M,
+                       'siloHatchFiles': ['Textures/' + n + '.png' for n in TEX_FILES if n not in TEX_NAMES.values()], 'siloHatchSizeMetres': [HATCH_W, HATCH_L],
                        'uv': 'UVMap: world-scale box projection per face (dominant normal axis), 1 UV unit = 32 m', 'generator': 'procedural, plating_maps() in this script (seed 304); no third-party images',
-                       'stats': PLATING_STATS, 'sha256': {k: hashlib.sha256((TEX_DIR / (n + '.png')).read_bytes()).hexdigest() for k, n in TEX_NAMES.items()}},
-          'addOns': addon_info, 'turrets': {'mesh': 'SM_Daedalus_RailgunBarrels', 'objects': check['turretObjects']},
+                       'stats': PLATING_STATS, 'sha256': {n: hashlib.sha256((TEX_DIR / (n + '.png')).read_bytes()).hexdigest() for n in TEX_FILES}},
+          'addOns': addon_info, 'beacons': {'objects': check['beaconObjects'], **BLINK, 'note': 'blink in the engine: emissionOn for onSeconds once every blinkPeriodSeconds; Blender .blend has a preview animation'},
           'fittings': stats, 'materialAssignment': assign_stats, 'engineOutlets': len(engines), 'mountGroups': weapon_manifest['groupCounts'],
-          'exports': {'hull': 'Daedalus.glb', 'engineGlow': 'DaedalusEngineGlow.glb', 'windowLights': 'DaedalusLights.glb', 'addOns': 'DaedalusAddOns.glb', 'turrets': 'DaedalusTurrets.glb'},
+          'exports': {'hull': 'Daedalus.glb', 'engineGlow': 'DaedalusEngineGlow.glb', 'lights': 'DaedalusLights.glb', 'addOns': 'DaedalusAddOns.glb', 'beacons': 'DaedalusBeacons.glb'},
           'lightsGlbSHA256': hashlib.sha256(lights_glb.read_bytes()).hexdigest(), 'addOnsGlbSHA256': hashlib.sha256(addons_glb.read_bytes()).hexdigest(),
-          'turretsGlbSHA256': hashlib.sha256(turrets_glb.read_bytes()).hexdigest(), 'checks': check,
+          'beaconsGlbSHA256': hashlib.sha256(beacons_glb.read_bytes()).hexdigest(), 'checks': check,
           'coordinateMapping': 'source (x,y,z) -> Unreal/Blender (-z,-x,y)', 'detailScript': 'Tools/Prepare-DaedalusDetail.py',
           'baselineScript': 'Tools/Prepare-DaedalusSource.py (baseline only; do not run over this detailed source)'}
 (OUT / 'asset-metadata.json').write_text(json.dumps(report, indent=2) + '\n')

@@ -9,64 +9,77 @@ dimensions, import and rendering in its own Unreal copy.
   - `06312a0`,
   - `991a823`,
   - `d5846a1`,
-  - final series-look commit (this one; the SHA is in the push report).
+  - `3effaca`,
+  - final pass (this commit; the SHA is in the push report).
 
 ## User decisions during the task
 
-1. "Do not change the model proportions; only colours and lighting, plus
-   effects around the hull, not the model itself." The hull vertices are still
-   untouched.
-2. The dark squares are not in the original model.
-   - The baseline's 14 hatch squares and 36 vent slats were removed.
-   - The 30 window boxes became `DaedalusLights.glb`.
-   - The hull is exactly the Astrofossil geometry: 222330 triangles.
-3. Asgard beams and silo colour (references U9–U12):
-   - 4 Asgard beam weapons: 2 at the bow, where the "Asgard beam turret" is
-     labelled on the SGA Tech Journal schematic, and 2 under the hull between
-     the hangars, mirrored.
+1. **Proportions.** "Do not change the model proportions; only colours and
+   lighting, plus effects around the hull." The hull vertices are still exactly
+   the Astrofossil geometry: 222330 triangles, 600 m.
+2. **Removed fittings.** The baseline's dark hatch squares and vent slats are
+   not in the original, so they were removed. The windows became a separate
+   light export.
+3. **Asgard beams and effects (U9–U12).**
+   - 4 Asgard beam weapons: 2 at the bow, where the U12 schematic labels them,
+     and 2 under the hull between the hangars.
    - Weapon effect hints: orange railgun projectiles, missiles from the bow
      silos, blue beams.
-4. **The user rejected the first detailed look** after opening it in Blender
-   (compared with U13–U15):
-   - The hull was too light, cool or green, and flat.
-   - The orange silos read as "gold bricks"; in the series it is an almost
-     invisible spray around the hatches.
-   - The lighting did not match.
-
-   The user gave free rein: "make it look as close to the series as possible."
-   This commit is that second pass:
-   - procedural plating texture with box UVs,
-   - a neutral palette sampled from U13,
-   - a faint ochre tint on the silo frame ridges only,
-   - darker hangars and cool lights,
-   - series-like look-dev lighting,
-   - add-ons the stills show (bridge masts, forward bow rods),
-   - twin railgun barrels as separate turret objects.
+4. **First detailed look rejected.** It was too light, cool and flat, and the
+   orange was too strong. The user gave free rein to match the series. That led
+   to the procedural plating texture, a palette sampled from U13 and series-like
+   look-dev (commit `3effaca`).
+5. **Final pass ("almost there; finalize it").** The user gave the 4K still
+   U15 as the main target, plus close-ups:
+   - **VLS hatches exactly like U16:** long taupe doors in dark frames, grey end
+     tabs with bolts, yellow/black hazard stripes on alternate hatches
+     (checkerboard). They are overlays on the measured hatch plates.
+   - **Hangars like U17:** a new back wall in each bay with the split
+     observation window (dark green glass, light frame bars) in front of the
+     model's older X-truss frame. Spotlights above each opening, floodlights
+     under the pod edges, nav lights.
+   - **Small, faint blue windows (U18–U20):**
+     - a row in the now-dark bow band,
+     - rows on the bridge tiers,
+     - the 30 baseline windows dimmed.
+   - **Blinking mast-tip lights (U20):**
+     - re-placed masts: two on the bridge top tier and three tall ones beside
+       the tower,
+     - three orange beacons that blink once every 5 s.
+   - **Engines (U21):** the internal turbine vanes must stay visible, not a
+     flat orange disc. The vane and hub faces are warm-lit, the core disc sits
+     behind them, and a point light in front of the vanes lights them.
+   - **Overall tone and light from U22** (only tone, not details): a cooler
+     Earth/sky bounce, so the hull reads blue-grey in shadow as in daylight.
+   - **The twin barrels added on the turrets were removed.** The original dome
+     turrets already carry their own guns (U23–U25), so having two made no
+     sense.
 
 ## Deliverables (Art/Ships/Daedalus)
 
 | File | Role |
 | --- | --- |
-| `Daedalus.blend` | Source scene. Contains:<br>• `SM_Daedalus` (hull)<br>• `EngineGlow` (6)<br>• `HullLights`<br>• `AddOns` (`Daedalus_AddOns`)<br>• `Turrets` (38 `TURRET_<id>`)<br>• `WeaponMounts` (62 empties)<br>• `LookDev_Series` (3 suns, `CAM_SeriesStill`)<br>Textures are referenced as `//Textures/*.png`. |
-| `Daedalus.glb` | One hull mesh `SM_Daedalus`: exactly 222330 triangles, 600 m, with `UVMap` (TEXCOORD_0) and COLOR_0. Slots:<br>• `Daedalus_Armor` (plating textures)<br>• `Daedalus_EngineMetal`<br>• `Daedalus_HangarInterior` (plating textures, weak emission)<br>• `Daedalus_LightWhite`<br>The 3 textures are embedded. |
-| `Textures/T_Daedalus_Plating_BaseColor.png` | 2048², sRGB, tiling, 1 tile = 32 m. Procedural; generated by the detail script (seed 304). |
-| `Textures/T_Daedalus_Plating_ORM.png` | Linear. G = roughness, B = metallic (R = 1). |
-| `Textures/T_Daedalus_Plating_Normal.png` | Linear, OpenGL (+Y) tangent space; seams, raised plates, small boxes. |
-| `DaedalusEngineGlow.glb` | Six `<outletID>_Glow` objects. Origin = outlet centre, exhaust = local −X. Unchanged. |
-| `DaedalusLights.glb` | `Daedalus_WindowLights`: 30 small windows, now cool blue-white (`#bfe3ff`, 3.0). |
-| `DaedalusAddOns.glb` | `Daedalus_AddOns`, in the hull frame. Same Armor material and box UVs. Contains:<br>• 2 tall and 2 short bridge masts and a cross arm<br>• 2 forward rods, 40 m long, ahead of the bow front at y ±29.5, z −14<br>The rods are visible in R2, U2 and U13; their base and length are estimates. |
-| `DaedalusTurrets.glb` | 38 objects `TURRET_<mountID>` sharing the mesh `SM_Daedalus_RailgunBarrels` (twin barrels and mantlet, about 7.7 m). Each object's transform = mount frame × `restYawDeg`. The domes stay on the hull. |
+| `Daedalus.blend` | Source scene. Contains:<br>• `SM_Daedalus` (hull)<br>• `EngineGlow` (6 glow objects + 6 point lights)<br>• `HullLights` (`Daedalus_WindowLights`, `Daedalus_DetailLights`)<br>• `AddOns` (`Daedalus_AddOns`)<br>• `Beacons` (`Daedalus_Beacons`, preview animation)<br>• `WeaponMounts` (62 empties)<br>• `LookDev_Series` (3 suns, `CAM_SeriesStill`)<br>Textures are referenced as `//Textures/*.png`. |
+| `Daedalus.glb` | One hull mesh `SM_Daedalus`: exactly 222330 triangles, 600 m, with `UVMap` and COLOR_0. Slots:<br>• `Daedalus_Armor` (plating textures)<br>• `Daedalus_EngineMetal`<br>• `Daedalus_HangarInterior` (plating textures)<br>• `Daedalus_LightWhite` (dark bow window band)<br>• `Daedalus_EngineInner` (turbine vane and hub faces, warm glow)<br>Textures are embedded. |
+| `Textures/T_Daedalus_Plating_{BaseColor,ORM,Normal}.png` | 2048², tiling, 1 tile = 32 m; ORM G = roughness, B = metallic; normal map in OpenGL (+Y) convention. |
+| `Textures/T_Daedalus_SiloHatch_{Plain,Striped}_BaseColor.png`, `..._Normal.png` | 2048 × 822, one hatch (15.45 × 6.2 m) per image. Final albedo (COLOR_0 = 1 on those faces). |
+| `DaedalusEngineGlow.glb` | Six `<outletID>_Glow` objects, each with:<br>• a core disc behind the vanes<br>• a faint haze<br>• a child point light (KHR_lights_punctual, range 1.3 × aperture radius)<br>Origin = outlet centre, exhaust = local −X. |
+| `DaedalusLights.glb` | `Daedalus_WindowLights` (30 faint windows) and `Daedalus_DetailLights`:<br>• faint cyan windows in the bow band and on the bridge tiers<br>• pod spotlights and floodlights<br>• nav lights (starboard green, port red) |
+| `DaedalusAddOns.glb` | `Daedalus_AddOns`. Materials: Armor, Hangar, `Daedalus_SiloHatch_Plain/Striped`, `Daedalus_HangarWindow`, `Daedalus_TrimLight`. Contains:<br>• bridge masts<br>• two 40 m forward rods (estimated)<br>• 16 VLS hatch overlays (U16)<br>• two hangar back walls with windows (U17) |
+| `DaedalusBeacons.glb` | `Daedalus_Beacons`: three orange lamps on mast tips. Object extras: `blinkPeriodSeconds` 5, `onSeconds` 1/3, `emissionOn` 8, `emissionOff` 0. |
 | `ENGINE_MOUNTS.json` | 6 outlets (unchanged). |
 | `WEAPON_MOUNTS.json` | 62 mounts (see below). |
-| `asset-metadata.json` | Hashes for every export and texture; counts, checks, texture and UV method, add-on and turret info. |
-| `REFERENCES.md` | Sources (R1–R3, U1–U15), U13 colour samples, observations, mapping. |
+| `asset-metadata.json` | Hashes for all exports and textures, counts, checks, add-on, light and beacon info. |
+| `REFERENCES.md` | Sources (R1–R3, U1–U25, F1), U13/U22 colour samples, observations, mapping. |
 | `SOURCE.md` | Astrofossil CC BY-NC 4.0 credit retained, plus the modification notice. |
+
+`DaedalusTurrets.glb` from `3effaca` is deleted (user decision 5).
 
 All GLBs share the hull frame: ship-local, +X forward, +Z up, metres, origin at
 the hull bounding-box centre. Import them at the same transform with no
 offsets.
 
-Reproduce (about 7 minutes; the AO bake is the slow part):
+Reproduce (about 10 minutes; the AO bake is the slow part):
 
 ```
 blender --background --factory-startup --python Tools/Prepare-DaedalusDetail.py
@@ -76,43 +89,44 @@ blender --background --factory-startup --python Tools/Prepare-DaedalusDetail.py
 run `Tools/Prepare-DaedalusSource.py`: it is the baseline only and overwrites
 the same files.
 
-## Unreal import notes (for Codex), changed in this pass
+## Unreal import notes (for Codex)
 
-- **The hull material now needs textures.** Use `TEXCOORD_0`.
+- **Hull and add-on materials need textures** (TEXCOORD_0).
 
   | Material input | Value |
   | --- | --- |
   | BaseColor | `BaseColorTexture × COLOR_0` (the glTF rule; factor white) |
   | Roughness | ORM.G |
   | Metallic | ORM.B |
-  | Normal | Normal map (OpenGL green; flip G if your import expects DirectX) |
+  | Normal | Normal map (OpenGL green; flip G for DirectX) |
 
-  The parent material that multiplied COLOR_0 by the base factor must now
-  multiply COLOR_0 by the base colour texture. Untextured slots
-  (`EngineMetal`, `LightWhite`, `TurretMetal`) still use their base factor.
-- The textures tile every 32 m. Box UVs are continuous across coplanar faces.
-- Lighting reference: `LookDev_Series` in the .blend matches U13.
+  The VLS hatch materials have base colour and normal only (roughness 0.6,
+  metallic 0.3). Untextured slots use their factors.
+- **Beacons blink in the engine.** Use emission 8 for 1/3 s, then 0, repeating
+  every 5 s. Values come from the object extras.
+- **Engine glow.** Scale the glow object's local X for plume length; scale
+  emission and point-light power for throttle.
+- **Lighting reference.** `LookDev_Series` in the .blend matches U13/U15 with
+  the U22 tone.
 
   | Light | Strength | Colour | Travel direction |
   | --- | --- | --- | --- |
-  | Key sun | 4.6 | (1, 0.99, 0.975) | (0.3, −0.5, −0.81) |
-  | Blue Earth bounce | 2.0 | (0.78, 0.87, 1) | (−0.25, 0.6, 0.6) |
-  | Camera-side fill | 0.5 | — | (−0.65, 0.45, −0.5) |
+  | Key sun | 4.6 | (1, 0.98, 0.95) | (0.3, −0.5, −0.81) |
+  | Cool Earth/sky bounce | 2.4 | (0.62, 0.8, 1) | (−0.25, 0.6, 0.6) |
+  | Camera fill | 0.6 | — | — |
 
-  The world is near black, with AgX Medium High Contrast. A dark sky with a
-  single hard sun and no fill makes the camera-facing sides pitch black, which
-  does not match the series.
-- Emissive strengths are Blender values:
+  The world is dark blue-black, with AgX Medium High Contrast. A hard sun alone
+  makes the sides pitch black, which does not match the series.
+- **Emissive strengths (Blender values):**
 
   | Element | Strength |
   | --- | --- |
-  | Windows | 3.0 |
-  | Bow strip | 2.5 |
-  | Hangar | 0.08 |
-  | Glow core | 6 |
-  | Glow plume | 0.9 at alpha 0.16 |
-- Turret barrels: rotate `TURRET_<id>` about its local Z. Rest pose =
-  `restYawDeg`.
+  | Baseline windows | 0.4 |
+  | Detail windows | 0.32 |
+  | Spotlights, floodlights and nav lights | 8 |
+  | Engine core | 8 |
+  | Turbine vanes | 0.6 |
+  | Hangar window | 0.08 |
 
 ## Mounts (WEAPON_MOUNTS.json)
 
@@ -125,24 +139,16 @@ Conventions:
 
 | Group | Count | IDs | Basis | Confidence |
 | --- | --- | --- | --- | --- |
-| dorsal_railguns | 26 | `RG_D_xx` | Modelled domes; barrels in DaedalusTurrets.glb | medium |
+| dorsal_railguns | 26 | `RG_D_xx` | The model's own dome turrets with barrels (part of the hull) | medium |
 | ventral_railguns | 12 | `RG_V_xx` | Ventral domes, upAxis [0,0,−1] | medium |
-| bow_vls | 16 | `VLS_01…16` | Bow hatch doors, launch +Z, `hatchPlateBoundsXY` | high (16 = wiki) |
+| bow_vls | 16 | `VLS_01…16` | Bow hatches, launch +Z, `hatchPlateBoundsXY` | high (16 = wiki) |
 | f302_bays | 2 | `BAY_01_P/S` | Pod front openings, exit +X | high |
 | asgard_beams | 4 | `ASG_01…04` | Bow: outer ledge dome (U12 label). Ventral: chamfered block front between the hangar pods | bow medium, ventral low-medium |
-| bow_rods | 2 | `ROD_01_P/S` | Tips of the forward rods (DaedalusAddOns.glb), +X | low (interpretation) |
+| bow_rods | 2 | `ROD_01_P/S` | Tips of the forward rods (DaedalusAddOns.glb), +X | low |
 
-Every mount has a `fireEffectHint` (the user's description of the footage).
-Nothing here implies that weapons work in Unreal.
-
-## Engines (ENGINE_MOUNTS.json)
-
-These are unchanged.
-
-| Outlets | Centre | Aperture |
-| --- | --- | --- |
-| Main | x −300.0, y ±53.6, z −24.06 | 17.5 m |
-| Pods | x −277.2, y ±127.0 / ±154.1, z −27.88 | 13 m |
+Every mount has a `fireEffectHint`. Nothing here implies that weapons work in
+Unreal. A rotating railgun turret would need its dome extracted from the hull
+as a separate mesh.
 
 ## Checks run (Blender 5.2.2, background)
 
@@ -150,37 +156,40 @@ See `asset-metadata.json` → `checks`. The pipeline prints
 `DAEDALUS_DETAIL_PASS` only if all asserts pass:
 
 - **Hull geometry.** Exactly 222330 triangles before export and after GLB
-  re-import. Dimensions 600.0001 × 378.5321 × 92.6071 m, metric, scale 1.
+  re-import; 600.0001 × 378.5321 × 92.6071 m.
 - **Reopened `.blend`:**
   - one hull mesh,
-  - 4 slots,
+  - 5 slots,
   - COLOR_0 and UVMap present,
-  - all image files resolve (`//Textures/...`),
-  - every mount empty matches the JSON frame.
+  - all texture files resolve,
+  - every mount empty matches the JSON frame (re-verified separately: 62
+    mounts, no deviations).
 - **GLB re-import:**
-  - hull: 1 mesh, UV map present, at least 3 embedded images,
-  - add-ons: 1 object,
-  - turrets: 38 objects,
-  - glow: 6 objects,
-  - lights: 1 object.
-- **Rendered comparison.** Renders from `CAM_SeriesStill` were compared against
-  U13, plus close views of the silos, side and rear. They are in the ignored
-  `.local/daedalus-detail/look` and are not published.
+  - hull: UV map and embedded images present,
+  - add-ons: hatch and hangar-window materials present,
+  - beacons: blink extras present,
+  - glow: 6 objects and 6 lights,
+  - lights objects present.
+- **Rendered checks.** Renders from `CAM_SeriesStill` (compared against U13/U15
+  and U22) plus close views of the silos, hangar, engines, bridge and bow. They
+  are in the ignored `.local/daedalus-detail/final` and are not published.
 
 ## Limitations
 
-- The look is an approximation of the on-screen ship. The plating is
-  procedural, not the production texture. Exact canon colours are unknown.
-  Final judgement belongs in Unreal under the game's lighting.
-- The texture repeats every 32 m. COLOR_0 plate patches (23 × 17 m) break up
-  the repetition, but it may be visible at certain angles.
-- Bridge masts and rod positions and lengths are estimated from stills. They
-  are separate objects, so they are easy to adjust or drop.
-- The Asgard ventral emitters and the rods have no dedicated modelled emitter.
-- The lilac and red navigation point lights are not placed.
-- The hangar interior uses only the single-layer skin faces (156). There is no
-  extra interior geometry.
-- User reference images (U1–U15) are described in REFERENCES.md and are not
+- The look is an approximation of the on-screen ship. The plating and hatch
+  textures are procedural, not the production textures. Canon colours are
+  unknown, and final judgement belongs in Unreal under the game's lighting.
+- The texture repeats every 32 m. COLOR_0 patches break up the repetition.
+- Some items are estimated from stills and are separate objects, so they are
+  easy to adjust or drop:
+  - mast and rod positions,
+  - the hangar back-wall depth,
+  - the beacon count.
+- The hatch overlays are 0.55 m above the model's hatch plates; they cover the
+  older door design.
+- The ventral Asgard emitters and the rods have no dedicated modelled emitter.
+  The small lilac pod lights are not placed.
+- User reference images are described in REFERENCES.md and are not
   redistributed.
 - Blender ran in background processes with saved files. A separate GUI window
   showed a preview copy (ignored). Unreal was not started or edited.

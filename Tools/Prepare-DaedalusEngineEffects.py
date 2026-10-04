@@ -13,7 +13,7 @@ from mathutils import Vector, Matrix
 from mathutils.bvhtree import BVHTree
 from numpy.lib.stride_tricks import sliding_window_view as swv
 
-GLOW_HEX = 'ffd394'   # warm white-orange core, from rear stills (yellow-white centre, orange halo)
+GLOW_HEX = 'ffe2b4'   # warm white core, from rear stills (yellow-white centre, orange halo)
 PLUME_HEX = 'ff9a4a'
 
 
@@ -112,26 +112,27 @@ def glow_materials():
     core = bpy.data.materials.get('Daedalus_EngineGlowCore') or bpy.data.materials.new('Daedalus_EngineGlowCore')
     core.use_nodes = True; b = core.node_tree.nodes['Principled BSDF']
     b.inputs['Base Color'].default_value = (*srgb_lin(GLOW_HEX), 1)
-    b.inputs['Emission Color'].default_value = (*srgb_lin(GLOW_HEX), 1); b.inputs['Emission Strength'].default_value = 6.0
+    b.inputs['Emission Color'].default_value = (*srgb_lin(GLOW_HEX), 1); b.inputs['Emission Strength'].default_value = 8.0
     b.inputs['Roughness'].default_value = 1.0
     plume = bpy.data.materials.get('Daedalus_EngineGlowPlume') or bpy.data.materials.new('Daedalus_EngineGlowPlume')
     plume.use_nodes = True; b = plume.node_tree.nodes['Principled BSDF']
     b.inputs['Base Color'].default_value = (*srgb_lin(PLUME_HEX), 1)
-    b.inputs['Emission Color'].default_value = (*srgb_lin(PLUME_HEX), 1); b.inputs['Emission Strength'].default_value = 0.9
-    b.inputs['Alpha'].default_value = 0.16; plume.surface_render_method = 'BLENDED'
+    b.inputs['Emission Color'].default_value = (*srgb_lin(PLUME_HEX), 1); b.inputs['Emission Strength'].default_value = 0.6
+    b.inputs['Alpha'].default_value = 0.08; plume.surface_render_method = 'BLENDED'
     return core, plume
 
 
 def build_glow(engines, collection):
-    """Per outlet: emissive core disc just inside the lip + short translucent haze (0.35 x aperture radius).
+    """Per outlet: emissive core disc at the BACK of the nozzle (behind the radial vanes, so the vanes
+    show as structure against the glow, as in the stills) + a short faint haze (0.25 x aperture radius).
     Object origin = outlet centre on the lip plane; local -X = exhaust direction, so later throttle can
     scale X (plume length) and emission without touching the hull."""
     core, plume = glow_materials(); objs = []
     for e in engines:
-        r = e['apertureRadius']; seg = 48
-        verts = [(0.25 * min(e['recessDepth'], 3.0), 0, 0)] + [(0.25 * min(e['recessDepth'], 3.0), r * .96 * math.cos(2 * math.pi * k / seg), r * .96 * math.sin(2 * math.pi * k / seg)) for k in range(seg)]
+        r = e['apertureRadius']; seg = 48; cx = max(0.4, e['recessDepth'] - 0.3)
+        verts = [(cx, 0, 0)] + [(cx, r * .96 * math.cos(2 * math.pi * k / seg), r * .96 * math.sin(2 * math.pi * k / seg)) for k in range(seg)]
         faces = [(0, 1 + k, 1 + (k + 1) % seg) for k in range(seg)]
-        L = 0.35 * r; tipr = 0.75 * r; base = len(verts)
+        L = 0.25 * r; tipr = 0.8 * r; base = len(verts)
         verts += [(0.0, r * .9 * math.cos(2 * math.pi * k / seg), r * .9 * math.sin(2 * math.pi * k / seg)) for k in range(seg)]
         verts += [(-L, tipr * math.cos(2 * math.pi * k / seg), tipr * math.sin(2 * math.pi * k / seg)) for k in range(seg)]
         cap = len(verts); verts.append((-L, 0, 0))
@@ -142,7 +143,13 @@ def build_glow(engines, collection):
         for i, poly in enumerate(me.polygons): poly.material_index = 0 if i < len(faces) else 1
         ob = bpy.data.objects.new(e['id'] + '_Glow', me); collection.objects.link(ob)
         ob.location = (e['lipX'], e['y'], e['z'])
-        ob['outlet_id'] = e['id']; ob['exhaust_axis'] = '-X'; ob['throttle_hint'] = 'scale local X for plume length; scale emission for brightness'
+        ob['outlet_id'] = e['id']; ob['exhaust_axis'] = '-X'; ob['throttle_hint'] = 'scale local X for plume length; scale emission and light power for brightness'
+        # warm point light just in front of the radial vanes: lights their faces so the turbine structure
+        # reads against the core (U21), limited range so it does not light the hull outside
+        lt = bpy.data.lights.new(e['id'] + '_Light', 'POINT'); lt.energy = 40 * r * r; lt.color = (1.0, 0.78, 0.5)
+        lt.use_custom_distance = True; lt.cutoff_distance = 1.3 * r; lt.shadow_soft_size = 0.5 * r
+        lo = bpy.data.objects.new(e['id'] + '_Light', lt); collection.objects.link(lo)
+        lo.parent = ob; lo.location = (max(0.5, e['recessDepth'] - 1.5), 0, 0)
         objs.append(ob)
     return objs
 
@@ -174,7 +181,9 @@ if __name__ == '__main__':
     objs = build_glow(engines, col)
     bpy.ops.wm.save_as_mainfile(filepath=str(OUT / 'Daedalus.blend'), compress=True)
     bpy.ops.object.select_all(action='DESELECT')
-    for o in objs: o.select_set(True)
-    bpy.ops.export_scene.gltf(filepath=str(OUT / 'DaedalusEngineGlow.glb'), export_format='GLB', use_selection=True, export_extras=True)
+    for o in objs:
+        o.select_set(True)
+        for c in o.children: c.select_set(True)
+    bpy.ops.export_scene.gltf(filepath=str(OUT / 'DaedalusEngineGlow.glb'), export_format='GLB', use_selection=True, export_extras=True, export_lights=True)
     (OUT / 'ENGINE_MOUNTS.json').write_text(json.dumps(engine_manifest(engines), indent=2) + '\n')
     print('ENGINE_EFFECTS_PASS', len(engines))

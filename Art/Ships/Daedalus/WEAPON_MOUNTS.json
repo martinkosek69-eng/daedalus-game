@@ -8,7 +8,7 @@
   "notes": [
     "Positions are measured modelled features, not canon proofs. Wiki lists 32 railguns and 16 VLS tubes; a fan sheet lists 26 twin railguns. The model contains its own dome count (see group counts).",
     "Turret mounts: centre = dome base on the hull; upAxis is the turret yaw axis; forwardAxis is the rest direction of the barrels.",
-    "Railgun barrels are separate objects TURRET_<mountID> in DaedalusTurrets.glb (shared mesh SM_Daedalus_RailgunBarrels, pivot = mount frame, rotated by restYawDeg about the mount up axis); the domes stay on the hull.",
+    "Railgun turrets are the original dome turrets with their barrels (part of the hull mesh); no extra barrels are added (user). A rotating version would need the dome extracted as a separate mesh.",
     "ROD mounts sit at the tips of the two forward bow rods (static, DaedalusAddOns.glb).",
     "Asgard plasma beam weapons (4 per wiki): bow pair = outer dome on each lower side ledge (labelled on the SGA Tech Journal schematic); ventral pair = chamfered block fronts between the hangar pods (user, from stills; no dedicated emitter modelled, see zone and surfaceNormal).",
     "fireEffectHint describes the look of each weapon as reported by the user from on-screen footage; it is not a game rule."
@@ -51,13 +51,12 @@
       ],
       "freeAzimuthTotalDeg": 325,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_01_S",
-      "restYawDeg": 225.0
+      "mountID": "RG_D_01_S"
     },
     {
       "kind": "turret",
@@ -87,13 +86,12 @@
       ],
       "freeAzimuthTotalDeg": 330,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_02_P",
-      "restYawDeg": 202.5
+      "mountID": "RG_D_02_P"
     },
     {
       "kind": "turret",
@@ -123,13 +121,12 @@
       ],
       "freeAzimuthTotalDeg": 330,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_03_S",
-      "restYawDeg": 242.5
+      "mountID": "RG_D_03_S"
     },
     {
       "kind": "turret",
@@ -159,13 +156,12 @@
       ],
       "freeAzimuthTotalDeg": 330,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_04_P",
-      "restYawDeg": 167.5
+      "mountID": "RG_D_04_P"
     },
     {
       "kind": "turret",
@@ -195,13 +191,12 @@
       ],
       "freeAzimuthTotalDeg": 340,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_05_S",
-      "restYawDeg": 0.0
+      "mountID": "RG_D_05_S"
     },
     {
       "kind": "turret",
@@ -231,13 +226,12 @@
       ],
       "freeAzimuthTotalDeg": 260,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_06_P",
-      "restYawDeg": 0.0
+      "mountID": "RG_D_06_P"
     },
     {
       "kind": "turret",
@@ -267,13 +261,12 @@
       ],
       "freeAzimuthTotalDeg": 345,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_07_S",
-      "restYawDeg": 0.0
+      "mountID": "RG_D_07_S"
     },
     {
       "kind": "turret",
@@ -303,13 +296,12 @@
       ],
       "freeAzimuthTotalDeg": 330,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_08_P",
-      "restYawDeg": 0.0
+      "mountID": "RG_D_08_P"
     },
     {
       "kind": "turret",
@@ -339,13 +331,12 @@
       ],
       "freeAzimuthTotalDeg": 360,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_09_S",
-      "restYawDeg": 0.0
+      "mountID": "RG_D_09_S"
     },
     {
       "kind": "turret",
@@ -375,13 +366,12 @@
       ],
       "freeAzimuthTotalDeg": 360,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_10_P",
-      "restYawDeg": 0.0
+      "mountID": "RG_D_10_P"
     },
     {
       "kind": "turret",
@@ -411,13 +401,12 @@
       ],
       "freeAzimuthTotalDeg": 360,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_11_S",
-      "restYawDeg": 0.0
+      "mountID": "RG_D_11_S"
     },
     {
       "kind": "turret",
@@ -447,13 +436,12 @@
       ],
       "freeAzimuthTotalDeg": 360,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_12_P",
-      "restYawDeg": 0.0
+      "mountID": "RG_D_12_P"
     },
     {
       "kind": "turret",
@@ -487,13 +475,12 @@
       ],
       "freeAzimuthTotalDeg": 345,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_13_S",
-      "restYawDeg": 0.0
+      "mountID": "RG_D_13_S"
     },
     {
       "kind": "turret",
@@ -527,13 +514,12 @@
       ],
       "freeAzimuthTotalDeg": 345,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_14_P",
-      "restYawDeg": 0.0
+      "mountID": "RG_D_14_P"
     },
     {
       "kind": "turret",
@@ -563,13 +549,12 @@
       ],
       "freeAzimuthTotalDeg": 360,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_15_S",
-      "restYawDeg": 0.0
+      "mountID": "RG_D_15_S"
     },
     {
       "kind": "turret",
@@ -599,13 +584,12 @@
       ],
       "freeAzimuthTotalDeg": 360,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_16_P",
-      "restYawDeg": 0.0
+      "mountID": "RG_D_16_P"
     },
     {
       "kind": "turret",
@@ -635,13 +619,12 @@
       ],
       "freeAzimuthTotalDeg": 260,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_17_S",
-      "restYawDeg": 32.5
+      "mountID": "RG_D_17_S"
     },
     {
       "kind": "turret",
@@ -671,13 +654,12 @@
       ],
       "freeAzimuthTotalDeg": 260,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_18_P",
-      "restYawDeg": 47.5
+      "mountID": "RG_D_18_P"
     },
     {
       "kind": "turret",
@@ -707,13 +689,12 @@
       ],
       "freeAzimuthTotalDeg": 280,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_19_S",
-      "restYawDeg": 0.0
+      "mountID": "RG_D_19_S"
     },
     {
       "kind": "turret",
@@ -743,13 +724,12 @@
       ],
       "freeAzimuthTotalDeg": 280,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_20_P",
-      "restYawDeg": 0.0
+      "mountID": "RG_D_20_P"
     },
     {
       "kind": "turret",
@@ -779,13 +759,12 @@
       ],
       "freeAzimuthTotalDeg": 350,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_21_S",
-      "restYawDeg": 0.0
+      "mountID": "RG_D_21_S"
     },
     {
       "kind": "turret",
@@ -815,13 +794,12 @@
       ],
       "freeAzimuthTotalDeg": 350,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_22_P",
-      "restYawDeg": 0.0
+      "mountID": "RG_D_22_P"
     },
     {
       "kind": "turret",
@@ -851,13 +829,12 @@
       ],
       "freeAzimuthTotalDeg": 360,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_23_S",
-      "restYawDeg": 0.0
+      "mountID": "RG_D_23_S"
     },
     {
       "kind": "turret",
@@ -887,13 +864,12 @@
       ],
       "freeAzimuthTotalDeg": 360,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_24_P",
-      "restYawDeg": 0.0
+      "mountID": "RG_D_24_P"
     },
     {
       "kind": "turret",
@@ -923,13 +899,12 @@
       ],
       "freeAzimuthTotalDeg": 165,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_25_P",
-      "restYawDeg": 0.0
+      "mountID": "RG_D_25_P"
     },
     {
       "kind": "turret",
@@ -959,13 +934,12 @@
       ],
       "freeAzimuthTotalDeg": 165,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_D_26_S",
-      "restYawDeg": 0.0
+      "mountID": "RG_D_26_S"
     },
     {
       "kind": "turret",
@@ -995,13 +969,12 @@
       ],
       "freeAzimuthTotalDeg": 360,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_V_01_S",
-      "restYawDeg": 0.0
+      "mountID": "RG_V_01_S"
     },
     {
       "kind": "turret",
@@ -1031,13 +1004,12 @@
       ],
       "freeAzimuthTotalDeg": 360,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_V_02_P",
-      "restYawDeg": 0.0
+      "mountID": "RG_V_02_P"
     },
     {
       "kind": "turret",
@@ -1067,13 +1039,12 @@
       ],
       "freeAzimuthTotalDeg": 360,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_V_03_S",
-      "restYawDeg": 0.0
+      "mountID": "RG_V_03_S"
     },
     {
       "kind": "turret",
@@ -1103,13 +1074,12 @@
       ],
       "freeAzimuthTotalDeg": 360,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_V_04_P",
-      "restYawDeg": 0.0
+      "mountID": "RG_V_04_P"
     },
     {
       "kind": "turret",
@@ -1139,13 +1109,12 @@
       ],
       "freeAzimuthTotalDeg": 360,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_V_05_S",
-      "restYawDeg": 0.0
+      "mountID": "RG_V_05_S"
     },
     {
       "kind": "turret",
@@ -1175,13 +1144,12 @@
       ],
       "freeAzimuthTotalDeg": 360,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_V_06_P",
-      "restYawDeg": 0.0
+      "mountID": "RG_V_06_P"
     },
     {
       "kind": "turret",
@@ -1211,13 +1179,12 @@
       ],
       "freeAzimuthTotalDeg": 360,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_V_07_S",
-      "restYawDeg": 0.0
+      "mountID": "RG_V_07_S"
     },
     {
       "kind": "turret",
@@ -1247,13 +1214,12 @@
       ],
       "freeAzimuthTotalDeg": 360,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_V_08_S",
-      "restYawDeg": 0.0
+      "mountID": "RG_V_08_S"
     },
     {
       "kind": "turret",
@@ -1283,13 +1249,12 @@
       ],
       "freeAzimuthTotalDeg": 360,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_V_09_P",
-      "restYawDeg": 0.0
+      "mountID": "RG_V_09_P"
     },
     {
       "kind": "turret",
@@ -1319,13 +1284,12 @@
       ],
       "freeAzimuthTotalDeg": 360,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_V_10_P",
-      "restYawDeg": 0.0
+      "mountID": "RG_V_10_P"
     },
     {
       "kind": "turret",
@@ -1355,13 +1319,12 @@
       ],
       "freeAzimuthTotalDeg": 350,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_V_11_S",
-      "restYawDeg": 0.0
+      "mountID": "RG_V_11_S"
     },
     {
       "kind": "turret",
@@ -1391,13 +1354,12 @@
       ],
       "freeAzimuthTotalDeg": 350,
       "arcNote": "rays at 5 deg elevation; superstructure occlusion only, no game rules",
-      "intendedMovingMesh": "SM_Daedalus_RailgunBarrels (DaedalusTurrets.glb; the dome stays on the hull)",
+      "intendedMovingMesh": "none yet: the original dome turret with its barrels is part of the hull mesh (extract it to rotate)",
       "weaponHint": "railgun turret (references: twin-barrel dome turrets along deck and bow edges)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
       "confidence": "medium: modelled dome present; exact canon placement/count unconfirmed",
       "fireEffectHint": "orange tracer projectiles (user, from on-screen footage)",
-      "mountID": "RG_V_12_P",
-      "restYawDeg": 0.0
+      "mountID": "RG_V_12_P"
     },
     {
       "kind": "missile_silo",
@@ -2275,7 +2237,7 @@
       ],
       "intendedMovingMesh": "none (static rod in DaedalusAddOns.glb)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
-      "evidence": "long rods ahead of the bow in R2, U2 and U13; U13/U14 show glowing tips",
+      "evidence": "long rods ahead of the bow in R2, U2 and U15; U15/U21 show glowing tips",
       "confidence": "low: rods are visible, their exact base and function are an interpretation",
       "fireEffectHint": "orange projectile from the rod tip (glowing tips in U13, U14); interpretation",
       "mountID": "ROD_01_P"
@@ -2300,7 +2262,7 @@
       ],
       "intendedMovingMesh": "none (static rod in DaedalusAddOns.glb)",
       "referenceURL": "https://stargate.fandom.com/wiki/BC-304 (infobox still Daedalus.jpg; archived 2024-01-12)",
-      "evidence": "long rods ahead of the bow in R2, U2 and U13; U13/U14 show glowing tips",
+      "evidence": "long rods ahead of the bow in R2, U2 and U15; U15/U21 show glowing tips",
       "confidence": "low: rods are visible, their exact base and function are an interpretation",
       "fireEffectHint": "orange projectile from the rod tip (glowing tips in U13, U14); interpretation",
       "mountID": "ROD_02_S"
