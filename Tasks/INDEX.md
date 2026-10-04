@@ -48,7 +48,9 @@ automaticky aktualizovaný přehled všech vzdálených větví.
 
 | 0027 | [Antický HUD a přepínání vzhledu](0027/BRIEF.md) | Codex coordinator | ACCEPTED (technical; user style review pending) | `codex/solar-flight` |
 
-Další volné číslo: **0028**.
+| 0028 | [Daidalos: animace vstupu do hyperprostoru](0028/BRIEF.md) | Codex coordinator | IN_PROGRESS | `codex/solar-flight` |
+
+Další volné číslo: **0029**.
 
 
 

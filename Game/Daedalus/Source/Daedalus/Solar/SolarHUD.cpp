@@ -251,6 +251,7 @@ void ASolarFlightHUD::DrawHUD()
     Super::DrawHUD();
     const auto* Lab = GetWorld() ? Cast<ASolarFlightGameMode>(GetWorld()->GetAuthGameMode()) : nullptr;
     if (!Lab || !Canvas || !GEngine) return;
+    if (Lab->bHyperspacePreview) return; // Clean cinematic rehearsal, controls in launcher/docs.
     if (Lab->bReady && Lab->Galaxy.bOpen)
     {
         // The existing map owns its interaction; HUD adds no map hit targets.

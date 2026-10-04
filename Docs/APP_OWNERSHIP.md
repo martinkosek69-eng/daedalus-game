@@ -1,5 +1,12 @@
 # Shared application ownership
 
+## Current transfer 0028
+
+Codex owns sequential background media analysis, Unreal effect material generation,
+build and standalone animation preview in the fc0b checkout. Initial Get-Process
+inventory found no editor/game/Blender. Recheck before starting application work.
+No shared ship/planet binary editing; no other worker checkout or human app use.
+
 ## Completed transfer 0027
 
 Codex owns one sequential build/package/probe slot in the fc0b coordinator

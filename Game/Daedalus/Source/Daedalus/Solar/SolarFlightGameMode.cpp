@@ -131,7 +131,7 @@ void ASolarFlightPawn::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
     auto* M = Lab(this);
-    if (!M || !M->bReady) return;
+    if (!M || !M->bReady || M->bHyperspacePreview) return;
     if (M->bPaused)
     {
         auto* PC=Cast<APlayerController>(Controller); if(!PC) return;
@@ -266,6 +266,15 @@ void ASolarFlightGameMode::BeginPlay()
     }
     FParse::Value(FCommandLine::Get(), TEXT("SolarProbe="), ProbeDirectory);
     bSharpProbe = FParse::Value(FCommandLine::Get(), TEXT("SolarSharpProbe="), ProbeDirectory);
+    if (FParse::Param(FCommandLine::Get(),TEXT("HyperspacePreview")))
+    {
+        bHyperspacePreview=true;
+        if(!bReady||!BeginHyperspacePreview())
+        {
+            UE_LOG(LogTemp,Error,TEXT("HYPER_PREVIEW_LOAD_FAILED"));
+            FPlatformMisc::RequestExitWithStatus(false,1);
+        }
+    }
 }
 UStaticMeshComponent* ASolarFlightGameMode::MakeMesh(UStaticMesh* Asset, UMaterialInterface* Material)
 {
@@ -403,6 +412,7 @@ void ASolarFlightGameMode::UpdateScene(float DeltaSeconds)
 void ASolarFlightGameMode::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+    if(bHyperspacePreview){if(bReady)TickHyperspacePreview(DeltaSeconds);return;}
     FrameMilliseconds += (DeltaSeconds * 1000 - FrameMilliseconds) * .08;
     if (!bReady) { if (!ProbeDirectory.IsEmpty()) { if (bSharpProbe) TickSharpProbe(); else TickProbe(); } return; }
     Flight.Advance(DeltaSeconds);

@@ -1,0 +1,26 @@
+// UV quad spans six aperture radii. A luminous turbulent volume-like aperture,
+// not a torus: dense white/mint core, layered plasma and radial filaments.
+float2 p=(UV-.5)*6/max(Radius,.001);
+float r=length(p), t=PhaseTime;
+float edge=1-smoothstep(2.4,2.95,r);
+float a=atan2(p.y,p.x);
+float3 q=float3(p*2.6,t*.45);
+float2 warp=float2(F.Fbm(q),F.Fbm(q+float3(13,7,3)))-.5;
+float3 w=float3(p*4+warp*1.6,t*.68);
+float n=F.Fbm(w), fine=F.Fbm(w*2.7+float3(0,0,-t*.8));
+float web=pow(saturate(1-abs(2*n-1)),15);
+float web2=pow(saturate(1-abs(2*fine-1)),21);
+float twist=a+(.17+ .09*sin(t*.7))*sin(r*4.3-t*1.8)+.32*(n-.5);
+float rays=pow(saturate(.5+.5*sin(twist*23+1.8*sin(a*9+t))),22);
+float rays2=pow(saturate(.5+.5*sin(twist*37-r*3-t)),38);
+float envelope=exp(-r*r*1.5);
+float veins=(web*.65+web2*.28)*envelope*2.3;
+float tendrils=(rays*.65+rays2*.28)*exp(-r*1.7)*smoothstep(.35,.8,r);
+float haze=exp(-r*r*.68)*.11;
+float core=exp(-r*r*8.5)*8;
+float clouds=pow(n,2.3)*envelope*3.1;
+float pulse=1+.035*sin(t*19)+.028*sin(t*31);
+float3 mint=float3(.32,.80,.65), teal=float3(.025,.27,.24);
+float3 c=(float3(.82,1,.9)*core+mint*(veins+clouds)*2.4+mint*tendrils*2+teal*haze)*pulse;
+float opacity=max(1-smoothstep(.48,.72,r),saturate((veins+clouds)*.75+tendrils*2+haze));
+return float4(c*Strength,opacity*edge*saturate(Strength*2));

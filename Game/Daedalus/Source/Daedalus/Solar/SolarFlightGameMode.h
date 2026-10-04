@@ -7,6 +7,7 @@
 #include "DaedalusShipFlightCatalog.h"
 #include "Solar/GalaxyMapView.h"
 #include "Solar/SolarPauseMenu.h"
+#include "Solar/HyperspaceTimeline.h"
 #include "SolarFlightGameMode.generated.h"
 
 class UCameraComponent;
@@ -104,6 +105,7 @@ public:
     virtual void Tick(float DeltaSeconds) override;
     Daedalus::FFlightModel Flight;
     bool bReady = false, bPaused = false;
+    bool bHyperspacePreview = false;
     FString Message;
     TArray<FSolarFlightProfile> Profiles;
     int32 ProfileIndex = 1;
@@ -147,6 +149,24 @@ public:
     bool ActivateSystem(int32 Index, int32 BodyIndex);
     void RefreshNavigation();
 private:
+    // Isolated presentation rehearsal, never a second flight/travel authority.
+    bool BeginHyperspacePreview();
+    void TickHyperspacePreview(float DeltaSeconds);
+    void PresentHyperspace(double Seconds);
+    void RestartHyperspacePreview();
+    void PauseHyperspacePreview();
+    void InspectHyperspaceTransit();
+    void ExitHyperspacePreview();
+    FHyperTimeline HyperTimeline;
+    double HyperSeconds=0;
+    int32 HyperFrame=0;
+    bool bHyperPaused=false, bHyperStills=false;
+    FString HyperCaptureDirectory;
+    UPROPERTY() TObjectPtr<UStaticMeshComponent> HyperWindow;
+    UPROPERTY() TObjectPtr<UStaticMeshComponent> HyperTunnel;
+    UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> HyperWindowMaterial;
+    UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> HyperTunnelMaterial;
+    UPROPERTY() TObjectPtr<UPointLightComponent> HyperLight;
     Daedalus::FFlightState InitialState;
     TArray<Daedalus::FFlightBody> Bodies;
     UPROPERTY() TObjectPtr<UStaticMesh> ShipAsset;
