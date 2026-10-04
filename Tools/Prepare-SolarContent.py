@@ -1,5 +1,5 @@
 """Owned Unreal commandlet: source import and repeatable solar content recipe."""
-import unreal, json, struct, hashlib, importlib.util
+import unreal, json, struct, hashlib, importlib.util, os
 from pathlib import Path
 
 def main():
@@ -17,6 +17,10 @@ def main():
     for directory in ('Art/Space/SolarCatalog','Art/Space/SolarDetails','Art/Space/Systems','Game/Daedalus/Content/Data/Systems'):
         expanded+=list((base/directory).rglob('*'))
     expanded+=[base/'Game/Daedalus/Content/Data/Solar/universe.json',base/'Tools/Prepare-SolarDetails.py',base/'Tools/Fetch-SolarMinorCatalog.py']
+    # Planet quality: prepared sources, recipe helpers and the planet texture group.
+    expanded+=list((base/'Art/Space/PlanetQuality').rglob('*'))
+    expanded+=[base/'Tools/Prepare-PlanetMaterials.py',base/'Tools/Prepare-PlanetSources.py',base/'Tools/Fetch-PlanetSources.ps1',
+               base/'Game/Daedalus/Config/DefaultDeviceProfiles.ini']
     for source in sorted(set(expanded)):
         if source.is_file():
             fingerprint.update(source.relative_to(base).as_posix().encode('utf-8'))
@@ -38,7 +42,10 @@ def main():
         data=(base/'Art/Ships/Daedalus'/filename).read_bytes()
         paths+=['/Game/Ships/Daedalus/Materials/M_'+m['name'] for m in json.loads(data[20:20+struct.unpack_from('<I',data,12)[0]])['materials']]
     paths+=['/Game/Ships/Daedalus/Textures/'+p.stem for p in (base/'Art/Ships/Daedalus/Textures').glob('*.png')]
-    if existing and detail_data.exists() and unreal.EditorAssetLibrary.get_metadata_tag(existing,'SolarRecipe')==recipe and all(unreal.EditorAssetLibrary.does_asset_exist(path) for path in paths):
+    # Development iteration on planets only: rebuilds planet presentation assets, never imports or
+    # re-saves ship/sky/star assets and never writes the shared recipe tag (full run still required).
+    planet_only=os.environ.get('DAEDALUS_PLANET_ONLY')=='1'
+    if not planet_only and existing and detail_data.exists() and unreal.EditorAssetLibrary.get_metadata_tag(existing,'SolarRecipe')==recipe and all(unreal.EditorAssetLibrary.does_asset_exist(path) for path in paths):
         print('SOLAR_CONTENT_PASS cached verified recipe')
         return
     root=Path(unreal.Paths.project_dir()).resolve().parent.parent
@@ -60,6 +67,7 @@ def main():
             assert unreal.EditorAssetLibrary.rename_asset(asset.get_path_name(),desired)
         return asset
     
+    if planet_only:return planet_pass(root,tools,lib,imported,system_recipe)
     ship=imported(root/'Art/Ships/Daedalus/Daedalus.glb','/Game/Ships/Daedalus','SM_Daedalus',unreal.StaticMesh)
     assert abs(ship.get_bounds().box_extent.x*2-60000)<30,ship.get_bounds()
     web=imported(web_source,'/Game/Ships/Daedalus/WebReference','SM_WebDaedalus',unreal.StaticMesh)
@@ -101,7 +109,7 @@ def main():
         ns=mesh.get_editor_property('nanite_settings');ns.set_editor_property('enabled',False)
         mesh.set_editor_property('nanite_settings',ns)
     textures={}
-    for name in ['earth_daymap','earth_nightmap','earth_clouds','sun']:
+    for name in ['sun']:
         textures[name]=imported(root/f'Art/Space/Textures/{name}.jpg','/Game/Solar/Textures','T_'+name,unreal.Texture2D)
     
     def material(name,unlit=False,blend=None,two=False):
@@ -139,17 +147,6 @@ def main():
         lib.layout_material_expressions(mat);lib.recompile_material(mat)
         assert unreal.EditorAssetLibrary.save_loaded_asset(mat)
     
-    earth=material('M_Earth',True)
-    normal=node(earth,unreal.MaterialExpressionPixelNormalWS)
-    sun=node(earth,unreal.MaterialExpressionVectorParameter,parameter_name='SunDirection',default_value=unreal.LinearColor(.7,-.7,0,0))
-    surface=custom(earth,
-        'float d=dot(normalize(N),normalize(S)); float light=smoothstep(-0.03,0.15,d); '
-        'float3 ground=Day*max(0.035, d)*0.9; float cloud=saturate(Cloud.r)*0.72; '
-        'float3 lit=lerp(ground,float3(0.85,0.89,0.93)*max(0.035,d),cloud); '
-        'return lerp(Night*0.65,lit,light);',
-        {'Day':(texture(earth,textures['earth_daymap']),'RGB'),'Night':(texture(earth,textures['earth_nightmap']),'RGB'),
-         'Cloud':(texture(earth,textures['earth_clouds']),'RGB'),'N':(normal,''),'S':(sun,'RGB')})
-    finish(earth,surface)
     atmos=material('M_Atmosphere',True,unreal.BlendMode.BLEND_ADDITIVE,False)
     normal=node(atmos,unreal.MaterialExpressionPixelNormalWS);view=node(atmos,unreal.MaterialExpressionCameraVectorWS)
     sun=node(atmos,unreal.MaterialExpressionVectorParameter,parameter_name='SunDirection',default_value=unreal.LinearColor(.7,-.7,0,0))
@@ -260,7 +257,8 @@ def main():
     assert len(turrets)==38,(len(turrets),turret_task.imported_object_paths)
     for mesh in turrets:ship_recipe.assign_materials(root,unreal,tools,lib,mesh,'DaedalusTurrets.glb')
     (root/'Game/Daedalus/Content/Data/Solar/ship-details.json').write_text(json.dumps({'version':1,'meshes':[m.get_path_name() for m in turrets]},indent=2)+'\n')
-    system_recipe.prepare(root,unreal,tools,lib,imported,material,node,constant,vector,texture,custom,finish)
+    planet_maps=system_recipe.prepare(root,unreal,tools,lib,imported,material,node,constant,vector,texture,custom,finish)
+    legacy_earth(root,unreal,lib,imported,material,node,texture,custom,finish,planet_maps)
     assign_source_materials(web,'WebReference/WebDaedalus.glb',web_recipe=True)
     assign_source_materials(lights,'DaedalusLights.glb',True)
     for mesh in glows:assign_source_materials(mesh,'DaedalusEngineGlow.glb',True)
@@ -272,5 +270,64 @@ def main():
     
     unreal.EditorAssetLibrary.set_metadata_tag(ship,'SolarRecipe',recipe)
     assert unreal.EditorAssetLibrary.save_loaded_asset(ship)
-main()
 
+def legacy_earth(root,unreal,lib,imported,material,node,texture,custom,finish,planet_maps):
+    """M_Earth is still required by the game mode. It shares the planet-quality Earth maps (no second
+    copy of Earth textures in memory)."""
+    maps=(planet_maps or {}).get('sol.earth')
+    day=maps['day'] if maps else imported(root/'Art/Space/Textures/earth_daymap.jpg','/Game/Solar/Textures','T_earth_daymap',unreal.Texture2D)
+    night=maps['night'] if maps and maps['night'] else imported(root/'Art/Space/Textures/earth_nightmap.jpg','/Game/Solar/Textures','T_earth_nightmap',unreal.Texture2D)
+    earth=material('M_Earth',True)
+    normal=node(earth,unreal.MaterialExpressionPixelNormalWS)
+    sun=node(earth,unreal.MaterialExpressionVectorParameter,parameter_name='SunDirection',default_value=unreal.LinearColor(.7,-.7,0,0))
+    surface=custom(earth,'float d=dot(normalize(N),normalize(S)); float light=smoothstep(-0.03,0.15,d); '
+        'return lerp(Night*0.65,Day*max(0.035,d)*0.9,light);',
+        {'Day':(texture(earth,day),'RGB'),'Night':(texture(earth,night),'RGB'),'N':(normal,''),'S':(sun,'RGB')})
+    finish(earth,surface)
+    if maps:
+        # Accumulated (disconnected) legacy graph nodes of M_Earth/M_Map_earth still hold the old 8K
+        # Earth imports; deleting nodes of the CDO-referenced M_Earth asserts in UE. Retire the old
+        # imports to 64 px so they cost no memory; the original sources stay in Art/Space/Textures.
+        for name in ('T_earth_daymap','T_earth_nightmap','T_earth_clouds'):
+            path='/Game/Solar/Textures/'+name
+            if unreal.EditorAssetLibrary.does_asset_exist(path):
+                old=unreal.load_asset(path);old.set_editor_property('max_texture_size',64)
+                assert unreal.EditorAssetLibrary.save_loaded_asset(old)
+                print('PLANET_QUALITY legacy',path,'retired to 64 px')
+
+
+def planet_pass(root,tools,lib,imported,system_recipe):
+    """DAEDALUS_PLANET_ONLY=1: rebuild planet presentation assets with the same helpers as main()."""
+    def material(name,unlit=False,blend=None,two=False):
+        path='/Game/Solar/Materials/'+name
+        mat=unreal.load_asset(path)
+        if mat:assert isinstance(mat,unreal.Material)
+        else:mat=tools.create_asset(name,'/Game/Solar/Materials',unreal.Material,unreal.MaterialFactoryNew())
+        mat.set_editor_property('two_sided',two)
+        if unlit:mat.set_editor_property('shading_model',unreal.MaterialShadingModel.MSM_UNLIT)
+        if blend is not None:mat.set_editor_property('blend_mode',blend)
+        return mat
+    def node(mat,cls,**props):
+        expr=lib.create_material_expression(mat,cls)
+        for k,v in props.items():expr.set_editor_property(k,v)
+        return expr
+    def constant(mat,value):return node(mat,unreal.MaterialExpressionConstant,r=value)
+    def vector(mat,value):return node(mat,unreal.MaterialExpressionConstant3Vector,constant=unreal.LinearColor(*value))
+    def texture(mat,asset):return node(mat,unreal.MaterialExpressionTextureSample,texture=asset)
+    def custom(mat,code,inputs,output=unreal.CustomMaterialOutputType.CMOT_FLOAT3):
+        fields=[]
+        for name in inputs:
+            field=unreal.CustomInput();field.set_editor_property('input_name',name);fields.append(field)
+        c=node(mat,unreal.MaterialExpressionCustom,code=code,output_type=output,inputs=fields)
+        for name,(expr,channel) in inputs.items():assert lib.connect_material_expressions(expr,channel,c,name),(name,expr.get_class().get_name(),channel)
+        return c
+    def finish(mat,expr,prop=unreal.MaterialProperty.MP_EMISSIVE_COLOR):
+        assert lib.connect_material_property(expr,'',prop)
+        lib.layout_material_expressions(mat);lib.recompile_material(mat)
+        assert unreal.EditorAssetLibrary.save_loaded_asset(mat)
+    planet_maps=system_recipe.prepare(root,unreal,tools,lib,imported,material,node,constant,vector,texture,custom,finish)
+    legacy_earth(root,unreal,lib,imported,material,node,texture,custom,finish,planet_maps)
+    print('PLANET_ONLY_PASS (recipe tag not written; run full Assets before integration)')
+
+
+main()

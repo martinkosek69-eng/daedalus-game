@@ -1,7 +1,15 @@
 """Canonical available catalogs -> detailed world and sharp map materials."""
 import hashlib
+import importlib.util
 import json
 import math
+from pathlib import Path
+
+
+def planet_module(root):
+    """Shared planet-quality masters/instances (Tools/Prepare-PlanetMaterials.py)."""
+    spec=importlib.util.spec_from_file_location('PlanetQualityRecipe',Path(root)/'Tools/Prepare-PlanetMaterials.py')
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);return module
 
 
 def material_key(ident):
@@ -62,16 +70,34 @@ def ring_spec(root,row,views):
     return None
 
 
+def planet_sources(root,row,manifest):
+    """Planet-quality sources for one row: manifest overrides, else the canonical catalog maps."""
+    entry=manifest['bodies'].get(row['id'],{})
+    def pick(key,field,override):
+        if key in entry:return dict(source=root/entry[key],filename=None,override=None)
+        if row.get(field) or row.get(override):
+            return dict(source=texture_source(root,row.get(field),row.get(override)),filename=row.get(field),override=row.get(override))
+        return None
+    return dict(day=pick('day','texture','textureSource'),night=pick('night','nightTexture','nightTextureSource'),
+                clouds=pick('clouds','cloudTexture','cloudTextureSource'),relief=pick('relief','',''))
+
+
 def required_material_paths(root):
     names={'M_FallbackRock','M_FallbackIce','M_MapRock','M_UnknownMarker','M_Sky','M_Rock'}
-    views=ring_views(root)
+    views=ring_views(root);planet=planet_module(root);manifest=planet.load_manifest(root)
+    paths=[]
     for row in bodies(root):
         if not has_geometry(row):continue
         key=material_key(row['id'])
         if row.get('texture') or row.get('textureSource'):names.update(('M_Body_'+key,'M_Map_'+key))
+        if (row.get('texture') or row.get('textureSource')) and planet.uses_planet_quality(row,manifest):
+            master=planet.MASTERS+'/'+planet.MASTER_NAMES[planet.body_type(row)]
+            if master not in paths:paths.append(master)
+            if planet.body_type(row)=='surface' and planet_sources(root,row,manifest)['clouds']:
+                names.add('M_Cloud_'+key);paths.append(planet.MASTERS+'/'+planet.MASTER_NAMES['clouds'])
         if row.get('atmosphereColor'):names.add('M_Air_'+key)
         if ring_spec(root,row,views):names.add('M_Ring_'+key)
-    return ['/Game/Solar/Materials/'+name for name in sorted(names)]
+    return ['/Game/Solar/Materials/'+name for name in sorted(names)]+sorted(set(paths))
 
 
 def required_mesh_paths(root):
@@ -82,6 +108,8 @@ def required_mesh_paths(root):
             expected='/Game/Solar/Models/SM_Body_'+material_key(row['id'])
             assert row.get('meshAsset',expected)==expected,('Unexpected owned body mesh path',row['id'])
             paths.append(expected)
+    planet=planet_module(root)
+    paths+=[planet.SPHERE_FOLDER+'/'+name for name in planet.SPHERES]
     return sorted(paths)
 
 
@@ -96,6 +124,10 @@ def cloud_channel(root,row):
 
 def prepare(root,unreal,tools,lib,imported,material,node,constant,vector,texture,custom,finish):
     rows=bodies(root);maps={};views=ring_views(root)
+    planet=planet_module(root)
+    quality=planet.Recipe(root,unreal,tools,lib,imported,node,custom,finish,material)
+    planet.load_manifest(root,{row['id'] for row in rows})
+    quality.spheres();planet_maps={}
     def tex(filename=None,override=None,source=None):
         source=source or texture_source(root,filename,override)
         assert source is not None
@@ -162,7 +194,20 @@ def prepare(root,unreal,tools,lib,imported,material,node,constant,vector,texture
     for row in rows:
         if not has_geometry(row):continue
         key=material_key(row['id'])
-        if row.get('texture') or row.get('textureSource'):
+        if (row.get('texture') or row.get('textureSource')) and planet.uses_planet_quality(row,quality.manifest):
+            # Shared planet masters: M_Body_<key> (and M_Cloud_<key>) become material instances.
+            sources=planet_sources(root,row,quality.manifest)
+            def load(spec,kind):
+                if spec is None:return None
+                if spec['filename'] is None:return quality.texture(spec['source'],kind)
+                # Existing catalog map: same stable asset name as before, planet settings applied.
+                return quality.configure(tex(spec['filename'],spec['override']),kind)
+            day=load(sources['day'],'color');night=load(sources['night'],'color')
+            clouds=load(sources['clouds'],'mask');relief=load(sources['relief'],'mask')
+            quality.body(row,day,night,clouds,relief)
+            map_disc('M_Map_'+key,day,star=row.get('kind')=='star')
+            planet_maps[row['id']]=dict(day=day,night=night,clouds=clouds,relief=relief)
+        elif row.get('texture') or row.get('textureSource'):
             asset=tex(row.get('texture'),row.get('textureSource'))
             world(material('M_Body_'+key,True),asset,star=row.get('kind')=='star',body=row)
             map_disc('M_Map_'+key,asset,star=row.get('kind')=='star')
@@ -175,7 +220,7 @@ def prepare(root,unreal,tools,lib,imported,material,node,constant,vector,texture
             settings=mesh.get_editor_property('nanite_settings');settings.set_editor_property('enabled',False)
             mesh.set_editor_property('nanite_settings',settings)
             path=row.get('material') or ('/Game/Solar/Materials/M_Body_'+key if row.get('texture') or row.get('textureSource') else '/Game/Solar/Materials/M_FallbackRock')
-            owned=unreal.load_asset(path);assert isinstance(owned,unreal.Material),(row['id'],path)
+            owned=unreal.load_asset(path);assert isinstance(owned,unreal.MaterialInterface),(row['id'],path)
             for index in range(len(mesh.get_editor_property('static_materials'))):mesh.set_material(index,owned)
             assert unreal.EditorAssetLibrary.save_loaded_asset(mesh)
         if row.get('atmosphereColor'):
@@ -213,4 +258,6 @@ def prepare(root,unreal,tools,lib,imported,material,node,constant,vector,texture
     lib.recompile_material(rm)
     assert unreal.EditorAssetLibrary.save_loaded_asset(rm)
     rock.set_material(0,rm);assert unreal.EditorAssetLibrary.save_loaded_asset(rock)
-    print('SOLAR_SYSTEM_MATERIALS_PASS',len(rows),'definitions',sum(has_geometry(r) for r in rows),'placed',len(maps),'textures')
+    print('SOLAR_SYSTEM_MATERIALS_PASS',len(rows),'definitions',sum(has_geometry(r) for r in rows),'placed',len(maps),'textures',len(planet_maps),'planet-quality bodies')
+    for entry in quality.report:print('PLANET_QUALITY',*entry)
+    return planet_maps
