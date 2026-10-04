@@ -1,6 +1,7 @@
 #include "Solar/SolarFlightGameMode.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/PlayerController.h"
+#include "HAL/IConsoleManager.h"
 
 void ASolarFlightGameMode::ApplySharpRenderingSettings()
 {
@@ -14,12 +15,16 @@ void ASolarFlightGameMode::ApplySharpRenderingSettings()
         TEXT("r.DepthOfFieldQuality 0"), TEXT("r.SceneColorFringeQuality 0"),
         TEXT("r.ScreenPercentage 100"), TEXT("r.SecondaryScreenPercentage.GameViewport 100"),
         TEXT("r.DynamicRes.OperationMode 0"), TEXT("r.Tonemapper.Sharpen 0.25"),
-        TEXT("r.MaxAnisotropy 16"), TEXT("r.Streaming.MipBias 0")})
+        TEXT("r.MaxAnisotropy 16"), TEXT("r.Streaming.MipBias 0"),
+        TEXT("r.ForceLOD 0"), TEXT("r.BloomQuality 0")})
         PC->ConsoleCommand(Command);
 }
 
 void ASolarFlightGameMode::UpdateTextureDetail()
 {
+    // Quality-first default loads all mip levels. The selective policy below
+    // remains available if texture streaming is explicitly enabled later.
+    if (IConsoleManager::Get().FindConsoleVariable(TEXT("r.TextureStreaming"))->GetInt() == 0) return;
     // Projected celestial meshes change scale at runtime and have no baked
     // streaming build data. Choose by true angular size instead of relying on
     // that missing UV density or the user's selected navigation target.

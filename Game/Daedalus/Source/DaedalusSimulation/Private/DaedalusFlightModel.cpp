@@ -49,8 +49,8 @@ bool ValidState(const FFlightConfig& Config, const FFlightState& State, double S
         && InRange(State.YawDegrees, -1e6, 1e6)
         && InRange(State.PitchDegrees, -Config.PitchLimitDegrees, Config.PitchLimitDegrees)
         && InRange(State.BankDegrees, -Config.BankDegrees, Config.BankDegrees)
-        && InRange(State.YawRateDegrees, -Config.TurnRateDegrees, Config.TurnRateDegrees)
-        && InRange(State.PitchRateDegrees, -Config.TurnRateDegrees, Config.TurnRateDegrees)
+        && InRange(State.YawRateDegrees, -Config.TurnRateDegrees * Config.LowSpeedTurnMultiplier, Config.TurnRateDegrees * Config.LowSpeedTurnMultiplier)
+        && InRange(State.PitchRateDegrees, -Config.TurnRateDegrees * Config.LowSpeedTurnMultiplier, Config.TurnRateDegrees * Config.LowSpeedTurnMultiplier)
         && InRange(State.Throttle, -0.25, 1)
         && InRange(State.SimulationSeconds, 0, ClockLimit);
 }
@@ -87,6 +87,8 @@ bool FFlightConfig::Validate(FString& Error) const
         || !InRange(AngularAccelerationDegrees, 0.001, 3600)
         || !InRange(PitchLimitDegrees, 1, 89)
         || !InRange(BankDegrees, 0, 80)
+        || !InRange(LowSpeedTurnMultiplier, 1, 3)
+        || !InRange(HighSpeedBankFraction, 0, 1)
         || !InRange(ShipRadiusMetres, 0.01, 1e9))
     {
         Error = TEXT("Flight configuration contains unsupported, non-finite or non-positive values.");
@@ -241,8 +243,9 @@ bool FFlightModel::Step()
 {
     FFlightState Next = State;
     const double Dt = FixedStepSeconds;
-    const double TurnAuthority = State.Throttle < 0 ? 1.0 : 0.5 + 0.5 * FMath::Clamp(State.Throttle / 0.25, 0.0, 1.0);
-    const double RateLimit = Config.TurnRateDegrees * TurnAuthority;
+    const double SpeedFraction = FMath::Clamp(State.VelocityMetresPerSecond.Size() / Config.MaxSpeed, 0.0, 1.0);
+    const double SpeedEase = SpeedFraction * SpeedFraction * (3.0 - 2.0 * SpeedFraction);
+    const double RateLimit = Config.TurnRateDegrees * FMath::Lerp(Config.LowSpeedTurnMultiplier, 1.0, SpeedEase);
     Next.YawRateDegrees = Approach(State.YawRateDegrees, Input.Yaw * RateLimit,
         Config.AngularAccelerationDegrees * Dt);
     // Ease towards the pitch boundary before reaching it. The terminal rate
@@ -258,7 +261,8 @@ bool FFlightModel::Step()
     Next.YawDegrees = FRotator3d::NormalizeAxis(State.YawDegrees + Next.YawRateDegrees * Dt);
     Next.PitchDegrees = FMath::Clamp(State.PitchDegrees + Next.PitchRateDegrees * Dt,
         -Config.PitchLimitDegrees, Config.PitchLimitDegrees);
-    const double TargetBank = Config.BankDegrees * Next.YawRateDegrees / Config.TurnRateDegrees;
+    const double BankLimit = Config.BankDegrees * FMath::Lerp(1.0, Config.HighSpeedBankFraction, SpeedEase);
+    const double TargetBank = BankLimit * FMath::Clamp(Next.YawRateDegrees / RateLimit, -1.0, 1.0);
     const double BankDamping = 2.0 * Config.AngularAccelerationDegrees / FMath::Max(1.0, Config.BankDegrees);
     Next.BankDegrees = TargetBank + (State.BankDegrees - TargetBank) * FMath::Exp(-BankDamping * Dt);
 

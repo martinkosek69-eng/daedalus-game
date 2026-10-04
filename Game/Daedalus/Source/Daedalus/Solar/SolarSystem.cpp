@@ -282,6 +282,9 @@ bool ASolarFlightGameMode::CreateSystem()
     {
         SkyDynamic = UMaterialInstanceDynamic::Create(Material(TEXT("/Game/Solar/Materials/M_Sky")), this);
         Sky = MakeMesh(SphereAsset, SkyDynamic); Sky->SetWorldScale3D(FVector(2.5e7));
+        // Human-view baseline: black sky and independently rendered catalog
+        // stars. The old photograph duplicates stars and paints blurred halos.
+        Sky->SetVisibility(false);
         Sky->SetTextureForceResidentFlag(true);
     }
     BodyMeshes.SetNumZeroed(BodyDefinitions.Num()); BodyDynamics.SetNumZeroed(BodyDefinitions.Num());

@@ -17,6 +17,8 @@ struct DAEDALUSSIMULATION_API FFlightConfig
     double AngularAccelerationDegrees = 18;
     double PitchLimitDegrees = 80;
     double BankDegrees = 20;
+    double LowSpeedTurnMultiplier = 1;
+    double HighSpeedBankFraction = 1;
     double ShipRadiusMetres = 360;
     bool Validate(FString& Error) const;
 };

@@ -50,7 +50,7 @@ ASolarFlightPawn::ASolarFlightPawn()
     Camera->SetupAttachment(RootComponent);
     Camera->SetFieldOfView(52);
     Camera->PostProcessSettings.bOverride_BloomIntensity = true;
-    Camera->PostProcessSettings.BloomIntensity = .12f;
+    Camera->PostProcessSettings.BloomIntensity = 0;
     Camera->PostProcessSettings.bOverride_MotionBlurAmount = true;
     Camera->PostProcessSettings.MotionBlurAmount = 0;
     Camera->PostProcessSettings.bOverride_DepthOfFieldScale = true;
@@ -218,7 +218,9 @@ bool ASolarFlightGameMode::LoadSettings()
     Daedalus::FFlightConfig Base;
     Base.ShipRadiusMetres = Radius;
     if (!Number(Json, TEXT("turnRateDegrees"), Base.TurnRateDegrees) || !Number(Json, TEXT("angularAccelerationDegrees"), Base.AngularAccelerationDegrees)
-        || !Number(Json, TEXT("pitchLimitDegrees"), Base.PitchLimitDegrees) || !Number(Json, TEXT("bankDegrees"), Base.BankDegrees)) return false;
+        || !Number(Json, TEXT("pitchLimitDegrees"), Base.PitchLimitDegrees) || !Number(Json, TEXT("bankDegrees"), Base.BankDegrees)
+        || !Number(Json, TEXT("lowSpeedTurnMultiplier"), Base.LowSpeedTurnMultiplier)
+        || !Number(Json, TEXT("highSpeedBankFraction"), Base.HighSpeedBankFraction)) return false;
     const TArray<TSharedPtr<FJsonValue>>* Rows = nullptr;
     if (!Json->TryGetArrayField(TEXT("profiles"), Rows) || Rows->Num() != 3) return false;
     for (const auto& Row : *Rows)
@@ -320,7 +322,8 @@ bool ASolarFlightGameMode::CreateScene()
         const double Size = FMath::Clamp(1.08 + (6.5 - Mag) * .17, 1.08, 2.5);
         const double Width = SkyRadius * .00042 * Size;
         const int32 I = Stars->AddInstance(FTransform(FRotationMatrix::MakeFromZ(-Direction).ToQuat(), Direction * SkyRadius, FVector(Width / 100)));
-        const double Brightness = FMath::Clamp(FMath::Pow(10.0, -.12 * (Mag - 1)), .3, 2.5);
+        // Same compressed magnitude curve as the original web point stars.
+        const double Brightness = FMath::Clamp(FMath::Pow(10.0, -.16 * (Mag - 1)), .09, 1.3);
         const double Warm = FMath::Clamp((BV - .3) / 1.7, 0.0, 1.0), Cool = FMath::Clamp((.3 - BV) / .7, 0.0, 1.0);
         const double Saturation = FMath::Clamp((5 - Mag) / 5, 0.0, .7);
         Stars->SetCustomDataValue(I, 0, Brightness * (1 - Cool * Saturation * .25));

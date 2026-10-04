@@ -35,6 +35,8 @@ bool ReadSolarProfiles(TArray<FFlightConfig>& Profiles)
             || !Root->TryGetNumberField(TEXT("angularAccelerationDegrees"), C.AngularAccelerationDegrees)
             || !Root->TryGetNumberField(TEXT("pitchLimitDegrees"), C.PitchLimitDegrees)
             || !Root->TryGetNumberField(TEXT("bankDegrees"), C.BankDegrees)
+            || !Root->TryGetNumberField(TEXT("lowSpeedTurnMultiplier"), C.LowSpeedTurnMultiplier)
+            || !Root->TryGetNumberField(TEXT("highSpeedBankFraction"), C.HighSpeedBankFraction)
             || !Profile->TryGetNumberField(TEXT("speed"), C.MaxSpeed)
             || !Profile->TryGetNumberField(TEXT("acceleration"), C.Acceleration)
             || !Profile->TryGetNumberField(TEXT("coastDeceleration"), C.CoastDeceleration)
@@ -195,7 +197,22 @@ bool FFlightTurnTest::RunTest(const FString&)
     TestTrue(TEXT("pitch bounded without flip"), FMath::Abs(M.GetState().PitchDegrees - C.PitchLimitDegrees) < .001);
     TestTrue(TEXT("at limit pitch rate settles gently"), FMath::Abs(M.GetState().PitchRateDegrees) < .001);
     auto Stopped = NewFlight(C); Stopped.SetInput({1,0,false}, E); Time(Stopped, 3);
-    TestTrue(TEXT("stop retains reduced turning"), FMath::Abs(Stopped.GetState().YawRateDegrees - C.TurnRateDegrees * .5) < .01);
+    TestTrue(TEXT("stationary steering retains full authority"), FMath::Abs(Stopped.GetState().YawRateDegrees - C.TurnRateDegrees) < .01);
+
+    TArray<FFlightConfig> Profiles;
+    if (!TestTrue(TEXT("speed-dependent tuning loaded"), ReadSolarProfiles(Profiles))) return false;
+    const auto& Tuning = Profiles[1];
+    auto SlowTurn = NewFlight(Tuning), FastTurn = NewFlight(Tuning);
+    FFlightState FastStart; FastStart.VelocityMetresPerSecond = FVector3d(Tuning.MaxSpeed, 0, 0); FastStart.Throttle = 1;
+    TestTrue(TEXT("fast turn initial state valid"), FastTurn.Initialize(Tuning, FastStart, {}, E));
+    SlowTurn.SetInput({1,0,false}, E); FastTurn.SetInput({1,0,false}, E);
+    Time(SlowTurn, 5); Time(FastTurn, 5);
+    TestTrue(TEXT("low speed U turn is faster than full speed"), SlowTurn.GetState().YawRateDegrees > FastTurn.GetState().YawRateDegrees * 1.4);
+    TestTrue(TEXT("low speed bank is larger than high speed"), SlowTurn.GetState().BankDegrees > FastTurn.GetState().BankDegrees * 1.5);
+    TestTrue(TEXT("full-speed bank matches shallower bound"), FMath::Abs(FastTurn.GetState().BankDegrees - Tuning.BankDegrees * Tuning.HighSpeedBankFraction) < .01);
+    TestTrue(TEXT("speed-dependent turn never causes drift"), NoSlip(FastTurn.GetState()));
+    auto InvalidTuning = Tuning; InvalidTuning.LowSpeedTurnMultiplier = 0;
+    TestFalse(TEXT("invalid speed-dependent multiplier rejected"), InvalidTuning.Validate(E));
 
     auto Bank = NewFlight(C); Bank.SetThrottle(1, E); Bank.SetInput({1,0,false}, E);
     bool bBankBounds = true, bRiseMonotone = true, bNoHardClamp = true;

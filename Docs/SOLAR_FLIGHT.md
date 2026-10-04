@@ -1,6 +1,6 @@
 # Letová zkouška Sluneční soustavy
 
-Singleplayer, větev codex/solar-flight, úkol0020 (navazuje na0016). Spustit dvojklikem
+Singleplayer, větev codex/solar-flight, úkol0021 (navazuje na0020). Spustit dvojklikem
 Tools/SPUSTIT_LET_DAEDALA.cmd po sestavení. Nic se neinstaluje.
 Nový balíček .local/solar/Build-SolarSystem používá nativní rozlišení monitoru
 v okně přes celou obrazovku. Alt+Enter/F11 mění zobrazení. Data jsou na A:.
@@ -23,7 +23,10 @@ v okně přes celou obrazovku. Alt+Enter/F11 mění zobrazení. Data jsou na A:.
 
 Všechny tři letové profily dosáhnou maxima za2,5s. Pohyb se vždy srovnává s přídí,
 včetně couvání a brzdění: žádný boční drift ani umělá ztráta rychlosti v zatáčce.
-Náklon22° a hranice sklonu±60° dosedají postupně. Asistovaný herní let nemá
+Reakce na řízení je zvýšena20% (úhlové zrychlení28,8°/s²).
+Zatáčení se řídí skutečnou rychlostí: při nízké rychlosti až15,66°/s a náklon36°,
+při plné rychlosti10,8°/s a náklon21,6°. Přechod se plynule mění; naklonění je
+vzhledový projev zatáčení. Hranice sklonu±60° dosedá postupně. Asistovaný herní let nemá
 Newtonovu gravitaci. Kamera FOV52°, přímý volný orbit a plynulé sledování kurzu.
 Plný impuls odpovídá rychlosti webové předlohy (asi0,834rychlosti světla);
 není hyperpohon. Přepnutí dolů zachová rychlost a polohu a plynule zpomaluje,
@@ -34,10 +37,10 @@ Windows high-DPI je zapnuté ještě před vytvořením okna, takže zvětšení
 Windows nesnižuje fyzické rozlišení obrazu. Motion blur, časové vyhlazování,
 FXAA, hloubka ostrosti a barevné rozmazání jsou vypnuté.100% skutečné pixely,
 16×anisotropie a písmo vykreslené ve skutečných pixelech pro ostrý český HUD.
-Textury lodi a oblohy zůstávají plně načtené i při oddálení; okolní planety se
-vybírají podle skutečné úhlové velikosti, nezávisle na testovacím přesunu F.
-Paměť omezujeme na čtyři největší blízké disky; drobná tělesa používají běžné
-načítání podle vzdálenosti. Velmi tenké hrany mohou bez plošného vyhlazení kmitat;
+Výchozí priorita je plná kvalita: načítání zmenšených textur je vypnuté, používá
+se nejpodrobnější geometrie. Dřívější selektivní politika zůstává dostupná při
+výslovném zapnutí streamování později. Vyšší spotřebu paměti a výkon posoudíme
+podle uživatelského testu. Velmi tenké hrany mohou bez plošného vyhlazení kmitat;
 skutečné detaily menší než jeden pixel nemůže rozlišení monitoru zobrazit.
 Výkon4K je třeba osobně ladit;
 automatický obrazový test nepředstavuje měření běžné snímkové frekvence.
@@ -58,7 +61,10 @@ reálná poloha a konzervativní ochrana před povrchem zůstávají ve výpočt
 Žádný vizuál nepřepisuje stav letu. F je dočasná pomůcka pro testování, ne hyperpohon.
 Lokální modré částice dávají čitelnou informaci o pohybu; jejich zobrazovaná
 rychlost je omezená, takže nepředstavují fyzické objekty ani měření prachu.
-Pozadí kombinuje výraznější8920HYG hvězd a skutečnou mapu Mléčné dráhy.
+Obloha je černá a obsahuje samostatně generované bodové hvězdy z8920HYG záznamů,
+se stejnou křivkou jasnosti jako webová předloha. Žádná fotografická vrstva,
+fotografické hvězdy, mlhoviny ani bloomové záře se ve scéně nepoužívají.
+Zdrojová fotografie zůstává zachovaná pouze jako dřívější reference.
 
 Aktivní je nová upravená Claudeova loď z0008 (3effaca): původní600m trup,
 UV plátování BaseColor/ORM/Normal, barvy vrcholů,38věží,62montážních bodů,

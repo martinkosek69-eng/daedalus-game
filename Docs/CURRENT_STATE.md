@@ -2,6 +2,20 @@
 
 ## Current six-system lab0016
 
+### User refinement0021
+
+User approves0020ship sharpness. Runtime sky now hides the old photographed
+M_Sky sphere: black background and separately generated HYG points only, with
+web magnitude curve and no bloom halos. See Docs/POINT_STAR_SKY.md for NASA
+references and human-view artistic limits. Galaxy map is unchanged.
+Quality-first default disables texture streaming and forces highest mesh LOD.
+Selective residency remains available only if streaming is enabled later.
+Actual-speed steering now blends15.66°/s and36°bank at low speed to10.8°/s and
+21.6°bank at full speed; angular response28.8°/s² is20%higher. No drift is retained.
+Shared data remains singleplayer canonical; new curve parameters are validated.
+Verification/publication is recorded in Tasks/0021/HANDOFF.md; user does most
+visual/performance evaluation, as requested.
+
 ### User feedback correction0020
 
 User rejected softness after0016. Current package enables Windows high-DPI
