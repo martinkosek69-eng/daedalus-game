@@ -1,6 +1,6 @@
 # 0026 progress
 
-IN_PROGRESS — Codex owns integration in codex/solar-flight.
+ACCEPTED (technical) — Codex integrated in codex/solar-flight.
 Reviewed source notes and fetched GitHub. Aurora source is Blender-only, with
 box-projected4K tiles and per-face paint; no UVs. Preparing an equivalent game
 material rather than losing its paint through a naive mesh-only export.
@@ -21,4 +21,10 @@ All23 automation tests passed (including3 new ship catalog/drive/collision
 rollback groups). User added P menu while integration was running: clickable
 paused main menu, ship selection, graphics readout, unavailable save/load entries
 and quit. Removed F1/F2 bindings; switching belongs in the menu. Revised editor
-build and packaged native4K menu/input checks are in progress.
+build and separate Build-Aurora26 package passed. Final packaged 3840×2160
+mouse-driven checks passed, including paused selection, restored Daedalus
+animations, full texture residency, settings/save page navigation and actual
+quit-button process exit. Camera input is blocked behind the menu. Five renders
+were inspected; subjective user review remains pending. Normal launcher now
+uses the new package; old package and PlayerData are preserved. Owned processes
+exited; application slot released. See HANDOFF.md and EVIDENCE.json.

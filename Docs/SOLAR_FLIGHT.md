@@ -1,8 +1,8 @@
 # Letová zkouška Sluneční soustavy
 
-Singleplayer, větev codex/solar-flight, společná verze0025. Spustit dvojklikem
+Singleplayer, větev codex/solar-flight, společná verze 0026. Spustit dvojklikem
 Tools/SPUSTIT_LET_DAEDALA.cmd po sestavení. Nic se neinstaluje.
-Nový balíček .local/solar/Build-Integrated25 používá nativní rozlišení monitoru
+Nový balíček .local/solar/Build-Aurora26 používá nativní rozlišení monitoru
 v okně přes celou obrazovku. Alt+Enter/F11 mění zobrazení. Data jsou na A:.
 
 | Ovládání | Účinek |
@@ -10,25 +10,32 @@ v okně přes celou obrazovku. Alt+Enter/F11 mění zobrazení. Data jsou na A:.
 | W/S, A/D | Příď dolů/nahoru, zatáčení |
 | E/Q | Tah ±20 %, drží nastavenou hodnotu |
 | R | Nulový/plný tah; rychlost se mění postupně |
-| Shift+R | Zapnout/vypnout plný podsvětelný impuls250000km/s; zapnutí nastaví plný tah |
+| Shift+R | Plný podsvětelný impuls; Daedalus 250000 km/s, Aurora přibližně 299493 km/s |
 | Mezerník/X | Brzda až do zastavení |
 | Pravé tlačítko + myš | Volný orbit; Home obnoví sledování lodi |
-| Kolečko | Odstup kamery650–6000m |
-| 1/2 | Přístavní150m/s / impuls250km/s; přepínání i za letu |
+| Kolečko | Odstup kamery podle velikosti lodi; Daedalus 650–6000 m |
+| 1/2 | Přístavní / impuls; Daedalus 150 m/s / 250 km/s, Aurora 120 m/s / 350 km/s |
 | PgUp/PgDn | Vybrat těleso soustavy |
 | F | Výslovně testovací přesun k vybranému tělesu |
 | Backspace | Začátek u Země |
 | M | 3D galaxie, databáze těles a výpočty navigace |
-| H | Plynulé otevření/zavření hangárů nového modelu; zatím jen prohlídka modelu |
-| P/Esc | Pauza/konec; Esc v mapě vrací do letu |
+| H | Plynulé otevření/zavření hangárů Daedala; zatím prohlídka modelu |
+| P | Klikací nabídka a pauza; výběr lodi, návrat do letu, ukončení |
+| Esc | Zavřít nabídku/mapu; mimo ně dosavadní ukončení letové zkušebny |
 
-Společná verze obsahuje dokončené planety0023, nový HUD s funkční minimapou0024
-a poslední model0008 včetně světel a dveří. Štíty, zbraně, energie a nové akce
+Společná verze obsahuje dokončené planety0023, nový HUD s funkční minimapou0024,
+poslední Daedalus0008 včetně světel/dveří a Auroru. Štíty, zbraně, energie a nové akce
 palubního počítače se zapojí později. Běžný spouštěč již míří na tento balíček;
-starý Build-SolarSystem a stejné PlayerData zůstaly zachované.
-Viz [HUD](HUD.md) a [model/animace](SHIP_PRESENTATION.md).
+starší balíčky a stejné PlayerData zůstaly zachované.
+P → Přepnout loď → Aurora Class/Daedalus. Let je v nabídce zastavený a změna
+zachová polohu, směr i rychlost. Nebezpečnou změnu u povrchu nebo během příliš
+velkého náklonu nabídka odmítne; dokonči otočku nebo odleť dál a zkus ji znovu.
+Nastavení zatím ukazuje údaje o obrazu; ukládání/načítání je nedostupné.
+V konečné hře bude nabídka na ESC. Viz [HUD](HUD.md), [Daedalus](SHIP_PRESENTATION.md)
+a [Aurora: zdroje, příprava a rozdíly v letu](AURORA.md).
 
-Všechny tři letové profily dosáhnou maxima za2,5s. Pohyb se vždy srovnává s přídí,
+Daedalus dosáhne maxima za2,5s; Aurora za2s. Následující hodnoty řízení jsou
+pro Daedalus, hodnoty obou lodí jsou v ships.json. Pohyb se vždy srovnává s přídí,
 včetně couvání a brzdění: žádný boční drift ani umělá ztráta rychlosti v zatáčce.
 Reakce na řízení je zvýšena20% (úhlové zrychlení28,8°/s²).
 Zatáčení se řídí skutečnou rychlostí: při nízké rychlosti až15,66°/s a náklon36°,
@@ -52,7 +59,9 @@ skutečné detaily menší než jeden pixel nemůže rozlišení monitoru zobraz
 Výkon4K je třeba osobně ladit;
 automatický obrazový test nepředstavuje měření běžné snímkové frekvence.
 
-Canonical flight.json obsahuje řízení, system.json oddělený svět v double metrech.
+Autoritativní ships.json obsahuje profily/řízení obou lodí; flight.json uchovává
+výchozí svět/nastavení a původní profil pro kontrolu kompatibility. System.json
+je oddělený svět v double metrech. Vizuály stav letu nemění.
 Rozšířený Sol obsahuje506 katalogových položek včetně459 planetárních měsíců,
 29 vybraných planetek/komet a9 měsíců malých těles. Z nich104 má známý rozměr
 i polohu pro fyzické zobrazení; neznámé rozměry/polohy se nevymýšlejí.

@@ -54,6 +54,7 @@ void ASolarFlightGameMode::TickAuroraProbe()
         Check(Flight.GetConfig().TurnRateDegrees == 6.8 && Flight.GetConfig().ShipRadiusMetres == 1950 && Flight.GetConfig().MaxSpeed == 350000,
             TEXT("Aurora owns distinct canonical flight config"));
         Check(Systems.Num() == 6 && BodyDefinitions.Num() == 506, TEXT("existing planets/navigation intact"));
+        Shot(TEXT("ship-selection.png"));
     }
     if (ProbeFrame == 62) Click(2);
     if (ProbeFrame == 65) Key(EKeys::LeftMouseButton,IE_Released);
@@ -107,14 +108,40 @@ void ASolarFlightGameMode::TickAuroraProbe()
     {
         Check(bHangarsOpen && DoorTravel==1, TEXT("Daedalus H animation still works after swaps"));
         Shot(TEXT("daedalus-restored.png"));
-        Tap(EKeys::M);
     }
+    if (ProbeFrame == 500) Tap(EKeys::M);
     if (ProbeFrame == 510) { Check(!SelectShip(1) && ActiveShip==0 && Galaxy.bOpen,TEXT("map blocks ship swap")); }
     if (ProbeFrame == 530)
     {
-        for(const TCHAR* Name:{TEXT("pause-menu.png"),TEXT("aurora-hud.png"),TEXT("aurora-front.png"),TEXT("daedalus-restored.png")})
+        Tap(EKeys::M);Tap(EKeys::P);ProbeClock=Flight.GetState().SimulationSeconds;
+    }
+    if(ProbeFrame==535)Click(2);
+    if(ProbeFrame==538)Key(EKeys::LeftMouseButton,IE_Released);
+    if(ProbeFrame==545)Check(PauseMenuPage==ESolarPausePage::Settings && bPaused,TEXT("graphics settings page opens"));
+    if(ProbeFrame==550)Click(4);
+    if(ProbeFrame==553)Key(EKeys::LeftMouseButton,IE_Released);
+    if(ProbeFrame==560)Click(3);
+    if(ProbeFrame==563)Key(EKeys::LeftMouseButton,IE_Released);
+    if(ProbeFrame==570)
+    {
+        const auto View=BuildSolarPauseView(*this,FVector2D(3840,2160));
+        Check(PauseMenuPage==ESolarPausePage::Saves && !View.Buttons[0].bEnabled && !View.Buttons[1].bEnabled,
+            TEXT("save/load clearly unavailable rather than fake operations"));
+    }
+    if(ProbeFrame==575)Click(2);
+    if(ProbeFrame==578)Key(EKeys::LeftMouseButton,IE_Released);
+    if(ProbeFrame==585)
+    {
+        Check(PauseMenuPage==ESolarPausePage::Main && Flight.GetState().SimulationSeconds==ProbeClock,TEXT("menu navigation retains pause"));
+        for(const TCHAR* Name:{TEXT("pause-menu.png"),TEXT("ship-selection.png"),TEXT("aurora-hud.png"),TEXT("aurora-front.png"),TEXT("daedalus-restored.png")})
             Check(IFileManager::Get().FileSize(*(ProbeDirectory/Name))>100,TEXT("render saved"));
         FFileHelper::SaveStringToFile(bProbePassed?TEXT("{\"passed\":true,\"width\":3840,\"height\":2160,\"ships\":2}"):TEXT("{\"passed\":false}"),*(ProbeDirectory/TEXT("result.json")));
-        FPlatformMisc::RequestExitWithStatus(false,bProbePassed?0:1);
+    }
+    if(ProbeFrame==590)Click(4); // Actual menu exit; successful process completion is checked by the launcher.
+    if(ProbeFrame==600)
+    {
+        Check(false,TEXT("quit menu must terminate the actual game"));
+        FFileHelper::SaveStringToFile(TEXT("{\"passed\":false,\"error\":\"quit button failed\"}"),*(ProbeDirectory/TEXT("result.json")));
+        FPlatformMisc::RequestExitWithStatus(false,1);
     }
 }

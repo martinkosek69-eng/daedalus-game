@@ -1,12 +1,35 @@
 # Current development state — 2026-10-04
 
-## Current integrated six-system lab0025
+## Current integrated six-system lab 0026
 
-Normal launcher: Tools/SPUSTIT_LET_DAEDALA.cmd → Build-Integrated25, retaining
-the existing PlayerData. Earlier Build-SolarSystem remains separately available.
+Normal launcher: Tools/SPUSTIT_LET_DAEDALA.cmd → Build-Aurora26, retaining
+the existing PlayerData. Build-Integrated25 and earlier packages remain available.
 Completed0023 planet branch throughaa9072c and latest0008 ship branch
 through7c35635 are reviewed/integrated. Shared source/publication branch remains
-codex/solar-flight; no merge into main. See Tasks/0025/HANDOFF.md.
+codex/solar-flight; no merge into main. See Tasks/0026/HANDOFF.md.
+
+### Aurora and clickable pause menu 0026
+
+Reviewed Blender source a193736 is preserved, exported with its original paint,
+three materials, an 8K colour atlas and 4K other maps. The 3500 m source scale
+is provisional, not a verified canon size. The catalog keeps Daedalus tuning
+unchanged; Aurora turns more slowly but has a stronger drive (350 km/s normal
+impulse, 2 s acceleration, 0.999c full sublight as a game balancing choice).
+Actual hull radius fits its conservative 1950 m clearance sphere.
+
+P opens the clickable paused menu; select Daedalus/Aurora there. Switching
+preserves flight state and navigation, adjusts the camera/HUD, and rejects an
+unsafe larger hull or incompatible attitude. Menu includes resume/exit,
+read-only graphics settings and clearly unavailable flight save/load entries.
+ESC closes menu/map; outside them the lab's previous quit shortcut remains.
+Final game's ESC menu binding is deferred. No combat or new persistence added.
+
+Build/package and all 23 automation tests passed. Final packaged 3840×2160
+checks passed via actual mouse input: menu navigation, paused moving swaps,
+full texture residency, assisted flight, Daedalus lights/H doors restored and
+quit button exiting the process. Five renders written and inspected. Subjective
+flight/appearance evaluation remains with the user. See Docs/AURORA.md and
+Tasks/0026/EVIDENCE.json. All owned applications have exited; slot is released.
 
 ### New HUD design0024
 

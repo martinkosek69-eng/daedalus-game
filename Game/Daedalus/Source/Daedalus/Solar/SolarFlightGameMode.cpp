@@ -100,8 +100,8 @@ void ASolarFlightPawn::NextBody(){if(auto* M=Lab(this);M && !M->bPaused && !M->G
 void ASolarFlightPawn::PreviousBody(){if(auto* M=Lab(this);M && !M->bPaused && !M->Galaxy.bOpen)M->SelectBody(-1);}
 void ASolarFlightPawn::InspectBody(){if(auto* M=Lab(this);M && !M->bPaused && !M->Galaxy.bOpen)M->InspectSelectedBody();}
 void ASolarFlightPawn::OrbitOn(){if(auto* M=Lab(this);M && !M->bPaused && !M->Galaxy.bOpen){bOrbit=true;bFollowShip=false;}}
-void ASolarFlightPawn::MouseX(float V) { if (bOrbit && Lab(this) && !Lab(this)->Galaxy.bOpen) OrbitYaw = FRotator::NormalizeAxis(OrbitYaw + V * .344f); }
-void ASolarFlightPawn::MouseY(float V) { if (bOrbit && Lab(this) && !Lab(this)->Galaxy.bOpen) OrbitPitch = FMath::Clamp(OrbitPitch + V * .344f, -65.0f, 85.0f); }
+void ASolarFlightPawn::MouseX(float V) { if (bOrbit && Lab(this) && !Lab(this)->bPaused && !Lab(this)->Galaxy.bOpen) OrbitYaw = FRotator::NormalizeAxis(OrbitYaw + V * .344f); }
+void ASolarFlightPawn::MouseY(float V) { if (bOrbit && Lab(this) && !Lab(this)->bPaused && !Lab(this)->Galaxy.bOpen) OrbitPitch = FMath::Clamp(OrbitPitch + V * .344f, -65.0f, 85.0f); }
 void ASolarFlightPawn::MoreThrottle() { if (auto* M = Lab(this)) M->ChangeThrottle(.2); }
 void ASolarFlightPawn::LessThrottle() { if (auto* M = Lab(this)) M->ChangeThrottle(-.2); }
 void ASolarFlightPawn::ToggleThrottle()

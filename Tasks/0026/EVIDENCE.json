@@ -1,0 +1,65 @@
+{
+  "passed": true,
+  "task": "0026",
+  "sourceCommit": "a193736",
+  "sourceSHA256": "cc79b6761d09ffef88a2150c2247bc523bc7468fcd7fd056e2d50059562cecb2",
+  "gameSHA256": "5a81ad2db994e3a8b7998cf11c62b44007eb8e4a045b20f196e8fc967fab5e2d",
+  "originalSourceUnchanged": true,
+  "triangles": 647612,
+  "materials": 3,
+  "lengthMetres": 3500,
+  "maxVertexRadiusMetres": 1843.215,
+  "collisionRadiusMetres": 1950,
+  "colourMapResolution": 8192,
+  "otherMapsResolution": 4096,
+  "automationSucceeded": 23,
+  "automationFailed": 0,
+  "editorBuildPassed": true,
+  "packageBuild": "Build-Aurora26",
+  "packagePassed": true,
+  "viewportWidth": 3840,
+  "viewportHeight": 2160,
+  "mouseDrivenMenuAndShipSwapPassed": true,
+  "saveLoadAvailability": "explicitly unavailable",
+  "graphicsSettings": "read-only",
+  "fullTextureResidencyPassed": true,
+  "restoredDaedalusDoors": 4,
+  "restoredDaedalusEngineGlows": 6,
+  "restoredDaedalusPointLights": 10,
+  "actualQuitButtonExitCode": 0,
+  "probePassed": true,
+  "ownedProcessesExited": true,
+  "subjectiveUserReview": "pending",
+  "screenshots": [
+    {
+      "name": "pause-menu.png",
+      "sha256": "f43ea4892244c125d6a25140a726284591f987c61837ab651995d311f46615e1",
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "name": "ship-selection.png",
+      "sha256": "7fe4d7600680413879e686e33326aa930109b650bc1649dfc0f8fa2a8752064c",
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "name": "aurora-hud.png",
+      "sha256": "c2494acdbc16d665ef092a132fdecfa29cd17389a2d8c37d5df54b6368fc50a3",
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "name": "aurora-front.png",
+      "sha256": "009e6818b3a9e097b2933d9b2c027eb1844803e946056fb0bad1d0481d1a0b0a",
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "name": "daedalus-restored.png",
+      "sha256": "59e2249972ca63cf9199f3aeb5f90e348bce8ad408531928e47fc41b72ea3165",
+      "width": 3840,
+      "height": 2160
+    }
+  ]
+}

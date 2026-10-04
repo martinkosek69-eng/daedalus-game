@@ -1,5 +1,5 @@
 param([ValidateSet('Build','Assets','AuroraAssets','Test','Package','Smoke','Visual','Sharp','SharpNative','Play')][string]$Mode='Play',
-      [ValidatePattern('^[A-Za-z0-9_-]+$')][string]$BuildName='Build-Integrated25')
+      [ValidatePattern('^[A-Za-z0-9_-]+$')][string]$BuildName='Build-Aurora26')
 $ErrorActionPreference='Stop'
 $root=Split-Path -Parent $PSScriptRoot
 $config=Get-Content -LiteralPath (Join-Path $root '.local/toolchain.json') -Raw | ConvertFrom-Json
