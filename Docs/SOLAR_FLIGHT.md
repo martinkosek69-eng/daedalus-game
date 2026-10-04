@@ -1,6 +1,6 @@
 # Letová zkouška Sluneční soustavy
 
-Singleplayer, větev codex/solar-flight, úkol0016 (navazuje na0010). Spustit dvojklikem
+Singleplayer, větev codex/solar-flight, úkol0020 (navazuje na0016). Spustit dvojklikem
 Tools/SPUSTIT_LET_DAEDALA.cmd po sestavení. Nic se neinstaluje.
 Nový balíček .local/solar/Build-SolarSystem používá nativní rozlišení monitoru
 v okně přes celou obrazovku. Alt+Enter/F11 mění zobrazení. Data jsou na A:.
@@ -10,22 +10,36 @@ v okně přes celou obrazovku. Alt+Enter/F11 mění zobrazení. Data jsou na A:.
 | W/S, A/D | Příď dolů/nahoru, zatáčení |
 | E/Q | Tah ±20 %, drží nastavenou hodnotu |
 | R | Nulový/plný tah; rychlost se mění postupně |
+| Shift+R | Zapnout/vypnout plný podsvětelný impuls250000km/s; zapnutí nastaví plný tah |
 | Mezerník/X | Brzda až do zastavení |
 | Pravé tlačítko + myš | Volný orbit; Home obnoví sledování lodi |
 | Kolečko | Odstup kamery650–6000m |
-| 1/2 | Přístavní150m/s / impuls250km/s (přepnout ve stoje) |
+| 1/2 | Přístavní150m/s / impuls250km/s; přepínání i za letu |
 | PgUp/PgDn | Vybrat těleso soustavy |
 | F | Výslovně testovací přesun k vybranému tělesu |
 | Backspace | Začátek u Země |
 | M | 3D galaxie, databáze těles a výpočty navigace |
 | P/Esc | Pauza/konec; Esc v mapě vrací do letu |
 
-Oba letové profily dosáhnou maxima za2,5s. Pohyb se vždy srovnává s přídí,
+Všechny tři letové profily dosáhnou maxima za2,5s. Pohyb se vždy srovnává s přídí,
 včetně couvání a brzdění: žádný boční drift ani umělá ztráta rychlosti v zatáčce.
 Náklon22° a hranice sklonu±60° dosedají postupně. Asistovaný herní let nemá
 Newtonovu gravitaci. Kamera FOV52°, přímý volný orbit a plynulé sledování kurzu.
-Motion blur a časové upscaling/ghosting jsou vypnuté. FXAA,100% skutečné pixely,
-16×anisotropie a písmo vykreslené ve skutečných pixelech pro ostrý český HUD. Výkon4K je třeba osobně ladit;
+Plný impuls odpovídá rychlosti webové předlohy (asi0,834rychlosti světla);
+není hyperpohon. Přepnutí dolů zachová rychlost a polohu a plynule zpomaluje,
+se zachovaným silnějším brzděním do dosažení nižšího limitu. R/Mezerník/X ruší
+plný impuls. Ve stojící lodi R spouští právě vybraný běžný režim.
+
+Windows high-DPI je zapnuté ještě před vytvořením okna, takže zvětšení rozhraní
+Windows nesnižuje fyzické rozlišení obrazu. Motion blur, časové vyhlazování,
+FXAA, hloubka ostrosti a barevné rozmazání jsou vypnuté.100% skutečné pixely,
+16×anisotropie a písmo vykreslené ve skutečných pixelech pro ostrý český HUD.
+Textury lodi a oblohy zůstávají plně načtené i při oddálení; okolní planety se
+vybírají podle skutečné úhlové velikosti, nezávisle na testovacím přesunu F.
+Paměť omezujeme na čtyři největší blízké disky; drobná tělesa používají běžné
+načítání podle vzdálenosti. Velmi tenké hrany mohou bez plošného vyhlazení kmitat;
+skutečné detaily menší než jeden pixel nemůže rozlišení monitoru zobrazit.
+Výkon4K je třeba osobně ladit;
 automatický obrazový test nepředstavuje měření běžné snímkové frekvence.
 
 Canonical flight.json obsahuje řízení, system.json oddělený svět v double metrech.
@@ -52,9 +66,12 @@ světla a6motorových efektů. Věže jsou nyní vizuální, palbu teprve přid�
 WebReference zůstává zachovaná jako výtvarná předloha. Zdrojový původ/licence
 v Art/Ships/Daedalus; fan model CC BY-NC4.0 není komerční povolení.
 
-Reprodukovat: Invoke-SolarFlight.ps1 Build,Assets,Test,Package,Visual,Smoke.
+Reprodukovat: Invoke-SolarFlight.ps1 Build,Assets,Test,Package,Visual,Sharp,SharpNative,Smoke.
+Sharp porovnává blízký/vzdálený model a rychlý orbit ve4K a zkouší klávesy pohonu.
+SharpNative používá stejnou cestu nativního spuštění jako Play a kopii současného
+uživatelského nastavení, bez přepisování původních hráčových dat.
 Visual skutečně vykresluje3840×2160 a zkouší vstupy, let, všechny37návštěvy,
 prstence, motorová světla a vypnuté rozmazání. Podrobnosti výstupů v úkolu0010.
 Foundation zůstává oddělený ověřený základ; solární laboratoř zatím neukládá
-letovou pozici. Hyperprostor, soustavy navíc a mapa galaxie následují samostatně.
+letovou pozici. Hyperprostor zůstává samostatným budoucím úkolem.
 

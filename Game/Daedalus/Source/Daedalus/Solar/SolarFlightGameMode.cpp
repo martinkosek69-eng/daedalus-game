@@ -50,9 +50,15 @@ ASolarFlightPawn::ASolarFlightPawn()
     Camera->SetupAttachment(RootComponent);
     Camera->SetFieldOfView(52);
     Camera->PostProcessSettings.bOverride_BloomIntensity = true;
-    Camera->PostProcessSettings.BloomIntensity = .3f;
+    Camera->PostProcessSettings.BloomIntensity = .12f;
     Camera->PostProcessSettings.bOverride_MotionBlurAmount = true;
     Camera->PostProcessSettings.MotionBlurAmount = 0;
+    Camera->PostProcessSettings.bOverride_DepthOfFieldScale = true;
+    Camera->PostProcessSettings.DepthOfFieldScale = 0;
+    Camera->PostProcessSettings.bOverride_SceneFringeIntensity = true;
+    Camera->PostProcessSettings.SceneFringeIntensity = 0;
+    Camera->PostProcessSettings.bOverride_FilmGrainIntensity = true;
+    Camera->PostProcessSettings.FilmGrainIntensity = 0;
     Camera->PostProcessSettings.bOverride_AmbientOcclusionIntensity = true;
     Camera->PostProcessSettings.AmbientOcclusionIntensity = .8f;
     AutoPossessPlayer = EAutoReceiveInput::Player0;
@@ -67,6 +73,7 @@ void ASolarFlightPawn::SetupPlayerInputComponent(UInputComponent* Input)
     Input->BindKey(EKeys::E, IE_Pressed, this, &ASolarFlightPawn::MoreThrottle);
     Input->BindKey(EKeys::Q, IE_Pressed, this, &ASolarFlightPawn::LessThrottle);
     Input->BindKey(EKeys::R, IE_Pressed, this, &ASolarFlightPawn::ToggleThrottle);
+    Input->BindKey(FInputChord(EKeys::R, true, false, false, false), IE_Pressed, this, &ASolarFlightPawn::FullImpulse);
     Input->BindKey(EKeys::SpaceBar, IE_Pressed, this, &ASolarFlightPawn::BrakeOn);
     Input->BindKey(EKeys::SpaceBar, IE_Released, this, &ASolarFlightPawn::BrakeOff);
     Input->BindKey(EKeys::X, IE_Pressed, this, &ASolarFlightPawn::BrakeOn);
@@ -98,13 +105,17 @@ void ASolarFlightPawn::LessThrottle() { if (auto* M = Lab(this)) M->ChangeThrott
 void ASolarFlightPawn::ToggleThrottle()
 {
     if (auto* M = Lab(this); M && M->bReady && !M->bPaused && !M->Galaxy.bOpen)
+    {
+        if (M->ProfileIndex == 2) M->SetProfile(1);
         M->Flight.SetThrottle(M->Flight.GetState().Throttle > 0 ? 0 : 1, M->Message);
+    }
 }
+void ASolarFlightPawn::FullImpulse() { if (auto* M = Lab(this)) M->ToggleFullImpulse(); }
 void ASolarFlightPawn::BrakeOn()
 {
     if(auto* M=Lab(this); !M || M->Galaxy.bOpen) return;
     bBrake = true;
-    if (auto* M = Lab(this)) { FString Error; M->Flight.SetThrottle(0, Error); }
+    if (auto* M = Lab(this)) { if (M->ProfileIndex == 2) M->SetProfile(1); FString Error; M->Flight.SetThrottle(0, Error); }
 }
 void ASolarFlightPawn::ResetCamera() { OrbitYaw = OrbitPitch = 0; bFollowShip = true; bCameraInitialized = false; }
 void ASolarFlightPawn::ZoomIn() { if(Lab(this) && !Lab(this)->Galaxy.bOpen) CameraDistanceMetres = FMath::Max(650.0, CameraDistanceMetres / 1.12); }
@@ -209,7 +220,7 @@ bool ASolarFlightGameMode::LoadSettings()
     if (!Number(Json, TEXT("turnRateDegrees"), Base.TurnRateDegrees) || !Number(Json, TEXT("angularAccelerationDegrees"), Base.AngularAccelerationDegrees)
         || !Number(Json, TEXT("pitchLimitDegrees"), Base.PitchLimitDegrees) || !Number(Json, TEXT("bankDegrees"), Base.BankDegrees)) return false;
     const TArray<TSharedPtr<FJsonValue>>* Rows = nullptr;
-    if (!Json->TryGetArrayField(TEXT("profiles"), Rows) || Rows->Num() != 2) return false;
+    if (!Json->TryGetArrayField(TEXT("profiles"), Rows) || Rows->Num() != 3) return false;
     for (const auto& Row : *Rows)
     {
         const auto O = Row->AsObject(); FSolarFlightProfile P; P.Config = Base;
@@ -230,17 +241,15 @@ void ASolarFlightGameMode::BeginPlay()
     if (!bReady) { Message = TEXT("Letovou scénu nelze načíst. Zkontroluj obsah a protokol."); UE_LOG(LogTemp, Error, TEXT("SOLAR_LOAD_FAILED")); }
     if (auto* PC = GetWorld()->GetFirstPlayerController())
     {
-        // FXAA has no frame history, so rapid orbit cannot ghost the hull.
-        PC->ConsoleCommand(TEXT("r.AntiAliasingMethod 1"));
-        PC->ConsoleCommand(TEXT("r.MotionBlurQuality 0"));
-        for(const TCHAR* Command:{TEXT("r.ScreenPercentage 100"),TEXT("r.SecondaryScreenPercentage.GameViewport 100"),TEXT("r.DynamicRes.OperationMode 0"),TEXT("r.Tonemapper.Sharpen 0.5"),TEXT("r.MaxAnisotropy 16")})PC->ConsoleCommand(Command);
         if(FParse::Param(FCommandLine::Get(),TEXT("SolarNative")))if(auto* Settings=GEngine->GetGameUserSettings()){
             Settings->SetScreenResolution(Settings->GetDesktopResolution());Settings->SetFullscreenMode(EWindowMode::WindowedFullscreen);Settings->SetResolutionScaleValueEx(100);Settings->ApplySettings(false);}
+        ApplySharpRenderingSettings();
         PC->bShowMouseCursor = false;
         PC->SetInputMode(FInputModeGameOnly());
         if (PC->GetPawn()) PC->GetPawn()->AddTickPrerequisiteActor(this);
     }
     FParse::Value(FCommandLine::Get(), TEXT("SolarProbe="), ProbeDirectory);
+    bSharpProbe = FParse::Value(FCommandLine::Get(), TEXT("SolarSharpProbe="), ProbeDirectory);
 }
 UStaticMeshComponent* ASolarFlightGameMode::MakeMesh(UStaticMesh* Asset, UMaterialInterface* Material)
 {
@@ -259,6 +268,7 @@ bool ASolarFlightGameMode::CreateScene()
     if (!ShipAsset || !LightsAsset || GlowAssets.Num()!=6 || GlowAssets.Contains(nullptr) || !SphereAsset || !PlaneAsset || !EarthMaterial || !SunMaterial || !AtmosphereMaterial || !StarMaterial || !DustMaterial) return false;
     if (FMath::Abs(ShipAsset->GetBounds().BoxExtent.X * 2 - 60000) > 30) return false;
     Ship = MakeMesh(ShipAsset, nullptr); Ship->SetCastShadow(true);
+    Ship->SetTextureForceResidentFlag(true);
     HullLights = MakeMesh(LightsAsset, nullptr);
     // Latest Claude hull uses separately delivered window geometry.
     HullLights->SetVisibility(true);
@@ -268,6 +278,7 @@ bool ASolarFlightGameMode::CreateScene()
     if(!ReadObject(FPaths::ProjectContentDir()/TEXT("Data/Solar/ship-details.json"),Details) || !Details->TryGetArrayField(TEXT("meshes"),DetailRows) || DetailRows->Num()!=38) return false;
     for(const auto& Row:*DetailRows){FString Path;if(!Row->TryGetString(Path) || !Path.StartsWith(TEXT("/Game/Ships/Daedalus/Details/"))) return false;
         auto* Mesh=LoadObject<UStaticMesh>(nullptr,*Path);if(!Mesh)return false;ShipDetails.Add(MakeMesh(Mesh,nullptr));}
+    for (const auto& Detail : ShipDetails) Detail->SetTextureForceResidentFlag(true);
     for (const auto& Asset : GlowAssets)
     {
         auto* Glow = MakeMesh(Asset,nullptr);
@@ -307,7 +318,7 @@ bool ASolarFlightGameMode::CreateScene()
         const double X = FMath::Cos(Dec) * FMath::Cos(RA), Y = FMath::Cos(Dec) * FMath::Sin(RA), Z = FMath::Sin(Dec);
         const FVector Direction(X, Y * FMath::Cos(Obliquity) + Z * FMath::Sin(Obliquity), Z * FMath::Cos(Obliquity) - Y * FMath::Sin(Obliquity));
         const double Size = FMath::Clamp(1.08 + (6.5 - Mag) * .17, 1.08, 2.5);
-        const double Width = SkyRadius * .00075 * Size;
+        const double Width = SkyRadius * .00042 * Size;
         const int32 I = Stars->AddInstance(FTransform(FRotationMatrix::MakeFromZ(-Direction).ToQuat(), Direction * SkyRadius, FVector(Width / 100)));
         const double Brightness = FMath::Clamp(FMath::Pow(10.0, -.12 * (Mag - 1)), .3, 2.5);
         const double Warm = FMath::Clamp((BV - .3) / 1.7, 0.0, 1.0), Cool = FMath::Clamp((.3 - BV) / .7, 0.0, 1.0);
@@ -335,14 +346,20 @@ void ASolarFlightGameMode::ChangeThrottle(double Step)
     if (!bReady || bPaused || Galaxy.bOpen) return;
     double Value = FMath::Clamp(Flight.GetState().Throttle + Step, -.25, 1.0);
     if (FMath::Abs(Value) < .0001) Value = 0;
+    if (Value <= 0 && ProfileIndex == 2) SetProfile(1);
     Flight.SetThrottle(Value, Message);
 }
 void ASolarFlightGameMode::SetProfile(int32 Index)
 {
-    if (!bReady || Galaxy.bOpen || !Profiles.IsValidIndex(Index) || Index == ProfileIndex) return;
-    if (bPaused || Flight.GetState().VelocityMetresPerSecond.Size() > .01 || FMath::Abs(Flight.GetState().Throttle) > .001)
-    { Message = TEXT("Před změnou režimu zastav loď a nastav tah na nulu."); return; }
-    if (Flight.Initialize(Profiles[Index].Config, Flight.GetState(), Bodies, Message)) ProfileIndex = Index;
+    if (!bReady || bPaused || Galaxy.bOpen || !Profiles.IsValidIndex(Index) || Index == ProfileIndex) return;
+    if (Flight.SetConfig(Profiles[Index].Config, Message)) ProfileIndex = Index;
+}
+void ASolarFlightGameMode::ToggleFullImpulse()
+{
+    if (!bReady || bPaused || Galaxy.bOpen) return;
+    const int32 Target = ProfileIndex == 2 ? 1 : 2;
+    SetProfile(Target);
+    if (Target == 2 && ProfileIndex == Target) Flight.SetThrottle(1, Message);
 }
 void ASolarFlightGameMode::ResetFlight()
 {
@@ -382,12 +399,12 @@ void ASolarFlightGameMode::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
     FrameMilliseconds += (DeltaSeconds * 1000 - FrameMilliseconds) * .08;
-    if (!bReady) { if (!ProbeDirectory.IsEmpty()) TickProbe(); return; }
+    if (!bReady) { if (!ProbeDirectory.IsEmpty()) { if (bSharpProbe) TickSharpProbe(); else TickProbe(); } return; }
     Flight.Advance(DeltaSeconds);
     if (!Flight.GetError().IsEmpty()) Message = Flight.GetError();
     UpdateScene(DeltaSeconds);
     RefreshNavigation();
-    if (!ProbeDirectory.IsEmpty()) TickProbe();
+    if (!ProbeDirectory.IsEmpty()) { if (bSharpProbe) TickSharpProbe(); else TickProbe(); }
 }
 void ASolarFlightHUD::DrawHUD()
 {
@@ -448,7 +465,7 @@ void ASolarFlightHUD::DrawHUD()
     DrawRect(White,(Left+54+250*Throttle)*Scale,(Top+36)*Scale,6*Scale,12*Scale);
     Text(TEXT("Q −"),Left+13,Top+31,Pale); Text(TEXT("+ E"),Left+322,Top+31,Pale);
     Center(M->Profiles[M->ProfileIndex].Name,Top+62,Pale,.9f);
-    Center(TEXT("1 Přístavní / 2 Impuls (ve stoje)    R stát / plný tah    Mezerník brzda"),Height-48,Pale,.85f);
+    Center(TEXT("1 Přístavní / 2 Impuls    R let / stop    Shift+R plný impuls    Mezerník brzda"),Height-48,Pale,.85f);
     Center(TEXT("W/S sklon   A/D zatáčení   Pravé tlačítko + myš kamera   Kolečko zoom   Home za loď"),Height-28,Pale,.8f);
     if (M->bPaused) Center(TEXT("POZASTAVENO — P pokračovat"),75,Cyan,1.2f);
     if (!S.ContactBodyId.IsEmpty()) Center(TEXT("Povrchová ochrana: otoč se a odleť."),100,Cyan);

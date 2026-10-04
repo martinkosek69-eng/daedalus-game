@@ -1,4 +1,4 @@
-﻿param([ValidateSet('Build','Assets','Test','Package','Smoke','Visual','Play')][string]$Mode='Play',
+﻿param([ValidateSet('Build','Assets','Test','Package','Smoke','Visual','Sharp','SharpNative','Play')][string]$Mode='Play',
       [ValidatePattern('^[A-Za-z0-9_-]+$')][string]$BuildName='Build-SolarSystem')
 $ErrorActionPreference='Stop'
 $root=Split-Path -Parent $PSScriptRoot
@@ -68,6 +68,25 @@ switch($Mode){
         if(-not(Test-Path -LiteralPath $result) -or -not(Get-Content -LiteralPath $result -Raw | ConvertFrom-Json).passed){throw "Foundation $phase failed in solar package: $run"}
     }
     Write-Output "Foundation separate-process restart passed in solar package: $run"
+ }
+ { $_ -in @('Sharp','SharpNative') } {
+    $exe=Join-Path $build 'Windows/Daedalus/Binaries/Win64/Daedalus.exe'
+    if(-not(Test-Path -LiteralPath $exe)){throw 'Package first.'}
+    $run=Join-Path $local ($Mode.ToLower()+'-'+[guid]::NewGuid().ToString('N'))
+    New-Item -ItemType Directory -Path $run -Force | Out-Null
+    # Exercise the real saved scalability profile without modifying player data.
+    $saved=Join-Path $local 'PlayerData/Saved/Config/Windows/GameUserSettings.ini'
+    if(Test-Path -LiteralPath $saved){
+        $target=Join-Path $run 'Saved/Config/Windows'
+        New-Item -ItemType Directory -Path $target -Force | Out-Null
+        Copy-Item -LiteralPath $saved -Destination $target
+    }
+    $args=@('/Game/Maps/SolarFlight?game=/Script/Daedalus.SolarFlightGameMode','-nosound','-unattended',"-UserDir=$run","-SolarSharpProbe=$run","-abslog=$(Join-Path $run 'run.log')")
+    if($Mode -eq 'SharpNative'){$args+='-SolarNative'}else{$args+=@('-windowed','-ResX=3840','-ResY=2160','-forceres')}
+    RunOwnGame $exe $args
+    $result=Join-Path $run 'result.json'
+    if(-not(Test-Path -LiteralPath $result) -or -not(Get-Content -LiteralPath $result -Raw | ConvertFrom-Json).passed){throw "Sharp image/impulse checks failed: $run"}
+    Write-Output "Sharp image, full texture detail and impulse input checks passed: $run"
  }
  'Visual' {
     $exe=Join-Path $build 'Windows/Daedalus/Binaries/Win64/Daedalus.exe'

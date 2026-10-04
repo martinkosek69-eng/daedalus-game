@@ -32,7 +32,9 @@ automaticky aktualizovaný přehled všech vzdálených větví.
 | 0018 | [Prostorová mapa galaxie](0018/BRIEF.md) | Codex view helper; root integrated and checked | ACCEPTED (technical) | `codex/solar-flight` |
 | 0019 | [Prstence a trpasličí světy](0019/BRIEF.md) | Codex source helper; root imported and checked | ACCEPTED (technical) | `codex/solar-flight` |
 
-Další volné číslo: **0020**. Číslo 0026 v návodu je pouze příklad.
+| 0020 | [Ostrý obraz a podsvětelný impuls](0020/BRIEF.md) | Codex coordinator | ACCEPTED (technical; user visual test pending) | `codex/solar-flight` |
+
+Další volné číslo: **0021**. Číslo 0026 v návodu je pouze příklad.
 
 
 

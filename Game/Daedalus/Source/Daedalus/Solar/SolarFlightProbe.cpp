@@ -66,7 +66,7 @@ void ASolarFlightGameMode::TickProbe()
     case 900:Shot(TEXT("web-comparison.png"));break;
     case 931:case 932:case 933:Tap(EKeys::PageUp);break;
     case 2150:
-        Check(IConsoleManager::Get().FindConsoleVariable(TEXT("r.AntiAliasingMethod"))->GetInt()==1 && IConsoleManager::Get().FindConsoleVariable(TEXT("r.MotionBlurQuality"))->GetInt()==0,TEXT("non temporal AA and motion blur disabled"));
+        Check(IConsoleManager::Get().FindConsoleVariable(TEXT("r.AntiAliasingMethod"))->GetInt()==0 && IConsoleManager::Get().FindConsoleVariable(TEXT("r.MotionBlurQuality"))->GetInt()==0,TEXT("native unfiltered image and motion blur disabled"));
         Check(GEngine->GameViewport && GEngine->GameViewport->Viewport && GEngine->GameViewport->Viewport->GetSizeXY()==FIntPoint(3840,2160) && IConsoleManager::Get().FindConsoleVariable(TEXT("r.ScreenPercentage"))->GetFloat()==100,TEXT("native3840x2160 no upscale"));
         Check(Flight.GetPendingSeconds()<.02 && Flight.GetError().IsEmpty(),TEXT("stable fixedstep"));
         Check(IFileManager::Get().FileSize(*FPaths::Combine(ProbeDirectory,TEXT("earth.png")))>100 && IFileManager::Get().FileSize(*FPaths::Combine(ProbeDirectory,TEXT("turn.png")))>100 && IFileManager::Get().FileSize(*FPaths::Combine(ProbeDirectory,TEXT("sun.png")))>100,TEXT("rendered images written"));

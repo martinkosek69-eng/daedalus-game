@@ -14,6 +14,7 @@
   "bankDegrees": 22,
   "profiles": [
     {"name": "Přístavní chod", "speed": 150, "acceleration": 60, "coastDeceleration": 45, "braking": 45, "lateralAcceleration": 86},
-    {"name": "Impuls", "speed": 250000, "acceleration": 100000, "coastDeceleration": 45000, "braking": 45000, "lateralAcceleration": 142860}
+    {"name": "Impuls", "speed": 250000, "acceleration": 100000, "coastDeceleration": 45000, "braking": 45000, "lateralAcceleration": 142860},
+    {"name": "Plný impuls · podsvětelný", "speed": 250000000, "acceleration": 100000000, "coastDeceleration": 35000000, "braking": 35000000, "lateralAcceleration": 142860}
   ]
 }

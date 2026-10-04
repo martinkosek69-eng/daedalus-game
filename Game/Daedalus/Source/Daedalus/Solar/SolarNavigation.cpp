@@ -41,7 +41,7 @@ Daedalus::FNavigationMetrics ASolarFlightGameMode::PreviewMetrics() const
 {
     if(!MapSystems.IsValidIndex(Galaxy.SelectedSystem) || !MapSystems[Galaxy.SelectedSystem].Bodies.IsValidIndex(Galaxy.SelectedBody)
         || !MapSystems[Galaxy.SelectedSystem].Bodies[Galaxy.SelectedBody].bKnownPosition)return {};
-    return PreviewNavigation.Query(Flight.GetState().VelocityMetresPerSecond.Size(),Profiles.IsValidIndex(1) ? Profiles[1].Config.MaxSpeed : 0,Galaxy.DesiredSeconds);
+    return PreviewNavigation.Query(Flight.GetState().VelocityMetresPerSecond.Size(),Profiles.IsValidIndex(2) ? Profiles[2].Config.MaxSpeed : 0,Galaxy.DesiredSeconds);
 }
 
 void ASolarFlightGameMode::HandleMapAction(const FMapAction& Action)

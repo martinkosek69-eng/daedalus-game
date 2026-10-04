@@ -55,7 +55,7 @@ void ASolarFlightGameMode::TickGalaxyProbe()
     case 2285:Check(Galaxy.GetCameraDistanceLY()<1e-8,TEXT("deep planet radius focus"));Shot(TEXT("earth-map-detail.png"));break;
     case 2305:Click(Width-190,Height-55);break;
     case 2307:Key(EKeys::LeftMouseButton,IE_Released);break;
-    case 2310:Check(PreviewMetrics().bPlannedETA && FMath::Abs(PreviewMetrics().PlannedETASeconds * Profiles[1].Config.MaxSpeed - PreviewMetrics().DistanceMetres) < 1, TEXT("impulse ETA uses impulse speed while ship is in harbour profile"));
+    case 2310:Check(PreviewMetrics().bPlannedETA && FMath::Abs(PreviewMetrics().PlannedETASeconds * Profiles[2].Config.MaxSpeed - PreviewMetrics().DistanceMetres) < 1, TEXT("full impulse ETA uses full sublight speed while ship is in harbour profile"));
         Check(Navigation.GetTargetBodyId()==TEXT("sol.earth") && Flight.GetState().SimulationSeconds==ProbeClock,TEXT("navigation target selection leaves flight unchanged"));
         Galaxy.SelectedBody=MapSystems[0].Bodies.IndexOfByPredicate([](const FGalaxyBodyView& B){return !B.bKnownPosition;});
         Check(Galaxy.SelectedBody!=INDEX_NONE,TEXT("unknown position retained in database"));

@@ -41,11 +41,11 @@ double ContactGap(const FVector3d& A, const FVector3d& B)
     return FMath::Max(0.01, Largest * std::numeric_limits<double>::epsilon() * 16.0);
 }
 
-bool ValidState(const FFlightConfig& Config, const FFlightState& State)
+bool ValidState(const FFlightConfig& Config, const FFlightState& State, double SpeedLimit = -1)
 {
     return ValidPosition(State.PositionMetres)
         && ValidPosition(State.VelocityMetresPerSecond)
-        && State.VelocityMetresPerSecond.Size() <= Config.MaxSpeed + 1e-6
+        && State.VelocityMetresPerSecond.Size() <= (SpeedLimit >= 0 ? SpeedLimit : Config.MaxSpeed) + 1e-6
         && InRange(State.YawDegrees, -1e6, 1e6)
         && InRange(State.PitchDegrees, -Config.PitchLimitDegrees, Config.PitchLimitDegrees)
         && InRange(State.BankDegrees, -Config.BankDegrees, Config.BankDegrees)
@@ -78,7 +78,7 @@ bool FindContact(const FVector3d& Start, const FVector3d& Delta,
 
 bool FFlightConfig::Validate(FString& Error) const
 {
-    if (!InRange(MaxSpeed, 0.01, 1e8)
+    if (!InRange(MaxSpeed, 0.01, 299792458.0) || MaxSpeed >= 299792458.0
         || !InRange(Acceleration, 0.001, 1e10)
         || !InRange(Braking, 0.001, 1e10)
         || !InRange(CoastDeceleration, 0.001, 1e10)
@@ -148,8 +148,42 @@ bool FFlightModel::Initialize(const FFlightConfig& InConfig, const FFlightState&
     Bodies = MoveTemp(NewBodies);
     Input = FFlightInput();
     PendingSeconds = 0;
+    TransitionBraking = 0;
+    TransitionCoastDeceleration = 0;
     bPaused = false;
     bInitialized = true;
+    LastError.Reset();
+    Error.Reset();
+    return true;
+}
+
+bool FFlightModel::SetConfig(const FFlightConfig& InConfig, FString& Error)
+{
+    if (!bInitialized) return Fail(TEXT("Flight model is not initialized."), Error);
+    FString ValidationError;
+    if (!InConfig.Validate(ValidationError)) return Fail(ValidationError, Error);
+    const double CurrentSpeed = State.VelocityMetresPerSecond.Size();
+    if (!ValidState(InConfig, State, FMath::Max(InConfig.MaxSpeed, CurrentSpeed)))
+        return Fail(TEXT("New flight limits are incompatible with the current attitude or state."), Error);
+    for (const FFlightBody& Body : Bodies)
+    {
+        if ((State.PositionMetres - Body.PositionMetres).Size() < Body.RadiusMetres + InConfig.ShipRadiusMetres)
+            return Fail(TEXT("New ship radius would overlap a body."), Error);
+    }
+
+    // Retain authority across repeated downgrades until the excess speed is gone.
+    // Never clamp velocity here: commands must not teleport or suddenly stop a ship.
+    if (CurrentSpeed > InConfig.MaxSpeed)
+    {
+        TransitionBraking = FMath::Max(TransitionBraking, Config.Braking);
+        TransitionCoastDeceleration = FMath::Max(TransitionCoastDeceleration, Config.CoastDeceleration);
+    }
+    else
+    {
+        TransitionBraking = 0;
+        TransitionCoastDeceleration = 0;
+    }
+    Config = InConfig;
     LastError.Reset();
     Error.Reset();
     return true;
@@ -236,14 +270,16 @@ bool FFlightModel::Step()
     const double ForwardSpeed = SignedSpeed(State);
     const double TargetSpeed = Next.Throttle * Config.MaxSpeed;
     const bool bSlowing = ForwardSpeed * TargetSpeed < 0 || FMath::Abs(TargetSpeed) < FMath::Abs(ForwardSpeed);
-    const double Deceleration = Input.bBrake ? Config.Braking : Config.CoastDeceleration;
+    const double Braking = FMath::Max(Config.Braking, TransitionBraking);
+    const double Deceleration = Input.bBrake ? Braking : FMath::Max(Config.CoastDeceleration, TransitionCoastDeceleration);
     double NewForwardSpeed = Approach(ForwardSpeed, TargetSpeed,
         (bSlowing ? Deceleration : Config.Acceleration) * Dt);
     if (Input.bBrake)
     {
-        NewForwardSpeed = Approach(ForwardSpeed, 0, Config.Braking * Dt);
+        NewForwardSpeed = Approach(ForwardSpeed, 0, Braking * Dt);
     }
-    Next.VelocityMetresPerSecond = Forward * FMath::Clamp(NewForwardSpeed, -Config.MaxSpeed, Config.MaxSpeed);
+    const double SpeedLimit = FMath::Max(Config.MaxSpeed, FMath::Abs(ForwardSpeed));
+    Next.VelocityMetresPerSecond = Forward * FMath::Clamp(NewForwardSpeed, -SpeedLimit, SpeedLimit);
 
     const FVector3d Delta = Next.VelocityMetresPerSecond * Dt;
     double Earliest = 1;
@@ -261,12 +297,17 @@ bool FFlightModel::Step()
     Next.PositionMetres = State.PositionMetres + Delta * Earliest;
     if (!Next.ContactBodyId.IsEmpty()) Next.VelocityMetresPerSecond = FVector3d::ZeroVector;
     Next.SimulationSeconds += Dt;
-    if (!ValidState(Config, Next))
+    if (!ValidState(Config, Next, SpeedLimit))
     {
         LastError = TEXT("Flight step reached a supported state boundary; prior state retained.");
         return false;
     }
     State = MoveTemp(Next);
+    if (State.VelocityMetresPerSecond.Size() <= Config.MaxSpeed + 1e-6)
+    {
+        TransitionBraking = 0;
+        TransitionCoastDeceleration = 0;
+    }
     return true;
 }
 }

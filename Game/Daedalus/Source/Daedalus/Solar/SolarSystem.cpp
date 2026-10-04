@@ -282,6 +282,7 @@ bool ASolarFlightGameMode::CreateSystem()
     {
         SkyDynamic = UMaterialInstanceDynamic::Create(Material(TEXT("/Game/Solar/Materials/M_Sky")), this);
         Sky = MakeMesh(SphereAsset, SkyDynamic); Sky->SetWorldScale3D(FVector(2.5e7));
+        Sky->SetTextureForceResidentFlag(true);
     }
     BodyMeshes.SetNumZeroed(BodyDefinitions.Num()); BodyDynamics.SetNumZeroed(BodyDefinitions.Num());
     AirMeshes.SetNumZeroed(BodyDefinitions.Num()); AirDynamics.SetNumZeroed(BodyDefinitions.Num());
@@ -338,6 +339,7 @@ void ASolarFlightGameMode::ClearSystem()
     auto DestroyMesh = [&](UStaticMeshComponent* Mesh)
     {
         if (!Mesh) return;
+        Mesh->SetTextureForceResidentFlag(false);
         AActor* Owner = Mesh->GetOwner();
         if (Owner && Owner != this) Owner->Destroy(); else Mesh->DestroyComponent();
     };
@@ -350,11 +352,12 @@ void ASolarFlightGameMode::ClearSystem()
     for (const auto& Mesh : RingMeshes) DestroyMesh(Mesh);
     DestroyMesh(UnknownMarker); UnknownMarker = nullptr;
     if (Belt) { Belt->DestroyComponent(); Belt = nullptr; }
-    BodyMeshes.Reset(); BodyDynamics.Reset(); AirMeshes.Reset(); AirDynamics.Reset(); RingMeshes.Reset(); RingBodies.Reset();
+    BodyMeshes.Reset(); BodyDynamics.Reset(); AirMeshes.Reset(); AirDynamics.Reset(); RingMeshes.Reset(); RingBodies.Reset(); DetailedBodies.Reset();
     BeltPositions.Reset(); BeltRadii.Reset(); Earth = nullptr; Sun = nullptr; Atmosphere = nullptr; EarthDynamic = nullptr; AtmosphereDynamic = nullptr;
 }
 void ASolarFlightGameMode::UpdateSystem(const FVector& CameraPosition)
 {
+    UpdateTextureDetail();
     const auto& State = Flight.GetState();
     auto Project = [&](const FVector3d& Position)
     {
@@ -446,9 +449,7 @@ bool ASolarFlightGameMode::ActivateSystem(int32 Index, int32 BodyIndex)
         // All dependencies and the candidate domain pose passed before scene destruction.
         if (!CreateSystem()) { bReady = false; Message = TEXT("Vytvoření ověřené soustavy selhalo."); return false; }
     }
-    if (BodyMeshes.IsValidIndex(SelectedBody) && BodyMeshes[SelectedBody]) BodyMeshes[SelectedBody]->SetTextureForceResidentFlag(false);
     Flight = MoveTemp(Candidate); SelectedBody = BodyIndex; bPaused = false;
-    if (BodyMeshes.IsValidIndex(BodyIndex) && BodyMeshes[BodyIndex]) BodyMeshes[BodyIndex]->SetTextureForceResidentFlag(true);
     Navigation.SelectTarget(System.Id, Body.Id, Error);
     Message = Body.bKnownRadius ? TEXT("Testovací přesun k tělesu — nejde o cestování pohonem.")
         : TEXT("Testovací přesun ke značce: velikost neznámá, fyzický model ani kolize nejsou vytvořené.");

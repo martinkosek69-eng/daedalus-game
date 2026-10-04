@@ -67,12 +67,18 @@ public:
     static constexpr int32 MaxStepsPerAdvance = 600;
     bool Initialize(const FFlightConfig& InConfig, const FFlightState& InitialState,
         const TArray<FFlightBody>& InBodies, FString& Error);
+    /** Change drive tuning without resetting pose, speed, input, throttle, clock,
+     * backlog or pause. Excess speed after a downgrade dissipates gradually with
+     * the previous drive's braking authority. Incompatible attitude/shape limits
+     * are rejected without changing the configuration or simulation state. */
+    bool SetConfig(const FFlightConfig& InConfig, FString& Error);
     bool SetThrottle(double Value, FString& Error);
     bool SetInput(const FFlightInput& Value, FString& Error);
     int32 Advance(double RealSeconds);
     void SetPaused(bool bValue) { bPaused = bValue; }
     const FFlightState& GetState() const { return State; }
     const FFlightConfig& GetConfig() const { return Config; }
+    double GetBrakingDeceleration() const { return FMath::Max(Config.Braking, TransitionBraking); }
     double GetPendingSeconds() const { return PendingSeconds; }
     const FString& GetError() const { return LastError; }
 private:
@@ -83,6 +89,8 @@ private:
     FFlightInput Input;
     TArray<FFlightBody> Bodies;
     double PendingSeconds = 0;
+    double TransitionBraking = 0;
+    double TransitionCoastDeceleration = 0;
     bool bInitialized = false;
     bool bPaused = false;
     FString LastError;

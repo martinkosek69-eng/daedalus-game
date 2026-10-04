@@ -41,7 +41,7 @@ private:
     void BrakeOn(); void BrakeOff() { bBrake = false; }
     void MoreThrottle(); void LessThrottle(); void ToggleThrottle();
     void ZoomIn(); void ZoomOut();
-    void Slow(); void Fast(); void ResetFlight(); void PauseFlight(); void ExitGame();
+    void Slow(); void Fast(); void FullImpulse(); void ResetFlight(); void PauseFlight(); void ExitGame();
     void NextBody(); void PreviousBody(); void InspectBody();
     void ToggleMap();
 };
@@ -96,6 +96,7 @@ class DAEDALUS_API ASolarFlightGameMode : public AGameModeBase
 public:
     ASolarFlightGameMode();
     virtual void BeginPlay() override;
+    virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
     virtual void Tick(float DeltaSeconds) override;
     Daedalus::FFlightModel Flight;
     bool bReady = false, bPaused = false;
@@ -107,6 +108,7 @@ public:
     double FrameMilliseconds = 0;
     void ChangeThrottle(double Step);
     void SetProfile(int32 Index);
+    void ToggleFullImpulse();
     void ResetFlight();
     void TogglePause();
     int32 StarCount() const;
@@ -162,6 +164,7 @@ private:
     UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Belt;
     TArray<FVector3d> BeltPositions;
     TArray<float> BeltRadii;
+    TSet<int32> DetailedBodies;
     UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Stars;
     UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Dust;
     UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> EarthDynamic;
@@ -175,6 +178,8 @@ private:
     void UpdateSystem(const FVector& CameraPosition);
     bool CreateScene();
     void UpdateScene(float DeltaSeconds);
+    void ApplySharpRenderingSettings();
+    void UpdateTextureDetail();
     UStaticMeshComponent* MakeMesh(UStaticMesh* Asset, UMaterialInterface* Material);
     FString ProbeDirectory;
     int32 ProbeFrame = 0;
@@ -183,4 +188,6 @@ private:
     TArray<double> ProbeFrameTimes;
     void TickProbe();
     void TickGalaxyProbe();
+    void TickSharpProbe();
+    bool bSharpProbe = false;
 };

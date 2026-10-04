@@ -2,6 +2,27 @@
 
 ## Current six-system lab0016
 
+### User feedback correction0020
+
+User rejected softness after0016. Current package enables Windows high-DPI
+before window creation, applies native rendering after user settings, removes
+FXAA/temporal/motion/DOF/fringe blur and keeps ship/sky textures fully resident.
+Up to four large nearby celestial discs are promoted by angular size during
+ordinary flight, independent of inspection/selection. Bloom/star footprint reduced.
+R starts/stops normal impulse; Shift+R toggles full sublight250000km/s. All three
+drive modes switch in flight without velocity/pose jumps; braking authority is
+retained while returning to a slower mode. Navigation ETA uses full sublight.
+
+Editor build,19automation groups and Windows package pass. Targeted1650frame
+packaged input/render check passes using a copy of actual player settings and
+the normal native launcher path:2560x1440 reported by Windows, not4K. Ship2K,
+Earth8K and sky8K textures fully resident near/far; R/Shift+R/map suppression and
+braking checked. No broad repeat of the prior six-system suite; user requested
+efficient work and will do most visual/play testing. See Tasks/0020/HANDOFF.md.
+Native unfiltered edges may alias; aesthetic acceptance and real4K user run pending.
+
+### Previously completed0016 baseline
+
 Singleplayer Windows delivery on `codex/solar-flight`, main unmerged. Launch
 Tools/SPUSTIT_LET_DAEDALA.cmd after packaging. M opens the3D galaxy/database;
 right orbit, middle pan, wheel zoom, top/side/Home, search and deep planet focus.
