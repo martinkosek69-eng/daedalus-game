@@ -18,6 +18,14 @@ $files = [ordered]@{
     'world.200410.3x21600x21600.D2.png' = @("$bmng/world.200410.3x21600x21600.D2.png", '03101331c40c0a9dba97e0ba72b35b22525af6ef1fada5ba70c9a8c9087fe940')
     'ETOPO_2022_v1_60s_N90W180_surface.tif' = @('https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2022/data/60s/60s_surface_elev_gtif/ETOPO_2022_v1_60s_N90W180_surface.tif', '9d27d4b8ea8e76977e2988bca667d7c8fa68b927355feffcddd6b4875a7fd08e')
     'BlackMarble_2016_3km.jpg' = @('https://eoimages.gsfc.nasa.gov/images/imagerecords/144000/144898/BlackMarble_2016_3km.jpg', '230aac448ae68c358be433dd518888cccb3a85ccf66f7b44326441c324ad6725')
+    # Moons (USGS Astrogeology global mosaics) and relief (NASA SVS CGI Moon Kit LOLA, PDS MGS MOLA).
+    'Ganymede_Voyager_GalileoSSI_global_mosaic_1km.tif' = @('https://planetarymaps.usgs.gov/mosaic/Ganymede_Voyager_GalileoSSI_global_mosaic_1km.tif', 'c2c8d9506b8cf8f7a0a90d823d9052e91c8d9885cf7267fdce8de8216f4df888')
+    'Callisto_Voyager_GalileoSSI_global_mosaic_1km.tif' = @('https://planetarymaps.usgs.gov/mosaic/Callisto_Voyager_GalileoSSI_global_mosaic_1km.tif', 'e1f0bd2e0e05de605d067d6b5f5ededddaf31ca6c064562a1ca770f15a7dbaa3')
+    'Europa_Voyager_GalileoSSI_global_mosaic_500m.tif' = @('https://planetarymaps.usgs.gov/mosaic/Europa_Voyager_GalileoSSI_global_mosaic_500m.tif', 'a323f0c9ccb47d5af9902ea8297fe81f9a9708795645b80801f103c3f7c9a624')
+    'Io_GalileoSSI-Voyager_Global_Mosaic_ClrMerge_1km.tif' = @('https://planetarymaps.usgs.gov/mosaic/Io_GalileoSSI-Voyager_Global_Mosaic_ClrMerge_1km.tif', '135f88cb645bfdb4e045b380971ab2ba14e230590c96c9c86cfe7310fda881ac')
+    'Enceladus_Cassini_mosaic_global_110m.tif' = @('https://planetarymaps.usgs.gov/mosaic/Enceladus_Cassini_mosaic_global_110m.tif', 'c9d29292141dd986e52b2a24b692df34701d1dabaee69bcb9fb64ebc6baba335')
+    'ldem_16_uint.tif' = @('https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/ldem_16_uint.tif', '45a2b32d56e81ed30db07fead8abc842b249b6511219d9ca2c53f81bc2dc5d62')
+    'megt90n000eb.img' = @('https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg016/megt90n000eb.img', 'd18d9b9ab8c5516d02e157dd2cde0f1d0d160c21940e953ba22391269a545e7b')
 }
 # NASA GIBS daily VIIRS true colour, EPSG:4326 level 5 (40x20 tiles of 512 px). Imagery may be
 # reprocessed by NASA, so tiles are not hash-pinned; the tracked prepared cloud map is canonical.

@@ -427,10 +427,170 @@ def step_defaults():
     write(np.full((4, 4), LAND_MIN, np.uint8), folder / 'pq_flat_land.png')
 
 
+# ------------------------------------------------------------------ other bodies of the six systems
+SOL = ROOT / 'Art/Space/PlanetQuality/Sol'
+FICTIONAL = ROOT / 'Art/Space/PlanetQuality/Fictional'
+MANIFEST = ROOT / 'Art/Space/PlanetQuality/planets.json'
+# Real global mosaics (USGS Astrogeology) replacing 1440x720 JPL maps (the JPL maps of these moons
+# are greyscale; the Voyager-era Enceladus map is mostly blank). Grey mosaics keep the previous
+# map's mean brightness and contrast; Io uses the USGS colour merge directly.
+MOSAICS = {
+    'sol.io': ('Io_GalileoSSI-Voyager_Global_Mosaic_ClrMerge_1km.tif', 'jpl-jup1vss2.jpg', 8192, 'colour'),
+    'sol.europa': ('Europa_Voyager_GalileoSSI_global_mosaic_500m.tif', 'jpl-jup2vss2.jpg', 8192, 'grey'),
+    'sol.ganymede': ('Ganymede_Voyager_GalileoSSI_global_mosaic_1km.tif', 'jpl-jup3vss2.jpg', 8192, 'grey'),
+    'sol.callisto': ('Callisto_Voyager_GalileoSSI_global_mosaic_1km.tif', 'jpl-jup4vss2.jpg', 8192, 'grey'),
+    'sol.enceladus': ('Enceladus_Cassini_mosaic_global_110m.tif', 'jpl-sat2vss2.jpg', 4096, 'grey'),
+}
+
+
+def as_buf(array):
+    array = np.ascontiguousarray(array if array.ndim == 3 else array[..., None])
+    buf = oiio.ImageBuf(oiio.ImageSpec(array.shape[1], array.shape[0], array.shape[2], oiio.FLOAT if array.dtype == np.float32 else oiio.UINT8))
+    buf.set_pixels(oiio.ROI(), array)
+    return buf
+
+
+def resized(array, width, height, filt='lanczos3'):
+    out = resize(as_buf(array.astype(np.float32)), width, height, filt).get_pixels(oiio.FLOAT)
+    return out if array.ndim == 3 else out[..., 0]
+
+
+def edges(lum):
+    gx = np.roll(lum, -1, 1) - np.roll(lum, 1, 1)
+    gy = np.zeros_like(lum); gy[1:-1] = lum[2:] - lum[:-2]
+    g = np.sqrt(gx * gx + gy * gy)
+    return (g - g.mean()) / max(g.std(), 1e-6)
+
+
+def align(reference, candidate):
+    """Longitude roll (columns) and east/west mirroring that best match two equirectangular maps of
+    the same size, by circular cross-correlation of their edge images (latitude rows trimmed)."""
+    h = reference.shape[0]
+    a, best = edges(reference)[h // 8:-h // 8], None
+    for mirror in (False, True):
+        b = edges(candidate[:, ::-1] if mirror else candidate)[h // 8:-h // 8]
+        corr = np.fft.irfft(np.fft.rfft(a, axis=1) * np.conj(np.fft.rfft(b, axis=1)), n=a.shape[1], axis=1).sum(0) / a.size
+        shift = int(np.argmax(corr))
+        if best is None or corr[shift] > best[2]:
+            best = (mirror, shift, float(corr[shift]), float(np.median(corr)))
+    return best
+
+
+def apply_alignment(array, mirror, shift, scale):
+    array = array[:, ::-1] if mirror else array
+    return np.roll(array, int(round(shift * scale)), 1)
+
+
+def lin(srgb):
+    return np.where(srgb <= .04045, srgb / 12.92, ((srgb + .055) / 1.055) ** 2.4)
+
+
+def enc(linear):
+    linear = np.clip(linear, 0, 1)
+    return np.where(linear <= .0031308, linear * 12.92, 1.055 * np.power(linear, 1 / 2.4) - .055)
+
+
+def step_moons():
+    """8K/4K maps for the Galilean moons and Enceladus from USGS global mosaics."""
+    SOL.mkdir(parents=True, exist_ok=True)
+    report = {}
+    for ident, (raw, ref_name, size, mode) in MOSAICS.items():
+        t = time.time()
+        ref = read(ROOT / 'Art/Space/SolarSystem/Textures' / ref_name).get_pixels(oiio.UINT8)[..., :3].astype(np.float32) / 255
+        rh, rw = ref.shape[:2]
+        source = read(RAW / raw)
+        spec = source.spec()
+        # Drop a duplicated wrap column/row of grid-registered mosaics (odd sizes like 16539x8270).
+        w2 = spec.width - (spec.width % 2)
+        h2 = w2 // 2
+        if (w2, h2) != (spec.width, spec.height):
+            source = oiio.ImageBufAlgo.cut(source, oiio.ROI(0, w2, 0, min(h2, spec.height), 0, 1, 0, spec.nchannels))
+        hi = resize(source, size, size // 2).get_pixels(oiio.FLOAT)[..., :3]
+        hi_lum = hi.mean(2) if mode == 'colour' else hi[..., 0]
+        mirror, shift, score, median = align(lin(ref).mean(2), resized(hi_lum, rw, rh))
+        if score < max(.08, 3 * abs(median)):
+            # Reference too sparse to match (e.g. Voyager-era Enceladus map is mostly blank): use the
+            # convention the confident USGS matches show - east-positive, centred on 180 deg.
+            mirror, shift = False, rw // 2
+        hi = apply_alignment(hi, mirror, shift, size / rw)
+        if mode == 'colour':
+            out = hi
+        else:
+            # Keep the previous map's brightness and contrast at its own scale (linear light).
+            grey = lin(np.clip(hi[..., 0], 0, 1))
+            # Local contrast like the previous maps: lift structure above ~60 km by x1.8.
+            local = large(box_blur(small(grey, 8), 4, 2), 8)
+            grey = np.clip(local + (grey - local) * 1.8, 0, None)
+            ref_lin = lin(ref).mean(2)
+            coarse = resized(grey, rw, rh, 'gaussian')
+            gain = float(ref_lin.std()) / max(float(coarse.std()), 1e-6)
+            out = enc(float(ref_lin.mean()) + (grey - float(coarse.mean())) * gain)[..., None]
+        name = ident.split('.')[-1]
+        write(np.round(np.clip(out, 0, 1) * 255).astype(np.uint8), SOL / f'{name}_{size // 1024}k.jpg', quality=93)
+        report[ident] = dict(source=raw, reference=ref_name, mirror=mirror, shift_px=shift, score=round(score, 3), median=round(median, 3), mode=mode)
+        log('moon', ident, report[ident], round(time.time() - t, 1), 's')
+    (WORK / 'moons_alignment.json').write_text(json.dumps(report, indent=2))
+
+
+def step_relief_bodies():
+    """Data relief for the Moon (LRO LOLA, NASA SVS CGI Moon Kit ldem_16) and Mars (MGS MOLA
+    MEGDR 16 px/deg), linear 8-bit height over the body's range, 4096x2048 (no upscaling)."""
+    SOL.mkdir(parents=True, exist_ok=True)
+    out = {}
+    for ident, ref_name in (('sol.moon', 'moon.jpg'), ('sol.mars', 'mars.jpg')):
+        if ident == 'sol.moon':
+            height = read(RAW / 'ldem_16_uint.tif').get_pixels(oiio.FLOAT)[..., 0].astype(np.float64)
+            # Unsigned half-metre units with an offset; the absolute scale is set from the raw spread
+            # to the published LOLA range of 19.91 km (Mikhail 2009 / Smith 2010).
+            height = (height - height.min()) / (height.max() - height.min()) * 19910.0
+        else:
+            height = np.fromfile(RAW / 'megt90n000eb.img', '>i2').reshape(2880, 5760).astype(np.float64)
+        height = height.astype(np.float32)
+        ref = read(ROOT / 'Art/Space/SolarSystem/Textures' / ref_name).get_pixels(oiio.UINT8)[..., :3].astype(np.float32) / 255
+        small_h = resized(height, 1440, 720)
+        mirror, shift, score, median = align(resized(lin(ref).mean(2), 1440, 720), small_h)
+        height = resized(height, 4096, 2048)
+        height = apply_alignment(height, mirror, shift, 4096 / 1440)
+        lo, hi = float(height.min()), float(height.max())
+        code = np.round((height - lo) / (hi - lo) * 255).astype(np.uint8)
+        name = ident.split('.')[-1]
+        write(code, SOL / f'{name}_relief_4k.png')
+        out[ident] = dict(mirror=mirror, shift_px=shift, score=round(score, 3), median=round(median, 3), range_m=round(hi - lo, 1))
+        log('relief', ident, out[ident])
+    (WORK / 'relief_alignment.json').write_text(json.dumps(out, indent=2))
+
+
+def step_fictional_clouds():
+    """Separate cloud layers for the fictional cloud worlds: coverage from the authored RGBA alpha
+    (sources unchanged), tint = coverage-weighted mean cloud colour, recorded in planets.json."""
+    FICTIONAL.mkdir(parents=True, exist_ok=True)
+    manifest = json.loads(MANIFEST.read_text(encoding='utf-8'))
+    for folder in sorted((ROOT / 'Art/Space/Systems').iterdir()):
+        catalog = folder / 'system.json'
+        if not catalog.is_file():
+            continue
+        for row in json.loads(catalog.read_text(encoding='utf-8-sig'))['bodies']:
+            if not row.get('cloudTexture'):
+                continue
+            rgba = read(folder / row['cloudTexture']).get_pixels(oiio.FLOAT)
+            assert rgba.shape[2] == 4, (row['id'], rgba.shape)
+            alpha = rgba[..., 3]
+            colour = (lin(rgba[..., :3]) * alpha[..., None]).sum((0, 1)) / max(alpha.sum(), 1e-6)
+            colour = colour / max(colour.max(), 1e-6) * .95
+            path = FICTIONAL / f"{row['id'].replace('.', '_')}_clouds.png"
+            write(np.round(alpha * 255).astype(np.uint8), path)
+            entry = manifest['bodies'].setdefault(row['id'], {})
+            entry['clouds'] = path.relative_to(ROOT).as_posix()
+            entry['cloudColor'] = [round(float(c), 3) for c in colour]
+            log('fictional clouds', row['id'], entry['cloudColor'])
+    MANIFEST.write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
+
+
 for step in STEPS:
     t0 = time.time()
     {'earth-day': step_day, 'earth-relief': step_relief, 'earth-clouds': step_clouds, 'earth-night': step_night,
      'spheres': step_spheres, 'defaults': step_defaults,
+     'moons': step_moons, 'relief-bodies': step_relief_bodies, 'fictional-clouds': step_fictional_clouds,
      'debug-seams': step_debug_seams,
      'cache-etopo': lambda: cached('earth_height_16k', etopo_heights),
      'cache-viirs': lambda: [cached('viirs_' + n + '_16k', lambda n=n: gibs_mosaic(n)) for n in GIBS_LAYERS]}[step]()
