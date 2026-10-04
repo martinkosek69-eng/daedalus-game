@@ -36,7 +36,7 @@
   and lip, slot with tick marks, grey end tabs with bolts. Hazard stripes on
   alternate hatches (checkerboard).
 - **Hangars.** A new back wall per bay in front of the model's X-truss frame,
-  with a hexagonal split observation window (dark green glass), light frame
+  with split doors (two plated halves that open up and down, U33 tone), light frame
   bars and fixtures. Spotlights above each opening, floodlights under the pod
   edges, nav lights (starboard green, port red).
 - **Windows.** Faint cyan windows: a row of 7 in the now-dark bow band, rows on

@@ -608,7 +608,6 @@ def down(x, y):
 HATCH = hatch_maps()
 MAT_ADD = {'Armor': MAT['Armor'], 'Hangar': MAT['Hangar'],
            'Trim': pbr('Daedalus_TrimLight', '7d7f80', .5, .45), 'DarkPanel': pbr('Daedalus_DarkPanel', '1a1e21', .4, .4),
-           'HangarGlass': pbr('Daedalus_HangarWindow', '0b1514', .2, .12, '2f6a62', 0.08),
            'HatchPlain': pbr('Daedalus_SiloHatch_Plain', 'ffffff', .3, .6, tex={'base': HATCH['plain'], 'normal': HATCH['normal']}),
            'HatchStriped': pbr('Daedalus_SiloHatch_Striped', 'ffffff', .3, .6, tex={'base': HATCH['striped'], 'normal': HATCH['normal']})}
 LMAT = {'WindowCyan': pbr('Daedalus_WindowCyan', '0e1c22', .2, .25, '57c6dd', 0.32),      # small faint blue windows (U18-U20)
@@ -664,7 +663,8 @@ for i, s in enumerate(sorted(silos, key=lambda s: (-s['a'], s['b']))):
 # of it is clipped to the measured bay cross-section (the bay is asymmetric: vertical inboard wall, sloped
 # outboard wall) and carries the split observation window with a heavy frame, a ledge, wall ribs and
 # fixtures; the bay also gets wall ribs, floor rails and ceiling beams so it does not read as bare skin.
-BAY_LIGHTS = []
+BAY_LIGHTS, DOORS = [], []
+DOOR_TONE = tuple(np.clip(np.array(srgb('8a8886')) / 0.46, 0, 1))   # U33: dark grey with a faint teal cast under the bay light
 def bay_span(x, yc, z, reach=120):
     """Free y interval at (x, z) seen from the bay centre line (inboard, outboard wall hits)."""
     out = []
@@ -690,13 +690,21 @@ for h in hangars:
     gb, gt = z0 + 0.40 * H, z0 + 0.86 * H; gm = (gb + gt) / 2
     (lb, rb), (lm, rm), (lt, rt) = (bay_span(xw + 0.3, c, z) for z in (gb, gm, gt))
     hexa = [(lb + 2.0, gb), (rb - 2.0, gb), (rm - 1.0, gm), (rt - 2.0, gt), (lt + 2.0, gt), (lm + 1.0, gm)]
-    add.poly([(xw + 0.12, y, z) for y, z in hexa], 'HangarGlass')
     for k in range(6): add.bar(xw, hexa[k], hexa[(k + 1) % 6], 0.9, 0.7, 'Trim')          # heavy window surround
     cw, Wm = (lm + rm) / 2, rm - lm
-    zmid = gb + 0.45 * (gt - gb); ztr = gt - 0.12 * (gt - gb)
-    prof = [(lm + 1.5, zmid), (cw - 0.13 * Wm, zmid), (cw - 0.08 * Wm, ztr), (cw + 0.08 * Wm, ztr), (cw + 0.13 * Wm, zmid), (rm - 1.5, zmid)]
-    for k in range(5): add.bar(xw, prof[k], prof[k + 1], 0.45, 0.45, 'Trim')
-    for sg in (-1, 1): add.bar(xw, (cw + sg * 0.30 * Wm, gb), (cw + sg * 0.22 * Wm, zmid), 0.4, 0.4, 'Trim')
+    # split hangar doors (user): two plated metal halves meeting at a seam with a raised trapezoid; the
+    # upper half opens up, the lower half down. Separate objects so the game can slide them apart.
+    ztr = gt - 0.12 * (gt - gb)
+    seam = [(lm + 1.0, gm), (cw - 0.13 * Wm, gm), (cw - 0.08 * Wm, ztr), (cw + 0.08 * Wm, ztr), (cw + 0.13 * Wm, gm), (rm - 1.0, gm)]
+    side = 'P' if c > 0 else 'S'; up, dn = Geo(), Geo()
+    up.poly([(xw + 0.12, y, z) for y, z in seam + [(rt - 2.0, gt), (lt + 2.0, gt)]], 'Hangar', DOOR_TONE)
+    dn.poly([(xw + 0.12, y, z) for y, z in [(lb + 2.0, gb), (rb - 2.0, gb)] + seam[::-1]], 'Hangar', DOOR_TONE)
+    for k in range(5): up.bar(xw + 0.12, seam[k], seam[k + 1], 0.45, 0.4, 'Trim')        # seam lip on the upper half
+    for sg in (-1, 1): dn.bar(xw + 0.12, (cw + sg * 0.30 * Wm, gb), (cw + sg * 0.22 * Wm, gm), 0.4, 0.4, 'Trim')
+    for half, g, axis, dist in (('upper', up, 1, gt - gm + 1.0), ('lower', dn, -1, gm - gb + 1.0)):
+        DOORS.append((f'HangarDoor_{side}_{half.capitalize()}', g, Vector((xw, cw, gm)),
+                      {'doorHalf': half, 'bay': side, 'openAxis': [0, 0, axis], 'openDistanceMetres': round(dist, 2), 'seamZMetres': round(gm, 2),
+                       'note': 'split hangar door: the halves open apart at the seam, upper up, lower down (user)'}))
     for k in (-1, 0, 1): add.box(Vector((xw + 0.45, cw + k * 0.2 * Wm, gt + 0.06 * H)), (0.9, 3.5, 0.9), 'Trim')
     lz = gb - 1.2; ll, lr = bay_span(xw + 0.3, c, lz)
     add.box(Vector((xw + 0.35, (ll + lr) / 2, lz)), (0.7, lr - ll - 1.0, 0.8), 'Trim')     # ledge under the window
@@ -797,6 +805,12 @@ addon_col = bpy.data.collections.new('AddOns'); scene.collection.children.link(a
 addon_me = add.build('Daedalus_AddOns', MAT_ADD, {'Armor': tuple(np.array(SIDE) * 0.85), 'Hangar': tuple(HANGAR_GREY)})
 addon_obj = bpy.data.objects.new('Daedalus_AddOns', addon_me); addon_col.objects.link(addon_obj)
 addon_obj['note'] = 'detail seen in the stills but absent from the Astrofossil model: bridge masts, forward bow rods, U16-style VLS hatches, U17-style hangar back walls'
+DOOR_OBJS = []
+for name, g, origin, extras in DOORS:
+    dme = g.build(name, MAT_ADD, {'Hangar': DOOR_TONE}); dme.transform(Matrix.Translation(-origin))
+    dob = bpy.data.objects.new(name, dme); addon_col.objects.link(dob); dob.location = origin
+    for k, v in extras.items(): dob[k] = v
+    DOOR_OBJS.append(dob)
 lights_obj = bpy.data.objects.new('Daedalus_DetailLights', lit.build('Daedalus_DetailLights', LMAT, {})); lights_col.objects.link(lights_obj)
 lights_obj['note'] = 'faint blue windows (bow band, bridge, forward superstructure), pod spot and flood lights, nav lights (port red, starboard green), cyan deck units'
 for lo in BAY_LIGHTS: lights_col.objects.link(lo)
@@ -871,7 +885,7 @@ def export(path, objs, **kw):
 export(glb, [ship], export_vertex_color='ACTIVE', export_materials='EXPORT')
 export(glow_glb, glow_objs + [c for o in glow_objs for c in o.children], export_lights=True)
 export(lights_glb, [bpy.data.objects['Daedalus_WindowLights'], lights_obj] + BAY_LIGHTS, export_lights=True)
-export(addons_glb, [addon_obj], export_vertex_color='ACTIVE', export_materials='EXPORT')
+export(addons_glb, [addon_obj] + DOOR_OBJS, export_vertex_color='ACTIVE', export_materials='EXPORT')
 export(beacons_glb, [beacon_obj], export_animations=False)
 bpy.ops.wm.open_mainfile(filepath=str(blend))
 ship = bpy.data.objects['SM_Daedalus']
@@ -898,7 +912,9 @@ bpy.ops.wm.read_factory_settings(use_empty=True)
 bpy.ops.import_scene.gltf(filepath=str(addons_glb))
 check['addOnObjects'] = sorted(o.name for o in bpy.context.scene.objects if o.type == 'MESH')
 check['addOnMaterials'] = sorted({m.name for o in bpy.context.scene.objects if o.type == 'MESH' for m in o.data.materials})
-assert 'Daedalus_SiloHatch_Striped' in check['addOnMaterials'] and 'Daedalus_HangarWindow' in check['addOnMaterials'], check['addOnMaterials']
+assert 'Daedalus_SiloHatch_Striped' in check['addOnMaterials'], check['addOnMaterials']
+check['hangarDoors'] = sorted(o.name for o in bpy.context.scene.objects if 'doorHalf' in o)
+assert len(check['hangarDoors']) == 2 * len(hangars), check['hangarDoors']
 bpy.ops.wm.read_factory_settings(use_empty=True)
 bpy.ops.import_scene.gltf(filepath=str(beacons_glb))
 bo = [o for o in bpy.context.scene.objects if o.type == 'MESH']

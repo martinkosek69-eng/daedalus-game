@@ -1,6 +1,6 @@
 {
   "sourceSHA256": "c7c670ff703842e2d9e1525bcfba44682de05705defbc74743d1cd66fd8335cd",
-  "blendSHA256": "822126ec0a5f804561aa27bb6f2e789c12dd82465bd3208966733ff07b9248ad",
+  "blendSHA256": "77aa5a04b4996ccd9baca87f03a966f119b02059df601ebed641014c1015bc7c",
   "glbSHA256": "9cefa922abba0869d54065054dab5908d171c13dfbaa57667c7d4dd674e355ab",
   "engineGlowGlbSHA256": "bcd5e49359d8498773f97a931060f17c523d9b85c60c480b76b1fd04090b8237",
   "dimensionsMetres": [
@@ -386,7 +386,7 @@
     "beacons": "DaedalusBeacons.glb"
   },
   "lightsGlbSHA256": "3b92c27cd054b301df4226b7f96ef8b285307da11cf9e91d3a038f78e3d2f3f7",
-  "addOnsGlbSHA256": "2aeadb9cd0e29bb0f967f53d667b4e3e12a6a34607628b5c21e6909a4585026a",
+  "addOnsGlbSHA256": "a07d287434c37bba259089a33152aa17b183a83ed3d2e42cda8d47cb06f6d33f",
   "beaconsGlbSHA256": "45de287adf09f674e7c44258f9800be842b4013c83953b9d336813193811e7f5",
   "checks": {
     "blendReopen": true,
@@ -440,16 +440,25 @@
     ],
     "glbImages": 3,
     "addOnObjects": [
-      "Daedalus_AddOns"
+      "Daedalus_AddOns",
+      "HangarDoor_P_Lower",
+      "HangarDoor_P_Upper",
+      "HangarDoor_S_Lower",
+      "HangarDoor_S_Upper"
     ],
     "addOnMaterials": [
       "Daedalus_Armor",
       "Daedalus_DarkPanel",
       "Daedalus_HangarInterior",
-      "Daedalus_HangarWindow",
       "Daedalus_SiloHatch_Plain",
       "Daedalus_SiloHatch_Striped",
       "Daedalus_TrimLight"
+    ],
+    "hangarDoors": [
+      "HangarDoor_P_Lower",
+      "HangarDoor_P_Upper",
+      "HangarDoor_S_Lower",
+      "HangarDoor_S_Upper"
     ],
     "beaconObjects": [
       "Daedalus_Beacons"

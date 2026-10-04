@@ -12,7 +12,7 @@ No reference images are stored in this public repository.
 | R1 | Stargate wiki, "BC-304", archived 2024-01-12: https://web.archive.org/web/20240112040915/https://stargate.fandom.com/wiki/BC-304 | fan wiki text summarising on-screen facts with episode citations | specifications only |
 | R2 | Infobox still `Daedalus.jpg` from R1: https://static.wikia.nocookie.net/stargate/images/0/03/Daedalus.jpg (archived copy https://web.archive.org/web/2024im_/https://static.wikia.nocookie.net/stargate/images/0/03/Daedalus.jpg) | on-screen CG still, dorsal three-quarter view above Earth | primary visual |
 | R3 | R1 gallery captions identifying stills: "Railguns firing" (`The_Hive.jpg`), "VLS missile tubes firing" (`Odyssey_1.jpg`), "Asgard plasma beams firing", "The George Hammond's engines" | wiki image captions | identified, images not retrievable (archive 404) |
-| U1–U31, F1 | Images supplied by the user in chat, original URLs unknown | mix (see below) | local study only, not redistributed |
+| U1–U33, F1 | Images supplied by the user in chat, original URLs unknown | mix (see below) | local study only, not redistributed |
 
 User images (sources not stated, kept local):
 
@@ -59,8 +59,9 @@ User images (sources not stated, kept local):
   a raised grey lip and a dark slot with tick marks. Light end tabs carry two
   bolts. In a checkerboard, every other hatch has yellow/black hazard stripes on
   both end tabs.
-- U17: hangar close-up. Dark plated bay with a long split observation window
-  on the back wall (dark green glass, light frame bars) and small fixtures. Two
+- U17: hangar close-up. Dark plated bay with large split doors on the back
+  wall. The user clarified that they are doors, not windows: dark teal-grey
+  halves that open apart at the middle seam, upward and downward. Small fixtures. Two
   round spotlights sit above the opening, light clusters under the front edge
   and small green lights at the side.
 - U18: bow window band. A dark recessed strip with a row of small, faint cyan
@@ -85,6 +86,8 @@ User images (sources not stated, kept local):
   lights.
 - U30–U31: forward superstructure in the user's Blender and in the series, with
   its window panel and two cyan units.
+- U32–U33: the hangar doors in the user's Blender and in the series, used for
+  the door tone.
 
 The user rejected the first detailed result in Blender. The hull was too light,
 cool and flat. The orange read as "gold bricks", but should be almost
@@ -135,7 +138,7 @@ silhouettes and never for counts.
 | Asgard beam weapons | R1: 4 weapons. Blue-white beams leave the bow and the underside between the hangar pods, one side per still. U12 labels the "Asgard beam turret" on the lower side of the bow | visible (U9, U10), labelled (U12) |
 | Weapon effects | Railgun turrets: orange tracer projectiles. VLS: missiles leave the bow silos upward. Asgard: continuous blue-white beam | user description of the footage; U9, U10 |
 | Forward rods | Long thin rods ahead of the bow (one per side), one with a glowing tip | visible (R2, U2, U13, U15); length and base are estimated |
-| Hangar bays | Dark plated bays, back wall with a long split observation window (dark green glass, light frames) | visible (U17) |
+| Hangar bays | Dark plated bays; back wall with large split doors (halves open up and down from the middle seam), dark teal-grey (U33: about sRGB 40/46/46) | visible (U17, U28, U29, U33); door function from the user |
 
 ## Mapping to the model (approximations)
 
@@ -181,8 +184,10 @@ silhouettes and never for counts.
     spotted it.
 
   The wall carries:
-  - the hexagonal observation window in dark green glass
-    (`Daedalus_HangarWindow`), fitted between the walls,
+  - the split hangar doors: two plated metal halves, separate objects
+    `HangarDoor_<P|S>_Upper/Lower`, meeting at a seam with the raised
+    trapezoid. They are dark teal-grey (U33) and fitted between the walls; the
+    object extras give `openAxis` and `openDistanceMetres`,
   - a heavy frame and the raised centre bars (`Daedalus_TrimLight`),
   - a ledge, ribs and fixtures.
 

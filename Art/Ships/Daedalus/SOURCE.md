@@ -67,7 +67,8 @@ Modifications by this project to the CC BY-NC 4.0 work above (credit retained):
     - two 40 m forward rods at the bow,
     - VLS hatch overlays like the close-up U16 (taupe doors, end tabs,
       checkerboard hazard stripes; `T_Daedalus_SiloHatch_*` textures),
-    - hangar back walls with the split observation window like U17.
+    - hangar back walls with the split doors like U17 (upper and lower halves as
+      separate, slidable objects).
 
     This keeps Daedalus.glb the exact 600 m hull.
   - `DaedalusBeacons.glb` holds three orange mast-tip beacons. Object extras
