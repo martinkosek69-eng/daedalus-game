@@ -43,5 +43,5 @@ def reduce(pts):
     return reduce(pts[:i+1])[:-1]+reduce(pts[i:]) if distances[i]>1.1 else [pts[0],pts[-1]]
 outline=reduce(outline)
 path='M'+' L'.join(f'{x},{y}' for x,y in outline)+' Z'
-(root/'Tasks/0024/Preview/outline.json').write_text(json.dumps({'path':path,'width':W,'height':H}),encoding='utf-8')
+(root/'Tasks/0024/Preview/outline.json').write_text(json.dumps({'path':path,'width':W,'height':H,'projectionLower':lo,'projectionScale':scale}),encoding='utf-8')
 print('Projected actual Daedalus hull:',len(outline),'outline points')

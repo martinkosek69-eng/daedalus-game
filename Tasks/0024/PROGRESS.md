@@ -13,4 +13,17 @@
   computer/throttle interaction;390px layout no horizontal overflow.
 - Docs/HUD.md and repeatable outline/template generator prepared.
 - No game source/asset or user application changed.
+
+## Revision after user rejected monochrome/card design
+
+- Unframed transparent radar with three rings/cross/arrow; location labels above.
+- Neutral text/hull, green radar, muted blue shields, amber drive/missiles,
+  copper railguns, blue beams. No key hints, no throttle control slider.
+- Energy reduced to secondary small readouts below hull, no dedicated panel.
+- Three weapon selectors from actual WEAPON_MOUNTS, local-only highlight of
+  38turret,16silo,4beam positions. No invented ammo/cooldown/fire behavior.
+- Browser3840x2160:24.96px base text, zero radar border/transparent fill,
+  three selectors, zero hints, all three exclusive zone groups PASS.
+-390px layout has no horizontal overflow; screenshot inspected.
+- New screenshot: ignored.local/hud/hud-minimal-4k.png. Game unchanged.
 - No editor/build/package while Claude owns0023 applications.

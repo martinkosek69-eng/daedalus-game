@@ -4,7 +4,10 @@
 
 ### New HUD design0024
 
-User chose a new STO-layout-inspired green terminal HUD. Standalone design
+User rejected the first monochrome/card HUD. Revised STO-inspired design has
+an unframed green radar, neutral text/hull, muted blue shields, copper turrets,
+amber missiles/drive, blue beams. Energy secondary, no key hints or slider.
+Three weapon selectors highlight real mount groups locally, no firing. Standalone
 preview is ready: Tasks/0024/Preview/hud-concept.html, see Docs/HUD.md.
 Browser native3840x2160 layout/interactions checked; design feedback pending.
 No game source/asset/build changed. Claude retains0023 editor/build ownership.

@@ -1,4 +1,4 @@
-# 0024 — Nový zelený HUD: nejprve návrh vzhledu
+# 0024 — Nový minimalistický HUD: nejprve návrh vzhledu
 
 - Vlastník: Codex koordinátor. Základ `91e0e0111de4bc5715b3d847504ae7eabbfae38e`.
 - Pracovní/cílová větev: codex/solar-flight, vlastní přidělená kopie na A:.
@@ -9,6 +9,13 @@
 - Světle zelený terminál, minimapa vlevo nahoře, počítač vpravo nahoře,
   Daedalus se čtyřmi štíty dole uprostřed, energie vlevo, tah/rychlost vpravo.
   Bez online prvků/chat/misijního seznamu/Endeavors. Štíty/energie připravené.
+
+**Aktuální upřesnění:** jednobarevný zelený návrh byl odmítnut. Minimapa má
+být úplně bez obdélníku/panelu; světlá zelená platí pro její linky. Další funkce
+odlišují tlumené modré/jantarové/měděné a neutrální text. Energii upozadit,
+klávesovou nápovědu/ovládání odstranit. Přidat tři skupiny podle skutečných
+modelových bodů: dělové věže, raketová sila, paprskové emitory.
+Ukázkový výběr zbraně může zvýraznit body, nezapíná střelbu.
 
 Přečíst společné pokyny a Docs/VISUAL_QUALITY.md. Pure singleplayer,
 prezentace čte stav, nic v letu nemění. Zachovat funkce a klávesy, oddělit
