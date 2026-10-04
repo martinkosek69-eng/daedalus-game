@@ -1,6 +1,6 @@
 # Letová zkouška Sluneční soustavy
 
-Singleplayer, větev codex/solar-flight, úkol0010. Spustit dvojklikem
+Singleplayer, větev codex/solar-flight, úkol0016 (navazuje na0010). Spustit dvojklikem
 Tools/SPUSTIT_LET_DAEDALA.cmd po sestavení. Nic se neinstaluje.
 Nový balíček .local/solar/Build-SolarSystem používá nativní rozlišení monitoru
 v okně přes celou obrazovku. Alt+Enter/F11 mění zobrazení. Data jsou na A:.
@@ -17,7 +17,8 @@ v okně přes celou obrazovku. Alt+Enter/F11 mění zobrazení. Data jsou na A:.
 | PgUp/PgDn | Vybrat těleso soustavy |
 | F | Výslovně testovací přesun k vybranému tělesu |
 | Backspace | Začátek u Země |
-| P/Esc | Pauza/konec |
+| M | 3D galaxie, databáze těles a výpočty navigace |
+| P/Esc | Pauza/konec; Esc v mapě vrací do letu |
 
 Oba letové profily dosáhnou maxima za2,5s. Pohyb se vždy srovnává s přídí,
 včetně couvání a brzdění: žádný boční drift ani umělá ztráta rychlosti v zatáčce.
@@ -28,12 +29,15 @@ Motion blur a časové upscaling/ghosting jsou vypnuté. FXAA,100% skutečné pi
 automatický obrazový test nepředstavuje měření běžné snímkové frekvence.
 
 Canonical flight.json obsahuje řízení, system.json oddělený svět v double metrech.
-Slunce,8planet,24hlavních měsíců,4pojmenované planetky; Saturn/Uranus mají prstence.
-600 dekorativních těles hlavního pásu nevyjadřuje skutečný počet asteroidů.
-Rozměry/vzdálenosti jsou odvozené od webové předlohy s reálnými AU a poloměry;
+Rozšířený Sol obsahuje506 katalogových položek včetně459 planetárních měsíců,
+29 vybraných planetek/komet a9 měsíců malých těles. Z nich104 má známý rozměr
+i polohu pro fyzické zobrazení; neznámé rozměry/polohy se nevymýšlejí.
+Dalších pět fiktivních soustav přidává63 těles. Prstence mají všichni čtyři
+obří plynní/ledoví obři. Řídké vlastní vzorky asteroidů a vzdálených populací
+nevyjadřují skutečnou hustotu. Místní vzdálenosti a rozměry jsou v reálných metrech;
 rozložení je pevné reprezentativní období, nikoliv aktuální astronomické efemeridy.
-Povrchy rotují podle délky dne. Použité skutečné mapy a schématické výjimky
-uvádí SOLAR_SOURCES.md. Zdaleka nejde o katalog všech známých měsíců a malých těles.
+Povrchy rotují podle délky dne. Zdroje a schematické výjimky uvádí
+SOLAR_REALISM.md; ovládání mapy a nejistoty GALAXY_NAVIGATION.md.
 
 Vzdálené objekty se vizuálně promítají blíž při zachování úhlové velikosti;
 reálná poloha a konzervativní ochrana před povrchem zůstávají ve výpočtu letu.

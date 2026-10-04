@@ -155,6 +155,7 @@ private:
     TArray<int32> RingBodies;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> ShipDetails;
     UPROPERTY() TObjectPtr<UStaticMeshComponent> Sky;
+    UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> SkyDynamic;
     UPROPERTY() TObjectPtr<UStaticMeshComponent> UnknownMarker;
     UPROPERTY() TArray<TObjectPtr<UMaterialInterface>> MapMaterials;
     UPROPERTY() TObjectPtr<ADirectionalLight> SolarLight;

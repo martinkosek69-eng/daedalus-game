@@ -26,8 +26,11 @@ vzhled v této etapě nejsou implementované. Energie a boj rovněž nejsou sou�
 Sol má 506 katalogových záznamů: Slunce, osm planet, 459 planetárních měsíců,
 29 vybraných malých těles a dalších devět měsíců malých těles. Nejde o každý
 jednotlivý známý asteroid či kometu. Zobrazené malé populace jsou řídké vlastní
-vzorky hlavního pásu, Trojanů, Kuiperova pásu a odhadované Oortovy oblasti.
-Nejsou naměřenou hustotou ani neprůhlednou stěnou. Zdroje a epochy jsou v
+vzorky hlavního pásu, Trojanů, Kuiperova pásu, rozptýlené populace a odhadované Oortovy oblasti.
+Nejsou naměřenou hustotou ani neprůhlednou stěnou. Rozptýlená oblast používá
+vlastní řídký vzorek 50–1000 AU s větším sklonem, nikoli naměřené dráhy.
+Zodiakální prach se zobrazuje velmi slabým svitem v rovině soustavy směrem
+ke Slunci; intenzita je výtvarná, ne měření hustoty. Zdroje a epochy jsou v
 [SOLAR_REALISM.md](SOLAR_REALISM.md) a Art/Space/SolarCatalog/SOURCE.md.
 
 104 těles má použitelný rozměr i polohu a lze zobrazit jejich fyzickou geometrii.
@@ -43,7 +46,8 @@ diskem, rameny, příčkou, výdutí, prachem a řídkým halem. Vychází z pop
 [ESA/Gaia](https://www.esa.int/Science_Exploration/Space_Science/Gaia/Guide_to_our_galaxy).
 Není přesnou mapou jednotlivých pozorovaných hvězd. Morfologie je autorská;
 ESA obrázek ani dataset se nekopírují. Pět dalších soustav je výslovně fiktivních.
-Dokud nejsou převzaté zdroje, zobrazují „Čeká na podklady“ a blokují přesun.
+Všech pět je převzatých a dostupných pro testování. Nepřevzaté budoucí položky
+zobrazují „Čeká na podklady“ a blokují přesun.
 
 ## Reprodukce a hranice
 

@@ -2532,7 +2532,7 @@
     {
       "id": "sol.ceres",
       "name": "Ceres",
-      "kind": "asteroid",
+      "kind": "dwarf-planet",
       "parentId": "sol.sun",
       "radiusMetres": 469700.0,
       "positionMetres": [
@@ -2686,7 +2686,7 @@
     {
       "id": "sol.vesta",
       "name": "Vesta",
-      "kind": "asteroid",
+      "kind": "minor-body",
       "parentId": "sol.sun",
       "radiusMetres": 261385.0,
       "positionMetres": [
@@ -2839,7 +2839,7 @@
     {
       "id": "sol.eros",
       "name": "Eros",
-      "kind": "asteroid",
+      "kind": "minor-body",
       "parentId": "sol.sun",
       "radiusMetres": 8420.0,
       "positionMetres": [
@@ -2992,7 +2992,7 @@
     {
       "id": "sol.bennu",
       "name": "Bennu",
-      "kind": "asteroid",
+      "kind": "minor-body",
       "parentId": "sol.sun",
       "radiusMetres": 242.22,
       "positionMetres": [
@@ -30951,6 +30951,20 @@
       "seed": 3040016
     },
     {
+      "id": "sol.scattered",
+      "name": "Rozptýlená populace (odhad oblasti)",
+      "geometry": "disk",
+      "centreMetres": [
+        105781669000.0,
+        -105781669000.0,
+        0.0
+      ],
+      "innerMetres": 7479893535000.0,
+      "outerMetres": 149597870700000.0,
+      "count": 400,
+      "seed": 3040025
+    },
+    {
       "id": "sol.oort",
       "name": "Oortovo mračno (odhad hranic)",
       "geometry": "sphere",
@@ -30984,6 +30998,16 @@
       "count": 600,
       "seed": 3040016,
       "kind": "icy",
+      "geometry": "disk"
+    },
+    {
+      "id": "sol.scattered",
+      "parentId": "sol.sun",
+      "innerMetres": 7479893535000.0,
+      "outerMetres": 149597870700000.0,
+      "count": 400,
+      "seed": 3040025,
+      "kind": "asteroid",
       "geometry": "disk"
     },
     {

@@ -248,7 +248,8 @@ UStaticMeshComponent* ASolarFlightGameMode::MakeMesh(UStaticMesh* Asset, UMateri
     auto* Component = NewObject<UStaticMeshComponent>(Actor);
     Component->SetMobility(EComponentMobility::Movable);
     Actor->SetRootComponent(Component); Actor->AddInstanceComponent(Component); Component->RegisterComponent();
-    Component->SetStaticMesh(Asset); if (Material) Component->SetMaterial(0, Material);
+    Component->SetStaticMesh(Asset);
+    if (Material) for (int32 Slot = 0; Slot < Component->GetNumMaterials(); ++Slot) Component->SetMaterial(Slot, Material);
     Component->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     Component->SetCastShadow(false);
     return Component;

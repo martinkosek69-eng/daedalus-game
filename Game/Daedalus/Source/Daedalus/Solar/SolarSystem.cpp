@@ -260,7 +260,8 @@ bool ASolarFlightGameMode::LoadSystem()
     if (!NewNavigation.Configure(NavigationCatalog, Message) || !NewPreview.Configure(NavigationCatalog, Message)) return false;
     Systems = MoveTemp(NewSystems); MapSystems = MoveTemp(NewMapSystems); MapMaterials = MoveTemp(NewMapMaterials);
     Navigation = MoveTemp(NewNavigation); PreviewNavigation = MoveTemp(NewPreview);
-    ConfigureActiveBodies(0); return true;
+    ConfigureActiveBodies(0);
+    return Navigation.SelectTarget(Systems[0].Id, BodyDefinitions[SelectedBody].Id, Message);
 }
 void ASolarFlightGameMode::ConfigureActiveBodies(int32 Index)
 {
@@ -277,7 +278,11 @@ bool ASolarFlightGameMode::CreateSystem()
 {
     if (!Systems.IsValidIndex(ActiveSystem) || !SceneMaterialsAvailable(Systems[ActiveSystem])) return false;
     auto* Rock = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/Solar/SM_SolarRock.SM_SolarRock"));
-    if (!Sky) { Sky = MakeMesh(SphereAsset, Material(TEXT("/Game/Solar/Materials/M_Sky"))); Sky->SetWorldScale3D(FVector(2.5e7)); }
+    if (!Sky)
+    {
+        SkyDynamic = UMaterialInstanceDynamic::Create(Material(TEXT("/Game/Solar/Materials/M_Sky")), this);
+        Sky = MakeMesh(SphereAsset, SkyDynamic); Sky->SetWorldScale3D(FVector(2.5e7));
+    }
     BodyMeshes.SetNumZeroed(BodyDefinitions.Num()); BodyDynamics.SetNumZeroed(BodyDefinitions.Num());
     AirMeshes.SetNumZeroed(BodyDefinitions.Num()); AirDynamics.SetNumZeroed(BodyDefinitions.Num());
     for (int32 Index = 0; Index < BodyDefinitions.Num(); ++Index)
@@ -317,7 +322,8 @@ bool ASolarFlightGameMode::CreateSystem()
                 const double Z = Random.FRandRange(-1, 1), XY = FMath::Sqrt(FMath::Max(0., 1 - Z * Z));
                 Position = FVector3d(FMath::Cos(Angle) * XY, FMath::Sin(Angle) * XY, Z) * Radius;
             }
-            else Position = FVector3d(FMath::Cos(Angle) * Radius, FMath::Sin(Angle) * Radius, Random.FRandRange(-1, 1) * Radius * .01);
+            else Position = FVector3d(FMath::Cos(Angle) * Radius, FMath::Sin(Angle) * Radius,
+                Random.FRandRange(-1, 1) * Radius * (Definition.ParentId == TEXT("sol.sun") && Definition.Outer > 1e14 ? .25 : .01));
             BeltPositions.Add(Centre + Position); BeltRadii.Add(Random.FRandRange(200, 2000));
         }
     }
@@ -335,7 +341,11 @@ void ASolarFlightGameMode::ClearSystem()
         AActor* Owner = Mesh->GetOwner();
         if (Owner && Owner != this) Owner->Destroy(); else Mesh->DestroyComponent();
     };
-    for (const auto& Mesh : BodyMeshes) DestroyMesh(Mesh);
+    for (const auto& Mesh : BodyMeshes)
+    {
+        if (Mesh) Mesh->SetTextureForceResidentFlag(false);
+        DestroyMesh(Mesh);
+    }
     for (const auto& Mesh : AirMeshes) DestroyMesh(Mesh);
     for (const auto& Mesh : RingMeshes) DestroyMesh(Mesh);
     DestroyMesh(UnknownMarker); UnknownMarker = nullptr;
@@ -395,6 +405,15 @@ void ASolarFlightGameMode::UpdateSystem(const FVector& CameraPosition)
         Belt->UpdateInstanceTransform(Index, FTransform(FQuat(FVector::UpVector, Index * .73), Projection.Key, FVector(BeltRadii[Index] * Projection.Value)), false, Index == BeltPositions.Num() - 1);
     }
     if (Sky) Sky->SetWorldLocation(CameraPosition);
+    if (SkyDynamic)
+    {
+        const auto ToSun = SunPosition - State.PositionMetres;
+        const auto Direction = ToSun.GetSafeNormal();
+        SkyDynamic->SetVectorParameterValue(TEXT("SunDirection"), FLinearColor(Direction.X, Direction.Y, Direction.Z, 0));
+        // Authored faint zodiacal scattering cue, never measured dust density.
+        const float Strength = ActiveSystem == 0 ? float(FMath::Clamp(149597870700. / FMath::Max(ToSun.Size(), 1.), 0., 1.)) : 0.f;
+        SkyDynamic->SetScalarParameterValue(TEXT("ZodiacalStrength"), Strength);
+    }
     if (SolarLight)
     {
         SolarLight->SetActorRotation((-FVector(SunPosition - State.PositionMetres).GetSafeNormal()).Rotation());
@@ -427,7 +446,9 @@ bool ASolarFlightGameMode::ActivateSystem(int32 Index, int32 BodyIndex)
         // All dependencies and the candidate domain pose passed before scene destruction.
         if (!CreateSystem()) { bReady = false; Message = TEXT("Vytvoření ověřené soustavy selhalo."); return false; }
     }
+    if (BodyMeshes.IsValidIndex(SelectedBody) && BodyMeshes[SelectedBody]) BodyMeshes[SelectedBody]->SetTextureForceResidentFlag(false);
     Flight = MoveTemp(Candidate); SelectedBody = BodyIndex; bPaused = false;
+    if (BodyMeshes.IsValidIndex(BodyIndex) && BodyMeshes[BodyIndex]) BodyMeshes[BodyIndex]->SetTextureForceResidentFlag(true);
     Navigation.SelectTarget(System.Id, Body.Id, Error);
     Message = Body.bKnownRadius ? TEXT("Testovací přesun k tělesu — nejde o cestování pohonem.")
         : TEXT("Testovací přesun ke značce: velikost neznámá, fyzický model ani kolize nejsou vytvořené.");

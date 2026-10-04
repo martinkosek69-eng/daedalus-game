@@ -9,10 +9,12 @@ Start with [the game foundation](Docs/FOUNDATION.md),
 [architecture](Docs/ARCHITECTURE.md), [implementation rules](Docs/CODING_RULES.md),
 [current state](Docs/CURRENT_STATE.md) and [checks](Docs/TESTING.md).
 
-The first playable Daedalus/Earth/Sun flight laboratory is on
+The six-system singleplayer flight and galaxy navigation laboratory is on
 `codex/solar-flight`: [controls and reproduction](Docs/SOLAR_FLIGHT.md).
 After packaging, double-click `Tools/SPUSTIT_LET_DAEDALA.cmd` on this PC.
-Its flight tuning is an isolated experiment; reviewed task0008 ship art is integrated.
+Press M for the 3D galaxy, searchable body database and navigation estimates.
+See [map controls and data limits](Docs/GALAXY_NAVIGATION.md).
+Its flight tuning is an isolated experiment; reviewed ship art is integrated.
 
 Read [the environment guide](Docs/ENVIRONMENT.md) and
 [the audit of 3 October 2026](Docs/ENVIRONMENT_AUDIT_2026-10-03.md).

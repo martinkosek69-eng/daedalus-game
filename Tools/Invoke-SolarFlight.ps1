@@ -1,4 +1,4 @@
-param([ValidateSet('Build','Assets','Test','Package','Smoke','Visual','Play')][string]$Mode='Play',
+﻿param([ValidateSet('Build','Assets','Test','Package','Smoke','Visual','Play')][string]$Mode='Play',
       [ValidatePattern('^[A-Za-z0-9_-]+$')][string]$BuildName='Build-SolarSystem')
 $ErrorActionPreference='Stop'
 $root=Split-Path -Parent $PSScriptRoot
@@ -78,7 +78,7 @@ switch($Mode){
     RunOwnGame $exe $args
     $result=Join-Path $run 'result.json'
     if(-not(Test-Path -LiteralPath $result) -or -not(Get-Content -LiteralPath $result -Raw | ConvertFrom-Json).passed){throw "Solar input/render probe failed: $run"}
-    Write-Output "Solar input/render checks passed; inspect earth.png, turn.png, sun.png, web-comparison.png: $run"
+    Write-Output "Solar and galaxy input/render checks passed; inspect planet, galaxy and six-system PNGs: $run"
  }
  'Play' {
     $exe=Join-Path $build 'Windows/Daedalus.exe'

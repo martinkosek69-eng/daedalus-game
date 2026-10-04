@@ -41,6 +41,7 @@ def main():
             row={'id':src['id'],'name':src['name'],'kind':src['kind'],'parentId':'sol.sun','rotationHours':src.get('rotationHours') or 0}
             row['icy']=src['kind'] in ('dwarf-planet','comet')
             rows.append(row);ids[row['id']]=row
+        row['kind']=src['kind']
         row['positionMetres']=add(sun,transform(src['positionMetres']))
         enrich(row,src)
     for src in load(ROOT/'Art/Space/SolarCatalog/satellites.json')['bodies']:
@@ -76,6 +77,7 @@ def main():
     # Envelopes are labeled display/sampling guides, never measured hard walls.
     sol['regions']=[{'id':'sol.mainbelt','name':'Hlavní pás asteroidů (oblast)','geometry':'disk','centreMetres':sun,'innerMetres':2.1*AU,'outerMetres':3.3*AU,'count':600,'seed':3040012},
         {'id':'sol.kuiper','name':'Kuiperův pás (přibližná oblast)','geometry':'disk','centreMetres':sun,'innerMetres':30*AU,'outerMetres':50*AU,'count':600,'seed':3040016},
+        {'id':'sol.scattered','name':'Rozptýlená populace (odhad oblasti)','geometry':'disk','centreMetres':sun,'innerMetres':50*AU,'outerMetres':1000*AU,'count':400,'seed':3040025},
         {'id':'sol.oort','name':'Oortovo mračno (odhad hranic)','geometry':'sphere','centreMetres':sun,'innerMetres':2000*AU,'outerMetres':100000*AU,'count':400,'seed':3040026}]
     sol['belts']=[{'id':r['id'],'parentId':'sol.sun','innerMetres':r['innerMetres'],'outerMetres':r['outerMetres'],'count':r['count'],'seed':r['seed'],'kind':'icy' if r['geometry']=='sphere' or r['id'].endswith('kuiper') else 'asteroid','geometry':r['geometry']} for r in sol['regions']]
     sol['belts'] += [{'id':'sol.trojan.leading','parentId':'sol.sun','innerMetres':4.9*AU,'outerMetres':5.5*AU,'count':180,'seed':3040044,'kind':'asteroid','geometry':'trojan','longitudeOffsetDegrees':60},

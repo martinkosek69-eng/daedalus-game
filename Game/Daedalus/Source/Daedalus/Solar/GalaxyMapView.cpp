@@ -311,7 +311,7 @@ void FGalaxyMapView::GenerateGalaxy()
         FSample Sample;
         Sample.Position = FVector3d(FMath::Cos(Angle) * Radius, FMath::Sin(Angle) * Radius, Gaussian() * (100 + R * .0025));
         const double Warm = Random.FRand();
-        Sample.Color = FLinearColor(Luminosity * (.65 + Warm * .35), Luminosity * .83, Luminosity, .85);
+        Sample.Color = FLinearColor(Luminosity * (.65 + Warm * .35), Luminosity * .83, Luminosity, .85f);
         Sample.Size = .55f + Random.FRand() * 1.2f; Sample.bDust = false;
         GalaxySamples.Add(Sample);
     }
@@ -321,7 +321,7 @@ void FGalaxyMapView::GenerateGalaxy()
         const double X = Gaussian() * 3850, Y = Gaussian() * 1050, Angle = .33;
         Sample.Position = FVector3d(X * FMath::Cos(Angle) - Y * FMath::Sin(Angle), X * FMath::Sin(Angle) + Y * FMath::Cos(Angle), Gaussian() * 650);
         const double Light = .4 + Random.FRand() * .45;
-        Sample.Color = FLinearColor(Light, Light * .76, Light * .47, .88);
+        Sample.Color = FLinearColor(Light, Light * .76, Light * .47, .88f);
         Sample.Size = .8f + Random.FRand(); Sample.bDust = false;
         GalaxySamples.Add(Sample);
     }
@@ -338,7 +338,7 @@ void FGalaxyMapView::GenerateGalaxy()
         FSample Sample;
         Sample.Position = FVector3d(Gaussian() * 1700, Gaussian() * 1700, Gaussian() * 1450);
         const double Light = .65 + Random.FRand() * .3;
-        Sample.Color = FLinearColor(Light, Light * .82, Light * .60, .92);
+        Sample.Color = FLinearColor(Light, Light * .82, Light * .60, .92f);
         Sample.Size = .9f + Random.FRand() * .8f; Sample.bDust = false;
         GalaxySamples.Add(Sample);
     }
@@ -401,14 +401,14 @@ void FGalaxyMapView::Draw(UCanvas* Canvas, UFont* Font, const TArray<FGalaxySyst
     }
 
     // True 3D catalogue markers and local metre detail share the projection.
-    for (int32 I = 0; I < Systems.Num(); ++I)
+    for (int32 I = 0; I < Systems.Num() && CameraDistanceLY >= .1; ++I)
     {
         FVector2D Screen = FVector2D::ZeroVector; double Depth;
         if (!Project((Systems[I].GalaxyLightYears - PivotLY) - PivotLocalMetres / LY, Screen, Depth)) continue;
         SystemMarkers[I] = Screen; SystemMarkerVisible[I] = true;
         const bool bSelected = I == SelectedSystem, bActive = I == ActiveSystem;
         const FLinearColor Color = Systems[I].bAvailable ? (bActive ? FLinearColor(.5f, 1, .74f) : Cyan) : FLinearColor(.72f, .48f, .25f);
-        SoftDisc(Canvas, Screen, (bSelected ? 18 : 12) * S, FLinearColor(Color.R, Color.G, Color.B, .48));
+        SoftDisc(Canvas, Screen, (bSelected ? 18 : 12) * S, FLinearColor(Color.R, Color.G, Color.B, .48f));
         Ring(Canvas, Screen, (bSelected ? 8 : 5) * S, Color, S);
         MapPlate(Canvas, Screen - FVector2D(S), FVector2D(2 * S), White);
         if (bSelected || bActive || CameraDistanceLY < 5000)
@@ -420,7 +420,9 @@ void FGalaxyMapView::Draw(UCanvas* Canvas, UFont* Font, const TArray<FGalaxySyst
     }
     const bool HasSystem = Systems.IsValidIndex(SelectedSystem);
     const bool HasBody = HasSystem && Systems[SelectedSystem].Bodies.IsValidIndex(SelectedBody);
-    if (HasSystem && CameraDistanceLY < 100)
+    const bool BodyDetail = HasBody && Systems[SelectedSystem].Bodies[SelectedBody].bKnownRadius
+        && CameraDistanceLY < Systems[SelectedSystem].Bodies[SelectedBody].RadiusMetres / LY * 12;
+    if (HasSystem && CameraDistanceLY < 100 && !BodyDetail)
     {
         const auto& System = Systems[SelectedSystem];
         for (const auto& Region : System.Regions)
@@ -449,7 +451,8 @@ void FGalaxyMapView::Draw(UCanvas* Canvas, UFont* Font, const TArray<FGalaxySyst
                 }
             }
             FVector2D Label = FVector2D::ZeroVector; double Depth;
-            if (Project(Center + FVector3d(Region.OuterMetres / LY, 0, 0), Label, Depth))
+            if (Region.OuterMetres / LY * FocalPixels() / CameraDistanceLY > MapRect.GetSize().X * .25
+                && Project(Center + FVector3d(Region.OuterMetres / LY, 0, 0), Label, Depth))
             {
                 MapPlate(Canvas, Label + FVector2D(6 * S, -5 * S), FVector2D(235 * S, 20 * S), FLinearColor(.003f, .012f, .018f, .88f));
                 Text(Short(Region.Name, 36), Label.X / S + 10, Label.Y / S - 2, Pale, 9);
@@ -463,6 +466,7 @@ void FGalaxyMapView::Draw(UCanvas* Canvas, UFont* Font, const TArray<FGalaxySyst
         // Guides describe catalogue locations, not a second editable orbit model.
         for (int32 I = 0; I < System.Bodies.Num(); ++I)
         {
+            if (BodyDetail) break; // Surface detail is already identified in the database.
             const auto& Body = System.Bodies[I];
             if (!Body.bKnownPosition || Body.Kind == TEXT("star")) continue;
             const int32 Parent = System.Bodies.IndexOfByPredicate([&](const FGalaxyBodyView& B) { return B.Id == Body.ParentId; });
@@ -492,7 +496,8 @@ void FGalaxyMapView::Draw(UCanvas* Canvas, UFont* Font, const TArray<FGalaxySyst
             { Bodies.Add({I, Screen, Depth}); BodyMarkers[I] = Screen; BodyMarkerVisible[I] = true; }
         }
         Bodies.Sort([](const FProjected& A, const FProjected& B) { return A.Depth > B.Depth; });
-        TArray<FVector2D> Labels;
+        struct FBodyLabel { FVector2D Position; FString Name; bool Selected; };
+        TArray<FBodyLabel> CandidateLabels;
         for (const auto& Projected : Bodies)
         {
             const auto& Body = System.Bodies[Projected.Index]; const bool Selected = Projected.Index == SelectedBody;
@@ -508,14 +513,24 @@ void FGalaxyMapView::Draw(UCanvas* Canvas, UFont* Font, const TArray<FGalaxySyst
                 MapPlate(Canvas, Projected.Screen - FVector2D(Size * .5), FVector2D(Size), Color);
             }
             if (Selected) Ring(Canvas, Projected.Screen, FMath::Max(Radius + 5 * S, 8 * S), Cyan, 1.25f * S);
-            const bool Crowded = Labels.ContainsByPredicate([&](const FVector2D& P) { return FMath::Abs(P.X - Projected.Screen.X) < 110 * S && FMath::Abs(P.Y - Projected.Screen.Y) < 24 * S; });
-            if (Selected || (Body.Kind == TEXT("planet") && !Crowded) || (Radius > 8 * S && !Crowded))
+            if (!BodyDetail && (Selected || Body.Kind == TEXT("planet") || Radius > 8 * S))
             {
-                const FVector2D Position = Projected.Screen / S + FVector2D(FMath::Max(Radius / S + 8, 10.f), -6);
-                MapPlate(Canvas, Position * S, FVector2D(140 * S, 21 * S), FLinearColor(.003f, .014f, .023f, .9f));
-                Text(Short(Body.Name, 20), Position.X + 4, Position.Y + 2, Selected ? White : Pale, 11);
-                Labels.Add(Projected.Screen);
+                FVector2D Position = Projected.Screen / S + FVector2D(FMath::Max(Radius / S + 8, 10.f), -6);
+                if (Position.X + 140 > MapRect.Max.X / S) Position.X = Projected.Screen.X / S - Radius / S - 148;
+                if (Position.X >= MapRect.Min.X / S && Position.Y >= MapRect.Min.Y / S && Position.Y + 21 < MapRect.Max.Y / S)
+                    CandidateLabels.Add({Position, Short(Body.Name, 20), Selected});
             }
+        }
+        // Label collision uses the actual text plates; selected target has priority.
+        CandidateLabels.StableSort([](const FBodyLabel& A, const FBodyLabel& B) { return A.Selected && !B.Selected; });
+        TArray<FBox2D> LabelBounds;
+        for (const auto& Label : CandidateLabels)
+        {
+            const FBox2D Bounds(Label.Position * S, (Label.Position + FVector2D(140, 21)) * S);
+            if (LabelBounds.ContainsByPredicate([&](const FBox2D& Other) { return Bounds.Intersect(Other); })) continue;
+            MapPlate(Canvas, Bounds.Min, Bounds.GetSize(), FLinearColor(.003f, .014f, .023f, .9f));
+            Text(Label.Name, Label.Position.X + 4, Label.Position.Y + 2, Label.Selected ? White : Pale, 11);
+            LabelBounds.Add(Bounds);
         }
     }
 

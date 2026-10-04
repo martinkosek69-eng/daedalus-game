@@ -24,13 +24,13 @@ automaticky aktualizovaný přehled všech vzdálených větví.
 | 0013 | [Texturovaný model Clauda](0013/BRIEF.md) | Codex helper; převzal root | ACCEPTED (technical) | `codex/solar-flight` |
 
 | 0014 | [Reálné měsíce a malá tělesa](0014/BRIEF.md) | Codex source helper; root offline validated | ACCEPTED (source) | `codex/solar-flight` |
-| 0015 | [Pět originálních soustav](0015/BRIEF.md) | Claude Code; user confirmed working | IN_PROGRESS | `task/0015-five-original-systems` |
+| 0015 | [Pět originálních soustav](0015/BRIEF.md) | Claude Code; Codex reviewed and integrated | ACCEPTED (technical) | `task/0015-five-original-systems` |
 
 | 0016 | [3D galaxie a navigace](0016/BRIEF.md) | Codex coordinator | IN_PROGRESS | `codex/solar-flight` |
-| 0017 | [Výpočty navigace](0017/BRIEF.md) | Codex navigation helper | IN_PROGRESS | `codex/solar-flight` |
+| 0017 | [Výpočty navigace](0017/BRIEF.md) | Codex navigation helper; root checked | ACCEPTED (technical) | `codex/solar-flight` |
 
-| 0018 | [Prostorová mapa galaxie](0018/BRIEF.md) | Codex view helper; root integrates | IN_REVIEW | `codex/solar-flight` |
-| 0019 | [Prstence a trpasličí světy](0019/BRIEF.md) | Codex source helper; root integrates | IN_REVIEW | `codex/solar-flight` |
+| 0018 | [Prostorová mapa galaxie](0018/BRIEF.md) | Codex view helper; root integrated and checked | ACCEPTED (technical) | `codex/solar-flight` |
+| 0019 | [Prstence a trpasličí světy](0019/BRIEF.md) | Codex source helper; root imported and checked | ACCEPTED (technical) | `codex/solar-flight` |
 
 Další volné číslo: **0020**. Číslo 0026 v návodu je pouze příklad.
 

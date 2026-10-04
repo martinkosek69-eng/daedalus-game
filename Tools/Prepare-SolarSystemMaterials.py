@@ -200,11 +200,17 @@ def prepare(root,unreal,tools,lib,imported,material,node,constant,vector,texture
             assert lib.connect_material_property(opacity,'',unreal.MaterialProperty.MP_OPACITY)
             finish(ring,custom(ring,'return C*.7;',{'C':(sample,'RGB')}))
     sky=material('M_Sky',True,two=True)
-    finish(sky,custom(sky,'return pow(max(T,0.),1.15)*.85;',{'T':(texture(sky,tex('stars_milky_way.jpg')),'RGB')}))
+    finish(sky,custom(sky,'float3 d=normalize(N);float plane=exp(-pow(d.z/.12,2));float cone=pow(saturate(dot(d,normalize(S))*.5+.5),8);return pow(max(T,0.),1.15)*.85+float3(.028,.024,.018)*plane*cone*Z;',
+        {'T':(texture(sky,tex('stars_milky_way.jpg')),'RGB'),
+         'N':(node(sky,unreal.MaterialExpressionPixelNormalWS),''),
+         'S':(node(sky,unreal.MaterialExpressionVectorParameter,parameter_name='SunDirection',default_value=unreal.LinearColor(.7,-.7,0,0)),'RGB'),
+         'Z':(node(sky,unreal.MaterialExpressionScalarParameter,parameter_name='ZodiacalStrength',default_value=0.),'')}))
     rock=imported(root/'Art/Space/SolarSystem/SolarRock.glb','/Game/Solar','SM_SolarRock',unreal.StaticMesh)
     ns=rock.get_editor_property('nanite_settings');ns.set_editor_property('enabled',False);rock.set_editor_property('nanite_settings',ns)
     rm=material('M_Rock');assert lib.connect_material_property(texture(rm,tex('rock_schematic.png')),'RGB',unreal.MaterialProperty.MP_BASE_COLOR)
     finish(rm,constant(rm,.86),unreal.MaterialProperty.MP_ROUGHNESS)
     lib.set_base_material_usage(rm,unreal.MaterialUsage.MATUSAGE_INSTANCED_STATIC_MESHES)
+    lib.recompile_material(rm)
+    assert unreal.EditorAssetLibrary.save_loaded_asset(rm)
     rock.set_material(0,rm);assert unreal.EditorAssetLibrary.save_loaded_asset(rock)
     print('SOLAR_SYSTEM_MATERIALS_PASS',len(rows),'definitions',sum(has_geometry(r) for r in rows),'placed',len(maps),'textures')
