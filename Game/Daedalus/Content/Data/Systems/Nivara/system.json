@@ -1,0 +1,336 @@
+{
+  "version": 1,
+  "id": "fic.nivara",
+  "name": "Nivara",
+  "source": "fictional",
+  "galaxyPositionLightYears": [
+    7000,
+    -7000,
+    -120
+  ],
+  "primaryStarId": "fic.nivara.sun",
+  "stellarColor": "#ff9d63",
+  "bodies": [
+    {
+      "id": "fic.nivara.sun",
+      "name": "Nivara",
+      "parentId": "",
+      "kind": "star",
+      "radiusMetres": 146097000.0,
+      "positionMetres": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "texture": "sun.jpg",
+      "rotationHours": 96.0,
+      "tiltDegrees": 3.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Nivara/Textures/sun.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_nivara_sun",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_nivara_sun"
+    },
+    {
+      "id": "fic.nivara.ember",
+      "name": "Ember",
+      "parentId": "fic.nivara.sun",
+      "kind": "planet",
+      "radiusMetres": 5224220.0,
+      "positionMetres": [
+        1589504896.0,
+        425903968.0,
+        1486691.4
+      ],
+      "texture": "ember.jpg",
+      "rotationHours": 23.84,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "nightTexture": "ember_night.jpg",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Nivara/Textures/ember.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_nivara_ember",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_nivara_ember",
+      "nightTextureSource": "Art/Space/Systems/Nivara/Textures/ember_night.jpg"
+    },
+    {
+      "id": "fic.nivara.ashfall",
+      "name": "Ashfall",
+      "parentId": "fic.nivara.sun",
+      "kind": "planet",
+      "radiusMetres": 6116160.0,
+      "positionMetres": [
+        -228170480.0,
+        2607964928.0,
+        13655397.0
+      ],
+      "texture": "ashfall.jpg",
+      "rotationHours": 47.83,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Nivara/Textures/ashfall.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_nivara_ashfall",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_nivara_ashfall"
+    },
+    {
+      "id": "fic.nivara.iris",
+      "name": "Iris",
+      "parentId": "fic.nivara.sun",
+      "kind": "planet",
+      "radiusMetres": 6816970.0,
+      "positionMetres": [
+        -4321829376.0,
+        -378110528.0,
+        -659928.0
+      ],
+      "texture": "iris.jpg",
+      "rotationHours": 102.04,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "cloudTexture": "iris_clouds.png",
+      "atmosphereColor": "#a8cfff",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Nivara/Textures/iris.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_nivara_iris",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_nivara_iris",
+      "cloudTextureSource": "Art/Space/Systems/Nivara/Textures/iris_clouds.png"
+    },
+    {
+      "id": "fic.nivara.rime",
+      "name": "Rime",
+      "parentId": "fic.nivara.sun",
+      "kind": "planet",
+      "radiusMetres": 5861320.0,
+      "positionMetres": [
+        599762432.0,
+        -6855149056.0,
+        -47858744.0
+      ],
+      "texture": "rime.jpg",
+      "rotationHours": 203.85,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Nivara/Textures/rime.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_nivara_rime",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_nivara_rime"
+    },
+    {
+      "id": "fic.nivara.gelid",
+      "name": "Gelid",
+      "parentId": "fic.nivara.sun",
+      "kind": "planet",
+      "radiusMetres": 15290400.0,
+      "positionMetres": [
+        25911111680.0,
+        -14958328832.0,
+        -208871248.0
+      ],
+      "texture": "gelid.jpg",
+      "rotationHours": 31.0,
+      "tiltDegrees": 12.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Nivara/Textures/gelid.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_nivara_gelid",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_nivara_gelid"
+    },
+    {
+      "id": "fic.nivara.mote",
+      "name": "Mote",
+      "parentId": "fic.nivara.iris",
+      "kind": "moon",
+      "radiusMetres": 160000.0,
+      "positionMetres": [
+        -4317314560.0,
+        -352505536.0,
+        -659928.0
+      ],
+      "texture": "mote.jpg",
+      "rotationHours": 10.37,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "mesh": "Models/mote.glb",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Nivara/Textures/mote.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_nivara_mote",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_nivara_mote",
+      "meshSource": "Art/Space/Systems/Nivara/Models/mote.glb",
+      "meshAsset": "/Game/Solar/Models/SM_Body_fic_nivara_mote"
+    },
+    {
+      "id": "fic.nivara.glint",
+      "name": "Glint",
+      "parentId": "fic.nivara.rime",
+      "kind": "moon",
+      "radiusMetres": 190000.0,
+      "positionMetres": [
+        569692288.0,
+        -6866093568.0,
+        -47858744.0
+      ],
+      "texture": "glint.jpg",
+      "rotationHours": 18.91,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "mesh": "Models/glint.glb",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Nivara/Textures/glint.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_nivara_glint",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_nivara_glint",
+      "meshSource": "Art/Space/Systems/Nivara/Models/glint.glb",
+      "meshAsset": "/Game/Solar/Models/SM_Body_fic_nivara_glint"
+    },
+    {
+      "id": "fic.nivara.frost",
+      "name": "Frost",
+      "parentId": "fic.nivara.gelid",
+      "kind": "moon",
+      "radiusMetres": 610000.0,
+      "positionMetres": [
+        26070859776.0,
+        -14901455872.0,
+        -196782544.0
+      ],
+      "texture": "frost.jpg",
+      "rotationHours": 70.75,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Nivara/Textures/frost.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_nivara_frost",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_nivara_frost"
+    },
+    {
+      "id": "fic.nivara.cairn",
+      "name": "Cairn",
+      "parentId": "fic.nivara.gelid",
+      "kind": "moon",
+      "radiusMetres": 430000.0,
+      "positionMetres": [
+        25704280064.0,
+        -14788569088.0,
+        -172787616.0
+      ],
+      "texture": "cairn.jpg",
+      "rotationHours": 141.62,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Nivara/Textures/cairn.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_nivara_cairn",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_nivara_cairn"
+    },
+    {
+      "id": "fic.nivara.wisp",
+      "name": "Wisp",
+      "parentId": "fic.nivara.gelid",
+      "kind": "moon",
+      "radiusMetres": 260000.0,
+      "positionMetres": [
+        25843388416.0,
+        -15334010880.0,
+        -288724928.0
+      ],
+      "texture": "wisp.jpg",
+      "rotationHours": 245.85,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Nivara/Textures/wisp.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_nivara_wisp",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_nivara_wisp"
+    }
+  ],
+  "belts": [
+    {
+      "id": "fic.nivara.icy_belt",
+      "parentId": "fic.nivara.sun",
+      "innerMetres": 44879361210.0,
+      "outerMetres": 68815020522.0,
+      "count": 600,
+      "seed": 3301,
+      "kind": "icy"
+    }
+  ],
+  "regions": [
+    {
+      "name": "icy_belt (fiktivní pás)",
+      "geometry": "disk",
+      "centreMetres": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "innerMetres": 44879361210.0,
+      "outerMetres": 68815020522.0
+    }
+  ]
+}

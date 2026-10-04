@@ -1,0 +1,702 @@
+{
+  "version": 1,
+  "id": "sol",
+  "layout": "protected-web-reference-static-epoch",
+  "bodies": [
+    {
+      "id": "sol.sun",
+      "name": "Slunce",
+      "kind": "star",
+      "parentId": "",
+      "radiusMetres": 695700000.0,
+      "positionMetres": [
+        105781669000.0,
+        -105781669000.0,
+        0.0
+      ],
+      "texture": "sun.jpg",
+      "rotationHours": 601.2,
+      "tiltDegrees": 7.25,
+      "surfaceQuality": "spacecraft-derived-map"
+    },
+    {
+      "id": "sol.mercury",
+      "name": "Merkur",
+      "kind": "planet",
+      "parentId": "sol.sun",
+      "radiusMetres": 2439400.0,
+      "positionMetres": [
+        75207964813.87663,
+        -154962354134.82318,
+        0.0
+      ],
+      "texture": "mercury.jpg",
+      "rotationHours": 1407.504,
+      "tiltDegrees": 0.034,
+      "surfaceQuality": "spacecraft-derived-map",
+      "shapeScale": [
+        1.000463228662786,
+        1.000463228662786,
+        0.9990741860194404
+      ]
+    },
+    {
+      "id": "sol.venus",
+      "name": "Venuše",
+      "kind": "planet",
+      "parentId": "sol.sun",
+      "radiusMetres": 6051800.0,
+      "positionMetres": [
+        161766088519.09552,
+        -198376921021.20984,
+        0.0
+      ],
+      "texture": "venus_atmosphere.jpg",
+      "rotationHours": -5832.0,
+      "tiltDegrees": 2.64,
+      "surfaceQuality": "representative-cloud-map",
+      "atmosphereColor": "#e4ae69"
+    },
+    {
+      "id": "sol.earth",
+      "name": "Země",
+      "kind": "planet",
+      "parentId": "sol.sun",
+      "radiusMetres": 6371008.399999999,
+      "positionMetres": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "texture": "earth_daymap.jpg",
+      "rotationHours": 23.928,
+      "tiltDegrees": 23.44,
+      "surfaceQuality": "spacecraft-derived-map",
+      "atmosphereColor": "#4dbaff",
+      "cloudTexture": "earth_clouds.jpg",
+      "nightTexture": "earth_nightmap.jpg",
+      "shapeScale": [
+        1.0011188495686179,
+        1.0011188495686179,
+        0.9977660507412485
+      ]
+    },
+    {
+      "id": "sol.mars",
+      "name": "Mars",
+      "kind": "planet",
+      "parentId": "sol.sun",
+      "radiusMetres": 3389500.0,
+      "positionMetres": [
+        268945627688.1965,
+        53388691803.04996,
+        0.0
+      ],
+      "texture": "mars.jpg",
+      "rotationHours": 24.624000000000002,
+      "tiltDegrees": 25.19,
+      "surfaceQuality": "spacecraft-derived-map",
+      "atmosphereColor": "#d99069",
+      "shapeScale": [
+        1.001973742439888,
+        1.001973742439888,
+        0.996064171417471
+      ]
+    },
+    {
+      "id": "sol.jupiter",
+      "name": "Jupiter",
+      "kind": "planet",
+      "parentId": "sol.sun",
+      "radiusMetres": 69911000.0,
+      "positionMetres": [
+        -530126785648.718,
+        -554599999350.072,
+        0.0
+      ],
+      "texture": "jupiter.jpg",
+      "rotationHours": 9.936,
+      "tiltDegrees": 3.13,
+      "surfaceQuality": "representative-cloud-map",
+      "shapeScale": [
+        1.0226144669651414,
+        1.0226144669651414,
+        0.9562603201341039
+      ]
+    },
+    {
+      "id": "sol.saturn",
+      "name": "Saturn",
+      "kind": "planet",
+      "parentId": "sol.sun",
+      "radiusMetres": 58232000.0,
+      "positionMetres": [
+        1495898490453.704,
+        -426858941704.2766,
+        0.0
+      ],
+      "texture": "saturn.jpg",
+      "rotationHours": 10.656,
+      "tiltDegrees": 26.73,
+      "surfaceQuality": "representative-cloud-map",
+      "shapeScale": [
+        1.034963593900261,
+        1.034963593900261,
+        0.9335763762638075
+      ],
+      "ringInnerMetres": 74500000.0,
+      "ringOuterMetres": 140220000.0,
+      "ringTexture": "saturn_ring_alpha.png"
+    },
+    {
+      "id": "sol.uranus",
+      "name": "Uran",
+      "kind": "planet",
+      "parentId": "sol.sun",
+      "radiusMetres": 25362000.0,
+      "positionMetres": [
+        1950423782715.5435,
+        2094116119077.1465,
+        0.0
+      ],
+      "texture": "uranus.jpg",
+      "rotationHours": -17.232,
+      "tiltDegrees": 82.23,
+      "surfaceQuality": "representative-cloud-map",
+      "shapeScale": [
+        1.0077675262203296,
+        1.0077675262203296,
+        0.9846440943850869
+      ],
+      "ringInnerMetres": 38000000.0,
+      "ringOuterMetres": 51149000.0,
+      "ringTexture": "uranus_ring_schematic.png"
+    },
+    {
+      "id": "sol.neptune",
+      "name": "Neptun",
+      "kind": "planet",
+      "parentId": "sol.sun",
+      "radiusMetres": 24622000.0,
+      "positionMetres": [
+        302767156558.83203,
+        -4599724835680.748,
+        0.0
+      ],
+      "texture": "neptune.jpg",
+      "rotationHours": 16.104,
+      "tiltDegrees": 28.32,
+      "surfaceQuality": "representative-cloud-map",
+      "shapeScale": [
+        1.0057672000649824,
+        1.0057672000649824,
+        0.9885646198710561
+      ]
+    },
+    {
+      "id": "sol.moon",
+      "name": "Měsíc",
+      "kind": "moon",
+      "parentId": "sol.earth",
+      "radiusMetres": 1737400.0,
+      "positionMetres": [
+        -366283775.117859,
+        108443556.108719,
+        42889989.786607
+      ],
+      "texture": "moon.jpg",
+      "rotationHours": 655.6800000000001,
+      "tiltDegrees": 0,
+      "surfaceQuality": "spacecraft-derived-map"
+    },
+    {
+      "id": "sol.phobos",
+      "name": "Phobos",
+      "kind": "moon",
+      "parentId": "sol.mars",
+      "radiusMetres": 11080.0,
+      "positionMetres": [
+        268950449066.96408,
+        53380665784.2782,
+        -496694.528574
+      ],
+      "texture": "jpl-mar1kuu2.jpg",
+      "rotationHours": 7.656000000000001,
+      "tiltDegrees": 0,
+      "surfaceQuality": "spacecraft-derived-map",
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "id": "sol.deimos",
+      "name": "Deimos",
+      "kind": "moon",
+      "parentId": "sol.mars",
+      "radiusMetres": 6200.0,
+      "positionMetres": [
+        268950191195.79645,
+        53411693342.522766,
+        -784824.352439
+      ],
+      "texture": "jpl-mar2kuu2.jpg",
+      "rotationHours": 30.311999999999998,
+      "tiltDegrees": 0,
+      "surfaceQuality": "spacecraft-derived-map",
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "id": "sol.io",
+      "name": "Io",
+      "kind": "moon",
+      "parentId": "sol.jupiter",
+      "radiusMetres": 1821490.0,
+      "positionMetres": [
+        -530464676477.58777,
+        -554848762043.4594,
+        43152637.745199
+      ],
+      "texture": "jpl-jup1vss2.jpg",
+      "rotationHours": 42.455999999999996,
+      "tiltDegrees": 0,
+      "surfaceQuality": "spacecraft-derived-map"
+    },
+    {
+      "id": "sol.europa",
+      "name": "Europa",
+      "kind": "moon",
+      "parentId": "sol.jupiter",
+      "radiusMetres": 1560800.0,
+      "positionMetres": [
+        -529464471565.4171,
+        -554674192843.1425,
+        -78807300.723766
+      ],
+      "texture": "jpl-jup2vss2.jpg",
+      "rotationHours": 85.224,
+      "tiltDegrees": 0,
+      "surfaceQuality": "spacecraft-derived-map"
+    },
+    {
+      "id": "sol.ganymede",
+      "name": "Ganymed",
+      "kind": "moon",
+      "parentId": "sol.jupiter",
+      "radiusMetres": 2631200.0,
+      "positionMetres": [
+        -530827267146.96655,
+        -553794191782.2058,
+        75868268.606443
+      ],
+      "texture": "jpl-jup3vss2.jpg",
+      "rotationHours": 171.72,
+      "tiltDegrees": 0,
+      "surfaceQuality": "spacecraft-derived-map"
+    },
+    {
+      "id": "sol.callisto",
+      "name": "Callisto",
+      "kind": "moon",
+      "parentId": "sol.jupiter",
+      "radiusMetres": 2410300.0,
+      "positionMetres": [
+        -530167811786.13354,
+        -556482095614.4233,
+        24285752.267606
+      ],
+      "texture": "jpl-jup4vss2.jpg",
+      "rotationHours": 400.536,
+      "tiltDegrees": 0,
+      "surfaceQuality": "spacecraft-derived-map"
+    },
+    {
+      "id": "sol.mimas",
+      "name": "Mimas",
+      "kind": "moon",
+      "parentId": "sol.saturn",
+      "radiusMetres": 198200.0,
+      "positionMetres": [
+        1496025871926.2722,
+        -426725074435.9017,
+        -16680390.438796
+      ],
+      "texture": "jpl-sat1vss2.jpg",
+      "rotationHours": 22.607999999999997,
+      "tiltDegrees": 0,
+      "surfaceQuality": "spacecraft-derived-map"
+    },
+    {
+      "id": "sol.enceladus",
+      "name": "Enceladus",
+      "kind": "moon",
+      "parentId": "sol.saturn",
+      "radiusMetres": 252100.0,
+      "positionMetres": [
+        1495662657105.7336,
+        -426874268467.1117,
+        28490631.619499
+      ],
+      "texture": "jpl-sat2vss2.jpg",
+      "rotationHours": 32.88,
+      "tiltDegrees": 0,
+      "surfaceQuality": "spacecraft-derived-map"
+    },
+    {
+      "id": "sol.tethys",
+      "name": "Tethys",
+      "kind": "moon",
+      "parentId": "sol.saturn",
+      "radiusMetres": 531100.0,
+      "positionMetres": [
+        1496126730275.2808,
+        -427043567826.39417,
+        -25521882.032784
+      ],
+      "texture": "jpl-sat3vss2.jpg",
+      "rotationHours": 45.312,
+      "tiltDegrees": 0,
+      "surfaceQuality": "spacecraft-derived-map"
+    },
+    {
+      "id": "sol.dione",
+      "name": "Dione",
+      "kind": "moon",
+      "parentId": "sol.saturn",
+      "radiusMetres": 561400.0,
+      "positionMetres": [
+        1495841280700.78,
+        -426485900277.8653,
+        3036540.204626
+      ],
+      "texture": "jpl-sat4vss2.jpg",
+      "rotationHours": 65.688,
+      "tiltDegrees": 0,
+      "surfaceQuality": "spacecraft-derived-map"
+    },
+    {
+      "id": "sol.rhea",
+      "name": "Rhea",
+      "kind": "moon",
+      "parentId": "sol.saturn",
+      "radiusMetres": 763500.0,
+      "positionMetres": [
+        1495608074618.9475,
+        -427297013930.1552,
+        39395995.485797
+      ],
+      "texture": "jpl-sat5vss2.jpg",
+      "rotationHours": 108.43199999999999,
+      "tiltDegrees": 0,
+      "surfaceQuality": "spacecraft-derived-map"
+    },
+    {
+      "id": "sol.titan",
+      "name": "Titan",
+      "kind": "moon",
+      "parentId": "sol.saturn",
+      "radiusMetres": 2574760.0,
+      "positionMetres": [
+        1497076606387.3994,
+        -426568923676.5464,
+        -144521516.009416
+      ],
+      "texture": "jpl-sat6fss1.jpg",
+      "rotationHours": 382.68,
+      "tiltDegrees": 0,
+      "surfaceQuality": "representative-cloud-map"
+    },
+    {
+      "id": "sol.hyperion",
+      "name": "Hyperion",
+      "kind": "moon",
+      "parentId": "sol.saturn",
+      "radiusMetres": 135000.0,
+      "positionMetres": [
+        1494591208062.495,
+        -426136845162.60815,
+        149630226.337695
+      ],
+      "texture": "hyperion_schematic.png",
+      "rotationHours": 510.648,
+      "tiltDegrees": 0,
+      "surfaceQuality": "schematic",
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "id": "sol.iapetus",
+      "name": "Iapetus",
+      "kind": "moon",
+      "parentId": "sol.saturn",
+      "radiusMetres": 734300.0,
+      "positionMetres": [
+        1497039086410.9263,
+        -430230624620.2363,
+        -102354217.839848
+      ],
+      "texture": "jpl-sat8vss2.jpg",
+      "rotationHours": 1903.92,
+      "tiltDegrees": 0,
+      "surfaceQuality": "spacecraft-derived-map"
+    },
+    {
+      "id": "sol.phoebe",
+      "name": "Phoebe",
+      "kind": "moon",
+      "parentId": "sol.saturn",
+      "radiusMetres": 106500.0,
+      "positionMetres": [
+        1501059254039.7007,
+        -415007312972.9579,
+        -741904679.075546
+      ],
+      "texture": "phoebe_schematic.png",
+      "rotationHours": 13207.199999999999,
+      "tiltDegrees": 0,
+      "surfaceQuality": "schematic",
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "id": "sol.miranda",
+      "name": "Miranda",
+      "kind": "moon",
+      "parentId": "sol.uranus",
+      "radiusMetres": 235800.0,
+      "positionMetres": [
+        1950306278439.3826,
+        2094063967400.5986,
+        14653321.025439
+      ],
+      "texture": "jpl-ura5vuu2.jpg",
+      "rotationHours": 33.912,
+      "tiltDegrees": 0,
+      "surfaceQuality": "spacecraft-derived-map"
+    },
+    {
+      "id": "sol.ariel",
+      "name": "Ariel",
+      "kind": "moon",
+      "parentId": "sol.uranus",
+      "radiusMetres": 578900.0,
+      "positionMetres": [
+        1950603481158.853,
+        2094054817758.8008,
+        -20958488.524359
+      ],
+      "texture": "jpl-ura1vuu2.jpg",
+      "rotationHours": 60.480000000000004,
+      "tiltDegrees": 0,
+      "surfaceQuality": "spacecraft-derived-map"
+    },
+    {
+      "id": "sol.umbriel",
+      "name": "Umbriel",
+      "kind": "moon",
+      "parentId": "sol.uranus",
+      "radiusMetres": 584700.0,
+      "positionMetres": [
+        1950296161638.0103,
+        2094349488543.2373,
+        12932241.325934
+      ],
+      "texture": "jpl-ura2vuu2.jpg",
+      "rotationHours": 99.456,
+      "tiltDegrees": 0,
+      "surfaceQuality": "spacecraft-derived-map"
+    },
+    {
+      "id": "sol.titania",
+      "name": "Titania",
+      "kind": "moon",
+      "parentId": "sol.uranus",
+      "radiusMetres": 788900.0,
+      "positionMetres": [
+        1950321798575.6023,
+        2093692632426.0073,
+        16607817.663624
+      ],
+      "texture": "jpl-ura3vuu2.jpg",
+      "rotationHours": 208.944,
+      "tiltDegrees": 0,
+      "surfaceQuality": "spacecraft-derived-map"
+    },
+    {
+      "id": "sol.oberon",
+      "name": "Oberon",
+      "kind": "moon",
+      "parentId": "sol.uranus",
+      "radiusMetres": 761400.0,
+      "positionMetres": [
+        1950904763457.4343,
+        2094440798833.3662,
+        -61124236.040854
+      ],
+      "texture": "jpl-ura4vuu2.jpg",
+      "rotationHours": 323.11199999999997,
+      "tiltDegrees": 0,
+      "surfaceQuality": "spacecraft-derived-map"
+    },
+    {
+      "id": "sol.triton",
+      "name": "Triton",
+      "kind": "moon",
+      "parentId": "sol.neptune",
+      "radiusMetres": 1352600.0,
+      "positionMetres": [
+        302418899220.94476,
+        -4599671300721.503,
+        41289015.817896
+      ],
+      "texture": "jpl-nep1vuu2.jpg",
+      "rotationHours": -141.048,
+      "tiltDegrees": 0,
+      "surfaceQuality": "spacecraft-derived-map"
+    },
+    {
+      "id": "sol.nereid",
+      "name": "Nereida",
+      "kind": "moon",
+      "parentId": "sol.neptune",
+      "radiusMetres": 170000.0,
+      "positionMetres": [
+        306204935957.7959,
+        -4604019928035.179,
+        -368840626.959801
+      ],
+      "texture": "nereid_schematic.png",
+      "rotationHours": 8643.36,
+      "tiltDegrees": 0,
+      "surfaceQuality": "schematic",
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "id": "sol.proteus",
+      "name": "Proteus",
+      "kind": "moon",
+      "parentId": "sol.neptune",
+      "radiusMetres": 208000.0,
+      "positionMetres": [
+        302774470212.77014,
+        -4599607434763.964,
+        -2086100.000119
+      ],
+      "texture": "proteus_schematic.png",
+      "rotationHours": 26.928000000000004,
+      "tiltDegrees": 0,
+      "surfaceQuality": "schematic",
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "id": "sol.ceres",
+      "name": "Ceres",
+      "kind": "asteroid",
+      "parentId": "sol.sun",
+      "radiusMetres": 469700.0,
+      "positionMetres": [
+        -306647166420.9025,
+        -70475133786.65463,
+        0.0
+      ],
+      "texture": "rock_schematic.png",
+      "rotationHours": 9.072,
+      "tiltDegrees": 0,
+      "surfaceQuality": "schematic",
+      "shapeScale": [
+        1.0263998296785182,
+        1.0263998296785182,
+        0.949219950175632
+      ]
+    },
+    {
+      "id": "sol.vesta",
+      "name": "Vesta",
+      "kind": "asteroid",
+      "parentId": "sol.sun",
+      "radiusMetres": 262500.0,
+      "positionMetres": [
+        -217631539104.19952,
+        -248120139906.06888,
+        0.0
+      ],
+      "texture": "rock_schematic.png",
+      "rotationHours": 5.3424,
+      "tiltDegrees": 0,
+      "surfaceQuality": "schematic",
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "id": "sol.eros",
+      "name": "Eros",
+      "kind": "asteroid",
+      "parentId": "sol.sun",
+      "radiusMetres": 8450.0,
+      "positionMetres": [
+        9694959847.318268,
+        -301590066775.94604,
+        0.0
+      ],
+      "texture": "rock_schematic.png",
+      "rotationHours": 5.2703999999999995,
+      "tiltDegrees": 0,
+      "surfaceQuality": "schematic",
+      "shapeScale": [
+        2.035502958579882,
+        0.668639053254438,
+        0.6627218934911243
+      ]
+    },
+    {
+      "id": "sol.bennu",
+      "name": "Bennu",
+      "kind": "asteroid",
+      "parentId": "sol.sun",
+      "radiusMetres": 246.0,
+      "positionMetres": [
+        -26730865844.63234,
+        -1787014314.606689,
+        0.0
+      ],
+      "texture": "rock_schematic.png",
+      "rotationHours": 4.295999999999999,
+      "tiltDegrees": 0,
+      "surfaceQuality": "schematic",
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "asteroidBelt": {
+    "parentId": "sol.sun",
+    "innerMetres": 314155528995.5494,
+    "outerMetres": 493672974135.8632,
+    "count": 600,
+    "seed": 3040012
+  }
+}

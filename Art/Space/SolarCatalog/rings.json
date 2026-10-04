@@ -1,0 +1,492 @@
+{
+  "version": 1,
+  "reviewedDate": "2026-10-04",
+  "rings": [
+    {
+      "id": "sol.jupiter.ring.halo",
+      "parentId": "sol.jupiter",
+      "name": "Halo",
+      "innerRadiusMetres": 89400000,
+      "outerRadiusMetres": 123000000,
+      "opticalDepthRange": [
+        3e-06,
+        3e-06
+      ],
+      "thicknessMetres": 10000000,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.jupiter.ring.main",
+      "parentId": "sol.jupiter",
+      "name": "Main",
+      "innerRadiusMetres": 123000000,
+      "outerRadiusMetres": 128940000,
+      "opticalDepthRange": [
+        5e-06,
+        5e-06
+      ],
+      "thicknessMetres": null,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null,
+      "thicknessUpperLimitMetres": 100000
+    },
+    {
+      "id": "sol.jupiter.ring.amalthea",
+      "parentId": "sol.jupiter",
+      "name": "Amalthea",
+      "innerRadiusMetres": 128940000,
+      "outerRadiusMetres": 181350000,
+      "opticalDepthRange": [
+        1e-07,
+        1e-07
+      ],
+      "thicknessMetres": 2600000,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.jupiter.ring.thebe",
+      "parentId": "sol.jupiter",
+      "name": "Thebe",
+      "innerRadiusMetres": 181350000,
+      "outerRadiusMetres": 221900000,
+      "opticalDepthRange": [
+        1e-07,
+        1e-07
+      ],
+      "thicknessMetres": 8800000,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.jupiter.ring.thebe_extension",
+      "parentId": "sol.jupiter",
+      "name": "Thebe Extension",
+      "innerRadiusMetres": 221900000,
+      "outerRadiusMetres": 280000000,
+      "opticalDepthRange": [
+        1e-07,
+        1e-07
+      ],
+      "thicknessMetres": 8800000,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.saturn.ring.d",
+      "parentId": "sol.saturn",
+      "name": "D",
+      "innerRadiusMetres": 66900000,
+      "outerRadiusMetres": 74510000,
+      "opticalDepthRange": [
+        1e-05,
+        1e-05
+      ],
+      "thicknessMetres": null,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/satringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.saturn.ring.c",
+      "parentId": "sol.saturn",
+      "name": "C",
+      "innerRadiusMetres": 74658000,
+      "outerRadiusMetres": 91975000,
+      "opticalDepthRange": [
+        0.05,
+        0.35
+      ],
+      "thicknessMetres": 5,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/satringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.saturn.ring.b",
+      "parentId": "sol.saturn",
+      "name": "B",
+      "innerRadiusMetres": 91975000,
+      "outerRadiusMetres": 117507000,
+      "opticalDepthRange": [
+        0.4,
+        2.5
+      ],
+      "thicknessMetres": null,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/satringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.saturn.ring.cassini_division",
+      "parentId": "sol.saturn",
+      "name": "Cassini Division",
+      "innerRadiusMetres": 117507000,
+      "outerRadiusMetres": 122340000,
+      "opticalDepthRange": [
+        0,
+        0.1
+      ],
+      "thicknessMetres": null,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/satringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.saturn.ring.a",
+      "parentId": "sol.saturn",
+      "name": "A",
+      "innerRadiusMetres": 122340000,
+      "outerRadiusMetres": 136780000,
+      "opticalDepthRange": [
+        0.4,
+        1
+      ],
+      "thicknessMetres": null,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/satringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.saturn.ring.g",
+      "parentId": "sol.saturn",
+      "name": "G",
+      "innerRadiusMetres": 166000000,
+      "outerRadiusMetres": 173000000,
+      "opticalDepthRange": [
+        1e-06,
+        1e-06
+      ],
+      "thicknessMetres": 100000,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/satringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.saturn.ring.e",
+      "parentId": "sol.saturn",
+      "name": "E",
+      "innerRadiusMetres": 180000000,
+      "outerRadiusMetres": 480000000,
+      "opticalDepthRange": [
+        1e-06,
+        1e-06
+      ],
+      "thicknessMetres": 10000000,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/satringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.saturn.ring.f",
+      "parentId": "sol.saturn",
+      "name": "F",
+      "characteristicRadiusMetres": 139826000,
+      "radiusDefinition": "inner edge for narrow ring in cited fact sheet",
+      "widthMetres": null,
+      "widthUpperLimitMetres": 1000000,
+      "eccentricity": 0.0026,
+      "opticalDepthRange": [
+        0.1,
+        0.1
+      ],
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/satringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.uranus.ring.6",
+      "parentId": "sol.uranus",
+      "name": "6",
+      "characteristicRadiusMetres": 41837000,
+      "radiusDefinition": "summary-table reference radius",
+      "widthRangeMetres": [
+        1500.0,
+        1500.0
+      ],
+      "eccentricity": 0.001,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.uranus.ring.5",
+      "parentId": "sol.uranus",
+      "name": "5",
+      "characteristicRadiusMetres": 42234000,
+      "radiusDefinition": "summary-table reference radius",
+      "widthRangeMetres": [
+        2000,
+        2000
+      ],
+      "eccentricity": 0.0019,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.uranus.ring.4",
+      "parentId": "sol.uranus",
+      "name": "4",
+      "characteristicRadiusMetres": 42571000,
+      "radiusDefinition": "summary-table reference radius",
+      "widthRangeMetres": [
+        2000,
+        2000
+      ],
+      "eccentricity": 0.0011,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.uranus.ring.alpha",
+      "parentId": "sol.uranus",
+      "name": "Alpha",
+      "characteristicRadiusMetres": 44718000,
+      "radiusDefinition": "summary-table reference radius",
+      "widthRangeMetres": [
+        4000,
+        10000
+      ],
+      "eccentricity": 0.0008,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.uranus.ring.beta",
+      "parentId": "sol.uranus",
+      "name": "Beta",
+      "characteristicRadiusMetres": 45661000,
+      "radiusDefinition": "summary-table reference radius",
+      "widthRangeMetres": [
+        5000,
+        11000
+      ],
+      "eccentricity": 0.0004,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.uranus.ring.eta",
+      "parentId": "sol.uranus",
+      "name": "Eta",
+      "characteristicRadiusMetres": 47176000,
+      "radiusDefinition": "summary-table reference radius",
+      "widthRangeMetres": [
+        1600.0,
+        1600.0
+      ],
+      "eccentricity": null,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.uranus.ring.gamma",
+      "parentId": "sol.uranus",
+      "name": "Gamma",
+      "characteristicRadiusMetres": 47627000,
+      "radiusDefinition": "summary-table reference radius",
+      "widthRangeMetres": [
+        1000,
+        4000
+      ],
+      "eccentricity": 0.0011,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.uranus.ring.delta",
+      "parentId": "sol.uranus",
+      "name": "Delta",
+      "characteristicRadiusMetres": 48300000,
+      "radiusDefinition": "summary-table reference radius",
+      "widthRangeMetres": [
+        3000,
+        7000
+      ],
+      "eccentricity": 0.0004,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.uranus.ring.lambda",
+      "parentId": "sol.uranus",
+      "name": "Lambda",
+      "characteristicRadiusMetres": 50024000,
+      "radiusDefinition": "summary-table reference radius",
+      "widthRangeMetres": [
+        2000,
+        2000
+      ],
+      "eccentricity": 0,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.uranus.ring.epsilon",
+      "parentId": "sol.uranus",
+      "name": "Epsilon",
+      "characteristicRadiusMetres": 51149000,
+      "radiusDefinition": "summary-table reference radius",
+      "widthRangeMetres": [
+        20000,
+        96000
+      ],
+      "eccentricity": 0.0079,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.uranus.ring.nu",
+      "parentId": "sol.uranus",
+      "name": "Nu",
+      "characteristicRadiusMetres": 67300000,
+      "radiusDefinition": "summary-table reference radius",
+      "widthRangeMetres": [
+        3800000,
+        3800000
+      ],
+      "eccentricity": 0,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.uranus.ring.mu",
+      "parentId": "sol.uranus",
+      "name": "Mu",
+      "characteristicRadiusMetres": 97700000,
+      "radiusDefinition": "summary-table reference radius",
+      "widthRangeMetres": [
+        17000000,
+        17000000
+      ],
+      "eccentricity": 0,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.uranus.ring.zeta",
+      "parentId": "sol.uranus",
+      "name": "Zeta",
+      "characteristicRadiusMetres": null,
+      "widthRangeMetres": null,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://science.nasa.gov/uranus/facts/",
+      "numericStatus": "known-ring-numeric-geometry-unavailable-in-selected-source",
+      "texture": null
+    },
+    {
+      "id": "sol.neptune.ring.galle",
+      "parentId": "sol.neptune",
+      "name": "Galle",
+      "characteristicRadiusMetres": 41900000,
+      "radiusDefinition": "NASA summary-table reference radius",
+      "widthMetres": 15000,
+      "widthUpperLimitMetres": null,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://science.nasa.gov/neptune/neptune-facts/",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.neptune.ring.leverrier",
+      "parentId": "sol.neptune",
+      "name": "Leverrier",
+      "characteristicRadiusMetres": 53200000,
+      "radiusDefinition": "NASA summary-table reference radius",
+      "widthMetres": 15000,
+      "widthUpperLimitMetres": null,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://science.nasa.gov/neptune/neptune-facts/",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.neptune.ring.lassell",
+      "parentId": "sol.neptune",
+      "name": "Lassell",
+      "characteristicRadiusMetres": 55400000,
+      "radiusDefinition": "NASA summary-table reference radius",
+      "widthMetres": null,
+      "widthUpperLimitMetres": null,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://science.nasa.gov/neptune/neptune-facts/",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.neptune.ring.arago",
+      "parentId": "sol.neptune",
+      "name": "Arago",
+      "characteristicRadiusMetres": 57600000,
+      "radiusDefinition": "NASA summary-table reference radius",
+      "widthMetres": null,
+      "widthUpperLimitMetres": null,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://science.nasa.gov/neptune/neptune-facts/",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    },
+    {
+      "id": "sol.neptune.ring.adams",
+      "parentId": "sol.neptune",
+      "name": "Adams",
+      "characteristicRadiusMetres": 62930000,
+      "radiusDefinition": "NASA summary-table reference radius",
+      "widthMetres": null,
+      "widthUpperLimitMetres": 50000,
+      "plane": "parent-equatorial",
+      "sourceUrl": "https://science.nasa.gov/neptune/neptune-facts/",
+      "numericStatus": "approximate-published-summary",
+      "texture": null
+    }
+  ],
+  "notes": [
+    "All radii measured from planet centre, not surface altitude. Plane orientation requires parent pole.",
+    "Summary factsheets are historical models; not complete ringlets, azimuthal arcs, temporal clumps or phase functions.",
+    "Adams arcs Liberte/Egalite/Fraternite/Courage are known; no measured epoch longitude/extent selected here.",
+    "Saturn Cassini division is low optical depth, not an entirely empty vacuum. F-ring exact edges are not invented.",
+    "Jupiter/Uranus/Neptune dust/dark rings must not inherit Saturn's bright ice shader."
+  ]
+}

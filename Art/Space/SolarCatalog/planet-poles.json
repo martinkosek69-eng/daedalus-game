@@ -1,0 +1,949 @@
+{
+  "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+  "retrievedUtc": "2026-10-04T02:31:30.225839+00:00",
+  "sourcePayloadSha256": "3dff7b1dbeceaa01f25467767d3fa25816051c85d162d1edf04acb310ee28bb1",
+  "planets": {
+    "Earth": {
+      "rightAscensionCoefficientsDegrees": [
+        0.0,
+        -0.641,
+        0.0
+      ],
+      "declinationCoefficientsDegrees": [
+        90.0,
+        -0.557,
+        0.0
+      ]
+    },
+    "Mars": {
+      "rightAscensionCoefficientsDegrees": [
+        317.269202,
+        -0.10927547,
+        0.0
+      ],
+      "declinationCoefficientsDegrees": [
+        54.432516,
+        -0.05827105,
+        0.0
+      ]
+    },
+    "Jupiter": {
+      "rightAscensionCoefficientsDegrees": [
+        268.056595,
+        -0.006499,
+        0.0
+      ],
+      "declinationCoefficientsDegrees": [
+        64.495303,
+        0.002413,
+        0.0
+      ]
+    },
+    "Saturn": {
+      "rightAscensionCoefficientsDegrees": [
+        40.589,
+        -0.036,
+        0.0
+      ],
+      "declinationCoefficientsDegrees": [
+        83.537,
+        -0.004,
+        0.0
+      ]
+    },
+    "Uranus": {
+      "rightAscensionCoefficientsDegrees": [
+        257.311,
+        0.0,
+        0.0
+      ],
+      "declinationCoefficientsDegrees": [
+        -15.175,
+        0.0,
+        0.0
+      ]
+    },
+    "Neptune": {
+      "rightAscensionCoefficientsDegrees": [
+        299.36,
+        0.0,
+        0.0
+      ],
+      "declinationCoefficientsDegrees": [
+        43.46,
+        0.0,
+        0.0
+      ]
+    },
+    "Pluto": {
+      "rightAscensionCoefficientsDegrees": [
+        132.993,
+        0.0,
+        0.0
+      ],
+      "declinationCoefficientsDegrees": [
+        -6.163,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "bodyEllipsoids": {
+    "10": {
+      "semiaxesMetres": [
+        695700000.0,
+        695700000.0,
+        695700000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "199": {
+      "semiaxesMetres": [
+        2440530.0,
+        2440530.0,
+        2438260.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "299": {
+      "semiaxesMetres": [
+        6051800.0,
+        6051800.0,
+        6051800.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "399": {
+      "semiaxesMetres": [
+        6378136.6,
+        6378136.6,
+        6356751.9
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "499": {
+      "semiaxesMetres": [
+        3396190.0,
+        3396190.0,
+        3376200.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "599": {
+      "semiaxesMetres": [
+        71492000.0,
+        71492000.0,
+        66854000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "699": {
+      "semiaxesMetres": [
+        60268000.0,
+        60268000.0,
+        54364000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "799": {
+      "semiaxesMetres": [
+        25559000.0,
+        25559000.0,
+        24973000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "899": {
+      "semiaxesMetres": [
+        24764000.0,
+        24764000.0,
+        24341000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "999": {
+      "semiaxesMetres": [
+        1188300.0,
+        1188300.0,
+        1188300.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "301": {
+      "semiaxesMetres": [
+        1737400.0,
+        1737400.0,
+        1737400.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "401": {
+      "semiaxesMetres": [
+        13000.0,
+        11400.0,
+        9100.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "402": {
+      "semiaxesMetres": [
+        7800.0,
+        6000.0,
+        5100.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "501": {
+      "semiaxesMetres": [
+        1829400.0,
+        1819400.0,
+        1815700.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "502": {
+      "semiaxesMetres": [
+        1562600.0,
+        1560300.0,
+        1559500.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "503": {
+      "semiaxesMetres": [
+        2631200.0,
+        2631200.0,
+        2631200.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "504": {
+      "semiaxesMetres": [
+        2410300.0,
+        2410300.0,
+        2410300.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "505": {
+      "semiaxesMetres": [
+        125000.0,
+        73000.0,
+        64000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "506": {
+      "semiaxesMetres": [
+        85000.0,
+        85000.0,
+        85000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "507": {
+      "semiaxesMetres": [
+        40000.0,
+        40000.0,
+        40000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "508": {
+      "semiaxesMetres": [
+        18000.0,
+        18000.0,
+        18000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "509": {
+      "semiaxesMetres": [
+        14000.0,
+        14000.0,
+        14000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "510": {
+      "semiaxesMetres": [
+        12000.0,
+        12000.0,
+        12000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "511": {
+      "semiaxesMetres": [
+        15000.0,
+        15000.0,
+        15000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "512": {
+      "semiaxesMetres": [
+        10000.0,
+        10000.0,
+        10000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "513": {
+      "semiaxesMetres": [
+        5000.0,
+        5000.0,
+        5000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "514": {
+      "semiaxesMetres": [
+        58000.0,
+        49000.0,
+        42000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "515": {
+      "semiaxesMetres": [
+        10000.0,
+        8000.0,
+        7000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "516": {
+      "semiaxesMetres": [
+        30000.0,
+        20000.0,
+        17000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "601": {
+      "semiaxesMetres": [
+        207800.0,
+        196700.0,
+        190600.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "602": {
+      "semiaxesMetres": [
+        256600.00000000003,
+        251400.0,
+        248300.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "603": {
+      "semiaxesMetres": [
+        538400.0,
+        528300.0,
+        526300.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "604": {
+      "semiaxesMetres": [
+        563400.0,
+        561300.0,
+        559600.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "605": {
+      "semiaxesMetres": [
+        765000.0,
+        763100.0,
+        762400.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "606": {
+      "semiaxesMetres": [
+        2575150.0,
+        2574780.0,
+        2574470.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "607": {
+      "semiaxesMetres": [
+        180100.0,
+        133000.0,
+        102700.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "608": {
+      "semiaxesMetres": [
+        745700.0,
+        745700.0,
+        712100.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "609": {
+      "semiaxesMetres": [
+        109400.0,
+        108500.0,
+        101800.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "610": {
+      "semiaxesMetres": [
+        101700.0,
+        93000.0,
+        76300.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "611": {
+      "semiaxesMetres": [
+        64900.00000000001,
+        57300.0,
+        53000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "612": {
+      "semiaxesMetres": [
+        22500.0,
+        19600.0,
+        13300.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "613": {
+      "semiaxesMetres": [
+        16300.0,
+        11800.0,
+        9800.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "614": {
+      "semiaxesMetres": [
+        15300.0,
+        9300.0,
+        6300.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "615": {
+      "semiaxesMetres": [
+        20500.0,
+        17800.0,
+        9400.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "616": {
+      "semiaxesMetres": [
+        68200.0,
+        41600.0,
+        28200.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "617": {
+      "semiaxesMetres": [
+        52200.0,
+        40800.0,
+        31500.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "618": {
+      "semiaxesMetres": [
+        17200.0,
+        15400.0,
+        10400.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "632": {
+      "semiaxesMetres": [
+        1940.0,
+        1290.0,
+        1210.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "633": {
+      "semiaxesMetres": [
+        2880.0,
+        2080.0,
+        1800.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "634": {
+      "semiaxesMetres": [
+        1500.0,
+        1200.0,
+        1000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "635": {
+      "semiaxesMetres": [
+        4600.0,
+        4500.0,
+        2800.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "649": {
+      "semiaxesMetres": [
+        500.0,
+        500.0,
+        500.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "653": {
+      "semiaxesMetres": [
+        700.0,
+        250.0,
+        200.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "701": {
+      "semiaxesMetres": [
+        581100.0,
+        577900.0,
+        577700.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "702": {
+      "semiaxesMetres": [
+        584700.0,
+        584700.0,
+        584700.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "703": {
+      "semiaxesMetres": [
+        788900.0,
+        788900.0,
+        788900.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "704": {
+      "semiaxesMetres": [
+        761400.0,
+        761400.0,
+        761400.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "705": {
+      "semiaxesMetres": [
+        240400.0,
+        234200.0,
+        232900.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "706": {
+      "semiaxesMetres": [
+        13000.0,
+        13000.0,
+        13000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "707": {
+      "semiaxesMetres": [
+        15000.0,
+        15000.0,
+        15000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "708": {
+      "semiaxesMetres": [
+        21000.0,
+        21000.0,
+        21000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "709": {
+      "semiaxesMetres": [
+        31000.0,
+        31000.0,
+        31000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "710": {
+      "semiaxesMetres": [
+        27000.0,
+        27000.0,
+        27000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "711": {
+      "semiaxesMetres": [
+        42000.0,
+        42000.0,
+        42000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "712": {
+      "semiaxesMetres": [
+        54000.0,
+        54000.0,
+        54000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "713": {
+      "semiaxesMetres": [
+        27000.0,
+        27000.0,
+        27000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "714": {
+      "semiaxesMetres": [
+        33000.0,
+        33000.0,
+        33000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "715": {
+      "semiaxesMetres": [
+        77000.0,
+        77000.0,
+        77000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "801": {
+      "semiaxesMetres": [
+        1352600.0,
+        1352600.0,
+        1352600.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "802": {
+      "semiaxesMetres": [
+        170000.0,
+        170000.0,
+        170000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "803": {
+      "semiaxesMetres": [
+        29000.0,
+        29000.0,
+        29000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "804": {
+      "semiaxesMetres": [
+        40000.0,
+        40000.0,
+        40000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "805": {
+      "semiaxesMetres": [
+        74000.0,
+        74000.0,
+        74000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "806": {
+      "semiaxesMetres": [
+        79000.0,
+        79000.0,
+        79000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "807": {
+      "semiaxesMetres": [
+        96000.0,
+        96000.0,
+        96000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "808": {
+      "semiaxesMetres": [
+        218000.0,
+        208000.0,
+        201000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "901": {
+      "semiaxesMetres": [
+        606000.0,
+        606000.0,
+        606000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "2000001": {
+      "semiaxesMetres": [
+        487300.0,
+        487300.0,
+        446000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "2000004": {
+      "semiaxesMetres": [
+        289000.0,
+        280000.0,
+        229000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "2000016": {
+      "semiaxesMetres": [
+        139500.0,
+        116000.0,
+        94500.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "2000021": {
+      "semiaxesMetres": [
+        62000.0,
+        50500.0,
+        46500.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "2000052": {
+      "semiaxesMetres": [
+        189500.0,
+        165000.0,
+        124500.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "2431010": {
+      "semiaxesMetres": [
+        26800.0,
+        12000.0,
+        7600.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "2000253": {
+      "semiaxesMetres": [
+        33000.0,
+        24000.0,
+        23000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "2000433": {
+      "semiaxesMetres": [
+        17000.0,
+        5500.0,
+        5500.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "2000511": {
+      "semiaxesMetres": [
+        180000.0,
+        147000.0,
+        127000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "9511010": {
+      "semiaxesMetres": [
+        9100.0,
+        5200.0,
+        4400.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "2002867": {
+      "semiaxesMetres": [
+        3240.0,
+        2730.0,
+        2040.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "2004179": {
+      "semiaxesMetres": [
+        2130.0,
+        1014.9999999999999,
+        850.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "2025143": {
+      "semiaxesMetres": [
+        268.0,
+        147.0,
+        104.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "1000036": {
+      "semiaxesMetres": [
+        8000.0,
+        4000.0,
+        4000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "1000093": {
+      "semiaxesMetres": [
+        3000.0,
+        3000.0,
+        3000.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "1000005": {
+      "semiaxesMetres": [
+        4220.0,
+        4220.0,
+        4220.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "1000107": {
+      "semiaxesMetres": [
+        2700.0,
+        1900.0,
+        1500.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    },
+    "1000012": {
+      "semiaxesMetres": [
+        2400.0,
+        1550.0,
+        1200.0
+      ],
+      "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "uncertainty": "Published reference ellipsoid; no uncertainty supplied in kernel. May be historical approximate shape."
+    }
+  },
+  "note": "Linear/polynomial pole terms only; periodic nutation terms excluded for illustrative source-frame conversion."
+}

@@ -84,37 +84,64 @@ void ASolarFlightPawn::SetupPlayerInputComponent(UInputComponent* Input)
     Input->BindKey(EKeys::PageUp,IE_Pressed,this,&ASolarFlightPawn::PreviousBody);
     Input->BindKey(EKeys::F,IE_Pressed,this,&ASolarFlightPawn::InspectBody);
     Input->BindKey(EKeys::Escape, IE_Pressed, this, &ASolarFlightPawn::ExitGame);
+    Input->BindKey(EKeys::M, IE_Pressed, this, &ASolarFlightPawn::ToggleMap);
 }
-void ASolarFlightPawn::NextBody(){if(auto* M=Lab(this))M->SelectBody(1);}
-void ASolarFlightPawn::PreviousBody(){if(auto* M=Lab(this))M->SelectBody(-1);}
-void ASolarFlightPawn::InspectBody(){if(auto* M=Lab(this))M->InspectSelectedBody();}
-void ASolarFlightPawn::MouseX(float V) { if (bOrbit) OrbitYaw = FRotator::NormalizeAxis(OrbitYaw + V * .344f); }
-void ASolarFlightPawn::MouseY(float V) { if (bOrbit) OrbitPitch = FMath::Clamp(OrbitPitch + V * .344f, -65.0f, 85.0f); }
+void ASolarFlightPawn::ToggleMap(){if(auto* M=Lab(this);M && !M->Galaxy.bSearchFocused) M->ToggleMap();}
+void ASolarFlightPawn::NextBody(){if(auto* M=Lab(this);M && !M->Galaxy.bOpen)M->SelectBody(1);}
+void ASolarFlightPawn::PreviousBody(){if(auto* M=Lab(this);M && !M->Galaxy.bOpen)M->SelectBody(-1);}
+void ASolarFlightPawn::InspectBody(){if(auto* M=Lab(this);M && !M->Galaxy.bOpen)M->InspectSelectedBody();}
+void ASolarFlightPawn::OrbitOn(){if(auto* M=Lab(this);M && !M->Galaxy.bOpen){bOrbit=true;bFollowShip=false;}}
+void ASolarFlightPawn::MouseX(float V) { if (bOrbit && Lab(this) && !Lab(this)->Galaxy.bOpen) OrbitYaw = FRotator::NormalizeAxis(OrbitYaw + V * .344f); }
+void ASolarFlightPawn::MouseY(float V) { if (bOrbit && Lab(this) && !Lab(this)->Galaxy.bOpen) OrbitPitch = FMath::Clamp(OrbitPitch + V * .344f, -65.0f, 85.0f); }
 void ASolarFlightPawn::MoreThrottle() { if (auto* M = Lab(this)) M->ChangeThrottle(.2); }
 void ASolarFlightPawn::LessThrottle() { if (auto* M = Lab(this)) M->ChangeThrottle(-.2); }
 void ASolarFlightPawn::ToggleThrottle()
 {
-    if (auto* M = Lab(this); M && M->bReady && !M->bPaused)
+    if (auto* M = Lab(this); M && M->bReady && !M->bPaused && !M->Galaxy.bOpen)
         M->Flight.SetThrottle(M->Flight.GetState().Throttle > 0 ? 0 : 1, M->Message);
 }
 void ASolarFlightPawn::BrakeOn()
 {
+    if(auto* M=Lab(this); !M || M->Galaxy.bOpen) return;
     bBrake = true;
     if (auto* M = Lab(this)) { FString Error; M->Flight.SetThrottle(0, Error); }
 }
 void ASolarFlightPawn::ResetCamera() { OrbitYaw = OrbitPitch = 0; bFollowShip = true; bCameraInitialized = false; }
-void ASolarFlightPawn::ZoomIn() { CameraDistanceMetres = FMath::Max(650.0, CameraDistanceMetres / 1.12); }
-void ASolarFlightPawn::ZoomOut() { CameraDistanceMetres = FMath::Min(6000.0, CameraDistanceMetres * 1.12); }
+void ASolarFlightPawn::ZoomIn() { if(Lab(this) && !Lab(this)->Galaxy.bOpen) CameraDistanceMetres = FMath::Max(650.0, CameraDistanceMetres / 1.12); }
+void ASolarFlightPawn::ZoomOut() { if(Lab(this) && !Lab(this)->Galaxy.bOpen) CameraDistanceMetres = FMath::Min(6000.0, CameraDistanceMetres * 1.12); }
 void ASolarFlightPawn::Slow() { if (auto* M = Lab(this)) M->SetProfile(0); }
 void ASolarFlightPawn::Fast() { if (auto* M = Lab(this)) M->SetProfile(1); }
-void ASolarFlightPawn::ResetFlight() { bBrake = false; if (auto* M = Lab(this)) M->ResetFlight(); ResetCamera(); }
+void ASolarFlightPawn::ResetFlight() { if(auto* M=Lab(this);M && M->Galaxy.bOpen)return; bBrake = false; if (auto* M = Lab(this)) M->ResetFlight(); ResetCamera(); }
 void ASolarFlightPawn::PauseFlight() { if (auto* M = Lab(this)) M->TogglePause(); }
-void ASolarFlightPawn::ExitGame() { if (auto* PC = Cast<APlayerController>(Controller)) PC->ConsoleCommand(TEXT("quit")); }
+void ASolarFlightPawn::ExitGame() { if(auto* M=Lab(this);M && M->Galaxy.bOpen){M->ToggleMap();return;} if (auto* PC = Cast<APlayerController>(Controller)) PC->ConsoleCommand(TEXT("quit")); }
 void ASolarFlightPawn::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
     auto* M = Lab(this);
     if (!M || !M->bReady) return;
+    if(M->Galaxy.bOpen)
+    {
+        FString Error; M->Flight.SetInput({},Error);
+        auto* PC=Cast<APlayerController>(Controller);
+        if(!PC)return;
+        float X=0,Y=0,DX=0,DY=0; PC->GetMousePosition(X,Y);PC->GetInputMouseDelta(DX,DY);
+        int32 W=0,H=0;PC->GetViewportSize(W,H);
+        const float Wheel=(PC->WasInputKeyJustPressed(EKeys::MouseScrollUp)?1.f:0.f)-(PC->WasInputKeyJustPressed(EKeys::MouseScrollDown)?1.f:0.f);
+        M->HandleMapAction(M->Galaxy.Input(FVector2D(X,Y),FVector2D(DX,-DY),PC->WasInputKeyJustPressed(EKeys::LeftMouseButton),
+            PC->IsInputKeyDown(EKeys::RightMouseButton),PC->IsInputKeyDown(EKeys::MiddleMouseButton),Wheel,PC->WasInputKeyJustPressed(EKeys::Home),M->MapSystems,FVector2D(W,H)));
+        if(M->Galaxy.bSearchFocused)
+        {
+            FString Query=M->Galaxy.SearchQuery;
+            for(TCHAR C=TEXT('A');C<=TEXT('Z');++C)if(PC->WasInputKeyJustPressed(FKey(FName(*FString::Chr(C)))))Query+=FString::Chr(C);
+            const FKey Digits[]={EKeys::Zero,EKeys::One,EKeys::Two,EKeys::Three,EKeys::Four,EKeys::Five,EKeys::Six,EKeys::Seven,EKeys::Eight,EKeys::Nine};
+            for(int32 I=0;I<10;++I)if(PC->WasInputKeyJustPressed(Digits[I]))Query+=FString::Chr(TEXT('0')+I);
+            if(PC->WasInputKeyJustPressed(EKeys::SpaceBar))Query+=TEXT(" ");
+            if(PC->WasInputKeyJustPressed(EKeys::BackSpace))Query=Query.LeftChop(1);
+            if(PC->WasInputKeyJustPressed(EKeys::Enter))M->Galaxy.bSearchFocused=false;
+            if(Query!=M->Galaxy.SearchQuery)M->Galaxy.SetSearchQuery(Query);
+        }
+        return;
+    }
     // Input devices command the domain; visuals never write authoritative pose.
     Daedalus::FFlightInput Input;
     Input.Yaw = YawInput; Input.Pitch = -PitchInput; Input.bBrake = bBrake;
@@ -304,24 +331,26 @@ bool ASolarFlightGameMode::CreateScene()
 int32 ASolarFlightGameMode::StarCount() const { return Stars ? Stars->GetInstanceCount() : 0; }
 void ASolarFlightGameMode::ChangeThrottle(double Step)
 {
-    if (!bReady || bPaused) return;
+    if (!bReady || bPaused || Galaxy.bOpen) return;
     double Value = FMath::Clamp(Flight.GetState().Throttle + Step, -.25, 1.0);
     if (FMath::Abs(Value) < .0001) Value = 0;
     Flight.SetThrottle(Value, Message);
 }
 void ASolarFlightGameMode::SetProfile(int32 Index)
 {
-    if (!bReady || !Profiles.IsValidIndex(Index) || Index == ProfileIndex) return;
+    if (!bReady || Galaxy.bOpen || !Profiles.IsValidIndex(Index) || Index == ProfileIndex) return;
     if (bPaused || Flight.GetState().VelocityMetresPerSecond.Size() > .01 || FMath::Abs(Flight.GetState().Throttle) > .001)
     { Message = TEXT("Před změnou režimu zastav loď a nastav tah na nulu."); return; }
     if (Flight.Initialize(Profiles[Index].Config, Flight.GetState(), Bodies, Message)) ProfileIndex = Index;
 }
 void ASolarFlightGameMode::ResetFlight()
 {
+    if(Galaxy.bOpen)return;
+    if(ActiveSystem!=0){ActivateSystem(0,3);}
     if (Profiles.IsValidIndex(ProfileIndex)) bReady = Flight.Initialize(Profiles[ProfileIndex].Config, InitialState, Bodies, Message);
     bPaused = false;
 }
-void ASolarFlightGameMode::TogglePause() { bPaused = !bPaused; Flight.SetPaused(bPaused); }
+void ASolarFlightGameMode::TogglePause() { if(Galaxy.bOpen)return; bPaused = !bPaused; Flight.SetPaused(bPaused); }
 void ASolarFlightGameMode::UpdateScene(float DeltaSeconds)
 {
     const auto& S = Flight.GetState();
@@ -341,7 +370,7 @@ void ASolarFlightGameMode::UpdateScene(float DeltaSeconds)
     Dust->SetVisibility(Speed > .05);
     for (int32 I = 0; I < DustPositions.Num(); ++I)
     {
-        auto& P = DustPositions[I]; P -= S.VelocityMetresPerSecond.GetSafeNormal() * FMath::Min(Speed, 2200.0) * (bPaused ? 0.0 : FMath::Min<double>(DeltaSeconds, .1));
+        auto& P = DustPositions[I]; P -= S.VelocityMetresPerSecond.GetSafeNormal() * FMath::Min(Speed, 2200.0) * ((bPaused || Galaxy.bOpen) ? 0.0 : FMath::Min<double>(DeltaSeconds, .1));
         for (int32 A = 0; A < 3; ++A) P[A] = FMath::Fmod(FMath::Fmod(P[A] + 2500, 5000) + 5000, 5000) - 2500;
         const FVector Location(P * 100);
         const double Fade = FMath::Clamp((P.Size() - 400) / 600, 0.0, 1.0);
@@ -356,12 +385,14 @@ void ASolarFlightGameMode::Tick(float DeltaSeconds)
     Flight.Advance(DeltaSeconds);
     if (!Flight.GetError().IsEmpty()) Message = Flight.GetError();
     UpdateScene(DeltaSeconds);
+    RefreshNavigation();
     if (!ProbeDirectory.IsEmpty()) TickProbe();
 }
 void ASolarFlightHUD::DrawHUD()
 {
     Super::DrawHUD();
     auto* M = Lab(this); if (!M || !Canvas) return;
+    if(M->bReady && M->Galaxy.bOpen){M->Galaxy.Draw(Canvas,GEngine->GetLargeFont(),M->MapSystems,M->ActiveSystem,M->PreviewMetrics());return;}
     const float Scale = FMath::Max(.6f,FMath::Min(Canvas->SizeX / 1280.0f,Canvas->SizeY / 720.0f));
     const float Width = Canvas->SizeX / Scale, Height = Canvas->SizeY / Scale;
     const FLinearColor Pale(.55f,.69f,.77f), Cyan(.38f,.81f,.92f), White(.88f,.94f,.98f);
@@ -385,12 +416,25 @@ void ASolarFlightHUD::DrawHUD()
     if (!M->bReady) { Text(M->Message,22,45,FLinearColor::Red); return; }
     const auto& S=M->Flight.GetState();
     const double Speed=S.VelocityMetresPerSecond.Size();
-    Text(FString::Printf(TEXT("Země · nad povrchem %.0f km"),(S.PositionMetres.Size()-M->EarthRadius)/1000),22,43,Pale);
+    Text(M->ActiveSystem==0 ? FString::Printf(TEXT("Země · nad povrchem %.0f km"),(S.PositionMetres.Size()-M->EarthRadius)/1000) : M->Systems[M->ActiveSystem].Name,22,43,Pale);
     const auto& Target=M->BodyDefinitions[M->SelectedBody];
     const double Distance=FMath::Max(0.,(Target.Position-S.PositionMetres).Size()-Target.Radius*Target.Shape.GetMax());
-    Text(FString::Printf(TEXT("Cíl: %s · %.0f km   PgUp/PgDn výběr · F testovací přesun"),*Target.Name,Distance/1000),22,65,Cyan,.85f);
+    Text(Target.bKnownPosition ? FString::Printf(TEXT("Cíl: %s · %.0f km   PgUp/PgDn · F testovací přesun · M mapa"),*Target.Name,Distance/1000) : FString::Printf(TEXT("%s · poloha neznámá · M mapa"),*Target.Name),22,65,Cyan,.85f);
+    const auto Nav=M->Navigation.Query(Speed,M->Flight.GetConfig().MaxSpeed,M->Galaxy.DesiredSeconds);
+    if(Nav.bValid)
+    {
+        FString Name=M->Navigation.GetTargetBodyId();
+        for(const auto& Sys:M->MapSystems)if(Sys.Id==M->Navigation.GetTargetSystemId())
+            for(const auto& B:Sys.Bodies)if(B.Id==Name){Name=Sys.Name+TEXT(" / ")+B.Name;break;}
+        const float Right=Width-395;
+        DrawRect(FLinearColor(.008f,.020f,.030f,.88f),Right*Scale,12*Scale,383*Scale,76*Scale);
+        Text(TEXT("NAVIGACE: ")+Name.Left(40),Right+12,20,Cyan,.85f);
+        const FString Range=Nav.DistanceMetres>=Daedalus::FNavigationPlan::LightYearMetres*.01 ? FString::Printf(TEXT("%.2f světelných let"),Nav.DistanceMetres/Daedalus::FNavigationPlan::LightYearMetres) : FString::Printf(TEXT("%.0f km"),Nav.DistanceMetres/1000);
+        Text(TEXT("Vzdálenost: ")+Range,Right+12,43,Pale,.85f);
+        Text(TEXT("M — mapa, databáze a doba letu"),Right+12,65,Pale,.8f);
+    }
     const FString SpeedText=Speed>=1000?FString::Printf(TEXT("%.0f km/s"),Speed/1000):FString::Printf(TEXT("%.0f m/s"),Speed);
-    Center(SpeedText,Height-211,White,2.8f);
+    Center(SpeedText,Height-228,White,2.8f);
     Center(TEXT("S K U T E Č N Á   R Y C H L O S T"),Height-165,Pale,.72f);
     const float Left=(Width-370)*.5f,Top=Height-145;
     DrawRect(FLinearColor(.008f,.020f,.030f,.90f),Left*Scale,Top*Scale,370*Scale,86*Scale);

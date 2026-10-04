@@ -1,0 +1,929 @@
+{
+  "version": 1,
+  "views": [
+    {
+      "parentId": "sol.jupiter",
+      "innerMetres": 89400000,
+      "outerMetres": 280000000,
+      "texture": "Textures/jupiter_rings_rgba.png",
+      "widthPixels": 8192,
+      "heightPixels": 32,
+      "radialUv": "U=(planet-centred radius-innerMetres)/(outerMetres-innerMetres); V=0.5",
+      "textureAddress": "clamp",
+      "rgbColorSpace": "sRGB",
+      "alphaColorSpace": "linear",
+      "alphaPremultiplied": false,
+      "plane": "parent-equatorial",
+      "components": [
+        {
+          "sourceRecord": {
+            "id": "sol.jupiter.ring.halo",
+            "parentId": "sol.jupiter",
+            "name": "Halo",
+            "innerRadiusMetres": 89400000,
+            "outerRadiusMetres": 123000000,
+            "opticalDepthRange": [
+              3e-06,
+              3e-06
+            ],
+            "thicknessMetres": 10000000,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.jupiter.ring.halo",
+          "innerMetres": 89400000,
+          "outerMetres": 123000000,
+          "geometryPolicy": "published broad inner/outer radial edges",
+          "rendered": true,
+          "radialCoveragePixels": 1444.1301154249738,
+          "authoredPeakAlpha": 0.075,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.jupiter.ring.main",
+            "parentId": "sol.jupiter",
+            "name": "Main",
+            "innerRadiusMetres": 123000000,
+            "outerRadiusMetres": 128940000,
+            "opticalDepthRange": [
+              5e-06,
+              5e-06
+            ],
+            "thicknessMetres": null,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null,
+            "thicknessUpperLimitMetres": 100000
+          },
+          "componentId": "sol.jupiter.ring.main",
+          "innerMetres": 123000000,
+          "outerMetres": 128940000,
+          "geometryPolicy": "published broad inner/outer radial edges",
+          "rendered": true,
+          "radialCoveragePixels": 255.301573976915,
+          "authoredPeakAlpha": 0.24,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.jupiter.ring.amalthea",
+            "parentId": "sol.jupiter",
+            "name": "Amalthea",
+            "innerRadiusMetres": 128940000,
+            "outerRadiusMetres": 181350000,
+            "opticalDepthRange": [
+              1e-07,
+              1e-07
+            ],
+            "thicknessMetres": 2600000,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.jupiter.ring.amalthea",
+          "innerMetres": 128940000,
+          "outerMetres": 181350000,
+          "geometryPolicy": "published broad inner/outer radial edges",
+          "rendered": true,
+          "radialCoveragePixels": 2252.5850996852046,
+          "authoredPeakAlpha": 0.065,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.jupiter.ring.thebe",
+            "parentId": "sol.jupiter",
+            "name": "Thebe",
+            "innerRadiusMetres": 181350000,
+            "outerRadiusMetres": 221900000,
+            "opticalDepthRange": [
+              1e-07,
+              1e-07
+            ],
+            "thicknessMetres": 8800000,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.jupiter.ring.thebe",
+          "innerMetres": 181350000,
+          "outerMetres": 221900000,
+          "geometryPolicy": "published broad inner/outer radial edges",
+          "rendered": true,
+          "radialCoveragePixels": 1742.841552990556,
+          "authoredPeakAlpha": 0.045,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.jupiter.ring.thebe_extension",
+            "parentId": "sol.jupiter",
+            "name": "Thebe Extension",
+            "innerRadiusMetres": 221900000,
+            "outerRadiusMetres": 280000000,
+            "opticalDepthRange": [
+              1e-07,
+              1e-07
+            ],
+            "thicknessMetres": 8800000,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.jupiter.ring.thebe_extension",
+          "innerMetres": 221900000,
+          "outerMetres": 280000000,
+          "geometryPolicy": "published broad inner/outer radial edges",
+          "rendered": true,
+          "radialCoveragePixels": 2497.1416579223505,
+          "authoredPeakAlpha": 0.025,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        }
+      ],
+      "sourceCatalog": "Art/Space/SolarCatalog/rings.json",
+      "sourceCatalogSha256": "a1519566cd1d64d082cb40c95307066bf0f3ae6ca3124a5f382f79b5a22e7354",
+      "note": "Axisymmetric radial display. Does not reconstruct eccentric azimuthal ring edges, Neptune arcs or physical vertical halo thickness. Subpixel widths integrated by exact pixel coverage."
+    },
+    {
+      "parentId": "sol.saturn",
+      "innerMetres": 66900000,
+      "outerMetres": 480000000,
+      "texture": "Textures/saturn_rings_rgba.png",
+      "widthPixels": 8192,
+      "heightPixels": 32,
+      "radialUv": "U=(planet-centred radius-innerMetres)/(outerMetres-innerMetres); V=0.5",
+      "textureAddress": "clamp",
+      "rgbColorSpace": "sRGB",
+      "alphaColorSpace": "linear",
+      "alphaPremultiplied": false,
+      "plane": "parent-equatorial",
+      "components": [
+        {
+          "sourceRecord": {
+            "id": "sol.saturn.ring.d",
+            "parentId": "sol.saturn",
+            "name": "D",
+            "innerRadiusMetres": 66900000,
+            "outerRadiusMetres": 74510000,
+            "opticalDepthRange": [
+              1e-05,
+              1e-05
+            ],
+            "thicknessMetres": null,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/satringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.saturn.ring.d",
+          "innerMetres": 66900000,
+          "outerMetres": 74510000,
+          "geometryPolicy": "published broad inner/outer radial edges",
+          "rendered": true,
+          "radialCoveragePixels": 150.91048172355363,
+          "authoredPeakAlpha": 0.055,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.saturn.ring.c",
+            "parentId": "sol.saturn",
+            "name": "C",
+            "innerRadiusMetres": 74658000,
+            "outerRadiusMetres": 91975000,
+            "opticalDepthRange": [
+              0.05,
+              0.35
+            ],
+            "thicknessMetres": 5,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/satringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.saturn.ring.c",
+          "innerMetres": 74658000,
+          "outerMetres": 91975000,
+          "geometryPolicy": "published broad inner/outer radial edges",
+          "rendered": true,
+          "radialCoveragePixels": 343.40562575647544,
+          "authoredPeakAlpha": 0.23,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.saturn.ring.b",
+            "parentId": "sol.saturn",
+            "name": "B",
+            "innerRadiusMetres": 91975000,
+            "outerRadiusMetres": 117507000,
+            "opticalDepthRange": [
+              0.4,
+              2.5
+            ],
+            "thicknessMetres": null,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/satringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.saturn.ring.b",
+          "innerMetres": 91975000,
+          "outerMetres": 117507000,
+          "geometryPolicy": "published broad inner/outer radial edges",
+          "rendered": true,
+          "radialCoveragePixels": 506.31358992979904,
+          "authoredPeakAlpha": 0.78,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.saturn.ring.cassini_division",
+            "parentId": "sol.saturn",
+            "name": "Cassini Division",
+            "innerRadiusMetres": 117507000,
+            "outerRadiusMetres": 122340000,
+            "opticalDepthRange": [
+              0,
+              0.1
+            ],
+            "thicknessMetres": null,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/satringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.saturn.ring.cassini_division",
+          "innerMetres": 117507000,
+          "outerMetres": 122340000,
+          "geometryPolicy": "published broad inner/outer radial edges",
+          "rendered": true,
+          "radialCoveragePixels": 95.841045751634,
+          "authoredPeakAlpha": 0.035,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.saturn.ring.a",
+            "parentId": "sol.saturn",
+            "name": "A",
+            "innerRadiusMetres": 122340000,
+            "outerRadiusMetres": 136780000,
+            "opticalDepthRange": [
+              0.4,
+              1
+            ],
+            "thicknessMetres": null,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/satringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.saturn.ring.a",
+          "innerMetres": 122340000,
+          "outerMetres": 136780000,
+          "geometryPolicy": "published broad inner/outer radial edges",
+          "rendered": true,
+          "radialCoveragePixels": 286.3531348341806,
+          "authoredPeakAlpha": 0.61,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.saturn.ring.g",
+            "parentId": "sol.saturn",
+            "name": "G",
+            "innerRadiusMetres": 166000000,
+            "outerRadiusMetres": 173000000,
+            "opticalDepthRange": [
+              1e-06,
+              1e-06
+            ],
+            "thicknessMetres": 100000,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/satringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.saturn.ring.g",
+          "innerMetres": 166000000,
+          "outerMetres": 173000000,
+          "geometryPolicy": "published broad inner/outer radial edges",
+          "rendered": true,
+          "radialCoveragePixels": 138.81384652626483,
+          "authoredPeakAlpha": 0.04,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.saturn.ring.e",
+            "parentId": "sol.saturn",
+            "name": "E",
+            "innerRadiusMetres": 180000000,
+            "outerRadiusMetres": 480000000,
+            "opticalDepthRange": [
+              1e-06,
+              1e-06
+            ],
+            "thicknessMetres": 10000000,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/satringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.saturn.ring.e",
+          "innerMetres": 180000000,
+          "outerMetres": 480000000,
+          "geometryPolicy": "published broad inner/outer radial edges",
+          "rendered": true,
+          "radialCoveragePixels": 5949.164851125635,
+          "authoredPeakAlpha": 0.025,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.saturn.ring.f",
+            "parentId": "sol.saturn",
+            "name": "F",
+            "characteristicRadiusMetres": 139826000,
+            "radiusDefinition": "inner edge for narrow ring in cited fact sheet",
+            "widthMetres": null,
+            "widthUpperLimitMetres": 1000000,
+            "eccentricity": 0.0026,
+            "opticalDepthRange": [
+              0.1,
+              0.1
+            ],
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/satringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.saturn.ring.f",
+          "innerMetres": 139826000,
+          "outerMetres": 139926000,
+          "selectedWidthMetres": 100000,
+          "geometryPolicy": "authored representative below published upper limit; not a measured width; published reference radius is inner edge",
+          "rendered": true,
+          "radialCoveragePixels": 1.9830549503752117,
+          "authoredPeakAlpha": 0.35,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        }
+      ],
+      "sourceCatalog": "Art/Space/SolarCatalog/rings.json",
+      "sourceCatalogSha256": "a1519566cd1d64d082cb40c95307066bf0f3ae6ca3124a5f382f79b5a22e7354",
+      "note": "Axisymmetric radial display. Does not reconstruct eccentric azimuthal ring edges, Neptune arcs or physical vertical halo thickness. Subpixel widths integrated by exact pixel coverage."
+    },
+    {
+      "parentId": "sol.uranus",
+      "innerMetres": 41836250.0,
+      "outerMetres": 106200000.0,
+      "texture": "Textures/uranus_rings_rgba.png",
+      "widthPixels": 8192,
+      "heightPixels": 32,
+      "radialUv": "U=(planet-centred radius-innerMetres)/(outerMetres-innerMetres); V=0.5",
+      "textureAddress": "clamp",
+      "rgbColorSpace": "sRGB",
+      "alphaColorSpace": "linear",
+      "alphaPremultiplied": false,
+      "plane": "parent-equatorial",
+      "components": [
+        {
+          "sourceRecord": {
+            "id": "sol.uranus.ring.6",
+            "parentId": "sol.uranus",
+            "name": "6",
+            "characteristicRadiusMetres": 41837000,
+            "radiusDefinition": "summary-table reference radius",
+            "widthRangeMetres": [
+              1500.0,
+              1500.0
+            ],
+            "eccentricity": 0.001,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.uranus.ring.6",
+          "innerMetres": 41836250.0,
+          "outerMetres": 41837750.0,
+          "selectedWidthMetres": 1500.0,
+          "geometryPolicy": "arithmetic representative of published width range; circular radial average ignores eccentricity/azimuthal width variation",
+          "rendered": true,
+          "radialCoveragePixels": 0.19091491716999087,
+          "authoredPeakAlpha": 0.48,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.uranus.ring.5",
+            "parentId": "sol.uranus",
+            "name": "5",
+            "characteristicRadiusMetres": 42234000,
+            "radiusDefinition": "summary-table reference radius",
+            "widthRangeMetres": [
+              2000,
+              2000
+            ],
+            "eccentricity": 0.0019,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.uranus.ring.5",
+          "innerMetres": 42233000.0,
+          "outerMetres": 42235000.0,
+          "selectedWidthMetres": 2000.0,
+          "geometryPolicy": "arithmetic representative of published width range; circular radial average ignores eccentricity/azimuthal width variation",
+          "rendered": true,
+          "radialCoveragePixels": 0.25455322289332116,
+          "authoredPeakAlpha": 0.48,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.uranus.ring.4",
+            "parentId": "sol.uranus",
+            "name": "4",
+            "characteristicRadiusMetres": 42571000,
+            "radiusDefinition": "summary-table reference radius",
+            "widthRangeMetres": [
+              2000,
+              2000
+            ],
+            "eccentricity": 0.0011,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.uranus.ring.4",
+          "innerMetres": 42570000.0,
+          "outerMetres": 42572000.0,
+          "selectedWidthMetres": 2000.0,
+          "geometryPolicy": "arithmetic representative of published width range; circular radial average ignores eccentricity/azimuthal width variation",
+          "rendered": true,
+          "radialCoveragePixels": 0.25455322289332116,
+          "authoredPeakAlpha": 0.48,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.uranus.ring.alpha",
+            "parentId": "sol.uranus",
+            "name": "Alpha",
+            "characteristicRadiusMetres": 44718000,
+            "radiusDefinition": "summary-table reference radius",
+            "widthRangeMetres": [
+              4000,
+              10000
+            ],
+            "eccentricity": 0.0008,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.uranus.ring.alpha",
+          "innerMetres": 44714500.0,
+          "outerMetres": 44721500.0,
+          "selectedWidthMetres": 7000.0,
+          "geometryPolicy": "arithmetic representative of published width range; circular radial average ignores eccentricity/azimuthal width variation",
+          "rendered": true,
+          "radialCoveragePixels": 0.8909362801266241,
+          "authoredPeakAlpha": 0.48,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.uranus.ring.beta",
+            "parentId": "sol.uranus",
+            "name": "Beta",
+            "characteristicRadiusMetres": 45661000,
+            "radiusDefinition": "summary-table reference radius",
+            "widthRangeMetres": [
+              5000,
+              11000
+            ],
+            "eccentricity": 0.0004,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.uranus.ring.beta",
+          "innerMetres": 45657000.0,
+          "outerMetres": 45665000.0,
+          "selectedWidthMetres": 8000.0,
+          "geometryPolicy": "arithmetic representative of published width range; circular radial average ignores eccentricity/azimuthal width variation",
+          "rendered": true,
+          "radialCoveragePixels": 1.0182128915732847,
+          "authoredPeakAlpha": 0.48,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.uranus.ring.eta",
+            "parentId": "sol.uranus",
+            "name": "Eta",
+            "characteristicRadiusMetres": 47176000,
+            "radiusDefinition": "summary-table reference radius",
+            "widthRangeMetres": [
+              1600.0,
+              1600.0
+            ],
+            "eccentricity": null,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.uranus.ring.eta",
+          "innerMetres": 47175200.0,
+          "outerMetres": 47176800.0,
+          "selectedWidthMetres": 1600.0,
+          "geometryPolicy": "arithmetic representative of published width range; circular radial average ignores eccentricity/azimuthal width variation",
+          "rendered": true,
+          "radialCoveragePixels": 0.20364257831465693,
+          "authoredPeakAlpha": 0.48,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.uranus.ring.gamma",
+            "parentId": "sol.uranus",
+            "name": "Gamma",
+            "characteristicRadiusMetres": 47627000,
+            "radiusDefinition": "summary-table reference radius",
+            "widthRangeMetres": [
+              1000,
+              4000
+            ],
+            "eccentricity": 0.0011,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.uranus.ring.gamma",
+          "innerMetres": 47625750.0,
+          "outerMetres": 47628250.0,
+          "selectedWidthMetres": 2500.0,
+          "geometryPolicy": "arithmetic representative of published width range; circular radial average ignores eccentricity/azimuthal width variation",
+          "rendered": true,
+          "radialCoveragePixels": 0.31819152861665145,
+          "authoredPeakAlpha": 0.48,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.uranus.ring.delta",
+            "parentId": "sol.uranus",
+            "name": "Delta",
+            "characteristicRadiusMetres": 48300000,
+            "radiusDefinition": "summary-table reference radius",
+            "widthRangeMetres": [
+              3000,
+              7000
+            ],
+            "eccentricity": 0.0004,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.uranus.ring.delta",
+          "innerMetres": 48297500.0,
+          "outerMetres": 48302500.0,
+          "selectedWidthMetres": 5000.0,
+          "geometryPolicy": "arithmetic representative of published width range; circular radial average ignores eccentricity/azimuthal width variation",
+          "rendered": true,
+          "radialCoveragePixels": 0.6363830572333029,
+          "authoredPeakAlpha": 0.48,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.uranus.ring.lambda",
+            "parentId": "sol.uranus",
+            "name": "Lambda",
+            "characteristicRadiusMetres": 50024000,
+            "radiusDefinition": "summary-table reference radius",
+            "widthRangeMetres": [
+              2000,
+              2000
+            ],
+            "eccentricity": 0,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.uranus.ring.lambda",
+          "innerMetres": 50023000.0,
+          "outerMetres": 50025000.0,
+          "selectedWidthMetres": 2000.0,
+          "geometryPolicy": "arithmetic representative of published width range; circular radial average ignores eccentricity/azimuthal width variation",
+          "rendered": true,
+          "radialCoveragePixels": 0.25455322289332116,
+          "authoredPeakAlpha": 0.48,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.uranus.ring.epsilon",
+            "parentId": "sol.uranus",
+            "name": "Epsilon",
+            "characteristicRadiusMetres": 51149000,
+            "radiusDefinition": "summary-table reference radius",
+            "widthRangeMetres": [
+              20000,
+              96000
+            ],
+            "eccentricity": 0.0079,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.uranus.ring.epsilon",
+          "innerMetres": 51120000.0,
+          "outerMetres": 51178000.0,
+          "selectedWidthMetres": 58000.0,
+          "geometryPolicy": "arithmetic representative of published width range; circular radial average ignores eccentricity/azimuthal width variation",
+          "rendered": true,
+          "radialCoveragePixels": 7.382043463906314,
+          "authoredPeakAlpha": 0.48,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.uranus.ring.nu",
+            "parentId": "sol.uranus",
+            "name": "Nu",
+            "characteristicRadiusMetres": 67300000,
+            "radiusDefinition": "summary-table reference radius",
+            "widthRangeMetres": [
+              3800000,
+              3800000
+            ],
+            "eccentricity": 0,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.uranus.ring.nu",
+          "innerMetres": 65400000.0,
+          "outerMetres": 69200000.0,
+          "selectedWidthMetres": 3800000.0,
+          "geometryPolicy": "arithmetic representative of published width range; circular radial average ignores eccentricity/azimuthal width variation",
+          "rendered": true,
+          "radialCoveragePixels": 483.6511234973102,
+          "authoredPeakAlpha": 0.05,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.uranus.ring.mu",
+            "parentId": "sol.uranus",
+            "name": "Mu",
+            "characteristicRadiusMetres": 97700000,
+            "radiusDefinition": "summary-table reference radius",
+            "widthRangeMetres": [
+              17000000,
+              17000000
+            ],
+            "eccentricity": 0,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranringfact.html",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.uranus.ring.mu",
+          "innerMetres": 89200000.0,
+          "outerMetres": 106200000.0,
+          "selectedWidthMetres": 17000000.0,
+          "geometryPolicy": "arithmetic representative of published width range; circular radial average ignores eccentricity/azimuthal width variation",
+          "rendered": true,
+          "radialCoveragePixels": 2163.7023945932297,
+          "authoredPeakAlpha": 0.05,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.uranus.ring.zeta",
+            "parentId": "sol.uranus",
+            "name": "Zeta",
+            "characteristicRadiusMetres": null,
+            "widthRangeMetres": null,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://science.nasa.gov/uranus/facts/",
+            "numericStatus": "known-ring-numeric-geometry-unavailable-in-selected-source",
+            "texture": null
+          },
+          "componentId": "sol.uranus.ring.zeta",
+          "rendered": false,
+          "reason": "published numeric geometry unavailable; no invented radial band"
+        }
+      ],
+      "sourceCatalog": "Art/Space/SolarCatalog/rings.json",
+      "sourceCatalogSha256": "a1519566cd1d64d082cb40c95307066bf0f3ae6ca3124a5f382f79b5a22e7354",
+      "note": "Axisymmetric radial display. Does not reconstruct eccentric azimuthal ring edges, Neptune arcs or physical vertical halo thickness. Subpixel widths integrated by exact pixel coverage."
+    },
+    {
+      "parentId": "sol.neptune",
+      "innerMetres": 40900000.0,
+      "outerMetres": 62937500.0,
+      "texture": "Textures/neptune_rings_rgba.png",
+      "widthPixels": 8192,
+      "heightPixels": 32,
+      "radialUv": "U=(planet-centred radius-innerMetres)/(outerMetres-innerMetres); V=0.5",
+      "textureAddress": "clamp",
+      "rgbColorSpace": "sRGB",
+      "alphaColorSpace": "linear",
+      "alphaPremultiplied": false,
+      "plane": "parent-equatorial",
+      "components": [
+        {
+          "sourceRecord": {
+            "id": "sol.neptune.ring.galle",
+            "parentId": "sol.neptune",
+            "name": "Galle",
+            "characteristicRadiusMetres": 41900000,
+            "radiusDefinition": "NASA summary-table reference radius",
+            "widthMetres": 15000,
+            "widthUpperLimitMetres": null,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://science.nasa.gov/neptune/neptune-facts/",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.neptune.ring.galle",
+          "widthSupplement": {
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/nepringfact.html",
+            "reference": "NASA NSSDCA ring fact sheet, updated 2015-10-14",
+            "measuredWidthMetres": 2000000,
+            "widthUpperLimitMetres": null,
+            "note": "NASA Science original source retained. Galle width differs; Lassell/Arago geometry is absent there. Selected widths from dedicated historical table, reference radius kept from assigned catalog. Upper-limit widths choose authored 50 km representative, not a measurement."
+          },
+          "innerMetres": 40900000.0,
+          "outerMetres": 42900000.0,
+          "selectedWidthMetres": 2000000,
+          "geometryPolicy": "assigned reference radius +/- selected historical width/2; mixed-source approximate circular display model",
+          "rendered": true,
+          "radialCoveragePixels": 743.4600113442995,
+          "authoredPeakAlpha": 0.045,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.neptune.ring.leverrier",
+            "parentId": "sol.neptune",
+            "name": "Leverrier",
+            "characteristicRadiusMetres": 53200000,
+            "radiusDefinition": "NASA summary-table reference radius",
+            "widthMetres": 15000,
+            "widthUpperLimitMetres": null,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://science.nasa.gov/neptune/neptune-facts/",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.neptune.ring.leverrier",
+          "widthSupplement": {
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/nepringfact.html",
+            "reference": "NASA NSSDCA ring fact sheet, updated 2015-10-14",
+            "measuredWidthMetres": null,
+            "widthUpperLimitMetres": 100000,
+            "note": "NASA Science original source retained. Galle width differs; Lassell/Arago geometry is absent there. Selected widths from dedicated historical table, reference radius kept from assigned catalog. Upper-limit widths choose authored 50 km representative, not a measurement."
+          },
+          "innerMetres": 53175000.0,
+          "outerMetres": 53225000.0,
+          "selectedWidthMetres": 50000,
+          "geometryPolicy": "assigned reference radius +/- selected historical width/2; mixed-source approximate circular display model",
+          "rendered": true,
+          "radialCoveragePixels": 18.586500283607485,
+          "authoredPeakAlpha": 0.24,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.neptune.ring.lassell",
+            "parentId": "sol.neptune",
+            "name": "Lassell",
+            "characteristicRadiusMetres": 55400000,
+            "radiusDefinition": "NASA summary-table reference radius",
+            "widthMetres": null,
+            "widthUpperLimitMetres": null,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://science.nasa.gov/neptune/neptune-facts/",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.neptune.ring.lassell",
+          "widthSupplement": {
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/nepringfact.html",
+            "reference": "NASA NSSDCA ring fact sheet, updated 2015-10-14",
+            "measuredWidthMetres": 4000000,
+            "widthUpperLimitMetres": null,
+            "note": "NASA Science original source retained. Galle width differs; Lassell/Arago geometry is absent there. Selected widths from dedicated historical table, reference radius kept from assigned catalog. Upper-limit widths choose authored 50 km representative, not a measurement."
+          },
+          "innerMetres": 53400000.0,
+          "outerMetres": 57400000.0,
+          "selectedWidthMetres": 4000000,
+          "geometryPolicy": "assigned reference radius +/- selected historical width/2; mixed-source approximate circular display model",
+          "rendered": true,
+          "radialCoveragePixels": 1486.920022688599,
+          "authoredPeakAlpha": 0.055,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.neptune.ring.arago",
+            "parentId": "sol.neptune",
+            "name": "Arago",
+            "characteristicRadiusMetres": 57600000,
+            "radiusDefinition": "NASA summary-table reference radius",
+            "widthMetres": null,
+            "widthUpperLimitMetres": null,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://science.nasa.gov/neptune/neptune-facts/",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.neptune.ring.arago",
+          "widthSupplement": {
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/nepringfact.html",
+            "reference": "NASA NSSDCA ring fact sheet, updated 2015-10-14",
+            "measuredWidthMetres": null,
+            "widthUpperLimitMetres": 100000,
+            "note": "NASA Science original source retained. Galle width differs; Lassell/Arago geometry is absent there. Selected widths from dedicated historical table, reference radius kept from assigned catalog. Upper-limit widths choose authored 50 km representative, not a measurement."
+          },
+          "innerMetres": 57575000.0,
+          "outerMetres": 57625000.0,
+          "selectedWidthMetres": 50000,
+          "geometryPolicy": "assigned reference radius +/- selected historical width/2; mixed-source approximate circular display model",
+          "rendered": true,
+          "radialCoveragePixels": 18.58650028360749,
+          "authoredPeakAlpha": 0.16,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        },
+        {
+          "sourceRecord": {
+            "id": "sol.neptune.ring.adams",
+            "parentId": "sol.neptune",
+            "name": "Adams",
+            "characteristicRadiusMetres": 62930000,
+            "radiusDefinition": "NASA summary-table reference radius",
+            "widthMetres": null,
+            "widthUpperLimitMetres": 50000,
+            "plane": "parent-equatorial",
+            "sourceUrl": "https://science.nasa.gov/neptune/neptune-facts/",
+            "numericStatus": "approximate-published-summary",
+            "texture": null
+          },
+          "componentId": "sol.neptune.ring.adams",
+          "widthSupplement": {
+            "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/nepringfact.html",
+            "reference": "NASA NSSDCA ring fact sheet, updated 2015-10-14",
+            "measuredWidthMetres": 15000,
+            "widthUpperLimitMetres": null,
+            "note": "NASA Science original source retained. Galle width differs; Lassell/Arago geometry is absent there. Selected widths from dedicated historical table, reference radius kept from assigned catalog. Upper-limit widths choose authored 50 km representative, not a measurement."
+          },
+          "innerMetres": 62922500.0,
+          "outerMetres": 62937500.0,
+          "selectedWidthMetres": 15000,
+          "geometryPolicy": "assigned reference radius +/- selected historical width/2; mixed-source approximate circular display model",
+          "rendered": true,
+          "radialCoveragePixels": 5.575950085082246,
+          "authoredPeakAlpha": 0.28,
+          "appearancePolicy": "original display alpha/RGB for readable rings, not calibrated optical-depth-to-brightness transfer"
+        }
+      ],
+      "sourceCatalog": "Art/Space/SolarCatalog/rings.json",
+      "sourceCatalogSha256": "a1519566cd1d64d082cb40c95307066bf0f3ae6ca3124a5f382f79b5a22e7354",
+      "note": "Axisymmetric radial display. Does not reconstruct eccentric azimuthal ring edges, Neptune arcs or physical vertical halo thickness. Subpixel widths integrated by exact pixel coverage."
+    }
+  ],
+  "inoveSaturnSource": {
+    "path": "Art/Space/SolarSystem/Textures/saturn_ring_alpha.png",
+    "sha256": "4b0644b2f3ef259fd0bfaedd9dc52f9e7d9738f65f50363e8c4dd19f650d7334",
+    "originalRadialRangeMetres": [
+      74500000,
+      140220000
+    ],
+    "credit": "Solar System Scope / INOVE",
+    "licence": "CC BY 4.0",
+    "adaptation": "reprojected radial RGB/alpha sample into full Saturn physical-radius view"
+  }
+}

@@ -39,11 +39,15 @@ switch($Mode){
     $index=Join-Path $report 'index.json'
     if(-not (Test-Path -LiteralPath $index)){throw 'Missing automation report.'}
     $r=Get-Content -LiteralPath $index -Raw | ConvertFrom-Json
-    if($r.failed -ne 0 -or $r.notRun -ne 0 -or $r.inProcess -ne 0 -or $r.succeeded -lt 15){throw 'Suite incomplete or failed.'}
+    if($r.failed -ne 0 -or $r.notRun -ne 0 -or $r.inProcess -ne 0 -or $r.succeeded -lt 19){throw 'Suite incomplete or failed.'}
     $names=@('ThrottleAccelerationBraking','TurnPitchBankAndDrift','PartitionsPauseAndValidation','LargeCoordinateSweptContact')
     foreach($name in $names){
         $test=@($r.tests | Where-Object {$_.fullTestPath -eq "Daedalus.Flight.$name"})
         if($test.Count -ne 1 -or $test[0].state -ne 'Success'){throw "Required flight check failed: $name"}
+    }
+    foreach($name in @('CatalogRollback','LocalGalacticDistances','ETABoundaries','SelectionLocationCommands')){
+        $test=@($r.tests | Where-Object {$_.fullTestPath -eq "Daedalus.Navigation.$name"})
+        if($test.Count -ne 1 -or $test[0].state -ne 'Success'){throw "Required navigation check failed: $name"}
     }
     $r | Select-Object succeeded,failed,notRun,inProcess
     Write-Output "Report: $report"

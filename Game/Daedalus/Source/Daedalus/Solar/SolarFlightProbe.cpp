@@ -33,9 +33,10 @@ void ASolarFlightGameMode::TickProbe()
         if((ProbeFrame-950)%30==25 && (Index==0 || Index==5 || Index==6 || Index==9 || Index==8)){
             const FString Name=BodyDefinitions[Index].Id.Mid(4)+TEXT(".png");Shot(*Name);}
     }
+    if(ProbeFrame>=2155) TickGalaxyProbe();
     switch(ProbeFrame)
     {
-    case 30:Check(bReady && Ship && HullLights && EngineOutletCount()==6 && Earth && Sun && StarCount()==8920 && BodyDefinitions.Num()==37 && BodyMeshes.Num()==37 && RingCount()==2 && ShipDetails.Num()==39,TEXT("staged model lights engines Earth Sun stars"));Shot(TEXT("earth.png"));break;
+    case 30:Check(bReady && Ship && HullLights && EngineOutletCount()==6 && Earth && Sun && StarCount()==8920 && BodyDefinitions.Num()==506 && BodyMeshes.Num()==506 && RingCount()==4 && MapSystems.Num()==6 && ShipDetails.Num()==39,TEXT("staged model lights engines Earth Sun stars"));Shot(TEXT("earth.png"));break;
     case 40:Tap(EKeys::E);break;
     case 45:Check(FMath::Abs(S.Throttle-.2)<.001 && FMath::Abs(EngineGlowLevel-.264)<.001,TEXT("E persistent20pct and motor brightness"));Tap(EKeys::R);break;
     case 50:Check(S.Throttle==0,TEXT("R stops throttle"));Tap(EKeys::R);break;
@@ -69,8 +70,7 @@ void ASolarFlightGameMode::TickProbe()
         Check(GEngine->GameViewport && GEngine->GameViewport->Viewport && GEngine->GameViewport->Viewport->GetSizeXY()==FIntPoint(3840,2160) && IConsoleManager::Get().FindConsoleVariable(TEXT("r.ScreenPercentage"))->GetFloat()==100,TEXT("native3840x2160 no upscale"));
         Check(Flight.GetPendingSeconds()<.02 && Flight.GetError().IsEmpty(),TEXT("stable fixedstep"));
         Check(IFileManager::Get().FileSize(*FPaths::Combine(ProbeDirectory,TEXT("earth.png")))>100 && IFileManager::Get().FileSize(*FPaths::Combine(ProbeDirectory,TEXT("turn.png")))>100 && IFileManager::Get().FileSize(*FPaths::Combine(ProbeDirectory,TEXT("sun.png")))>100,TEXT("rendered images written"));
-        bProbePassed=FFileHelper::SaveStringToFile(FString::Printf(TEXT("{\"passed\":%s,\"stars\":%d,\"profile\":%d,\"frames\":%d}"),bProbePassed?TEXT("true"):TEXT("false"),StarCount(),ProfileIndex,ProbeFrame),*FPaths::Combine(ProbeDirectory,TEXT("result.json"))) && bProbePassed;
-        FPlatformMisc::RequestExitWithStatus(false,bProbePassed?0:1);break;
+        break;
     }
 }
 

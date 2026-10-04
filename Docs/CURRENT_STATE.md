@@ -11,7 +11,7 @@ Fullspeed2.5s,strictno drift,smoothbank/pitchlimits,brighterstars/MilkyWay,
 PgUp/PgDnselect,Fdevelopmentinspection; nothyperspacetravel.
 Final15tests,WindowsIoStorepackage,2150-frameactual3840x2160input/renderprobe,
 all37visitsandfoundationseparateprocessrestartPASS. See0010HANDOFFforpaths.
-SourcespublishwithLFS;DELIVERYrecordsindependentremoteverificationafterpush.
+Source6c8db7bpublishedwithLFS;all237source/assetsindependentlydownloadedandSHA256/sizeverified. SeeTasks/0010/DELIVERY.md.
 Staticrepresentativeepochnotcurrentephemerides;unknownphotomapsareschematic.
 Solarposepersistence isfuturework; existingfoundationpersistenceremainsverified.
 Rootnowworking0016realisticSolcatalogand3Dgalaxy/navigation. Claude0015 owns
@@ -112,4 +112,5 @@ A 2002-definition test is not a performance promise for 2002 detailed battles.
 A Claude introductory report arrived through GitHub while foundation work was in progress. See AgentChecks/COORDINATOR_REVIEW.md: file/tool fallbacks are reported successful, while live client connections need verification after session restart. The separate task 0001 is now ACCEPTED: Codex retrieved both checkpoints directly from GitHub and verified the permitted text-only scope (Tasks/0001/REVIEW.md). The assistant's original worker checkout/branch is
 retained locally; the corrected, accepted module is published in the coordinator
 branch. Source delivery does not depend on publishing that historical branch.
+
 

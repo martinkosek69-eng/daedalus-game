@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "reviewedDate": "2026-10-04",
+  "note": "Selected numerical scientific facts transcribed from cited NASA-hosted research; not a reproduction or relicensing of the copyrighted paper.",
+  "measurements": [
+    {
+      "bodyId": "sol.eris",
+      "radiusMetres": 1163000,
+      "radiusSigmaMetres": 6000,
+      "method": "stellar occultation; 2010 event",
+      "reference": "Sicardy et al. (2011), as reported in Holler et al., Icarus 355 (2021), section 4, page 6",
+      "sourceUrl": "https://ntrs.nasa.gov/api/citations/20210012932/downloads/21-49.pdf",
+      "doi": "10.1016/j.icarus.2020.114130",
+      "uncertainty": "Quoted published radius uncertainty; preferred to older 1200 +/- 50 km HST radius still on JPL summary table. Does not supply a resolved surface map."
+    },
+    {
+      "bodyId": "sol.eris.moon.s_2005_136199_1",
+      "radiusMetres": 350000,
+      "radiusSigmaMetres": 57500,
+      "method": "thermal observations; modeled radius",
+      "reference": "Brown and Butler (2018), as reported in Holler et al., Icarus 355 (2021), section 4, page 6",
+      "sourceUrl": "https://ntrs.nasa.gov/api/citations/20210012932/downloads/21-49.pdf",
+      "doi": "10.1016/j.icarus.2020.114130",
+      "uncertainty": "Large model uncertainty; not a measured terrain mesh or current orbit solution."
+    }
+  ]
+}

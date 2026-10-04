@@ -45,3 +45,10 @@ smallseparations, vector direction, zero/invalid inputs, IDs/cycles/rollback,
 targetselectiondoesnotmove, activelocationchange andcatalogrefresh semantics.
 Don't modifyexistingflighttests. ExposedstructsvalueonlynoUObjects.
 Finalhandoff actualfilechanges/checks, root integration/buildpending.
+
+## Root-authorized adapter continuation
+2026-10-04: after handing off pure navigation, helper additionally owns only
+Solar/SolarSystem.cpp for generic validated universe loading, active scene,
+owned actor cleanup and explicit test activation. Root froze shared header;
+approved MeshPath field and meshAsset parsing plus derived Air/Ring paths.
+Root owns Pawn/HUD/map actions, asset imports, applications, builds and Git.

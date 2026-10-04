@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "galaxyModel": "illustrative-barred-spiral-informed-by-ESA-Gaia",
+  "systems": [
+    {
+      "id": "sol",
+      "name": "Sluneční soustava",
+      "galaxyPositionLightYears": [
+        26000,
+        0,
+        0
+      ],
+      "primaryStarId": "sol.sun",
+      "available": true,
+      "catalog": "Data/Solar/system.json",
+      "stellarColor": "#fff4df"
+    },
+    {
+      "id": "fic.asterion",
+      "name": "Asterion",
+      "galaxyPositionLightYears": [
+        25970,
+        40,
+        20
+      ],
+      "primaryStarId": "fic.asterion.sun",
+      "stellarColor": "#fff1df",
+      "available": true,
+      "catalog": "Data/Systems/Asterion/system.json"
+    },
+    {
+      "id": "fic.velara",
+      "name": "Velara",
+      "galaxyPositionLightYears": [
+        25400,
+        300,
+        100
+      ],
+      "primaryStarId": "fic.velara.sun",
+      "stellarColor": "#ffd2a1",
+      "available": true,
+      "catalog": "Data/Systems/Velara/system.json"
+    },
+    {
+      "id": "fic.nivara",
+      "name": "Nivara",
+      "galaxyPositionLightYears": [
+        7000,
+        -7000,
+        -120
+      ],
+      "primaryStarId": "fic.nivara.sun",
+      "stellarColor": "#ff9d63",
+      "available": true,
+      "catalog": "Data/Systems/Nivara/system.json"
+    },
+    {
+      "id": "fic.caelum",
+      "name": "Caelum",
+      "galaxyPositionLightYears": [
+        -28000,
+        14000,
+        180
+      ],
+      "primaryStarId": "fic.caelum.sun",
+      "stellarColor": "#eaf0ff",
+      "available": true,
+      "catalog": "Data/Systems/Caelum/system.json"
+    },
+    {
+      "id": "fic.morava",
+      "name": "Morava",
+      "galaxyPositionLightYears": [
+        35000,
+        -22000,
+        -80
+      ],
+      "primaryStarId": "fic.morava.sun",
+      "stellarColor": "#ffe3c0",
+      "available": true,
+      "catalog": "Data/Systems/Morava/system.json"
+    }
+  ]
+}

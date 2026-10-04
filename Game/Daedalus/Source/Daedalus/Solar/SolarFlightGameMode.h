@@ -4,6 +4,7 @@
 #include "GameFramework/Pawn.h"
 #include "GameFramework/HUD.h"
 #include "DaedalusFlightModel.h"
+#include "Solar/GalaxyMapView.h"
 #include "SolarFlightGameMode.generated.h"
 
 class UCameraComponent;
@@ -36,12 +37,13 @@ private:
     void Yaw(float V) { YawInput = V; }
     void Pitch(float V) { PitchInput = V; }
     void MouseX(float V); void MouseY(float V);
-    void OrbitOn() { bOrbit = true; bFollowShip = false; } void OrbitOff() { bOrbit = false; }
+    void OrbitOn(); void OrbitOff() { bOrbit = false; }
     void BrakeOn(); void BrakeOff() { bBrake = false; }
     void MoreThrottle(); void LessThrottle(); void ToggleThrottle();
     void ZoomIn(); void ZoomOut();
     void Slow(); void Fast(); void ResetFlight(); void PauseFlight(); void ExitGame();
     void NextBody(); void PreviousBody(); void InspectBody();
+    void ToggleMap();
 };
 
 UCLASS()
@@ -61,11 +63,30 @@ struct FSolarFlightProfile
 // Immutable canonical metres; projected meshes below are presentation only.
 struct FSolarBodyDefinition
 {
-    FString Id, Name, ParentId, Kind;
+    FString Id, Name, ParentId, Kind, MaterialPath, MapMaterialPath, SourceQuality, MeshPath;
     FVector3d Position = FVector3d::ZeroVector, Shape = FVector3d(1);
     double Radius = 0, RotationHours = 0, Tilt = 0;
     double RingInner = 0, RingOuter = 0;
     bool bAtmosphere = false;
+    bool bKnownRadius = true, bKnownPosition = true;
+};
+
+struct FSolarBeltDefinition
+{
+    FString ParentId, Geometry;
+    double Inner = 0, Outer = 0, LongitudeOffset = 0;
+    int32 Count = 0, Seed = 0;
+};
+
+struct FSolarSystemDefinition
+{
+    FString Id, Name, PrimaryStarId;
+    FVector3d GalaxyLightYears = FVector3d::ZeroVector;
+    FLinearColor StellarColor = FLinearColor::White;
+    bool bAvailable = false;
+    TArray<FSolarBodyDefinition> Bodies;
+    TArray<FSolarBeltDefinition> Belts;
+    TArray<FGalaxyRegionView> Regions;
 };
 
 UCLASS()
@@ -96,6 +117,16 @@ public:
     void SelectBody(int32 Step);
     void InspectSelectedBody();
     int32 RingCount() const { return RingMeshes.Num(); }
+    TArray<FSolarSystemDefinition> Systems;
+    TArray<FGalaxySystemView> MapSystems;
+    int32 ActiveSystem = 0;
+    FGalaxyMapView Galaxy;
+    Daedalus::FNavigationPlan Navigation, PreviewNavigation;
+    Daedalus::FNavigationMetrics PreviewMetrics() const;
+    void ToggleMap();
+    void HandleMapAction(const FMapAction& Action);
+    bool ActivateSystem(int32 Index, int32 BodyIndex);
+    void RefreshNavigation();
 private:
     Daedalus::FFlightState InitialState;
     TArray<Daedalus::FFlightBody> Bodies;
@@ -124,6 +155,8 @@ private:
     TArray<int32> RingBodies;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> ShipDetails;
     UPROPERTY() TObjectPtr<UStaticMeshComponent> Sky;
+    UPROPERTY() TObjectPtr<UStaticMeshComponent> UnknownMarker;
+    UPROPERTY() TArray<TObjectPtr<UMaterialInterface>> MapMaterials;
     UPROPERTY() TObjectPtr<ADirectionalLight> SolarLight;
     UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Belt;
     TArray<FVector3d> BeltPositions;
@@ -136,6 +169,8 @@ private:
     bool LoadSettings();
     bool LoadSystem();
     bool CreateSystem();
+    void ClearSystem();
+    void ConfigureActiveBodies(int32 Index);
     void UpdateSystem(const FVector& CameraPosition);
     bool CreateScene();
     void UpdateScene(float DeltaSeconds);
@@ -146,4 +181,5 @@ private:
     double ProbeYaw = 0, ProbePitch = 0, ProbeClock = 0;
     TArray<double> ProbeFrameTimes;
     void TickProbe();
+    void TickGalaxyProbe();
 };

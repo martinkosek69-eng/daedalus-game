@@ -11,16 +11,27 @@ def main():
     fingerprint.update(web_source.read_bytes())
     for source in sorted((base/'Art/Space/SolarSystem').rglob('*'))+sorted((base/'Art/Ships/Daedalus/Textures').glob('*.png'))+[base/'Art/Ships/Daedalus/DaedalusAddOns.glb',base/'Art/Ships/Daedalus/DaedalusTurrets.glb',base/'Game/Daedalus/Content/Data/Solar/system.json',base/'Tools/Prepare-SolarSystemMaterials.py',base/'Tools/Prepare-DaedalusMaterials.py']:
         if source.is_file():fingerprint.update(source.read_bytes())
+    # Catalogs and explicit texture sources across independently delivered
+    # systems participate in the same cache recipe as every ship dependency.
+    expanded=[]
+    for directory in ('Art/Space/SolarCatalog','Art/Space/SolarDetails','Art/Space/Systems','Game/Daedalus/Content/Data/Systems'):
+        expanded+=list((base/directory).rglob('*'))
+    expanded+=[base/'Game/Daedalus/Content/Data/Solar/universe.json',base/'Tools/Prepare-SolarDetails.py',base/'Tools/Fetch-SolarMinorCatalog.py']
+    for source in sorted(set(expanded)):
+        if source.is_file():
+            fingerprint.update(source.relative_to(base).as_posix().encode('utf-8'))
+            fingerprint.update(source.read_bytes())
     recipe=fingerprint.hexdigest()
     existing=unreal.load_asset('/Game/Ships/Daedalus/SM_Daedalus')
     required=['M_Earth','M_Sun','M_Atmosphere','M_Star','M_Dust','M_Daedalus_EngineGlowCore','M_Daedalus_EngineGlowPlume','M_Daedalus_Glass']
-    catalog=json.loads((base/'Game/Daedalus/Content/Data/Solar/system.json').read_text(encoding='utf-8-sig'))
+    materials_file=base/'Tools/Prepare-SolarSystemMaterials.py'
+    materials_spec=importlib.util.spec_from_file_location('SolarMaterialsRecipe',materials_file)
+    system_recipe=importlib.util.module_from_spec(materials_spec)
+    materials_spec.loader.exec_module(system_recipe)
     paths=['/Game/Solar/Materials/'+name for name in required]
     paths+=['/Game/Solar/SM_SolarRock','/Game/Solar/Materials/M_Sky','/Game/Solar/Materials/M_Rock','/Game/Ships/Daedalus/Details/SM_DaedalusAddOns','/Game/Maps/SolarFlight','/Game/Ships/Daedalus/WebReference/SM_WebDaedalus']
-    for row in catalog['bodies']:
-        paths.append('/Game/Solar/Materials/M_Body_'+row['id'][4:])
-        if 'atmosphereColor' in row:paths.append('/Game/Solar/Materials/M_Air_'+row['id'][4:])
-        if 'ringTexture' in row:paths.append('/Game/Solar/Materials/M_Ring_'+row['id'][4:])
+    paths+=system_recipe.required_material_paths(base)
+    paths+=system_recipe.required_mesh_paths(base)
     detail_data=base/'Game/Daedalus/Content/Data/Solar/ship-details.json'
     if detail_data.exists(): paths+=json.loads(detail_data.read_text())['meshes']
     for filename in ['Daedalus.glb','DaedalusAddOns.glb','DaedalusTurrets.glb']:
@@ -249,7 +260,7 @@ def main():
     assert len(turrets)==38,(len(turrets),turret_task.imported_object_paths)
     for mesh in turrets:ship_recipe.assign_materials(root,unreal,tools,lib,mesh,'DaedalusTurrets.glb')
     (root/'Game/Daedalus/Content/Data/Solar/ship-details.json').write_text(json.dumps({'version':1,'meshes':[m.get_path_name() for m in turrets]},indent=2)+'\n')
-    module('Prepare-SolarSystemMaterials.py').prepare(root,unreal,tools,lib,imported,material,node,constant,vector,texture,custom,finish)
+    system_recipe.prepare(root,unreal,tools,lib,imported,material,node,constant,vector,texture,custom,finish)
     assign_source_materials(web,'WebReference/WebDaedalus.glb',web_recipe=True)
     assign_source_materials(lights,'DaedalusLights.glb',True)
     for mesh in glows:assign_source_materials(mesh,'DaedalusEngineGlow.glb',True)

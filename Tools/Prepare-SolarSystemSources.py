@@ -21,7 +21,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "Art/Space/SolarSystem"
 TEXTURES = ART / "Textures"
-CATALOG = ROOT / "Game/Daedalus/Content/Data/Solar/system.json"
+CATALOG = ROOT / "Art/Space/SolarSystem/system-reference.json"
 SUN = np.array([105781669000.0, -105781669000.0, 0.0])
 
 
