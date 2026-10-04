@@ -3,8 +3,10 @@
 #include "Engine/Canvas.h"
 #include "Engine/Engine.h"
 #include "Engine/Font.h"
+#include "GameFramework/PlayerController.h"
 #include "CanvasItem.h"
 #include "Solar/SolarHUDShipData.inl"
+#include "Solar/SolarHUDAuroraData.inl"
 
 namespace
 {
@@ -125,18 +127,19 @@ struct FInstruments
         Line({X + 10, Y + 31}, {X + W - 10, Y + 31}, Alpha(Metal, .75f));
     }
 
-    void Hull(FVector2D Centre, float H, FLinearColor Color, int32 Weapon = INDEX_NONE) const
+    void Hull(FVector2D Centre, float H, FLinearColor Color, int32 Weapon = INDEX_NONE, bool bAurora = false) const
     {
-        const float W = H * SolarHUDShipData::HullAspect;
+        const float W = H * (bAurora ? SolarHUDAuroraData::HullAspect : SolarHUDShipData::HullAspect);
         const FVector2D Top = Centre - FVector2D(W, H) * .5;
-        const int32 Count = UE_ARRAY_COUNT(SolarHUDShipData::Hull);
+        const auto* HullPoints = bAurora ? SolarHUDAuroraData::Hull : SolarHUDShipData::Hull;
+        const int32 Count = bAurora ? UE_ARRAY_COUNT(SolarHUDAuroraData::Hull) : UE_ARRAY_COUNT(SolarHUDShipData::Hull);
         for (int32 I = 0; I < Count; ++I)
         {
-            const auto& A = SolarHUDShipData::Hull[I];
-            const auto& B = SolarHUDShipData::Hull[(I + 1) % Count];
+            const auto& A = HullPoints[I];
+            const auto& B = HullPoints[(I + 1) % Count];
             Line(Top + FVector2D(A.X * W, A.Y * H), Top + FVector2D(B.X * W, B.Y * H), Color);
         }
-        if (Weapon != INDEX_NONE) for (const auto& Mount : SolarHUDShipData::Mounts)
+        if (Weapon != INDEX_NONE && !bAurora) for (const auto& Mount : SolarHUDShipData::Mounts)
         {
             if (Mount.Group != Weapon) continue;
             const FVector2D Point = Top + FVector2D(Mount.Position.X * W, Mount.Position.Y * H);
@@ -260,12 +263,12 @@ void DrawDock(const FInstruments& D, const ASolarFlightGameMode& Lab)
     for (int32 I = 0; I < 4; ++I) D.Arc(C, 77, -132 + I * 90, -48 + I * 90, Blue, 2.4f);
     D.Arc(C, 57, 0, 360, Alpha(Green, .12f));
     D.Line(C - FVector2D(0, 58), C + FVector2D(0, 58), Alpha(Green, .18f));
-    D.Hull(C, 115, Green);
+    D.Hull(C, 115, Green, INDEX_NONE, Lab.ActiveShip == 1);
     D.Text(TEXT("PŘÍĎ"), C.X, C.Y - 67, Muted, 8, 40, true);
     D.Text(TEXT("ZÁĎ"), C.X, C.Y + 60, Muted, 8, 40, true);
     D.Rect(X + 17, Y + 187, 154, 21, Plate);
     D.Line({X + 17, Y + 187}, {X + 171, Y + 187}, Metal);
-    D.Text(TEXT("DAEDALUS"), C.X, Y + 191, White, 12, 140, true);
+    D.Text(Lab.ActiveShip == 1 ? TEXT("AURORA") : TEXT("DAEDALUS"), C.X, Y + 191, White, 12, 140, true);
     X += 196;
 
     D.Panel(X, Y, 175, H, TEXT("POHON"), TEXT("ENG"));
@@ -290,8 +293,10 @@ void DrawDock(const FInstruments& D, const ASolarFlightGameMode& Lab)
     X += 183;
 
     D.Panel(X, Y, 365, H, TEXT("ZBRAŇOVÉ SYSTÉMY"), TEXT("WPN"));
-    const TCHAR* Groups[] = {TEXT("VĚŽE"), TEXT("RAKETY"), TEXT("PAPRSKY")};
-    const TCHAR* Labels[] = {TEXT("Railguny"), TEXT("Příďová sila"), TEXT("Emitory")};
+    const TCHAR* Groups[] = {Lab.ActiveShip == 1 ? TEXT("DRONY") : TEXT("VĚŽE"),
+        Lab.ActiveShip == 1 ? TEXT("PULZY") : TEXT("RAKETY"), Lab.ActiveShip == 1 ? TEXT("REZERVA") : TEXT("PAPRSKY")};
+    const TCHAR* Labels[] = {Lab.ActiveShip == 1 ? TEXT("Antické drony") : TEXT("Railguny"),
+        Lab.ActiveShip == 1 ? TEXT("Emitory") : TEXT("Příďová sila"), Lab.ActiveShip == 1 ? TEXT("—") : TEXT("Emitory")};
     const FLinearColor Colors[] = {Copper, Amber, Beam};
     for (int32 I = 0; I < 3; ++I)
     {
@@ -301,7 +306,7 @@ void DrawDock(const FInstruments& D, const ASolarFlightGameMode& Lab)
         D.Line({Left, Y + 42}, {Left, Y + 183}, Alpha(Metal, .7f));
         D.Text(Groups[I], Left + 7, Y + 49, Colors[I], 10, 96);
         D.Rect(Left + 6, Y + 69, 98, 76, Ink);
-        D.Hull({Left + 55, Y + 107}, 67, Muted, I);
+        D.Hull({Left + 55, Y + 107}, 67, Muted, I, Lab.ActiveShip == 1);
         D.Line({Left + 9, Y + 74}, {Left + 9, Y + 87}, Colors[I]);
         D.Line({Left + 9, Y + 74}, {Left + 18, Y + 74}, Colors[I]);
         D.Line({Left + 101, Y + 129}, {Left + 101, Y + 140}, Colors[I]);
@@ -315,7 +320,7 @@ void DrawDock(const FInstruments& D, const ASolarFlightGameMode& Lab)
 void DrawComputer(const FInstruments& D, const ASolarFlightGameMode& Lab)
 {
     const float X = D.Width - 282, Y = D.Height * .035f;
-    D.Panel(X, Y, 230, 174, TEXT("PALUBNÍ POČÍTAČ"), TEXT("304"));
+    D.Panel(X, Y, 230, 174, TEXT("PALUBNÍ POČÍTAČ"), Lab.ActiveShip == 1 ? TEXT("ANC") : TEXT("304"));
     const TCHAR* Labels[] = {TEXT("Navigace"), TEXT("Skenování"), TEXT("Údaje o lodi"), TEXT("Hyperpohon")};
     for (int32 I = 0; I < 4; ++I)
     {
@@ -341,6 +346,29 @@ void DrawComputer(const FInstruments& D, const ASolarFlightGameMode& Lab)
     D.Text(TargetName, X + 18, Y + 119, Blue, 9, 194);
     D.Text(Nav.bValid ? RangeText : TEXT("Funkce doplníme později"), X + 18, Y + 139, Muted, 9, 194);
 }
+
+void DrawPauseMenu(const FInstruments& D, const ASolarFlightGameMode& Lab)
+{
+    const auto V = BuildSolarPauseView(Lab, FVector2D(D.Canvas->SizeX, D.Canvas->SizeY));
+    D.Rect(0,0,D.Width,D.Height,FLinearColor(0,0,0,.75f));
+    D.Panel(V.X,V.Y,V.Width,V.Height,V.Title,TEXT("PAUSE"));
+    D.Text(V.Description,V.X+18,V.Y+45,Muted,10,V.Width-36);
+    float MouseX=0,MouseY=0;
+    if(auto* PC=Lab.GetWorld()->GetFirstPlayerController())PC->GetMousePosition(MouseX,MouseY);
+    for(const auto& B:V.Buttons)
+    {
+        const FVector2D A=B.Pixels.Min/V.Scale,Size=B.Pixels.GetSize()/V.Scale;
+        const bool Hover=B.bEnabled&&B.Pixels.IsInside(FVector2D(MouseX,MouseY));
+        D.Rect(A.X,A.Y,Size.X,Size.Y,Hover?FLinearColor(.04f,.075f,.10f):Ink);
+        D.Line(A,A+FVector2D(Size.X,0),B.bSelected?Green:Hover?Blue:Metal);
+        D.Rect(A.X,A.Y,3,Size.Y,B.bSelected?Green:Hover?Blue:Metal);
+        D.Text(B.Label,A.X+14,A.Y+8,B.bEnabled||B.bSelected?White:Muted,12,205);
+        D.Text(B.Hint,A.X+14,A.Y+27,B.bSelected?Green:Muted,9,Size.X-28);
+        if(B.bSelected)D.Text(TEXT("AKTIVNÍ"),A.X+Size.X-86,A.Y+9,Green,10,72);
+    }
+    D.Text(TEXT("P — ZPĚT DO HRY"),V.X+18,V.Y+V.Height-25,Muted,9,V.Width-36);
+    if(!Lab.Message.IsEmpty())D.Text(Lab.Message,V.X,V.Y+V.Height+10,Amber,11,V.Width);
+}
 }
 
 void ASolarFlightHUD::DrawHUD()
@@ -360,6 +388,7 @@ void ASolarFlightHUD::DrawHUD()
     DrawRadar(D, *Lab);
     DrawDock(D, *Lab);
     DrawComputer(D, *Lab);
+    if(Lab->bPaused){DrawPauseMenu(D,*Lab);return;}
     float WarningY = 35;
     auto Warning = [&](const FString& Message, FLinearColor Color)
     {

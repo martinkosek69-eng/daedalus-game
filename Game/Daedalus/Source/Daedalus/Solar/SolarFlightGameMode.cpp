@@ -95,11 +95,11 @@ void ASolarFlightPawn::SetupPlayerInputComponent(UInputComponent* Input)
     Input->BindKey(EKeys::H, IE_Pressed, this, &ASolarFlightPawn::ToggleHangars);
 }
 void ASolarFlightPawn::ToggleHangars(){if(auto* M=Lab(this))M->ToggleHangars();}
-void ASolarFlightPawn::ToggleMap(){if(auto* M=Lab(this);M && !M->Galaxy.bSearchFocused) M->ToggleMap();}
-void ASolarFlightPawn::NextBody(){if(auto* M=Lab(this);M && !M->Galaxy.bOpen)M->SelectBody(1);}
-void ASolarFlightPawn::PreviousBody(){if(auto* M=Lab(this);M && !M->Galaxy.bOpen)M->SelectBody(-1);}
-void ASolarFlightPawn::InspectBody(){if(auto* M=Lab(this);M && !M->Galaxy.bOpen)M->InspectSelectedBody();}
-void ASolarFlightPawn::OrbitOn(){if(auto* M=Lab(this);M && !M->Galaxy.bOpen){bOrbit=true;bFollowShip=false;}}
+void ASolarFlightPawn::ToggleMap(){if(auto* M=Lab(this);M && !M->bPaused && !M->Galaxy.bSearchFocused) M->ToggleMap();}
+void ASolarFlightPawn::NextBody(){if(auto* M=Lab(this);M && !M->bPaused && !M->Galaxy.bOpen)M->SelectBody(1);}
+void ASolarFlightPawn::PreviousBody(){if(auto* M=Lab(this);M && !M->bPaused && !M->Galaxy.bOpen)M->SelectBody(-1);}
+void ASolarFlightPawn::InspectBody(){if(auto* M=Lab(this);M && !M->bPaused && !M->Galaxy.bOpen)M->InspectSelectedBody();}
+void ASolarFlightPawn::OrbitOn(){if(auto* M=Lab(this);M && !M->bPaused && !M->Galaxy.bOpen){bOrbit=true;bFollowShip=false;}}
 void ASolarFlightPawn::MouseX(float V) { if (bOrbit && Lab(this) && !Lab(this)->Galaxy.bOpen) OrbitYaw = FRotator::NormalizeAxis(OrbitYaw + V * .344f); }
 void ASolarFlightPawn::MouseY(float V) { if (bOrbit && Lab(this) && !Lab(this)->Galaxy.bOpen) OrbitPitch = FMath::Clamp(OrbitPitch + V * .344f, -65.0f, 85.0f); }
 void ASolarFlightPawn::MoreThrottle() { if (auto* M = Lab(this)) M->ChangeThrottle(.2); }
@@ -115,23 +115,33 @@ void ASolarFlightPawn::ToggleThrottle()
 void ASolarFlightPawn::FullImpulse() { if (auto* M = Lab(this)) M->ToggleFullImpulse(); }
 void ASolarFlightPawn::BrakeOn()
 {
-    if(auto* M=Lab(this); !M || M->Galaxy.bOpen) return;
+    if(auto* M=Lab(this); !M || M->bPaused || M->Galaxy.bOpen) return;
     bBrake = true;
     if (auto* M = Lab(this)) { if (M->ProfileIndex == 2) M->SetProfile(1); FString Error; M->Flight.SetThrottle(0, Error); }
 }
 void ASolarFlightPawn::ResetCamera() { OrbitYaw = OrbitPitch = 0; bFollowShip = true; bCameraInitialized = false; }
-void ASolarFlightPawn::ZoomIn() { if(Lab(this) && !Lab(this)->Galaxy.bOpen) CameraDistanceMetres = FMath::Max(650.0, CameraDistanceMetres / 1.12); }
-void ASolarFlightPawn::ZoomOut() { if(Lab(this) && !Lab(this)->Galaxy.bOpen) CameraDistanceMetres = FMath::Min(6000.0, CameraDistanceMetres * 1.12); }
+void ASolarFlightPawn::ZoomIn() { if(auto* M=Lab(this);M && !M->bPaused && !M->Galaxy.bOpen) CameraDistanceMetres = FMath::Max(M->CameraMinMetres, CameraDistanceMetres / 1.12); }
+void ASolarFlightPawn::ZoomOut() { if(auto* M=Lab(this);M && !M->bPaused && !M->Galaxy.bOpen) CameraDistanceMetres = FMath::Min(M->CameraMaxMetres, CameraDistanceMetres * 1.12); }
 void ASolarFlightPawn::Slow() { if (auto* M = Lab(this)) M->SetProfile(0); }
 void ASolarFlightPawn::Fast() { if (auto* M = Lab(this)) M->SetProfile(1); }
-void ASolarFlightPawn::ResetFlight() { if(auto* M=Lab(this);M && M->Galaxy.bOpen)return; bBrake = false; if (auto* M = Lab(this)) M->ResetFlight(); ResetCamera(); }
+void ASolarFlightPawn::ResetFlight() { if(auto* M=Lab(this);M && (M->bPaused || M->Galaxy.bOpen))return; bBrake = false; if (auto* M = Lab(this)) M->ResetFlight(); ResetCamera(); }
 void ASolarFlightPawn::PauseFlight() { if (auto* M = Lab(this)) M->TogglePause(); }
-void ASolarFlightPawn::ExitGame() { if(auto* M=Lab(this);M && M->Galaxy.bOpen){M->ToggleMap();return;} if (auto* PC = Cast<APlayerController>(Controller)) PC->ConsoleCommand(TEXT("quit")); }
+void ASolarFlightPawn::ExitGame() { if(auto* M=Lab(this);M && M->Galaxy.bOpen){M->ToggleMap();return;} if(auto* M=Lab(this);M && M->bPaused){M->TogglePause();return;} if (auto* PC = Cast<APlayerController>(Controller)) PC->ConsoleCommand(TEXT("quit")); }
 void ASolarFlightPawn::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
     auto* M = Lab(this);
     if (!M || !M->bReady) return;
+    if (M->bPaused)
+    {
+        auto* PC=Cast<APlayerController>(Controller); if(!PC) return;
+        if(PC->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+        {
+            float X=0,Y=0; PC->GetMousePosition(X,Y); int32 W=0,H=0;PC->GetViewportSize(W,H);
+            M->HandlePauseMenuClick(FVector2D(X,Y),FVector2D(W,H));
+        }
+        return;
+    }
     if(M->Galaxy.bOpen)
     {
         FString Error; M->Flight.SetInput({},Error);
@@ -179,7 +189,7 @@ void ASolarFlightPawn::Tick(float DeltaSeconds)
     // Only the following heading has lag, as in the web prototype.
     const FRotator Rotation(FMath::Clamp(FollowPitch - 18.3f + OrbitPitch,-85.f,85.f), FollowYaw + OrbitYaw, 0);
     bCameraInitialized = true;
-    const FVector Focus(0, 0, -6000);
+    const FVector Focus(0, 0, -M->ShipLengthMetres * 10);
     Camera->SetWorldLocationAndRotation(Focus - Rotation.Vector() * CameraDistanceMetres * 100.0, Rotation);
 }
 
@@ -196,6 +206,8 @@ ASolarFlightGameMode::ASolarFlightGameMode()
     static ConstructorHelpers::FObjectFinder<UMaterialInterface> StarFinder(TEXT("/Game/Solar/Materials/M_Star.M_Star"));
     static ConstructorHelpers::FObjectFinder<UMaterialInterface> DustFinder(TEXT("/Game/Solar/Materials/M_Dust.M_Dust"));
     ShipAsset = ShipFinder.Object; SphereAsset = SphereFinder.Object; PlaneAsset = PlaneFinder.Object;
+    static ConstructorHelpers::FObjectFinder<UStaticMesh> AuroraFinder(TEXT("/Game/Ships/Aurora/SM_Aurora.SM_Aurora"));
+    AuroraAsset = AuroraFinder.Object;
     ConstructorHelpers::FObjectFinder<UStaticMesh> LightsFinder(TEXT("/Game/Ships/Daedalus/Effects/DaedalusLights/StaticMeshes/Daedalus_WindowLights.Daedalus_WindowLights"));
     LightsAsset = LightsFinder.Object;
     for (const TCHAR* Name : {TEXT("ENG_Main_Port_Glow"),TEXT("ENG_Main_Starboard_Glow"),TEXT("ENG_Pod_Port_Inner_Glow"),TEXT("ENG_Pod_Port_Outer_Glow"),TEXT("ENG_Pod_Starboard_Inner_Glow"),TEXT("ENG_Pod_Starboard_Outer_Glow")})
@@ -234,7 +246,7 @@ bool ASolarFlightGameMode::LoadSettings()
             || !Number(O, TEXT("lateralAcceleration"), P.Config.LateralAcceleration) || !P.Config.Validate(Message)) return false;
         Profiles.Add(P);
     }
-    if (!LoadSystem()) return false;
+    if (!LoadShipCatalog() || !LoadSystem()) return false;
     return Flight.Initialize(Profiles[ProfileIndex].Config, InitialState, Bodies, Message);
 }
 void ASolarFlightGameMode::BeginPlay()
@@ -269,25 +281,7 @@ UStaticMeshComponent* ASolarFlightGameMode::MakeMesh(UStaticMesh* Asset, UMateri
 }
 bool ASolarFlightGameMode::CreateScene()
 {
-    if (!ShipAsset || !LightsAsset || GlowAssets.Num()!=6 || GlowAssets.Contains(nullptr) || !SphereAsset || !PlaneAsset || !EarthMaterial || !SunMaterial || !AtmosphereMaterial || !StarMaterial || !DustMaterial) return false;
-    if (FMath::Abs(ShipAsset->GetBounds().BoxExtent.X * 2 - 60000) > 30) return false;
-    Ship = MakeMesh(ShipAsset, nullptr); Ship->SetCastShadow(true);
-    Ship->SetTextureForceResidentFlag(true);
-    HullLights = MakeMesh(LightsAsset, nullptr);
-    // Latest Claude hull uses separately delivered window geometry.
-    HullLights->SetVisibility(true);
-    if (!CreateShipPresentation()) return false;
-    for (const auto& Detail : ShipDetails) Detail->SetTextureForceResidentFlag(true);
-    for (const auto& Asset : GlowAssets)
-    {
-        auto* Glow = MakeMesh(Asset,nullptr);
-        for (int32 Slot=0;Slot<Glow->GetNumMaterials();++Slot)
-        {
-            auto* Dynamic = UMaterialInstanceDynamic::Create(Glow->GetMaterial(Slot),this);
-            Glow->SetMaterial(Slot,Dynamic); EngineDynamics.Add(Dynamic);
-        }
-        EngineGlows.Add(Glow);
-    }
+    if (!SphereAsset || !PlaneAsset || !EarthMaterial || !SunMaterial || !AtmosphereMaterial || !StarMaterial || !DustMaterial || !CreateShipView()) return false;
     if (!CreateSystem()) return false;
     auto* Light = GetWorld()->SpawnActor<ADirectionalLight>(); SolarLight = Light;
     auto* LC = CastChecked<UDirectionalLightComponent>(Light->GetLightComponent());
@@ -368,12 +362,22 @@ void ASolarFlightGameMode::ResetFlight()
     if (Profiles.IsValidIndex(ProfileIndex)) bReady = Flight.Initialize(Profiles[ProfileIndex].Config, InitialState, Bodies, Message);
     bPaused = false;
 }
-void ASolarFlightGameMode::TogglePause() { if(Galaxy.bOpen)return; bPaused = !bPaused; Flight.SetPaused(bPaused); }
+void ASolarFlightGameMode::TogglePause()
+{
+    if(Galaxy.bOpen)return;
+    bPaused = !bPaused; Flight.SetPaused(bPaused); PauseMenuPage = ESolarPausePage::Main;
+    if(auto* PC=GetWorld()->GetFirstPlayerController())
+    {
+        PC->bShowMouseCursor=bPaused;
+        if(bPaused){FInputModeGameAndUI Mode;Mode.SetHideCursorDuringCapture(false);PC->SetInputMode(Mode);}
+        else PC->SetInputMode(FInputModeGameOnly());
+    }
+}
 void ASolarFlightGameMode::UpdateScene(float DeltaSeconds)
 {
     const auto& S = Flight.GetState();
     Ship->SetWorldLocationAndRotation(FVector::ZeroVector, FQuat(S.Attitude()));
-    HullLights->SetWorldLocationAndRotation(FVector::ZeroVector, FQuat(S.Attitude()));
+    if(HullLights) HullLights->SetWorldLocationAndRotation(FVector::ZeroVector, FQuat(S.Attitude()));
     // The exported glow centres are baked in the same ship frame as the hull.
     // Change brightness, not scale/pose, so outlets remain exactly registered.
     EngineGlowLevel = .08 + .92 * FMath::Max(0.0,S.Throttle);

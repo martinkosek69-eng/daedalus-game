@@ -54,6 +54,7 @@ void ASolarFlightGameMode::UpdateTextureDetail()
 
 void ASolarFlightGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+    ClearShipView();
     if (Ship) Ship->SetTextureForceResidentFlag(false);
     if (Sky) Sky->SetTextureForceResidentFlag(false);
     for (const auto& Detail : ShipDetails) if (Detail) Detail->SetTextureForceResidentFlag(false);

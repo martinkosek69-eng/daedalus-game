@@ -4,7 +4,9 @@
 #include "GameFramework/Pawn.h"
 #include "GameFramework/HUD.h"
 #include "DaedalusFlightModel.h"
+#include "DaedalusShipFlightCatalog.h"
 #include "Solar/GalaxyMapView.h"
+#include "Solar/SolarPauseMenu.h"
 #include "SolarFlightGameMode.generated.h"
 
 class UCameraComponent;
@@ -114,6 +116,14 @@ public:
     void ResetFlight();
     void TogglePause();
     void ToggleHangars();
+    bool SelectShip(int32 Index);
+    int32 ActiveShip = 0;
+    FString ShipId = TEXT("daedalus"), ShipName = TEXT("Daedalus");
+    double ShipLengthMetres = 600, CameraDefaultMetres = 1500;
+    double CameraMinMetres = 650, CameraMaxMetres = 6000;
+    ESolarPausePage PauseMenuPage = ESolarPausePage::Main;
+    const TArray<Daedalus::FShipFlightDefinition>& AvailableShips() const { return ShipCatalog.Ships; }
+    void HandlePauseMenuClick(FVector2D Pixel, FVector2D Viewport);
     int32 StarCount() const;
     int32 EngineOutletCount() const { return EngineGlows.Num(); }
     double EngineGlowLevel = .08;
@@ -136,6 +146,12 @@ private:
     Daedalus::FFlightState InitialState;
     TArray<Daedalus::FFlightBody> Bodies;
     UPROPERTY() TObjectPtr<UStaticMesh> ShipAsset;
+    UPROPERTY() TObjectPtr<UStaticMesh> AuroraAsset;
+    Daedalus::FShipFlightCatalog ShipCatalog;
+    bool LoadShipCatalog();
+    bool CreateShipView();
+    void ClearShipView();
+    void UseShipDefinition(int32 Index);
     UPROPERTY() TObjectPtr<UStaticMesh> LightsAsset;
     UPROPERTY() TArray<TObjectPtr<UStaticMesh>> GlowAssets;
     UPROPERTY() TObjectPtr<UStaticMesh> SphereAsset;
@@ -217,5 +233,6 @@ private:
     void TickSharpProbe();
     void TickPlanetProbe();
     void TickIntegrationProbe();
+    void TickAuroraProbe();
     bool bSharpProbe = false;
 };

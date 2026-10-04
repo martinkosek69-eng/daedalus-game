@@ -1,5 +1,11 @@
 # Aurora-class warship: source and modifications
 
+Game integration in task0026 now includes Aurora.glb, GAME_ASSET.json and baked
+PBR maps through Tools/Prepare-Aurora.py. The original saved scene below remains
+unchanged; its no-UV limitation describes that source, not the prepared game
+export. See Docs/AURORA.md for cleanup, working scale, material/flight choices
+and verification. The source has no separate animated hangar/engine modules.
+
 This is a Blender look-development scene of the Ancient Aurora-class warship
 from Stargate Atlantis. The user requested it as a library asset for later use.
 It is not a numbered task and not a game-ready asset.

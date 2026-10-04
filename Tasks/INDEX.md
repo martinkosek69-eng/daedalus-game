@@ -44,7 +44,9 @@ automaticky aktualizovaný přehled všech vzdálených větví.
 
 | 0025 | [Společná verze: planety, HUD, nejnovější loď](0025/BRIEF.md) | Codex coordinator | ACCEPTED (technical; playable launcher updated) | `codex/solar-flight` |
 
-Další volné číslo: **0026**.
+| 0026 | [Aurora: model a vlastní letové vlastnosti](0026/BRIEF.md) | Codex coordinator | IN_PROGRESS | `codex/solar-flight` |
+
+Další volné číslo: **0027**.
 
 
 

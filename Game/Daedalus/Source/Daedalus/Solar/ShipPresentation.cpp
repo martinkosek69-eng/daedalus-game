@@ -95,7 +95,7 @@ bool ASolarFlightGameMode::CreateShipPresentation()
 void ASolarFlightGameMode::ToggleHangars()
 {
     // Model inspection only, until a gameplay hangar system owns authoritative state.
-    if (bReady && !bPaused && !Galaxy.bOpen) bHangarsOpen = !bHangarsOpen;
+    if (bReady && !bPaused && !Galaxy.bOpen && !HangarDoors.IsEmpty()) bHangarsOpen = !bHangarsOpen;
 }
 
 void ASolarFlightGameMode::UpdateShipPresentation(float DeltaSeconds)

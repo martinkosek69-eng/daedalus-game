@@ -1,4 +1,4 @@
-﻿param([ValidateSet('Build','Assets','Test','Package','Smoke','Visual','Sharp','SharpNative','Play')][string]$Mode='Play',
+param([ValidateSet('Build','Assets','AuroraAssets','Test','Package','Smoke','Visual','Sharp','SharpNative','Play')][string]$Mode='Play',
       [ValidatePattern('^[A-Za-z0-9_-]+$')][string]$BuildName='Build-Integrated25')
 $ErrorActionPreference='Stop'
 $root=Split-Path -Parent $PSScriptRoot
@@ -30,6 +30,13 @@ switch($Mode){
     RequireNoEditor
     & $editor $project -run=pythonscript "-script=$(Join-Path $PSScriptRoot 'Prepare-SolarContent.py')" -unattended -nullrhi -nosound "-abslog=$(Join-Path $local 'assets.log')"
     CheckExit
+    & $editor $project -run=pythonscript "-script=$(Join-Path $PSScriptRoot 'Prepare-AuroraContent.py')" -unattended -nullrhi -nosound "-abslog=$(Join-Path $local 'aurora-assets.log')"
+    CheckExit
+ }
+ 'AuroraAssets' {
+    RequireNoEditor
+    & $editor $project -run=pythonscript "-script=$(Join-Path $PSScriptRoot 'Prepare-AuroraContent.py')" -unattended -nullrhi -nosound "-abslog=$(Join-Path $local 'aurora-assets.log')"
+    CheckExit
  }
  'Test' {
     RequireNoEditor
@@ -39,10 +46,10 @@ switch($Mode){
     $index=Join-Path $report 'index.json'
     if(-not (Test-Path -LiteralPath $index)){throw 'Missing automation report.'}
     $r=Get-Content -LiteralPath $index -Raw | ConvertFrom-Json
-    if($r.failed -ne 0 -or $r.notRun -ne 0 -or $r.inProcess -ne 0 -or $r.succeeded -lt 20){throw 'Suite incomplete or failed.'}
+    if($r.failed -ne 0 -or $r.notRun -ne 0 -or $r.inProcess -ne 0 -or $r.succeeded -lt 23){throw 'Suite incomplete or failed.'}
     $radar=@($r.tests | Where-Object {$_.fullTestPath -eq 'Daedalus.HUD.RadarCoordinates'})
     if($radar.Count -ne 1 -or $radar[0].state -ne 'Success'){throw 'Required HUD radar check failed.'}
-    $names=@('ThrottleAccelerationBraking','TurnPitchBankAndDrift','PartitionsPauseAndValidation','LargeCoordinateSweptContact')
+    $names=@('ThrottleAccelerationBraking','TurnPitchBankAndDrift','PartitionsPauseAndValidation','LargeCoordinateSweptContact','ShipCatalogValidationRollback','AuroraDriveTurnAndNoDrift','ShipSwapSurfaceRollback')
     foreach($name in $names){
         $test=@($r.tests | Where-Object {$_.fullTestPath -eq "Daedalus.Flight.$name"})
         if($test.Count -ne 1 -or $test[0].state -ne 'Success'){throw "Required flight check failed: $name"}

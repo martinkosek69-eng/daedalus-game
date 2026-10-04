@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "ships": [
+    {
+      "id": "daedalus",
+      "name": "Daedalus",
+      "lengthMetres": 600,
+      "radiusMetres": 360,
+      "turnRateDegrees": 10.8,
+      "angularAccelerationDegrees": 28.8,
+      "lowSpeedTurnMultiplier": 1.45,
+      "highSpeedBankFraction": 0.6,
+      "pitchLimitDegrees": 60,
+      "bankDegrees": 36,
+      "profiles": [
+        {"name": "Přístavní chod", "speed": 150, "acceleration": 60, "coastDeceleration": 45, "braking": 45, "lateralAcceleration": 86},
+        {"name": "Impuls", "speed": 250000, "acceleration": 100000, "coastDeceleration": 45000, "braking": 45000, "lateralAcceleration": 142860},
+        {"name": "Plný impuls · podsvětelný", "speed": 250000000, "acceleration": 100000000, "coastDeceleration": 35000000, "braking": 35000000, "lateralAcceleration": 142860}
+      ]
+    },
+    {
+      "id": "aurora",
+      "name": "Aurora · Ancient warship",
+      "scaleNote": "Provisional working game scale; physical canon dimensions are uncertain.",
+      "lengthMetres": 3500,
+      "radiusMetres": 1950,
+      "turnRateDegrees": 6.8,
+      "angularAccelerationDegrees": 20,
+      "lowSpeedTurnMultiplier": 1.5,
+      "highSpeedBankFraction": 0.55,
+      "pitchLimitDegrees": 60,
+      "bankDegrees": 26,
+      "profiles": [
+        {"name": "Přístavní chod", "speed": 120, "acceleration": 60, "coastDeceleration": 45, "braking": 60, "lateralAcceleration": 86},
+        {"name": "Impuls", "speed": 350000, "acceleration": 175000, "coastDeceleration": 70000, "braking": 100000, "lateralAcceleration": 142860},
+        {"name": "Plný impuls · podsvětelný", "speed": 299492665.542, "acceleration": 149746332.771, "coastDeceleration": 55000000, "braking": 65000000, "lateralAcceleration": 142860}
+      ]
+    }
+  ]
+}

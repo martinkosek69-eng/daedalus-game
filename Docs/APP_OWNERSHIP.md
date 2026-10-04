@@ -1,5 +1,13 @@
 # Shared application ownership
 
+## Current transfer0026
+
+Codex owns its isolated source Blender conversion and one import/build slot in
+the fc0b coordinator checkout for Aurora integration. No human application or
+Claude checkout is used. Initial process inspection found no editor/game/Blender.
+Background source conversion finished; own UE commandlets/builds are sequential.
+Release will be recorded after the packaged check.
+
 ## Current transfer0025
 
 Claude released all editor/build processes in0023/HANDOFF ataa9072c.

@@ -1,0 +1,56 @@
+{
+  "vertices": 333060,
+  "faces": 640092,
+  "nonManifoldEdges": 0,
+  "degenerateFaces": 11723,
+  "cleanedDegenerateFaces": 38,
+  "cleanedNonManifoldEdges": 0,
+  "triangles": 647612,
+  "dimensionsMetres": [
+    3500.0,
+    1252.322998046875,
+    689.5830078125
+  ],
+  "uvLayers": [
+    "GameAtlas",
+    "UVMapa"
+  ],
+  "materials": [
+    "M_Aurora_Promo",
+    "M_Aurora_WindowGlass",
+    "M_Aurora_DomeGlow"
+  ],
+  "sourceSHA256": "cc79b6761d09ffef88a2150c2247bc523bc7468fcd7fd056e2d50059562cecb2",
+  "gameSHA256": "5a81ad2db994e3a8b7998cf11c62b44007eb8e4a045b20f196e8fc967fab5e2d",
+  "sourceNotModified": true,
+  "maps": {
+    "BaseColor": {
+      "size": [
+        8192,
+        8192
+      ],
+      "file": "T_Aurora_BaseColor.png"
+    },
+    "ORM": {
+      "size": [
+        4096,
+        4096
+      ],
+      "file": "T_Aurora_ORM.png"
+    },
+    "Emission": {
+      "size": [
+        4096,
+        4096
+      ],
+      "file": "T_Aurora_Emission.png"
+    },
+    "Normal": {
+      "size": [
+        4096,
+        4096
+      ],
+      "file": "T_Aurora_Normal.png"
+    }
+  }
+}
