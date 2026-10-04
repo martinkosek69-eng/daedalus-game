@@ -36,7 +36,7 @@ void ASolarFlightGameMode::TickProbe()
     if(ProbeFrame>=2155) TickGalaxyProbe();
     switch(ProbeFrame)
     {
-    case 30:Check(bReady && Ship && HullLights && EngineOutletCount()==6 && Earth && Sun && StarCount()==8920 && BodyDefinitions.Num()==506 && BodyMeshes.Num()==506 && RingCount()==4 && MapSystems.Num()==6 && ShipDetails.Num()==39,TEXT("staged model lights engines Earth Sun stars"));Shot(TEXT("earth.png"));break;
+    case 30:Check(bReady && Ship && HullLights && EngineOutletCount()==6 && Earth && Sun && StarCount()==8920 && BodyDefinitions.Num()==506 && BodyMeshes.Num()==506 && RingCount()==4 && MapSystems.Num()==6 && ShipDetails.Num()==3 && HangarDoors.Num()==4 && ShipPointLights.Num()==10,TEXT("staged latest model doors lights engines Earth Sun stars"));Shot(TEXT("earth.png"));break;
     case 40:Tap(EKeys::E);break;
     case 45:Check(FMath::Abs(S.Throttle-.2)<.001 && FMath::Abs(EngineGlowLevel-.264)<.001,TEXT("E persistent20pct and motor brightness"));Tap(EKeys::R);break;
     case 50:Check(S.Throttle==0,TEXT("R stops throttle"));Tap(EKeys::R);break;

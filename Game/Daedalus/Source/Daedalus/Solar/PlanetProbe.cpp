@@ -84,6 +84,7 @@ void ASolarFlightGameMode::TickPlanetProbe()
     auto SetShipVisible = [&](bool bVisible) {
         if (Ship) Ship->SetVisibility(bVisible);
         if (HullLights) HullLights->SetVisibility(bVisible);
+        for (const auto& Door : HangarDoors) if (Door) Door->SetVisibility(bVisible);
         for (const auto& Mesh : ShipDetails) if (Mesh) Mesh->SetVisibility(bVisible);
         for (const auto& Mesh : EngineGlows) if (Mesh) Mesh->SetVisibility(bVisible);
     };

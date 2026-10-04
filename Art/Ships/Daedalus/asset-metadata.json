@@ -29,7 +29,11 @@
     },
     "sizePixels": 2048,
     "tileMetres": 32.0,
-    "siloHatchFiles": [],
+    "siloHatchFiles": [
+      "Textures/T_Daedalus_SiloHatch_Normal.png",
+      "Textures/T_Daedalus_SiloHatch_Plain_BaseColor.png",
+      "Textures/T_Daedalus_SiloHatch_Striped_BaseColor.png"
+    ],
     "siloHatchSizeMetres": [
       6.2,
       15.45
@@ -41,7 +45,14 @@
       "albedoMeanSRGB": 0.709,
       "roughnessMean": 0.563
     },
-    "sha256": {}
+    "sha256": {
+      "T_Daedalus_Plating_BaseColor": "cecf95d3d24f448b1381c54843fa9146cd788afa6ab581f40720874dc5b267e9",
+      "T_Daedalus_Plating_Normal": "c27f873a543cde79f0d78b5b79aee1c8a86795a9bdd962fdd16c67b57241c7dd",
+      "T_Daedalus_Plating_ORM": "55032c451e5869ca1e659b9aab6a1ade4c4b77336e854046c13a91bfd5f3e988",
+      "T_Daedalus_SiloHatch_Normal": "5a6fb86247d45fb4e3e0f865dccb4cc8aff69bcc46ce118350f96ebb70e7aef8",
+      "T_Daedalus_SiloHatch_Plain_BaseColor": "b69f3da83fb08f3f80ebb91e14d0dc03bbb6deb640982b89d077b431efa51a58",
+      "T_Daedalus_SiloHatch_Striped_BaseColor": "6ccc7221705961aeb985e05385f019d2200c4758cddfa8b8014294b9ed67c6b8"
+    }
   },
   "addOns": {
     "masts": [

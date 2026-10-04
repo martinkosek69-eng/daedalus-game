@@ -44,7 +44,7 @@
   ignored.local/hud/hud-sto-4k.png and hud-sto-instruments-4k.png.
 - Game integration NOT_STARTED; user design review pending, Claude owns0023 apps.
 
-## Approved layout: runtime source checkpoint
+## Approved layout: runtime source checkpoint (historical)
 
 - Status: IN_PROGRESS. User approved the instrument design and requested
   aligned panel sizes, game integration and a functioning minimap only.

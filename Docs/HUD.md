@@ -8,7 +8,7 @@ Solar/SolarHUD.cpp; původní DrawHUD byl vyjmut ze SolarFlightGameMode.cpp.
 Jde o jednu implementaci. Spodní panely mají společnou výšku208 jednotek
 v referenčním1920×1080 layoutu, všechny zarovnané na společný spodní okraj.
 Celá sestava má šířku868 jednotek (1736px při3840×2160); písmo je rasterizované
-v cílových pixelech, primárně24px při4K. Obrys lodi se nedeformuje; zachovává
+v cílovém rozlišení, typicky24–32px při4K. Obrys lodi se nedeformuje; zachovává
 měřený poměr stran. Žádné nové HUD obrázky/importované assety nejsou potřeba.
 
 Minimapa je průhledný zelený půdorys aktivní soustavy, centrovaný na
@@ -35,11 +35,14 @@ skutečnou vzdálenost oproti oříznutí na okraj, výšku a neplatné vstupy.
 Tools/Prepare-HudOutline.py teď generuje i SolarHUDShipData.inl ze stejného
 zdrojového modelu a bodů zbraní jako návrh. Dosavadní geometrie/asset se nemění.
 
-**Stav ověření:** zdroje a generátor připravené, statická kontrola provedena.
-C++ build, radarový test a skutečný herní4K render zatím NEPROVEDENY:
-Claude0023 stále výslovně drží editor/build slot (checkpointf5d95d7).
-Žádný dosavadní hratelný balíček ani launcher nebyl přepsán. Po uvolnění
-provedeme cílenou kompilaci/test/render a připravíme balíček s novým HUD.
+**Stav ověření:** dokončeno v integrační verzi0025 po uvolnění aplikací Claudem.
+C++ build i Windows balíček prošly;20/20 testů včetně radarové projekce.
+Skutečný render3840×2160 s HUD byl zkontrolován u Země i nad černým vesmírem.
+Půdorys lodi má tmavou plochu pro čitelnost nad světlou planetou; minimapa
+zůstává úplně průhledná. Popisky byly upraveny, aby se zbytečně nezkracovaly.
+Běžný launcher míří na Build-Integrated25. PlayerData a starší balíček zachovány.
+Nový počítač/zbraně/energie jsou stále nezapojené; minimapa a dosavadní letové
+údaje jsou funkční. Další hodnocení vzhledu a ovládání provede uživatel.
 
 ## Předchozí schválený návrh vzhledu
 
@@ -89,5 +92,5 @@ a funkční ukázkové interakce
 všech tří zbraňových skupin s jejich skutečnými modelovými body.
 Podklad není důkaz aktuální ostrosti
 scény ve4K; tato kontrola ověřuje nový HUD. Menší390px náhled se přeskupí.
-Herní C++/asset/import/build/package zůstaly beze změny; finální herní
-napojení čeká na uživatelovo hodnocení návrhu a koordinaci s Claude0023.
+Tento historický prohlížečový návrh byl následně schválen a implementován
+v herní verzi0025; aktuální stav a herní ověření jsou popsány nahoře.

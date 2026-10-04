@@ -92,7 +92,9 @@ void ASolarFlightPawn::SetupPlayerInputComponent(UInputComponent* Input)
     Input->BindKey(EKeys::F,IE_Pressed,this,&ASolarFlightPawn::InspectBody);
     Input->BindKey(EKeys::Escape, IE_Pressed, this, &ASolarFlightPawn::ExitGame);
     Input->BindKey(EKeys::M, IE_Pressed, this, &ASolarFlightPawn::ToggleMap);
+    Input->BindKey(EKeys::H, IE_Pressed, this, &ASolarFlightPawn::ToggleHangars);
 }
+void ASolarFlightPawn::ToggleHangars(){if(auto* M=Lab(this))M->ToggleHangars();}
 void ASolarFlightPawn::ToggleMap(){if(auto* M=Lab(this);M && !M->Galaxy.bSearchFocused) M->ToggleMap();}
 void ASolarFlightPawn::NextBody(){if(auto* M=Lab(this);M && !M->Galaxy.bOpen)M->SelectBody(1);}
 void ASolarFlightPawn::PreviousBody(){if(auto* M=Lab(this);M && !M->Galaxy.bOpen)M->SelectBody(-1);}
@@ -194,7 +196,7 @@ ASolarFlightGameMode::ASolarFlightGameMode()
     static ConstructorHelpers::FObjectFinder<UMaterialInterface> StarFinder(TEXT("/Game/Solar/Materials/M_Star.M_Star"));
     static ConstructorHelpers::FObjectFinder<UMaterialInterface> DustFinder(TEXT("/Game/Solar/Materials/M_Dust.M_Dust"));
     ShipAsset = ShipFinder.Object; SphereAsset = SphereFinder.Object; PlaneAsset = PlaneFinder.Object;
-    ConstructorHelpers::FObjectFinder<UStaticMesh> LightsFinder(TEXT("/Game/Ships/Daedalus/Effects/SM_DaedalusLights.SM_DaedalusLights"));
+    ConstructorHelpers::FObjectFinder<UStaticMesh> LightsFinder(TEXT("/Game/Ships/Daedalus/Effects/DaedalusLights/StaticMeshes/Daedalus_WindowLights.Daedalus_WindowLights"));
     LightsAsset = LightsFinder.Object;
     for (const TCHAR* Name : {TEXT("ENG_Main_Port_Glow"),TEXT("ENG_Main_Starboard_Glow"),TEXT("ENG_Pod_Port_Inner_Glow"),TEXT("ENG_Pod_Port_Outer_Glow"),TEXT("ENG_Pod_Starboard_Inner_Glow"),TEXT("ENG_Pod_Starboard_Outer_Glow")})
     {
@@ -274,12 +276,7 @@ bool ASolarFlightGameMode::CreateScene()
     HullLights = MakeMesh(LightsAsset, nullptr);
     // Latest Claude hull uses separately delivered window geometry.
     HullLights->SetVisibility(true);
-    if (auto* Detail=LoadObject<UStaticMesh>(nullptr,TEXT("/Game/Ships/Daedalus/Details/SM_DaedalusAddOns.SM_DaedalusAddOns"))) ShipDetails.Add(MakeMesh(Detail,nullptr));
-    TSharedPtr<FJsonObject> Details;
-    const TArray<TSharedPtr<FJsonValue>>* DetailRows=nullptr;
-    if(!ReadObject(FPaths::ProjectContentDir()/TEXT("Data/Solar/ship-details.json"),Details) || !Details->TryGetArrayField(TEXT("meshes"),DetailRows) || DetailRows->Num()!=38) return false;
-    for(const auto& Row:*DetailRows){FString Path;if(!Row->TryGetString(Path) || !Path.StartsWith(TEXT("/Game/Ships/Daedalus/Details/"))) return false;
-        auto* Mesh=LoadObject<UStaticMesh>(nullptr,*Path);if(!Mesh)return false;ShipDetails.Add(MakeMesh(Mesh,nullptr));}
+    if (!CreateShipPresentation()) return false;
     for (const auto& Detail : ShipDetails) Detail->SetTextureForceResidentFlag(true);
     for (const auto& Asset : GlowAssets)
     {
@@ -382,6 +379,7 @@ void ASolarFlightGameMode::UpdateScene(float DeltaSeconds)
     EngineGlowLevel = .08 + .92 * FMath::Max(0.0,S.Throttle);
     for (const auto& Glow : EngineGlows) Glow->SetWorldLocationAndRotation(FVector::ZeroVector,FQuat(S.Attitude()));
     for (const auto& Dynamic : EngineDynamics) Dynamic->SetScalarParameterValue(TEXT("EngineLevel"),EngineGlowLevel);
+    UpdateShipPresentation(DeltaSeconds);
     const auto* Pawn = Cast<ASolarFlightPawn>(GetWorld()->GetFirstPlayerController()->GetPawn());
     const FVector CameraPosition = Pawn ? Pawn->Camera->GetComponentLocation() : FVector::ZeroVector;
     UpdateSystem(CameraPosition);

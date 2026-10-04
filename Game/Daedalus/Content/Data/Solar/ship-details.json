@@ -1,43 +1,226 @@
 {
-  "version": 1,
+  "version": 2,
   "meshes": [
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_01_S.TURRET_RG_D_01_S",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_02_P.TURRET_RG_D_02_P",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_03_S.TURRET_RG_D_03_S",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_04_P.TURRET_RG_D_04_P",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_05_S.TURRET_RG_D_05_S",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_06_P.TURRET_RG_D_06_P",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_07_S.TURRET_RG_D_07_S",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_08_P.TURRET_RG_D_08_P",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_09_S.TURRET_RG_D_09_S",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_10_P.TURRET_RG_D_10_P",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_11_S.TURRET_RG_D_11_S",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_12_P.TURRET_RG_D_12_P",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_13_S.TURRET_RG_D_13_S",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_14_P.TURRET_RG_D_14_P",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_15_S.TURRET_RG_D_15_S",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_16_P.TURRET_RG_D_16_P",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_17_S.TURRET_RG_D_17_S",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_18_P.TURRET_RG_D_18_P",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_19_S.TURRET_RG_D_19_S",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_20_P.TURRET_RG_D_20_P",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_21_S.TURRET_RG_D_21_S",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_22_P.TURRET_RG_D_22_P",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_23_S.TURRET_RG_D_23_S",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_24_P.TURRET_RG_D_24_P",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_25_P.TURRET_RG_D_25_P",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_D_26_S.TURRET_RG_D_26_S",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_V_01_S.TURRET_RG_V_01_S",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_V_02_P.TURRET_RG_V_02_P",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_V_03_S.TURRET_RG_V_03_S",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_V_04_P.TURRET_RG_V_04_P",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_V_05_S.TURRET_RG_V_05_S",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_V_06_P.TURRET_RG_V_06_P",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_V_07_S.TURRET_RG_V_07_S",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_V_08_S.TURRET_RG_V_08_S",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_V_09_P.TURRET_RG_V_09_P",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_V_10_P.TURRET_RG_V_10_P",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_V_11_S.TURRET_RG_V_11_S",
-    "/Game/Ships/Daedalus/Details/DaedalusTurrets/StaticMeshes/TURRET_RG_V_12_P.TURRET_RG_V_12_P"
-  ]
+    "/Game/Ships/Daedalus/Details/DaedalusAddOns/StaticMeshes/Daedalus_AddOns.Daedalus_AddOns",
+    "/Game/Ships/Daedalus/Effects/DaedalusLights/StaticMeshes/Daedalus_DetailLights.Daedalus_DetailLights"
+  ],
+  "doors": [
+    {
+      "mesh": "/Game/Ships/Daedalus/Details/DaedalusAddOns/StaticMeshes/HangarDoor_P_Lower.HangarDoor_P_Lower",
+      "bay": "P",
+      "half": "lower",
+      "openOffsetCentimetres": [
+        0.0,
+        0.0,
+        -560.0
+      ]
+    },
+    {
+      "mesh": "/Game/Ships/Daedalus/Details/DaedalusAddOns/StaticMeshes/HangarDoor_P_Upper.HangarDoor_P_Upper",
+      "bay": "P",
+      "half": "upper",
+      "openOffsetCentimetres": [
+        0.0,
+        0.0,
+        560.0
+      ]
+    },
+    {
+      "mesh": "/Game/Ships/Daedalus/Details/DaedalusAddOns/StaticMeshes/HangarDoor_S_Lower.HangarDoor_S_Lower",
+      "bay": "S",
+      "half": "lower",
+      "openOffsetCentimetres": [
+        0.0,
+        0.0,
+        -560.0
+      ]
+    },
+    {
+      "mesh": "/Game/Ships/Daedalus/Details/DaedalusAddOns/StaticMeshes/HangarDoor_S_Upper.HangarDoor_S_Upper",
+      "bay": "S",
+      "half": "upper",
+      "openOffsetCentimetres": [
+        0.0,
+        0.0,
+        560.0
+      ]
+    }
+  ],
+  "pointLights": [
+    {
+      "name": "BayLight_P_1",
+      "kind": "hangar",
+      "positionCentimetres": [
+        800.518798828125,
+        -13420.074462890625,
+        -1750.0
+      ],
+      "colourLinear": [
+        0.6000000238418579,
+        0.8500000238418579,
+        0.800000011920929
+      ],
+      "candela": 326108.4783952936,
+      "radiusCentimetres": 7000
+    },
+    {
+      "name": "BayLight_P_2",
+      "kind": "hangar",
+      "positionCentimetres": [
+        -1148.4671592712402,
+        -13420.074462890625,
+        -1750.0
+      ],
+      "colourLinear": [
+        0.6000000238418579,
+        0.8500000238418579,
+        0.800000011920929
+      ],
+      "candela": 326108.4783952936,
+      "radiusCentimetres": 7000
+    },
+    {
+      "name": "BayLight_S_1",
+      "kind": "hangar",
+      "positionCentimetres": [
+        800.5157470703125,
+        13420.075988769531,
+        -1750.0
+      ],
+      "colourLinear": [
+        0.6000000238418579,
+        0.8500000238418579,
+        0.800000011920929
+      ],
+      "candela": 326108.4783952936,
+      "radiusCentimetres": 7000
+    },
+    {
+      "name": "BayLight_S_2",
+      "kind": "hangar",
+      "positionCentimetres": [
+        -1148.4713554382324,
+        13420.075988769531,
+        -1750.0
+      ],
+      "colourLinear": [
+        0.6000000238418579,
+        0.8500000238418579,
+        0.800000011920929
+      ],
+      "candela": 326108.4783952936,
+      "radiusCentimetres": 7000
+    },
+    {
+      "name": "ENG_Main_Port_Light",
+      "kind": "engine",
+      "positionCentimetres": [
+        -29483.572387695312,
+        -5357.526397705078,
+        -2406.4210891723633
+      ],
+      "colourLinear": [
+        1,
+        0.7799999713897705,
+        0.5
+      ],
+      "candela": 166451.2025142644,
+      "radiusCentimetres": 1137.5
+    },
+    {
+      "name": "ENG_Main_Starboard_Light",
+      "kind": "engine",
+      "positionCentimetres": [
+        -29483.572387695312,
+        5357.526397705078,
+        -2406.4210891723633
+      ],
+      "colourLinear": [
+        1,
+        0.7799999713897705,
+        0.5
+      ],
+      "candela": 166451.2025142644,
+      "radiusCentimetres": 1137.5
+    },
+    {
+      "name": "ENG_Pod_Port_Inner_Light",
+      "kind": "engine",
+      "positionCentimetres": [
+        -27348.330688476562,
+        -12702.01187133789,
+        -2788.5311126708984
+      ],
+      "colourLinear": [
+        1,
+        0.7799999713897705,
+        0.5
+      ],
+      "candela": 91853.88808134102,
+      "radiusCentimetres": 844.9999809265137
+    },
+    {
+      "name": "ENG_Pod_Port_Outer_Light",
+      "kind": "engine",
+      "positionCentimetres": [
+        -27348.330688476562,
+        -15413.967895507812,
+        -2787.753105163574
+      ],
+      "colourLinear": [
+        1,
+        0.7799999713897705,
+        0.5
+      ],
+      "candela": 91853.88808134102,
+      "radiusCentimetres": 844.9999809265137
+    },
+    {
+      "name": "ENG_Pod_Starboard_Inner_Light",
+      "kind": "engine",
+      "positionCentimetres": [
+        -27348.336791992188,
+        12697.076416015625,
+        -2789.4153594970703
+      ],
+      "colourLinear": [
+        1,
+        0.7799999713897705,
+        0.5
+      ],
+      "candela": 91853.88808134102,
+      "radiusCentimetres": 844.9999809265137
+    },
+    {
+      "name": "ENG_Pod_Starboard_Outer_Light",
+      "kind": "engine",
+      "positionCentimetres": [
+        -27348.336791992188,
+        15410.302734375,
+        -2788.1818771362305
+      ],
+      "colourLinear": [
+        1,
+        0.7799999713897705,
+        0.5
+      ],
+      "candela": 91853.88808134102,
+      "radiusCentimetres": 844.9999809265137
+    }
+  ],
+  "sources": {
+    "DaedalusAddOns.glb": "a07d287434c37bba259089a33152aa17b183a83ed3d2e42cda8d47cb06f6d33f",
+    "DaedalusLights.glb": "3b92c27cd054b301df4226b7f96ef8b285307da11cf9e91d3a038f78e3d2f3f7",
+    "DaedalusBeacons.glb": "45de287adf09f674e7c44258f9800be842b4013c83953b9d336813193811e7f5",
+    "Daedalus.glb": "9cefa922abba0869d54065054dab5908d171c13dfbaa57667c7d4dd674e355ab",
+    "DaedalusEngineGlow.glb": "bcd5e49359d8498773f97a931060f17c523d9b85c60c480b76b1fd04090b8237"
+  },
+  "windowMesh": "/Game/Ships/Daedalus/Effects/DaedalusLights/StaticMeshes/Daedalus_WindowLights.Daedalus_WindowLights",
+  "beacon": {
+    "mesh": "/Game/Ships/Daedalus/Effects/DaedalusBeacons/StaticMeshes/DaedalusBeacons.DaedalusBeacons",
+    "periodSeconds": 5.0,
+    "onSeconds": 0.3333333333333333,
+    "emissionOn": 8.0,
+    "emissionOff": 0.0
+  }
 }

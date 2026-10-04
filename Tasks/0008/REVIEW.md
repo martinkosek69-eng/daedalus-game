@@ -1,5 +1,21 @@
 # Coordinator review — 0008
 
+## Latest delivery7c35635, integrated0025
+
+Reviewed current source/HANDOFF through split-door commit7c35635. User asked
+for this model to replace the older runtime model. Source SHA/embedded PNG
+checks,600m scale,5 slots,222330 unchanged triangles,62 measured zone proposals,
+6 engines,4 door halves and10 lights pass. Import/runtime/packaged4K checks pass;
+normal launcher now uses this current darker model. Four split doors animate
+via H,source beacons blink,engine/bay lights wired. No duplicate extra barrels.
+Calibrated bay illumination to game exposure; material variants preserve
+different vertex-colour recipes. Completed missing texture SHA/file inventory
+and corrected relative-path handling in source generator. Licensing retained.
+Most aesthetic evaluation is pending with user, not asserted as exact canon.
+See Docs/SHIP_PRESENTATION.md and0025/HANDOFF for current result and limits.
+
+## Historical first technical review (superseded)
+
 User feedback after this technical integration rejected the pale and simplified
 in-game appearance. Technical checks below remain valid; artistic approval was
 not granted. Task0009 restores the original web presentation as the active

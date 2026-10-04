@@ -18,6 +18,7 @@ void ASolarFlightGameMode::TickSharpProbe()
 {
     // Planet quality captures share the sharp probe entry point (PlanetProbe.cpp).
     if (FParse::Param(FCommandLine::Get(), TEXT("SolarPlanetProbe"))) { TickPlanetProbe(); return; }
+    if (FParse::Param(FCommandLine::Get(), TEXT("SolarIntegrationProbe"))) { TickIntegrationProbe(); return; }
     ++ProbeFrame;
     GEngine->bUseFixedFrameRate = true; GEngine->FixedFrameRate = 60;
     auto* PC = GetWorld()->GetFirstPlayerController();

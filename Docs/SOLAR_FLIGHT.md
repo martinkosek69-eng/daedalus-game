@@ -1,8 +1,8 @@
 # Letová zkouška Sluneční soustavy
 
-Singleplayer, větev codex/solar-flight, úkol0021 (navazuje na0020). Spustit dvojklikem
+Singleplayer, větev codex/solar-flight, společná verze0025. Spustit dvojklikem
 Tools/SPUSTIT_LET_DAEDALA.cmd po sestavení. Nic se neinstaluje.
-Nový balíček .local/solar/Build-SolarSystem používá nativní rozlišení monitoru
+Nový balíček .local/solar/Build-Integrated25 používá nativní rozlišení monitoru
 v okně přes celou obrazovku. Alt+Enter/F11 mění zobrazení. Data jsou na A:.
 
 | Ovládání | Účinek |
@@ -19,7 +19,14 @@ v okně přes celou obrazovku. Alt+Enter/F11 mění zobrazení. Data jsou na A:.
 | F | Výslovně testovací přesun k vybranému tělesu |
 | Backspace | Začátek u Země |
 | M | 3D galaxie, databáze těles a výpočty navigace |
+| H | Plynulé otevření/zavření hangárů nového modelu; zatím jen prohlídka modelu |
 | P/Esc | Pauza/konec; Esc v mapě vrací do letu |
+
+Společná verze obsahuje dokončené planety0023, nový HUD s funkční minimapou0024
+a poslední model0008 včetně světel a dveří. Štíty, zbraně, energie a nové akce
+palubního počítače se zapojí později. Běžný spouštěč již míří na tento balíček;
+starý Build-SolarSystem a stejné PlayerData zůstaly zachované.
+Viz [HUD](HUD.md) a [model/animace](SHIP_PRESENTATION.md).
 
 Všechny tři letové profily dosáhnou maxima za2,5s. Pohyb se vždy srovnává s přídí,
 včetně couvání a brzdění: žádný boční drift ani umělá ztráta rychlosti v zatáčce.

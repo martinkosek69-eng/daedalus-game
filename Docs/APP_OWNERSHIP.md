@@ -1,4 +1,18 @@
-# Shared application ownership — task0023 implementation
+# Shared application ownership
+
+## Current transfer0025
+
+Claude released all editor/build processes in0023/HANDOFF ataa9072c.
+User requested integration of planets, HUD and latest Daedalus. Codex now owns
+the one editor/build and imports in its own A: coordinator checkout for0025.
+Human apps and Claude's checkout remain excluded. Verify own uproject before MCP.
+The0023 allocation below is historical and completed.
+
+0025 is completed: owned build/commandlets/packaged probes exited. No editor or
+build remains reserved/running. Human apps and user gameplay must never be
+terminated to obtain the next slot; inspect and coordinate at the next task.
+
+## Historical0023 allocation (completed)
 
 Claude Code is assigned one Unreal editor, asset preparation and build/package
 slot for0023 upon user launch, in its own clean A: checkout of

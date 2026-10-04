@@ -14,6 +14,7 @@ class UMaterialInterface;
 class UMaterialInstanceDynamic;
 class UStaticMesh;
 class ADirectionalLight;
+class UPointLightComponent;
 
 UCLASS()
 class DAEDALUS_API ASolarFlightPawn : public APawn
@@ -44,6 +45,7 @@ private:
     void Slow(); void Fast(); void FullImpulse(); void ResetFlight(); void PauseFlight(); void ExitGame();
     void NextBody(); void PreviousBody(); void InspectBody();
     void ToggleMap();
+    void ToggleHangars();
 };
 
 UCLASS()
@@ -111,6 +113,7 @@ public:
     void ToggleFullImpulse();
     void ResetFlight();
     void TogglePause();
+    void ToggleHangars();
     int32 StarCount() const;
     int32 EngineOutletCount() const { return EngineGlows.Num(); }
     double EngineGlowLevel = .08;
@@ -163,6 +166,15 @@ private:
     TArray<int32> PlanetSphereLevels;
     TArray<double> PlanetPixelRadii;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> ShipDetails;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> HangarDoors;
+    UPROPERTY() TArray<TObjectPtr<UMaterialInstanceDynamic>> BeaconDynamics;
+    UPROPERTY() TArray<TObjectPtr<UPointLightComponent>> ShipPointLights;
+    TArray<FVector> DoorOpenOffsets, ShipLightPositions;
+    TArray<float> ShipLightCandela;
+    TArray<bool> ShipLightIsEngine;
+    double DoorTravel = 0, BeaconPeriod = 5, BeaconOnSeconds = 1.0 / 3;
+    double BeaconEmissionOn = 8, BeaconEmissionOff = 0, BeaconLevel = 0;
+    bool bHangarsOpen = false;
     UPROPERTY() TObjectPtr<UStaticMeshComponent> Sky;
     UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> SkyDynamic;
     UPROPERTY() TObjectPtr<UStaticMeshComponent> UnknownMarker;
@@ -185,6 +197,8 @@ private:
     void UpdateSystem(const FVector& CameraPosition);
     bool CreateScene();
     void UpdateScene(float DeltaSeconds);
+    bool CreateShipPresentation();
+    void UpdateShipPresentation(float DeltaSeconds);
     void ApplySharpRenderingSettings();
     void UpdateTextureDetail();
     UStaticMeshComponent* MakeMesh(UStaticMesh* Asset, UMaterialInterface* Material);
@@ -202,5 +216,6 @@ private:
     void TickGalaxyProbe();
     void TickSharpProbe();
     void TickPlanetProbe();
+    void TickIntegrationProbe();
     bool bSharpProbe = false;
 };

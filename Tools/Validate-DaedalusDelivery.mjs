@@ -7,7 +7,7 @@ const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const dir=path.join(root,'Art/Ships/Daedalus');
 const json=name=>JSON.parse(fs.readFileSync(path.join(dir,name),'utf8'));
 const meta=json('asset-metadata.json');
-for(const [name,key] of [['Original/daedalus.glb','sourceSHA256'],['Daedalus.blend','blendSHA256'],['Daedalus.glb','glbSHA256'],['DaedalusEngineGlow.glb','engineGlowGlbSHA256'],['DaedalusLights.glb','lightsGlbSHA256'],['DaedalusAddOns.glb','addOnsGlbSHA256'],['DaedalusTurrets.glb','turretsGlbSHA256']]){
+for(const [name,key] of [['Original/daedalus.glb','sourceSHA256'],['Daedalus.blend','blendSHA256'],['Daedalus.glb','glbSHA256'],['DaedalusEngineGlow.glb','engineGlowGlbSHA256'],['DaedalusLights.glb','lightsGlbSHA256'],['DaedalusAddOns.glb','addOnsGlbSHA256'],['DaedalusBeacons.glb','beaconsGlbSHA256']]){
   assert.equal(createHash('sha256').update(fs.readFileSync(path.join(dir,name))).digest('hex'),meta[key],name+' hash');
 }
 const binaries=new WeakMap();
@@ -31,8 +31,8 @@ function glb(name,expectedImages=0){
   }
   return j;
 }
-const hull=glb('Daedalus.glb',3),glow=glb('DaedalusEngineGlow.glb'),lights=glb('DaedalusLights.glb'),addons=glb('DaedalusAddOns.glb',3),turrets=glb('DaedalusTurrets.glb');
-assert.equal(hull.meshes.length,1);assert.equal(lights.meshes.length,1);assert.equal(glow.meshes.length,6);
+const hull=glb('Daedalus.glb',3),glow=glb('DaedalusEngineGlow.glb'),lights=glb('DaedalusLights.glb'),addons=glb('DaedalusAddOns.glb',6),beacons=glb('DaedalusBeacons.glb');
+assert.equal(hull.meshes.length,1);assert.equal(lights.meshes.length,2);assert.equal(glow.meshes.length,6);
 let triangles=0;
 for(const p of hull.meshes[0].primitives){
   assert.equal(p.mode??4,4);assert('COLOR_0' in p.attributes);assert('TEXCOORD_0' in p.attributes);
@@ -54,19 +54,23 @@ assert.equal(hull.nodes.filter(n=>n.mesh!==undefined).length,1);
 assert(!hull.nodes[0].translation&&!hull.nodes[0].rotation&&!hull.nodes[0].scale,'hull frame must be baked');
 for(const [key,filename] of Object.entries(meta.textures.files)){
   const png=fs.readFileSync(path.join(dir,filename));
-  assert.equal(createHash('sha256').update(png).digest('hex'),meta.textures.sha256[key]);
+  assert.equal(createHash('sha256').update(png).digest('hex'),meta.textures.sha256[path.parse(filename).name]??meta.textures.sha256[key]);
   assert.equal(png.subarray(0,8).toString('hex'),'89504e470d0a1a0a');
   assert.equal(png.readUInt32BE(16),2048);assert.equal(png.readUInt32BE(20),2048);
 }
 for(const model of [hull,addons]){
   for(const material of model.materials.filter(m=>m.extras?.textured)){
-    for(const [info,expected] of [[material.normalTexture,'T_Daedalus_Plating_Normal'],[material.pbrMetallicRoughness.baseColorTexture,'T_Daedalus_Plating_BaseColor'],[material.pbrMetallicRoughness.metallicRoughnessTexture,'T_Daedalus_Plating_ORM']]){
+    const hatch=material.name.startsWith('Daedalus_SiloHatch_');
+    const base=hatch?'T_'+material.name+'_BaseColor':'T_Daedalus_Plating_BaseColor';
+    const checks=[[material.normalTexture,hatch?'T_Daedalus_SiloHatch_Normal':'T_Daedalus_Plating_Normal'],[material.pbrMetallicRoughness.baseColorTexture,base]];
+    if(!hatch)checks.push([material.pbrMetallicRoughness.metallicRoughnessTexture,'T_Daedalus_Plating_ORM']);
+    for(const [info,expected] of checks){
       assert.equal(info.texCoord??0,0);
       assert.equal(model.images[model.textures[info.index].source].name,expected);
     }
   }
 }
-assert.equal(addons.meshes.length,1);assert.equal(addons.nodes.length,1);
+assert.equal(addons.meshes.length,5);assert.equal(addons.nodes.length,5);
 assert.equal(addons.nodes[0].name,'Daedalus_AddOns');
 for(const primitive of addons.meshes[0].primitives){assert('COLOR_0' in primitive.attributes);assert('TEXCOORD_0' in primitive.attributes);}
 const mounts=json('WEAPON_MOUNTS.json'),engines=json('ENGINE_MOUNTS.json');
@@ -92,20 +96,19 @@ for(const m of mounts.mounts){
 }
 assert.deepEqual(counts,mounts.groupCounts);
 assert.deepEqual(counts,meta.mountGroups);
-assert.equal(turrets.meshes.length,1);assert.equal(turrets.nodes.length,38);
-const turretIds=new Set();
-for(const node of turrets.nodes){
-  assert.equal(node.mesh,0);const id=node.extras.mountID;
-  assert.equal(node.name,'TURRET_'+id);assert(!turretIds.has(id));turretIds.add(id);
-  const mount=mounts.mounts.find(m=>m.mountID===id);
-  assert(mount&&['dorsal_railguns','ventral_railguns'].includes(mount.group));
-  vector(node.translation);const position=[node.translation[0],-node.translation[2],node.translation[1]];
-  assert(position.every((v,i)=>Math.abs(v-mount.centerMetres[i])<.001),'turret / mount mismatch');
-  const rotation=node.rotation??[0,0,0,1];
-  assert(rotation.length===4&&rotation.every(Number.isFinite));
-  assert(Math.abs(Math.hypot(...rotation)-1)<1e-5);
+assert(!fs.existsSync(path.join(dir,'DaedalusTurrets.glb')),'obsolete duplicate barrels must stay removed');
+const doors=addons.nodes.filter(n=>n.extras?.doorHalf);
+assert.equal(doors.length,4);
+for(const node of doors){
+  assert(['P','S'].includes(node.extras.bay));
+  assert.equal(node.extras.openDistanceMetres,5.6);
+  assert.deepEqual(node.extras.openAxis,[0,0,node.extras.doorHalf==='upper'?1:-1]);
 }
-assert.equal(turretIds.size,counts.dorsal_railguns+counts.ventral_railguns);
+assert.equal(beacons.meshes.length,1);
+assert.equal(beacons.nodes[0].extras.blinkPeriodSeconds,5);
+assert.equal(beacons.nodes[0].extras.onSeconds,1/3);
+assert.equal(glow.extensions.KHR_lights_punctual.lights.length,6);
+assert.equal(lights.extensions.KHR_lights_punctual.lights.length,4);
 for(const m of engines.outlets){
   assert(!ids.has(m.id));ids.add(m.id);vector(m.centreMetres);frame(m.outwardAxis,m.upAxis);
   assert(m.apertureDiameterMetres>0&&m.lipOuterDiameterMetres>=m.apertureDiameterMetres);
@@ -115,4 +118,4 @@ for(const m of engines.outlets){
   const t=n[0].translation,p=[t[0],-t[2],t[1]];
   assert(p.every((v,i)=>Math.abs(v-m.centreMetres[i])<.001),'glow / mount mismatch');
 }
-console.log(JSON.stringify({passed:true,hullTriangles:triangles,hullMaterials:hull.materials.length,engines:6,weaponAndBayMounts:62,turretNodes:38,platingTextures:3,embeddedImagesMatchDeliveredPNGs:true,externalImages:0}));
+console.log(JSON.stringify({passed:true,hullTriangles:triangles,hullMaterials:hull.materials.length,engines:6,weaponAndBayMounts:62,doorHalves:4,pointLights:10,beaconPeriodSeconds:5,embeddedImagesMatchDeliveredPNGs:true,externalImages:0}));

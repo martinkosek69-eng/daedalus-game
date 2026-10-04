@@ -38,11 +38,13 @@ automaticky aktualizovaný přehled všech vzdálených větví.
 
 | 0022 | [Nezávislá diagnóza planet](0022/BRIEF.md) | Claude Code; Codex reviewed | ACCEPTED (analysis only; solution selection pending) | `codex/claude-0022-planet-quality` |
 
-| 0023 | [Kompletní úprava planet](0023/BRIEF.md) | Claude Code | NOT_STARTED (implementation authorized) | `codex/claude-0023-planet-upgrade` |
+| 0023 | [Kompletní úprava planet](0023/BRIEF.md) | Claude Code; Codex reviewed/integrated | ACCEPTED (technical; appearance test by user) | `codex/claude-0023-planet-upgrade` |
 
-| 0024 | [Nový přístrojový HUD podle STO](0024/BRIEF.md) | Codex coordinator | IN_PROGRESS (design approved; runtime sources prepared; build awaits0023 slot release) | `codex/solar-flight` |
+| 0024 | [Nový přístrojový HUD podle STO](0024/BRIEF.md) | Codex coordinator | ACCEPTED (runtime/native4K checked; other systems deferred) | `codex/solar-flight` |
 
-Další volné číslo: **0025**. Číslo 0026 v návodu je pouze příklad.
+| 0025 | [Společná verze: planety, HUD, nejnovější loď](0025/BRIEF.md) | Codex coordinator | ACCEPTED (technical; playable launcher updated) | `codex/solar-flight` |
+
+Další volné číslo: **0026**.
 
 
 

@@ -1,6 +1,12 @@
 # Current development state — 2026-10-04
 
-## Current six-system lab0016
+## Current integrated six-system lab0025
+
+Normal launcher: Tools/SPUSTIT_LET_DAEDALA.cmd → Build-Integrated25, retaining
+the existing PlayerData. Earlier Build-SolarSystem remains separately available.
+Completed0023 planet branch throughaa9072c and latest0008 ship branch
+through7c35635 are reviewed/integrated. Shared source/publication branch remains
+codex/solar-flight; no merge into main. See Tasks/0025/HANDOFF.md.
 
 ### New HUD design0024
 
@@ -14,11 +20,24 @@ User approved the instrument design and authorized game integration. Runtime
 sources now move DrawHUD to SolarHUD.cpp, align the lower panel sizes and add
 a read-only live local minimap from canonical metre coordinates/heading.
 Existing drive/navigation/pause/safety readings remain, other new systems
-are placeholders with no actions. Flight/input/data/assets unchanged.
-SolarHUDRadar helpers and boundary tests are prepared. NOT YET COMPILED or
-rendered in game: Claude0023 still owns editor/build at checkpointf5d95d7.
-The existing playable package and launcher are unchanged. See Docs/HUD.md.
+are placeholders with no actions. Flight/domain rules remain unchanged.
+Editor build,20/20 automation tests and separate Windows package passed.
+Native3840x2160 HUD/ship/planet/map rendering and real input/animation checks
+passed; inspected over bright Earth and black space. Labels fit; a dark ship
+instrument face preserves green outline contrast, minimap stays transparent.
+See Docs/HUD.md. Most subjective evaluation remains with the user.
 Historical standalone design: Tasks/0024/Preview/hud-concept.html.
+
+### Latest ship0008
+
+Exact600m original hull and newer darker plating, silo hatches, hangar details,
+windows/masts,engine cores and source light geometry retained. Four separate
+hangar door halves animate via H (2s travel); source beacons blink5s/on1/3s;
+six engine effects follow throttle. Four bay/six engine point lights follow
+the hull frame; bay intensity calibrated to game exposure. No duplicate added
+turret barrels, no new firing or shuttle logic. Source textures/metadata,
+runtime binding and coordinate frame checked. See Docs/SHIP_PRESENTATION.md.
+All coordinator test applications exited; ownership is free after0025.
 
 ### Shared 4K requirement
 
@@ -32,8 +51,12 @@ this target; its independent proposal-only scope is unchanged.
 
 User now authorized implementation in0023: codex/claude-0023-planet-upgrade,
 Claude owner, B plus targeted better real source maps, Earth-first then the
-current six-system bodies at native4K. No implementation result yet.
-Claude owns editor/build upon launch. See Tasks/0023/BRIEF.md.
+current six-system bodies at native4K. Delivery completed/reviewed/integrated:
+105 textured bindings,10 cloud layers,3 relief maps,5 night maps and4 masters.
+Source16K Earth/real clouds/relief and selected better moon maps are included.
+Coordinator ran the required full recipe and read-only validators. Retain
+the worker's1440px small-moon/tile/cloud-date limits; do not describe every
+body as real4K imagery. Editor/build released. See Tasks/0023/REVIEW.md.
 
 Claude delivered independent read-only diagnosis at c2ccd5d on
 codex/claude-0022-planet-quality. Codex reviewed and integrated the proposal

@@ -1,6 +1,13 @@
 # 0024 implementation checkpoint
 
-Status: IN_PROGRESS — runtime sources prepared, NOT compiled or packaged.
+Current status: READY_FOR_REVIEW; coordinator technically accepted via0025.
+Editor build,20/20 tests including radar,Windows package and native3840x2160
+HUD render passed. HUD/model/planet/map screenshots inspected; refined label
+fit and ship instrument contrast. Normal launcher selects Build-Integrated25.
+Minimap and existing flight/navigation readouts are live; other systems deferred.
+See0025/HANDOFF and Docs/HUD.md. The earlier checkpoint below is historical.
+
+Historical status: IN_PROGRESS — runtime sources prepared, NOT compiled or packaged.
 Owner: Codex. Branch: codex/solar-flight. Head via Git history.
 User approved instrument appearance and authorized aligned sizes and a live
 minimap. Other new system actions are deferred. This supersedes design review.

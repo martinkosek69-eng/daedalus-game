@@ -13,7 +13,7 @@ MATERIAL_PATH = '/Game/Ships/Daedalus/Materials'
 TEXTURE_PATH = '/Game/Ships/Daedalus/Textures'
 
 
-def assign_materials(root, unreal, tools, lib, mesh, filename):
+def assign_materials(root, unreal, tools, lib, mesh, filename, beacon=False):
     """Assign saved source-faithful materials, retaining the full imported mesh."""
     root = Path(root)
     source = (root / 'Art/Ships/Daedalus' / filename).read_bytes()
@@ -48,13 +48,13 @@ def assign_materials(root, unreal, tools, lib, mesh, filename):
     def import_texture(info, role):
         assert info.get('texCoord', 0) == 0, 'Only reviewed UVMap/UV0 is supported'
         image = doc['images'][doc['textures'][info['index']]['source']]
-        expected_names = {
-            'base': 'T_Daedalus_Plating_BaseColor',
-            'orm': 'T_Daedalus_Plating_ORM',
-            'normal': 'T_Daedalus_Plating_Normal',
+        allowed_names = {
+            'base': {'T_Daedalus_Plating_BaseColor', 'T_Daedalus_SiloHatch_Plain_BaseColor', 'T_Daedalus_SiloHatch_Striped_BaseColor'},
+            'orm': {'T_Daedalus_Plating_ORM'},
+            'normal': {'T_Daedalus_Plating_Normal', 'T_Daedalus_SiloHatch_Normal'},
         }
-        name = expected_names[role]
-        assert image['name'] == name, (filename, role, image)
+        name = image['name']
+        assert name in allowed_names[role], (filename, role, image)
         key = (str(root.resolve()), name)
         if key in _texture_cache:
             return _texture_cache[key]
@@ -98,16 +98,17 @@ def assign_materials(root, unreal, tools, lib, mesh, filename):
         assert name in source_materials, (filename, name, list(source_materials))
         src = source_materials[name]
         has_colour = name in colour_materials
-        recipe = json.dumps([src, has_colour], sort_keys=True)
-        key = (str(root.resolve()), name)
+        recipe = json.dumps([src, has_colour, beacon], sort_keys=True)
+        asset_name = 'M_' + name + ('_' + Path(filename).stem if filename != 'Daedalus.glb' else '')
+        key = (str(root.resolve()), asset_name)
         if key in _material_cache:
             material, previous_recipe = _material_cache[key]
             assert previous_recipe == recipe, 'Conflicting shared source material: ' + name
             mesh.set_material(index, material)
             continue
-        material = unreal.load_asset(MATERIAL_PATH + '/M_' + name)
+        material = unreal.load_asset(MATERIAL_PATH + '/' + asset_name)
         if material is None:
-            material = tools.create_asset('M_' + name, MATERIAL_PATH,
+            material = tools.create_asset(asset_name, MATERIAL_PATH,
                                           unreal.Material, unreal.MaterialFactoryNew())
         assert isinstance(material, unreal.Material)
         # Do not delete rooted expressions loaded by CDOs in the commandlet.
@@ -144,7 +145,13 @@ def assign_materials(root, unreal, tools, lib, mesh, filename):
             connect(material, sample(material, normal_info, 'normal'), 'RGB', unreal.MaterialProperty.MP_NORMAL)
         strength = src.get('extensions', {}).get('KHR_materials_emissive_strength', {}).get('emissiveStrength', 1)
         emission = [value * strength for value in src.get('emissiveFactor', [0, 0, 0])]
-        connect(material, vector(material, (*emission, 1)), '', unreal.MaterialProperty.MP_EMISSIVE_COLOR)
+        emit = vector(material, (*emission, 1))
+        if beacon:
+            # Source blink extras become a runtime parameter, not a baked Blender timeline.
+            level = expression(material, unreal.MaterialExpressionScalarParameter,
+                               parameter_name='BeaconLevel', default_value=0)
+            emit = multiply(material, base, level)
+        connect(material, emit, '', unreal.MaterialProperty.MP_EMISSIVE_COLOR)
         lib.layout_material_expressions(material)
         lib.recompile_material(material)
         assert unreal.EditorAssetLibrary.save_loaded_asset(material)

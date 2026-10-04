@@ -866,7 +866,7 @@ scene.render.engine = 'BLENDER_EEVEE'
 blend = OUT / 'Daedalus.blend'; glb = OUT / 'Daedalus.glb'; glow_glb = OUT / 'DaedalusEngineGlow.glb'; lights_glb = OUT / 'DaedalusLights.glb'
 addons_glb = OUT / 'DaedalusAddOns.glb'; beacons_glb = OUT / 'DaedalusBeacons.glb'
 bpy.ops.wm.save_as_mainfile(filepath=str(blend), compress=True)
-TEX_FILES = sorted(img.name for img in bpy.data.images if img.filepath_raw and Path(img.filepath_raw).parent == TEX_DIR)
+TEX_FILES = sorted(img.name for img in bpy.data.images if img.filepath_raw and Path(bpy.path.abspath(img.filepath_raw)).resolve().parent == TEX_DIR.resolve())
 for n in TEX_FILES: bpy.data.images[n].filepath = '//Textures/' + n + '.png'   # relative, forward slashes (portable)
 bpy.ops.wm.save_mainfile(compress=True)
 assert all(bpy.data.images[PLATING[k].name].filepath.startswith('//') for k in PLATING)

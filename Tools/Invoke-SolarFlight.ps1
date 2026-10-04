@@ -1,5 +1,5 @@
 ﻿param([ValidateSet('Build','Assets','Test','Package','Smoke','Visual','Sharp','SharpNative','Play')][string]$Mode='Play',
-      [ValidatePattern('^[A-Za-z0-9_-]+$')][string]$BuildName='Build-SolarSystem')
+      [ValidatePattern('^[A-Za-z0-9_-]+$')][string]$BuildName='Build-Integrated25')
 $ErrorActionPreference='Stop'
 $root=Split-Path -Parent $PSScriptRoot
 $config=Get-Content -LiteralPath (Join-Path $root '.local/toolchain.json') -Raw | ConvertFrom-Json
@@ -39,7 +39,9 @@ switch($Mode){
     $index=Join-Path $report 'index.json'
     if(-not (Test-Path -LiteralPath $index)){throw 'Missing automation report.'}
     $r=Get-Content -LiteralPath $index -Raw | ConvertFrom-Json
-    if($r.failed -ne 0 -or $r.notRun -ne 0 -or $r.inProcess -ne 0 -or $r.succeeded -lt 19){throw 'Suite incomplete or failed.'}
+    if($r.failed -ne 0 -or $r.notRun -ne 0 -or $r.inProcess -ne 0 -or $r.succeeded -lt 20){throw 'Suite incomplete or failed.'}
+    $radar=@($r.tests | Where-Object {$_.fullTestPath -eq 'Daedalus.HUD.RadarCoordinates'})
+    if($radar.Count -ne 1 -or $radar[0].state -ne 'Success'){throw 'Required HUD radar check failed.'}
     $names=@('ThrottleAccelerationBraking','TurnPitchBankAndDrift','PartitionsPauseAndValidation','LargeCoordinateSweptContact')
     foreach($name in $names){
         $test=@($r.tests | Where-Object {$_.fullTestPath -eq "Daedalus.Flight.$name"})

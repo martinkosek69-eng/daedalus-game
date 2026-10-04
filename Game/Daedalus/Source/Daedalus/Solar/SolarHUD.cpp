@@ -232,13 +232,13 @@ void DrawDock(const FInstruments& D, const ASolarFlightGameMode& Lab)
 {
     const float DockWidth = 868, Y = D.Height - 228, H = 208;
     float X = (D.Width - DockWidth) * .5f;
-    D.Panel(X, Y, 116, H, TEXT("ENERGIE"), TEXT("SYS"));
+    D.Panel(X, Y, 116, H, TEXT("ENERGIE"), TEXT(""));
     const TCHAR* Names[] = {TEXT("ZBR"), TEXT("ŠTÍ"), TEXT("MOT"), TEXT("SYS")};
     const FLinearColor Channels[] = {Copper, Blue, Amber, Muted};
     for (int32 I = 0; I < 4; ++I)
     {
         const float Column = X + 11 + I * 25;
-        D.Text(Names[I], Column, Y + 43, Channels[I], 9, 22);
+        D.Text(Names[I], Column, Y + 43, Channels[I], 7, 22);
         for (int32 Row = 0; Row < 18; ++Row) D.Rect(Column + 2, Y + 64 + Row * 5.4f, 17, 3.9f, Alpha(Metal, .35f));
         D.Rect(Column, Y + 168, 22, 19, Ink); D.Text(TEXT("—"), Column + 5, Y + 170, Muted, 10);
     }
@@ -246,6 +246,15 @@ void DrawDock(const FInstruments& D, const ASolarFlightGameMode& Lab)
     X += 124;
 
     const FVector2D C(X + 94, Y + 94);
+    // A dark instrument face keeps the green ship readable over bright planets.
+    // The separate local minimap remains completely transparent.
+    TArray<FVector2D> Disc;
+    for (int32 I = 0; I < 64; ++I)
+    {
+        const double A = I * 2 * PI / 64;
+        Disc.Add(C + FVector2D(FMath::Cos(A), FMath::Sin(A)) * 82);
+    }
+    D.Polygon(Disc, Plate, FLinearColor::Transparent);
     D.Arc(C, 88, 0, 360, Metal, 3); D.Arc(C, 85, 0, 360, White, .7f);
     D.Arc(C, 82, 0, 360, Alpha(Metal, .7f), 2);
     for (int32 I = 0; I < 4; ++I) D.Arc(C, 77, -132 + I * 90, -48 + I * 90, Blue, 2.4f);
@@ -282,7 +291,7 @@ void DrawDock(const FInstruments& D, const ASolarFlightGameMode& Lab)
 
     D.Panel(X, Y, 365, H, TEXT("ZBRAŇOVÉ SYSTÉMY"), TEXT("WPN"));
     const TCHAR* Groups[] = {TEXT("VĚŽE"), TEXT("RAKETY"), TEXT("PAPRSKY")};
-    const TCHAR* Labels[] = {TEXT("Railguny"), TEXT("Příďová sila"), TEXT("Asgardské emitory")};
+    const TCHAR* Labels[] = {TEXT("Railguny"), TEXT("Příďová sila"), TEXT("Emitory")};
     const FLinearColor Colors[] = {Copper, Amber, Beam};
     for (int32 I = 0; I < 3; ++I)
     {
@@ -307,7 +316,7 @@ void DrawComputer(const FInstruments& D, const ASolarFlightGameMode& Lab)
 {
     const float X = D.Width - 282, Y = D.Height * .035f;
     D.Panel(X, Y, 230, 174, TEXT("PALUBNÍ POČÍTAČ"), TEXT("304"));
-    const TCHAR* Labels[] = {TEXT("Navigace"), TEXT("Skenování"), TEXT("Informace o lodi"), TEXT("Hyperpohon")};
+    const TCHAR* Labels[] = {TEXT("Navigace"), TEXT("Skenování"), TEXT("Údaje o lodi"), TEXT("Hyperpohon")};
     for (int32 I = 0; I < 4; ++I)
     {
         const float Left = X + 10 + (I % 2) * 107, Top = Y + 42 + (I / 2) * 32;
