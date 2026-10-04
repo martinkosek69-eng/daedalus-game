@@ -1,7 +1,7 @@
 {
   "sourceSHA256": "c7c670ff703842e2d9e1525bcfba44682de05705defbc74743d1cd66fd8335cd",
-  "blendSHA256": "85dd1e017866dd0236b1765c218afc8a2ad64cfaa4286f218a146dd8442e8dfd",
-  "glbSHA256": "3d60308e2ef8bff3524e8b788222573e56515e117c192f5d1c78fc931c7d94f9",
+  "blendSHA256": "822126ec0a5f804561aa27bb6f2e789c12dd82465bd3208966733ff07b9248ad",
+  "glbSHA256": "9cefa922abba0869d54065054dab5908d171c13dfbaa57667c7d4dd674e355ab",
   "engineGlowGlbSHA256": "bcd5e49359d8498773f97a931060f17c523d9b85c60c480b76b1fd04090b8237",
   "dimensionsMetres": [
     600.0001,
@@ -318,6 +318,10 @@
         "windowZ": [
           -26.5,
           -17.3
+        ],
+        "windowY": [
+          -173.55,
+          -101.94
         ]
       },
       {
@@ -326,13 +330,21 @@
         "windowZ": [
           -26.5,
           -17.3
+        ],
+        "windowY": [
+          101.94,
+          173.55
         ]
       }
     ],
     "lights": {
       "bridgeWindows": 185,
       "bowWindows": 7,
-      "faces": 1204
+      "faces": 1246
+    },
+    "forwardSuperstructure": {
+      "windowFaceX": 66.12,
+      "cyanUnitsX": 76.4
     }
   },
   "beacons": {
@@ -373,8 +385,8 @@
     "addOns": "DaedalusAddOns.glb",
     "beacons": "DaedalusBeacons.glb"
   },
-  "lightsGlbSHA256": "5ae40552bdd88b776f1f551736e602f6f02a324d34b1419d2e64a523796efaa3",
-  "addOnsGlbSHA256": "a71cc4ac5b879a0474cbb55dcf8fd021283464b161522327450cf063e564df24",
+  "lightsGlbSHA256": "3b92c27cd054b301df4226b7f96ef8b285307da11cf9e91d3a038f78e3d2f3f7",
+  "addOnsGlbSHA256": "2aeadb9cd0e29bb0f967f53d667b4e3e12a6a34607628b5c21e6909a4585026a",
   "beaconsGlbSHA256": "45de287adf09f674e7c44258f9800be842b4013c83953b9d336813193811e7f5",
   "checks": {
     "blendReopen": true,
@@ -432,6 +444,7 @@
     ],
     "addOnMaterials": [
       "Daedalus_Armor",
+      "Daedalus_DarkPanel",
       "Daedalus_HangarInterior",
       "Daedalus_HangarWindow",
       "Daedalus_SiloHatch_Plain",
@@ -446,6 +459,7 @@
       "Daedalus_DetailLights",
       "Daedalus_WindowLights"
     ],
+    "bayLights": 4,
     "glowObjects": [
       "ENG_Main_Port_Glow",
       "ENG_Main_Starboard_Glow",

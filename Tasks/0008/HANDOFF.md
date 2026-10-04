@@ -3,6 +3,17 @@
 State: READY_FOR_REVIEW. This is not ACCEPTED; the coordinator reviews
 dimensions, import and rendering in its own Unreal copy.
 
+**Note for the coordinator.** Codex accepted and integrated only `06312a0` and
+`991a823` (Tasks/0008/REVIEW.md). Every later commit is a user-directed
+revision that needs a fresh review:
+- `d5846a1`,
+- `3effaca`,
+- `1d1b442`,
+- this final commit.
+
+They pursue the series look (U13/U15). Task 0009's web-reference comparison
+build is separate and unaffected.
+
 - Worker: Claude Code. Branch `task/0008-daedalus-engine-effects`.
 - Base: `98c4bd137703e675a51af36666d2e35bae1e724a` (revised brief).
 - Checkpoints:
@@ -10,7 +21,8 @@ dimensions, import and rendering in its own Unreal copy.
   - `991a823`,
   - `d5846a1`,
   - `3effaca`,
-  - final pass (this commit; the SHA is in the push report).
+  - `1d1b442`,
+  - final pass with fixes (this commit; the SHA is in the push report).
 
 ## User decisions during the task
 
@@ -54,6 +66,16 @@ dimensions, import and rendering in its own Unreal copy.
    - **The twin barrels added on the turrets were removed.** The original dome
      turrets already carry their own guns (U23–U25), so having two made no
      sense.
+6. **Fixes after `1d1b442`.** The user's screenshots U26–U31 showed three
+   problems:
+   - The hangar back wall poked out of the pod. It is now clipped to the
+     measured bay section.
+   - The bay looked unfinished. It now has a heavy window frame, a ledge, wall
+     ribs, ceiling beams, floor rails and dim teal bay lights.
+   - The forward superstructure lacked its window and units. It now has a window
+     panel and two cyan units.
+
+   The whole hull is about 9 % darker.
 
 ## Deliverables (Art/Ships/Daedalus)
 
@@ -64,13 +86,13 @@ dimensions, import and rendering in its own Unreal copy.
 | `Textures/T_Daedalus_Plating_{BaseColor,ORM,Normal}.png` | 2048², tiling, 1 tile = 32 m; ORM G = roughness, B = metallic; normal map in OpenGL (+Y) convention. |
 | `Textures/T_Daedalus_SiloHatch_{Plain,Striped}_BaseColor.png`, `..._Normal.png` | 2048 × 822, one hatch (15.45 × 6.2 m) per image. Final albedo (COLOR_0 = 1 on those faces). |
 | `DaedalusEngineGlow.glb` | Six `<outletID>_Glow` objects, each with:<br>• a core disc behind the vanes<br>• a faint haze<br>• a child point light (KHR_lights_punctual, range 1.3 × aperture radius)<br>Origin = outlet centre, exhaust = local −X. |
-| `DaedalusLights.glb` | `Daedalus_WindowLights` (30 faint windows) and `Daedalus_DetailLights`:<br>• faint cyan windows in the bow band and on the bridge tiers<br>• pod spotlights and floodlights<br>• nav lights (starboard green, port red) |
-| `DaedalusAddOns.glb` | `Daedalus_AddOns`. Materials: Armor, Hangar, `Daedalus_SiloHatch_Plain/Striped`, `Daedalus_HangarWindow`, `Daedalus_TrimLight`. Contains:<br>• bridge masts<br>• two 40 m forward rods (estimated)<br>• 16 VLS hatch overlays (U16)<br>• two hangar back walls with windows (U17) |
+| `DaedalusLights.glb` | `Daedalus_WindowLights` (30 faint windows) and `Daedalus_DetailLights`:<br>• faint cyan windows in the bow band, on the bridge tiers and on the forward superstructure<br>• pod spotlights and floodlights<br>• nav lights (starboard green, port red)<br>• two cyan deck units<br>Plus 4 teal bay point lights (`BayLight_*`, KHR_lights_punctual). |
+| `DaedalusAddOns.glb` | `Daedalus_AddOns`. Materials: Armor, Hangar, `Daedalus_SiloHatch_Plain/Striped`, `Daedalus_HangarWindow`, `Daedalus_TrimLight`. Contains:<br>• bridge masts<br>• two 40 m forward rods (estimated)<br>• 16 VLS hatch overlays (U16)<br>• two hangar back walls with windows (U17), clipped to the bay section<br>• hangar wall ribs, ceiling beams and floor rails<br>• forward superstructure window panel and unit bases (U31) |
 | `DaedalusBeacons.glb` | `Daedalus_Beacons`: three orange lamps on mast tips. Object extras: `blinkPeriodSeconds` 5, `onSeconds` 1/3, `emissionOn` 8, `emissionOff` 0. |
 | `ENGINE_MOUNTS.json` | 6 outlets (unchanged). |
 | `WEAPON_MOUNTS.json` | 62 mounts (see below). |
 | `asset-metadata.json` | Hashes for all exports and textures, counts, checks, add-on, light and beacon info. |
-| `REFERENCES.md` | Sources (R1–R3, U1–U25, F1), U13/U22 colour samples, observations, mapping. |
+| `REFERENCES.md` | Sources (R1–R3, U1–U31, F1), U13/U22 colour samples, observations, mapping. |
 | `SOURCE.md` | Astrofossil CC BY-NC 4.0 credit retained, plus the modification notice. |
 
 `DaedalusTurrets.glb` from `3effaca` is deleted (user decision 5).
@@ -169,6 +191,7 @@ See `asset-metadata.json` → `checks`. The pipeline prints
   - add-ons: hatch and hangar-window materials present,
   - beacons: blink extras present,
   - glow: 6 objects and 6 lights,
+  - bay lights: 4,
   - lights objects present.
 - **Rendered checks.** Renders from `CAM_SeriesStill` (compared against U13/U15
   and U22) plus close views of the silos, hangar, engines, bridge and bow. They
