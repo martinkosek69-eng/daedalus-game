@@ -1,0 +1,57 @@
+{
+  "passed": true,
+  "task": "0027",
+  "baseCommit": "13c9d300571925e5711c3fc80d0e64804c394bcf",
+  "sourceCheckpoint": "ffe7831",
+  "packageBuild": "Build-Ancient27",
+  "gameAndEditorBuildPassed": true,
+  "packagePassed": true,
+  "viewportWidth": 3840,
+  "viewportHeight": 2160,
+  "hudGraphics": "native vector geometry and fonts; original decorative glyphs",
+  "mouseDrivenStyleSwitchBothWaysPassed": true,
+  "pauseClockAndFlightPreserved": true,
+  "daedalusEarthOnlyPassed": true,
+  "shipSwapPreferencePassed": true,
+  "separateProcessPreferencePersistencePassed": true,
+  "firstTwoProcessProbePassed": true,
+  "finalCosmeticRenderAndInputProbePassed": true,
+  "preferenceStorage": "A-based GameUserSettings, separate from world save",
+  "testUserData": "isolated ignored A-based directory",
+  "domainAutomationRerun": false,
+  "priorTask0026PassingDomainChecks": 23,
+  "ownedProcessesExited": true,
+  "subjectiveUserReview": "pending",
+  "screenshots": [
+    {
+      "name": "ancient-earth.png",
+      "sha256": "a88f484d8048065e432bedb785c8ad1d310eb1fc32fade78b9b0ff8d91254658",
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "name": "ancient-map.png",
+      "sha256": "cef3505586cf0035745d9d53d9d8e5d972e16e3e34aabe2ba201b50b03f65f32",
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "name": "ancient-settings.png",
+      "sha256": "c06a78025e21bcb1f454ca38cbdf7dda27d5e271829a5ce7f61c18e050e08b62",
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "name": "ancient-space.png",
+      "sha256": "749d62ec64223917f58ae4800a9ce266f14877905ba718c8f9164ce9bab53c90",
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "name": "earth-aurora.png",
+      "sha256": "6a5b7c8e5402dc843c4e445dc0324c019e5ac984ae72d52fa196667de3f89c60",
+      "width": 3840,
+      "height": 2160
+    }
+  ]
+}

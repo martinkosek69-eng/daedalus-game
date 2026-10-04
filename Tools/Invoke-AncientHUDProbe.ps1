@@ -1,4 +1,4 @@
-param([ValidatePattern('^[A-Za-z0-9_-]+$')][string]$BuildName='Build-Ancient27')
+param([ValidatePattern('^[A-Za-z0-9_-]+$')][string]$BuildName='Build-Ancient27',[switch]$RenderOnly)
 $ErrorActionPreference='Stop'
 $root=Split-Path -Parent $PSScriptRoot
 $config=Get-Content -LiteralPath (Join-Path $root '.local/toolchain.json') -Raw | ConvertFrom-Json
@@ -8,7 +8,8 @@ $exe=Join-Path $root ".local/solar/$BuildName/Windows/Daedalus/Binaries/Win64/Da
 if(-not(Test-Path -LiteralPath $exe)){throw 'Package first.'}
 $run=Join-Path $root ('.local/ancient/probe-'+(Get-Date -Format 'yyyyMMdd-HHmmss'))
 New-Item -ItemType Directory -Path $run -Force | Out-Null
-foreach($phase in @('write','read')){
+$phases=if($RenderOnly){@('write')}else{@('write','read')}
+foreach($phase in $phases){
     $out=Join-Path $run $phase
     New-Item -ItemType Directory -Path $out -Force | Out-Null
     $args=@('/Game/Maps/SolarFlight?game=/Script/Daedalus.SolarFlightGameMode','-nosound','-unattended','-windowed','-ResX=3840','-ResY=2160','-forceres',

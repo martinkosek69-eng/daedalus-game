@@ -1,12 +1,30 @@
 # Current development state — 2026-10-04
 
-## Current integrated six-system lab 0026
+## Current integrated six-system lab 0027
 
-Normal launcher: Tools/SPUSTIT_LET_DAEDALA.cmd → Build-Aurora26, retaining
-the existing PlayerData. Build-Integrated25 and earlier packages remain available.
+Normal launcher: Tools/SPUSTIT_LET_DAEDALA.cmd → Build-Ancient27, retaining
+the existing PlayerData. Build-Aurora26, Build-Integrated25 and earlier packages remain available.
 Completed0023 planet branch throughaa9072c and latest0008 ship branch
 through7c35635 are reviewed/integrated. Shared source/publication branch remains
-codex/solar-flight; no merge into main. See Tasks/0026/HANDOFF.md.
+codex/solar-flight; no merge into main. See Tasks/0027/HANDOFF.md.
+
+### Selectable Ancient ship interface 0027
+
+Aurora now defaults to the Ancient HUD, inspired by reviewed original Jumper,
+Orion and Atlantis database screens: double blue chamfered glass contours,
+copper/amber bands, cyan schematics and original block-shaped ornaments.
+P → Settings exposes explicit Earth/Ancient choices. The Earth renderer is
+preserved; Daedalus always uses it. Family mapping lives in Data/Solar/hud.json,
+separate from simulation. The preference lives in A-based GameUserSettings,
+separate from player saves, and survives ship swaps/restart.
+
+Native vector/font rendering, live radar/drive/nav, four dormant shield sectors,
+deferred energy/weapons and computer sections. The pause frame and galaxy map
+follow the active style. No flight/weapon/save contract changes. Game/editor
+compilation, package and mouse-driven native 3840×2160 checks passed; two processes
+verified preference persistence. Screens inspected over Earth/space. Only a
+shortened ship label was corrected afterward; final package/render rechecked.
+See Docs/ANCIENT_HUD.md and Tasks/0027/EVIDENCE.json. User judges appearance.
 
 ### Aurora and clickable pause menu 0026
 

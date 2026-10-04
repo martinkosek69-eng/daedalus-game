@@ -1,8 +1,8 @@
 # Letová zkouška Sluneční soustavy
 
-Singleplayer, větev codex/solar-flight, společná verze 0026. Spustit dvojklikem
+Singleplayer, větev codex/solar-flight, společná verze 0027. Spustit dvojklikem
 Tools/SPUSTIT_LET_DAEDALA.cmd po sestavení. Nic se neinstaluje.
-Nový balíček .local/solar/Build-Aurora26 používá nativní rozlišení monitoru
+Nový balíček .local/solar/Build-Ancient27 používá nativní rozlišení monitoru
 v okně přes celou obrazovku. Alt+Enter/F11 mění zobrazení. Data jsou na A:.
 
 | Ovládání | Účinek |
@@ -30,7 +30,10 @@ starší balíčky a stejné PlayerData zůstaly zachované.
 P → Přepnout loď → Aurora Class/Daedalus. Let je v nabídce zastavený a změna
 zachová polohu, směr i rychlost. Nebezpečnou změnu u povrchu nebo během příliš
 velkého náklonu nabídka odmítne; dokonči otočku nebo odleť dál a zkus ji znovu.
-Nastavení zatím ukazuje údaje o obrazu; ukládání/načítání je nedostupné.
+Na Auroře P → Nastavení přepíná HUD: pozemská / antická technika. Výchozí
+antický vzhled lze kdykoli nahradit původním. Volba se uchová po restartu;
+Daedalus vždy používá pozemský styl. Nastavení jinak ukazuje údaje o obrazu;
+ukládání/načítání letu je nedostupné. Viz [antické rozhraní](ANCIENT_HUD.md).
 V konečné hře bude nabídka na ESC. Viz [HUD](HUD.md), [Daedalus](SHIP_PRESENTATION.md)
 a [Aurora: zdroje, příprava a rozdíly v letu](AURORA.md).
 

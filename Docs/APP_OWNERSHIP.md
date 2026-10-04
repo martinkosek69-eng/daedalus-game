@@ -1,10 +1,13 @@
 # Shared application ownership
 
-## Current transfer 0027
+## Completed transfer 0027
 
 Codex owns one sequential build/package/probe slot in the fc0b coordinator
 checkout for the Ancient HUD. Process inspection found no editor/game/Blender.
-No human application or Claude checkout is used. Release after package check.
+No human application or Claude checkout was used. Final package/native 4K
+mouse-driven HUD and separate-process preference persistence checks passed.
+All owned build/game processes exited; slot released. Inspect and coordinate
+ownership again before a new editor/build operation.
 
 ## Completed transfer 0026
 

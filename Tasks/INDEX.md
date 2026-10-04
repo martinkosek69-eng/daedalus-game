@@ -46,7 +46,7 @@ automaticky aktualizovaný přehled všech vzdálených větví.
 
 | 0026 | [Aurora: model a vlastní letové vlastnosti](0026/BRIEF.md) | Codex coordinator | ACCEPTED (technical; user flight/style review pending) | `codex/solar-flight` |
 
-| 0027 | [Antický HUD a přepínání vzhledu](0027/BRIEF.md) | Codex coordinator | IN_PROGRESS | `codex/solar-flight` |
+| 0027 | [Antický HUD a přepínání vzhledu](0027/BRIEF.md) | Codex coordinator | ACCEPTED (technical; user style review pending) | `codex/solar-flight` |
 
 Další volné číslo: **0028**.
 

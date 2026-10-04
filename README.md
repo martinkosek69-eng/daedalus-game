@@ -15,11 +15,14 @@ for the user's 32-inch monitor, with compact readable HUD, text and maps.
 The six-system singleplayer flight and galaxy navigation laboratory is on
 `codex/solar-flight`: [controls and reproduction](Docs/SOLAR_FLIGHT.md).
 After packaging, double-click `Tools/SPUSTIT_LET_DAEDALA.cmd` on this PC.
-Current delivery 0026 preserves reviewed planets, the HUD/live minimap and
+Current delivery 0027 preserves reviewed planets, the HUD/live minimap and
 latest Daedalus lights/split doors, and adds the reviewed Aurora-class model
 with its own drive/steering settings. H previews Daedalus hangars.
 P opens the clickable pause menu: ship selection, resume, exit, graphics
-readout and explicitly unavailable save/load entries. See [Aurora](Docs/AURORA.md).
+readout and explicitly unavailable save/load entries. On Aurora, Settings also
+selects the original Earth HUD or the new Ancient interface; the choice survives
+restart. Ancient ships default to Ancient HUD, Daedalus stays Earth.
+See [Aurora](Docs/AURORA.md) and [Ancient HUD references/controls](Docs/ANCIENT_HUD.md).
 Press M for the 3D galaxy, searchable body database and navigation estimates.
 See [map controls and data limits](Docs/GALAXY_NAVIGATION.md).
 Its flight tuning is an isolated experiment; reviewed ship art is integrated.

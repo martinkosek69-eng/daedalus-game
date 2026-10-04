@@ -13,6 +13,11 @@ const FLinearColor TextColor = FLinearColor::FromSRGBColor(FColor(229,230,215));
 const FLinearColor Quiet = FLinearColor::FromSRGBColor(FColor(145,159,169));
 const FLinearColor Glass(.004f,.011f,.022f,.93f), Cell(.0015f,.004f,.010f,.92f);
 
+FString HUDShipName(const ASolarFlightGameMode& Lab)
+{
+    return Lab.ShipId==TEXT("aurora")?TEXT("Aurora Class"):Lab.ShipName;
+}
+
 // Original geometric ornaments inspired by the block-script vocabulary.
 // They are not a downloaded font, a translated message or invented telemetry.
 void Glyphs(const FInstruments& D, float X, float Y, int32 Count, int32 Seed, FLinearColor Color)
@@ -65,7 +70,7 @@ void DrawAncientDock(const FInstruments& D,const ASolarFlightGameMode& Lab)
     X+=136;
 
     // Orion's circular bands, angular Ancient frame and a real hull projection.
-    AncientPanel(D,X,Y,214,H,TEXT("AURORA · TRUP"));
+    AncientPanel(D,X,Y,214,H,HUDShipName(Lab).ToUpper()+TEXT(" · TRUP"));
     const FVector2D C(X+107,Y+117);
     TArray<FVector2D> Octagon;
     for(int32 I=0;I<8;++I)
@@ -167,7 +172,7 @@ void DrawAncientComputer(const FInstruments& D,const ASolarFlightGameMode& Lab)
     AncientPanel(D,X,Y,256,252,TEXT("ANTICKÝ POČÍTAČ"));
     Glyphs(D,X+19,Y+44,21,3,Alpha(Ice,.55f));
     D.Rect(X+14,Y+64,228,37,Cell);
-    D.Text(Lab.ShipName.ToUpper(),X+23,Y+69,TextColor,12,208);
+    D.Text(HUDShipName(Lab).ToUpper(),X+23,Y+69,TextColor,12,208);
     D.Text(TEXT("LANTSKÉ ROZHRANÍ · PŘEKLAD CZ"),X+23,Y+88,Quiet,7,208);
     const TCHAR* Items[]={TEXT("Navigace"),TEXT("Skenování"),TEXT("Lodní systémy"),TEXT("Hyperpohon")};
     for(int32 I=0;I<4;++I)

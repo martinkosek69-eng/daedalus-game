@@ -79,7 +79,9 @@ hull clearance sphere or while attitude exceeds the new ship's allowed turn/
 bank limits. Finish the turn/move away and try again. Changes do not touch the
 foundation save schema; this remains the isolated singleplayer flight lab.
 
-Menu also offers exit and read-only graphics settings. Save/load entries are
+Menu also offers exit and a graphics readout. Task 0027 adds Earth/Ancient HUD
+choices in Settings; the Ancient-family preference survives ship swaps/restart,
+and Daedalus stays Earth. See ANCIENT_HUD.md. Save/load entries are
 explicitly unavailable until a flight-lab save contract is designed. The separate
 foundation persistence system remains unchanged. UI never pretends to save a
 flight. ESC is planned as the menu key for the final game; currently it closes

@@ -40,7 +40,7 @@ C++ build i Windows balíček prošly;20/20 testů včetně radarové projekce.
 Skutečný render3840×2160 s HUD byl zkontrolován u Země i nad černým vesmírem.
 Půdorys lodi má tmavou plochu pro čitelnost nad světlou planetou; minimapa
 zůstává úplně průhledná. Popisky byly upraveny, aby se zbytečně nezkracovaly.
-Běžný launcher nyní míří na Build-Aurora26. PlayerData a starší balíčky zachovány.
+Běžný launcher nyní míří na Build-Ancient27. PlayerData a starší balíčky zachovány.
 Nový počítač/zbraně/energie jsou stále nezapojené; minimapa a dosavadní letové
 údaje jsou funkční. Další hodnocení vzhledu a ovládání provede uživatel.
 
@@ -50,6 +50,13 @@ lodí, návratem do hry, ukončením, přehledem obrazu a nedostupným uložení
 načtením. Nabídka i její hitboxy vycházejí ze stejného rozložení pro aktuální
 rozlišení. Změny stavu provádí explicitní příkazy; vykreslování HUD pouze čte.
 Přepínání a nabídka prošly kontrolou myší ve skutečném rozlišení 3840×2160.
+
+Úkol 0027 přidává alternativní antický vzhled pro Auroru. Volí se přes
+P → Nastavení → HUD: pozemská technika / HUD: antická technika. Volba se uchová
+po změně lodi i restartu. Daedalus si vždy ponechá pozemský HUD. Nové přístroje
+sdílejí ostré kreslení i kanonický radar; hodnoty letu se nemění. Antický vzhled
+se vztahuje i na nabídku a mapu. Referenční obrazovky, použité motivy a hranice
+ornamentů popisuje [ANCIENT_HUD.md](ANCIENT_HUD.md).
 
 ## Předchozí schválený návrh vzhledu
 
