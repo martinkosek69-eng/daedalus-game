@@ -1,5 +1,10 @@
 # Shared application ownership — task0022 proposal phase
 
+**Released:** Claude's handoff c2ccd5d confirms Unreal was never started,
+no build ran, and editor/build ownership is released. Codex reviewed the
+proposal in Tasks/0022/REVIEW.md. No implementation session is assigned yet.
+The following records the completed diagnosis-phase assignment.
+
 Claude Code is assigned one Unreal editor and any necessary build of the
 unchanged baseline for **read-only diagnosis** in task0022 upon user launch.
 Codex will not concurrently use editor MCP/imports/compilation/package jobs
