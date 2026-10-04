@@ -29,13 +29,18 @@ obrazovkové údaje od pravidel letu a planetární prezentace.
 
 ## Přidělené soubory
 
-**Aktuální fáze je pouze návrh:** Tasks/0024/Preview/**, Tools/Prepare-HudOutline.py,
-Docs/HUD.md a vlastní progress/handoff; koordinační INDEX/CURRENT_STATE.
-Níže uvedené herní cesty jsou plánovaná následná fáze, teď je neměnit.
+**Aktuální fáze: implementace schváleného vzhledu.** Uživatel schválil návrh,
+požádal sjednotit velikosti a zasadit HUD do hry. Jediná nově funkční část
+je minimapa; zbraňové/energetické/počítačové akce zůstávají nezapojené.
+Dosavadní rychlost/tah/režim a varování se zachovají jako čtené údaje.
+Tasks/0024/Preview/**, Tools/Prepare-HudOutline.py, Docs/HUD.md a vlastní
+progress/handoff; koordinační INDEX/CURRENT_STATE patří koordinátorovi.
 
 - Game/Daedalus/Source/Daedalus/Solar/SolarFlightGameMode.cpp: výhradně
   existující DrawHUD a nutné include při jeho oddělení; žádná letová logika.
-- Nový Game/Daedalus/Source/Daedalus/Solar/SolarHUD.cpp.
+- Nové Game/Daedalus/Source/Daedalus/Solar/SolarHUD*.h/.cpp/.inl:
+  vlastní vykreslení a read-only radarová projekce; žádná změna letu.
+- Game/Daedalus/Source/Daedalus/Tests/SolarHUDTests.cpp: radarové hranice.
 - Docs/HUD.md a vlastní Tasks/0024/PROGRESS.md, HANDOFF.md.
 - Koordinátorské aktualizace Tasks/INDEX a Docs/CURRENT_STATE.
 

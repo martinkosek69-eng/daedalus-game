@@ -1,35 +1,49 @@
-# 0024 handoff
+# 0024 implementation checkpoint
 
-Status: READY_FOR_REVIEW (instrument design only; user feedback pending).
-
+Status: IN_PROGRESS — runtime sources prepared, NOT compiled or packaged.
 Owner: Codex. Branch: codex/solar-flight. Head via Git history.
-Files: Preview/**, Tools/Prepare-HudOutline.py, Docs/HUD.md, task docs.
+User approved instrument appearance and authorized aligned sizes and a live
+minimap. Other new system actions are deferred. This supersedes design review.
 
-The latest instrument design supersedes both the monochrome and minimalist
-prototypes. The unframed radar remains unchanged. Real model-derived hull
-outline is green; four shield arcs remain blue. Bevelled instrument housings,
-secondary energy channels, segmented drive display, detailed weapon-group
-diagrams and framed onboard computer now follow the requested STO direction.
-No online UI, key hints, new gameplay or invented shield/energy/ammo values.
+## Changed files
 
-Weapon diagrams derive from the same mesh projection and WEAPON_MOUNTS data:
-38railgun mounts,16VLS mounts,4beam mounts. These are measured model features,
-not accepted combat counts. Local selectors exclusively highlight each group
-and deselect correctly. Onboard computer switches demonstration content only.
+- Solar/SolarFlightGameMode.cpp: removed only the old DrawHUD function.
+- Solar/SolarHUD.cpp: one new DrawHUD, native runtime fonts, vector geometry,
+  common lower panel height, ship/blue shields/secondary energy/drive/weapons,
+  onboard computer placeholders and existing warnings/navigation readouts.
+- Solar/SolarHUDRadar.h/.cpp: read-only planar local radar projection in metres,
+  yaw-relative coordinates, true distance/height and rim bearing,1/2/5 scale.
+- Solar/SolarHUDShipData.inl: generated real hull/mount vectors.
+- Tools/Prepare-HudOutline.py: extends the existing generator to that inl.
+- Tests/SolarHUDTests.cpp: Daedalus.HUD.RadarCoordinates boundary coverage.
+- Docs/HUD.md and task/coordinator documents.
 
-Standalone preview: Tasks/0024/Preview/hud-concept.html, after Git LFS pull.
-Regenerate with Python3/Pillow Tools/Prepare-HudOutline.py when geometry changes,
-then node Tasks/0024/Preview/build-preview.cjs after template changes.
-No server, extra dependencies or live editor needed for the HTML preview.
+No change to canonical data, flight/input/physics, galaxy map code, Claude's
+assigned header/planet sources, models or binary assets. Existing package and
+launcher remain intact. Runtime new system panels have no interactive actions;
+speed/throttle/profile and existing navigation/warnings remain state readouts.
 
-Browser check: native3840x2160,24.96px base text, no page errors, horizontal
-overflow or clipped tested labels. Transparent radar/no border, three weapon
-selectors, no key hints. Computer and all three weapon interactions PASS.
-390px adaptive layout has no horizontal overflow. Inspected screenshots in
-ignored.local/hud/hud-sto-4k.png and hud-sto-instruments-4k.png.
-Reference background does not establish current scene quality; the check
-verifies the new HUD at native output pixels.
+## Checks and remaining gates
 
-No game source/asset changes, Unreal/build/package or current launcher changes.
-Claude retains0023 editor/build ownership. Next: user evaluates this appearance;
-implement the selected design only after approval and app coordination.
+- Generator executed on the actual current hull and WEAPON_MOUNTS source;
+ 68hull points and38turret/16VLS/4beam measured features emitted.
+- Static source/API review: one DrawHUD implementation, no domain mutation,
+  unknown positions excluded, double metre math, pixel runtime font fitting.
+- Git diff whitespace check passes.
+- The previous approved browser prototype was checked at3840x2160; that
+  evidence does NOT establish the new C++ layout/render or minimap behavior.
+- C++ compilation, automation, playable build and native4K render remain UNRUN.
+
+Reason: fetched Claude's remote checkpointf5d95d7 on0023. Earth checkpoint is
+IN_PROGRESS, full rollout ongoing, editor/build explicitly retained by Claude.
+No READY_FOR_REVIEW or app release exists. Codex has not used these apps.
+
+## Resume after explicit editor/build release
+
+1. Fetch/review finished0023 separately; do not treat Earth checkpoint as final.
+2. Verify app ownership/processes, build this checkout with editor closed.
+3. Run Daedalus.HUD.RadarCoordinates and inspect a targeted native4K game render.
+   Fix compilation/layout failures before publishing a playable package.
+4. Package separately (e.g. Build-Hud24), keep existing player saves/package.
+5. Update delivery/launcher only to a verified package; most visual tuning is
+   the user's own test as requested. Record actual checks and remaining limits.

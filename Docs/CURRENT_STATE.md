@@ -10,10 +10,15 @@ weapon displays from real model positions, circular green ship outline and
 four preserved blue shield arcs. Radar remains unframed/green. Copper turrets,
 amber missiles/drive, blue beams and neutral text remain. Energy secondary,
 no key hints or slider. Complex instrument treatment is now the requested style.
-Three weapon selectors highlight real mount groups locally, no firing. Standalone
-preview is ready: Tasks/0024/Preview/hud-concept.html, see Docs/HUD.md.
-Browser native3840x2160 layout/interactions checked; design feedback pending.
-No game source/asset/build changed. Claude retains0023 editor/build ownership.
+User approved the instrument design and authorized game integration. Runtime
+sources now move DrawHUD to SolarHUD.cpp, align the lower panel sizes and add
+a read-only live local minimap from canonical metre coordinates/heading.
+Existing drive/navigation/pause/safety readings remain, other new systems
+are placeholders with no actions. Flight/input/data/assets unchanged.
+SolarHUDRadar helpers and boundary tests are prepared. NOT YET COMPILED or
+rendered in game: Claude0023 still owns editor/build at checkpointf5d95d7.
+The existing playable package and launcher are unchanged. See Docs/HUD.md.
+Historical standalone design: Tasks/0024/Preview/hud-concept.html.
 
 ### Shared 4K requirement
 

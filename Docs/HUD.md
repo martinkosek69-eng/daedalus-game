@@ -1,4 +1,47 @@
-# HUD — přístrojový návrh podle STO, zatím bez herního napojení
+# HUD — přístroje podle STO a lokální minimapa
+
+## Aktuální implementace0024
+
+Uživatel schválil vzhled a autorizoval zasazení do hry, sjednocení velikostí
+spodních přístrojů a zprovoznění minimapy. C++ implementace je nyní v
+Solar/SolarHUD.cpp; původní DrawHUD byl vyjmut ze SolarFlightGameMode.cpp.
+Jde o jednu implementaci. Spodní panely mají společnou výšku208 jednotek
+v referenčním1920×1080 layoutu, všechny zarovnané na společný spodní okraj.
+Celá sestava má šířku868 jednotek (1736px při3840×2160); písmo je rasterizované
+v cílových pixelech, primárně24px při4K. Obrys lodi se nedeformuje; zachovává
+měřený poměr stran. Žádné nové HUD obrázky/importované assety nejsou potřeba.
+
+Minimapa je průhledný zelený půdorys aktivní soustavy, centrovaný na
+kanonickou polohu lodi v metrech, přídí nahoru podle skutečného směru.
+Pohyb kamery, sklon a náklon lodi její měřítko/otočení neovlivňují. Tři kruhy
+mají1/3,2/3 a plný aktuální dosah; stupnice1/2/5 se automaticky přizpůsobuje
+nejbližšímu fyzickému tělesu. Měřítko se vztahuje k roviněXY; značka+ / −
+označuje výraznou výšku vůči lodi, údaj o vzdálenosti je skutečný ve3D.
+Polohy se čtou z katalogu; jde o jeho současný statický epochový layout,
+nikoli nově implementované astronomické oběžné dráhy. Neznámé polohy vynechává.
+Vybrané těleso má jantarovou značku a může být ukázáno směrovou značkou na
+okraji, pokud je mimo dosah. Ostatní body jsou skutečně uvnitř dosahu.
+Počet drobných bodů je omezen na32 nejbližších, vybraný cíl se zachová.
+
+Rychlost, tah (včetně záporného), aktuální letový režim, již existující
+navigační údaje, pauza, ochrana povrchu a chyby se dál čtou ze skutečného stavu.
+Energie, síla štítů a zbraně mají prázdné hodnoty; výzbroj ukazuje modelové
+zóny. Počítačové sekce nejsou nové funkční akce. Letová pravidla, klávesy,
+galaxijní mapa a kanonická data zůstaly beze změny. HUD nic z toho nemutuje.
+
+Radarová projekce je oddělená v SolarHUDRadar.h/.cpp. Test
+Daedalus.HUD.RadarCoordinates pokrývá velké lokální souřadnice, směr/otočku,
+skutečnou vzdálenost oproti oříznutí na okraj, výšku a neplatné vstupy.
+Tools/Prepare-HudOutline.py teď generuje i SolarHUDShipData.inl ze stejného
+zdrojového modelu a bodů zbraní jako návrh. Dosavadní geometrie/asset se nemění.
+
+**Stav ověření:** zdroje a generátor připravené, statická kontrola provedena.
+C++ build, radarový test a skutečný herní4K render zatím NEPROVEDENY:
+Claude0023 stále výslovně drží editor/build slot (checkpointf5d95d7).
+Žádný dosavadní hratelný balíček ani launcher nebyl přepsán. Po uvolnění
+provedeme cílenou kompilaci/test/render a připravíme balíček s novým HUD.
+
+## Předchozí schválený návrh vzhledu
 
 Úkol0024 nyní připravuje nový HUD podle uživatelových dvou referencí STO.
 Z původního zůstává inspirace základním rozmístěním, žádné převzaté STO assety.
