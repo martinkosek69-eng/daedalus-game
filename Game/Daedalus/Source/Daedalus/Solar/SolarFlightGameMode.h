@@ -124,6 +124,10 @@ public:
     ESolarPausePage PauseMenuPage = ESolarPausePage::Main;
     const TArray<Daedalus::FShipFlightDefinition>& AvailableShips() const { return ShipCatalog.Ships; }
     void HandlePauseMenuClick(FVector2D Pixel, FVector2D Viewport);
+    // Presentation preference only; never part of flight state or save schema.
+    bool UsesAncientHUD() const;
+    bool HasAncientInterface() const;
+    bool SetAncientHUD(bool bAncient);
     int32 StarCount() const;
     int32 EngineOutletCount() const { return EngineGlows.Num(); }
     double EngineGlowLevel = .08;
@@ -206,6 +210,9 @@ private:
     UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> AtmosphereDynamic;
     TArray<FVector3d> DustPositions;
     bool LoadSettings();
+    bool LoadHUDSettings();
+    TMap<FString, FString> ShipHUDFamilies;
+    bool bAncientHUDPreferred = true;
     bool LoadSystem();
     bool CreateSystem();
     void ClearSystem();
@@ -234,5 +241,6 @@ private:
     void TickPlanetProbe();
     void TickIntegrationProbe();
     void TickAuroraProbe();
+    void TickAncientHUDProbe();
     bool bSharpProbe = false;
 };

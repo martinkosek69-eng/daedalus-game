@@ -32,7 +32,15 @@ FSolarPauseView BuildSolarPauseView(const ASolarFlightGameMode& Lab, FVector2D V
         Add(TEXT("Zpět"), TEXT("NABÍDKA"), ESolarPauseAction::Back);
         break;
     case ESolarPausePage::Settings:
-        V.Title = TEXT("NASTAVENÍ OBRAZU"); V.Description = TEXT("KVALITNÍ REŽIM · PLNÁ OSTROST");
+        V.Title = TEXT("NASTAVENÍ"); V.Description = TEXT("OBRAZ A PALUBNÍ ROZHRANÍ");
+        if (Lab.HasAncientInterface())
+        {
+            Add(TEXT("HUD: pozemská technika"), TEXT("PŮVODNÍ ROZHRANÍ"), ESolarPauseAction::EarthHUD,
+                Lab.UsesAncientHUD(), INDEX_NONE, !Lab.UsesAncientHUD());
+            Add(TEXT("HUD: antická technika"), TEXT("ATLANTIS / AURORA / JUMPER"), ESolarPauseAction::AncientHUD,
+                !Lab.UsesAncientHUD(), INDEX_NONE, Lab.UsesAncientHUD());
+        }
+        else Add(TEXT("HUD: pozemská technika"), TEXT("DAEDALUS"), ESolarPauseAction::None, false, INDEX_NONE, true);
         Add(TEXT("Vykreslování"), FString::Printf(TEXT("%.0f × %.0f"),Viewport.X,Viewport.Y), ESolarPauseAction::None, false);
         Add(TEXT("Rozlišení scény"), TEXT("100 % · NATIVNÍ"), ESolarPauseAction::None, false);
         Add(TEXT("Rozmazání pohybem"), TEXT("VYPNUTO"), ESolarPauseAction::None, false);
@@ -72,6 +80,8 @@ void ASolarFlightGameMode::HandlePauseMenuClick(FVector2D Pixel, FVector2D Viewp
         case ESolarPauseAction::Saves: PauseMenuPage = ESolarPausePage::Saves; break;
         case ESolarPauseAction::Back: PauseMenuPage = ESolarPausePage::Main; break;
         case ESolarPauseAction::ChooseShip: SelectShip(B.ShipIndex); break;
+        case ESolarPauseAction::EarthHUD: SetAncientHUD(false); break;
+        case ESolarPauseAction::AncientHUD: SetAncientHUD(true); break;
         case ESolarPauseAction::Quit:
             if (auto* PC = GetWorld()->GetFirstPlayerController()) PC->ConsoleCommand(TEXT("quit"));
             break;

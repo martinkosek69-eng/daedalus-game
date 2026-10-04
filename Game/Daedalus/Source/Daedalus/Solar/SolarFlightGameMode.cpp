@@ -253,7 +253,7 @@ void ASolarFlightGameMode::BeginPlay()
 {
     Super::BeginPlay();
     SetActorHiddenInGame(false);
-    bReady = LoadSettings() && CreateScene();
+    bReady = LoadSettings() && LoadHUDSettings() && CreateScene();
     if (!bReady) { Message = TEXT("Letovou scénu nelze načíst. Zkontroluj obsah a protokol."); UE_LOG(LogTemp, Error, TEXT("SOLAR_LOAD_FAILED")); }
     if (auto* PC = GetWorld()->GetFirstPlayerController())
     {

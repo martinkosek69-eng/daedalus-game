@@ -55,7 +55,7 @@ public:
                      bool RightHeld, bool MiddleHeld, float Wheel, bool Home,
                      const TArray<FGalaxySystemView>& Systems, FVector2D ViewportSize);
     void Draw(UCanvas* Canvas, UFont* Font, const TArray<FGalaxySystemView>& Systems,
-              int32 ActiveSystem, const Daedalus::FNavigationMetrics& PreviewMetrics);
+              int32 ActiveSystem, const Daedalus::FNavigationMetrics& PreviewMetrics, bool bAncientInterface = false);
     bool MarkerScreenPosition(int32 System, FVector2D& Out) const;
     void FocusSystem(int32 Index, const TArray<FGalaxySystemView>& Systems);
     void SetSearchQuery(const FString& Query);

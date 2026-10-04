@@ -354,7 +354,7 @@ void FGalaxyMapView::GenerateGalaxy()
 }
 
 void FGalaxyMapView::Draw(UCanvas* Canvas, UFont* Font, const TArray<FGalaxySystemView>& Systems,
-                         int32 ActiveSystem, const Daedalus::FNavigationMetrics& Metrics)
+                         int32 ActiveSystem, const Daedalus::FNavigationMetrics& Metrics, bool bAncientInterface)
 {
     if (!bOpen || !Canvas || !Font) return;
     Layout(FVector2D(Canvas->SizeX, Canvas->SizeY)); GenerateGalaxy();
@@ -362,16 +362,21 @@ void FGalaxyMapView::Draw(UCanvas* Canvas, UFont* Font, const TArray<FGalaxySyst
     SystemMarkers.SetNum(Systems.Num()); SystemMarkerVisible.Init(false, Systems.Num());
     BodyMarkers.Reset(); BodyMarkerVisible.Reset();
     const float S = UIScale, Width = ViewSize.X / S, Height = ViewSize.Y / S;
-    auto Text = [&](const FString& Value, float X, float Y, FLinearColor Color = Pale, float Size = 13) {
+    const auto ThemeAccent=bAncientInterface?FLinearColor::FromSRGBColor(FColor(229,196,145)): ::Cyan;
+    const auto ThemePale=bAncientInterface?FLinearColor::FromSRGBColor(FColor(165,184,199)): ::Pale;
+    const auto ThemeWhite=bAncientInterface?FLinearColor::FromSRGBColor(FColor(229,230,215)): ::White;
+    const auto ThemePlate=bAncientInterface?FLinearColor(.004f,.010f,.021f,.98f): ::Plate;
+    auto Text = [&](const FString& Value, float X, float Y, FLinearColor Color = FLinearColor::Transparent, float Size = 13) {
+        if(Color.A==0)Color=ThemePale;
         FCanvasTextItem Item(FVector2D(X * S, Y * S), FText::FromString(Value), FSlateFontInfo(Font, FMath::Max(8, FMath::RoundToInt(Size * S))), Color);
         Item.EnableShadow(FLinearColor::Black, FVector2D(S, S)); Canvas->DrawItem(Item);
     };
     auto Button = [&](EButton Action, const FString& Label, float X, float Y, float W, bool bSelected = false, bool bEnabled = true) {
         FBox2D Bounds(FVector2D(X * S, Y * S), FVector2D((X + W) * S, (Y + 27) * S));
         const bool Hover = Bounds.IsInside(LastCursor);
-        MapPlate(Canvas, Bounds.Min, Bounds.GetSize(), bSelected ? FLinearColor(.04f, .19f, .25f) : (Hover && bEnabled ? FLinearColor(.035f, .105f, .15f) : FLinearColor(.015f, .043f, .063f)));
-        Line(Canvas, Bounds.Min, Bounds.Min + FVector2D(Bounds.GetSize().X, 0), bSelected ? Cyan : FLinearColor(.1f, .22f, .28f), S);
-        Text(Label, X + 8, Y + 6, bEnabled ? (bSelected || Hover ? White : Pale) : FLinearColor(.25f, .32f, .36f), 11);
+        MapPlate(Canvas, Bounds.Min, Bounds.GetSize(), bSelected ? (bAncientInterface?FLinearColor(.12f,.045f,.03f):FLinearColor(.04f,.19f,.25f)) : (Hover && bEnabled ? FLinearColor(.035f, .105f, .15f) : FLinearColor(.015f, .043f, .063f)));
+        Line(Canvas, Bounds.Min, Bounds.Min + FVector2D(Bounds.GetSize().X, 0), bSelected ? ThemeAccent : FLinearColor(.1f, .22f, .28f), S);
+        Text(Label, X + 8, Y + 6, bEnabled ? (bSelected || Hover ? ThemeWhite : ThemePale) : FLinearColor(.25f, .32f, .36f), 11);
         Buttons.Add({Bounds, Action});
     };
     MapPlate(Canvas, FVector2D::ZeroVector, ViewSize, Ink);
@@ -407,10 +412,10 @@ void FGalaxyMapView::Draw(UCanvas* Canvas, UFont* Font, const TArray<FGalaxySyst
         if (!Project((Systems[I].GalaxyLightYears - PivotLY) - PivotLocalMetres / LY, Screen, Depth)) continue;
         SystemMarkers[I] = Screen; SystemMarkerVisible[I] = true;
         const bool bSelected = I == SelectedSystem, bActive = I == ActiveSystem;
-        const FLinearColor Color = Systems[I].bAvailable ? (bActive ? FLinearColor(.5f, 1, .74f) : Cyan) : FLinearColor(.72f, .48f, .25f);
+        const FLinearColor Color = Systems[I].bAvailable ? (bActive ? FLinearColor(.5f, 1, .74f) : ThemeAccent) : FLinearColor(.72f, .48f, .25f);
         SoftDisc(Canvas, Screen, (bSelected ? 18 : 12) * S, FLinearColor(Color.R, Color.G, Color.B, .48f));
         Ring(Canvas, Screen, (bSelected ? 8 : 5) * S, Color, S);
-        MapPlate(Canvas, Screen - FVector2D(S), FVector2D(2 * S), White);
+        MapPlate(Canvas, Screen - FVector2D(S), FVector2D(2 * S), ThemeWhite);
         if (bSelected || bActive || CameraDistanceLY < 5000)
         {
             const FVector2D Label = Screen / S + FVector2D(12, -8);
@@ -455,7 +460,7 @@ void FGalaxyMapView::Draw(UCanvas* Canvas, UFont* Font, const TArray<FGalaxySyst
                 && Project(Center + FVector3d(Region.OuterMetres / LY, 0, 0), Label, Depth))
             {
                 MapPlate(Canvas, Label + FVector2D(6 * S, -5 * S), FVector2D(235 * S, 20 * S), FLinearColor(.003f, .012f, .018f, .88f));
-                Text(Short(Region.Name, 36), Label.X / S + 10, Label.Y / S - 2, Pale, 9);
+                Text(Short(Region.Name, 36), Label.X / S + 10, Label.Y / S - 2, ThemePale, 9);
             }
         }
     }
@@ -503,7 +508,7 @@ void FGalaxyMapView::Draw(UCanvas* Canvas, UFont* Font, const TArray<FGalaxySyst
             const auto& Body = System.Bodies[Projected.Index]; const bool Selected = Projected.Index == SelectedBody;
             const double RealRadius = Body.bKnownRadius ? Body.RadiusMetres / LY * FocalPixels() / Projected.Depth : 0;
             const float Radius = FMath::Clamp(float(RealRadius), 0.f, float(MapRect.GetSize().GetMax() * .8));
-            const FLinearColor Color = Body.Kind == TEXT("star") ? FLinearColor(1, .82f, .4f) : (Body.Kind == TEXT("moon") ? FLinearColor(.64f, .74f, .8f) : Cyan);
+            const FLinearColor Color = Body.Kind == TEXT("star") ? FLinearColor(1, .82f, .4f) : (Body.Kind == TEXT("moon") ? FLinearColor(.64f, .74f, .8f) : ThemeAccent);
             if (Body.MapMaterial && Radius >= 3 * S)
                 Canvas->K2_DrawMaterial(Body.MapMaterial, Projected.Screen - FVector2D(Radius), FVector2D(2 * Radius), FVector2D::ZeroVector, FVector2D::UnitVector);
             else
@@ -512,7 +517,7 @@ void FGalaxyMapView::Draw(UCanvas* Canvas, UFont* Font, const TArray<FGalaxySyst
                 SoftDisc(Canvas, Projected.Screen, Size * 2.5, FLinearColor(Color.R, Color.G, Color.B, Selected ? .6f : .25f));
                 MapPlate(Canvas, Projected.Screen - FVector2D(Size * .5), FVector2D(Size), Color);
             }
-            if (Selected) Ring(Canvas, Projected.Screen, FMath::Max(Radius + 5 * S, 8 * S), Cyan, 1.25f * S);
+            if (Selected) Ring(Canvas, Projected.Screen, FMath::Max(Radius + 5 * S, 8 * S), ThemeAccent, 1.25f * S);
             if (!BodyDetail && (Selected || Body.Kind == TEXT("planet") || Radius > 8 * S))
             {
                 FVector2D Position = Projected.Screen / S + FVector2D(FMath::Max(Radius / S + 8, 10.f), -6);
@@ -529,46 +534,58 @@ void FGalaxyMapView::Draw(UCanvas* Canvas, UFont* Font, const TArray<FGalaxySyst
             const FBox2D Bounds(Label.Position * S, (Label.Position + FVector2D(140, 21)) * S);
             if (LabelBounds.ContainsByPredicate([&](const FBox2D& Other) { return Bounds.Intersect(Other); })) continue;
             MapPlate(Canvas, Bounds.Min, Bounds.GetSize(), FLinearColor(.003f, .014f, .023f, .9f));
-            Text(Label.Name, Label.Position.X + 4, Label.Position.Y + 2, Label.Selected ? White : Pale, 11);
+            Text(Label.Name, Label.Position.X + 4, Label.Position.Y + 2, Label.Selected ? ThemeWhite : ThemePale, 11);
             LabelBounds.Add(Bounds);
         }
     }
 
     // Opaque plates isolate crisp native-resolution text from the star field.
-    MapPlate(Canvas, FVector2D::ZeroVector, FVector2D(ViewSize.X, 82 * S), Plate);
-    MapPlate(Canvas, FVector2D(10 * S, 92 * S), FVector2D(244 * S, ViewSize.Y - 107 * S), Plate);
-    MapPlate(Canvas, FVector2D(ViewSize.X - 338 * S, 92 * S), FVector2D(328 * S, ViewSize.Y - 99 * S), Plate);
-    Text(TEXT("HVĚZDNÁ MAPA"), 24, 17, White, 24);
-    Text(TEXT("Prostorová mapa · soustavy a lodní databáze"), 25, 51, Pale, 12);
+    MapPlate(Canvas, FVector2D::ZeroVector, FVector2D(ViewSize.X, 82 * S), ThemePlate);
+    MapPlate(Canvas, FVector2D(10 * S, 92 * S), FVector2D(244 * S, ViewSize.Y - 107 * S), ThemePlate);
+    MapPlate(Canvas, FVector2D(ViewSize.X - 338 * S, 92 * S), FVector2D(328 * S, ViewSize.Y - 99 * S), ThemePlate);
+    Text(bAncientInterface?TEXT("ANTICKÁ HVĚZDNÁ MAPA"):TEXT("HVĚZDNÁ MAPA"), 24, 17, ThemeWhite, 24);
+    Text(bAncientInterface?TEXT("Lantská databáze · soustavy a navigace"):TEXT("Prostorová mapa · soustavy a lodní databáze"), 25, 51, ThemePale, 12);
+    if(bAncientInterface)
+    {
+        Line(Canvas,{14*S,78*S},{ViewSize.X-14*S,78*S},ThemeAccent,S);
+        for(const float X:{10.f,Width-338})
+        {
+            const float W=X==10.f?244.f:328.f;
+            const FVector2D Points[]={{(X+10)*S,92*S},{(X+W-10)*S,92*S},{(X+W)*S,102*S},
+                {(X+W)*S,ViewSize.Y-18*S},{(X+W-10)*S,ViewSize.Y-8*S},{(X+10)*S,ViewSize.Y-8*S},
+                {X*S,ViewSize.Y-18*S},{X*S,102*S}};
+            for(int32 I=0;I<UE_ARRAY_COUNT(Points);++I)Line(Canvas,Points[I],Points[(I+1)%UE_ARRAY_COUNT(Points)],FLinearColor(.25f,.40f,.61f,.6f),S);
+        }
+    }
     Button(EButton::Galaxy, TEXT("Celá galaxie"), Width - 436, 20, 134);
     Button(EButton::Top, TEXT("Shora"), Width - 294, 20, 85, CameraPitch > 88);
     Button(EButton::Side, TEXT("Z boku"), Width - 201, 20, 90, FMath::Abs(CameraPitch) < .1);
-    Text(TEXT("M zavřít"), Width - 99, 26, Cyan, 12);
-    Text(TEXT("SOUSTAVY"), 23, 107, Cyan, 13);
+    Text(TEXT("M zavřít"), Width - 99, 26, ThemeAccent, 12);
+    Text(TEXT("SOUSTAVY"), 23, 107, ThemeAccent, 13);
     for (int32 I = 0; I < Systems.Num(); ++I)
     {
         const float Y = 134 + I * 45;
         FBox2D Bounds(FVector2D(20 * S, Y * S), FVector2D(244 * S, (Y + 40) * S));
         const bool Selected = I == SelectedSystem, Hover = Bounds.IsInside(LastCursor);
         MapPlate(Canvas, Bounds.Min, Bounds.GetSize(), Selected ? FLinearColor(.028f, .13f, .18f) : (Hover ? FLinearColor(.015f, .065f, .095f) : FLinearColor(.01f, .029f, .043f)));
-        Text(Short(Systems[I].Name, 24), 29, Y + 5, Selected ? White : Pale, 14);
-        Text(I == ActiveSystem ? TEXT("Zde je tvoje loď") : (Systems[I].bAvailable ? FString::Printf(TEXT("%d těles · připraveno"), Systems[I].Bodies.Num()) : TEXT("Čeká na podklady")), 29, Y + 24, I == ActiveSystem ? FLinearColor(.45f, .88f, .65f) : Pale, 9);
+        Text(Short(Systems[I].Name, 24), 29, Y + 5, Selected ? ThemeWhite : ThemePale, 14);
+        Text(I == ActiveSystem ? TEXT("Zde je tvoje loď") : (Systems[I].bAvailable ? FString::Printf(TEXT("%d těles · připraveno"), Systems[I].Bodies.Num()) : TEXT("Čeká na podklady")), 29, Y + 24, I == ActiveSystem ? FLinearColor(.45f, .88f, .65f) : ThemePale, 9);
         SystemRows.Add({Bounds, I});
     }
     Button(EButton::FocusSystem, TEXT("Přiblížit vybranou soustavu"), 23, 424, 218, false, HasSystem);
-    Text(TEXT("O MAPĚ"), 24, 473, Cyan, 12);
-    Text(TEXT("3D ilustrace spirální galaxie"), 24, 497, Pale, 10);
-    Text(TEXT("Přibližný průměr 100 000 ly"), 24, 517, Pale, 10);
-    Text(TEXT("Barva hvězd ≠ dostupné světy"), 24, 537, Pale, 10);
-    Text(TEXT("Polohy soustav jsou fiktivní."), 24, 557, Pale, 10);
-    Text(TEXT("Dráhy jsou orientační vodítka."), 24, 577, Pale, 10);
-    Text(TEXT("Obálky: odhadované hranice."), 24, 597, Pale, 10);
-    Text(TEXT("Výběr cíle loď nepřemístí."), 24, Height - 47, Cyan, 10);
+    Text(TEXT("O MAPĚ"), 24, 473, ThemeAccent, 12);
+    Text(TEXT("3D ilustrace spirální galaxie"), 24, 497, ThemePale, 10);
+    Text(TEXT("Přibližný průměr 100 000 ly"), 24, 517, ThemePale, 10);
+    Text(TEXT("Barva hvězd ≠ dostupné světy"), 24, 537, ThemePale, 10);
+    Text(TEXT("Polohy soustav jsou fiktivní."), 24, 557, ThemePale, 10);
+    Text(TEXT("Dráhy jsou orientační vodítka."), 24, 577, ThemePale, 10);
+    Text(TEXT("Obálky: odhadované hranice."), 24, 597, ThemePale, 10);
+    Text(TEXT("Výběr cíle loď nepřemístí."), 24, Height - 47, ThemeAccent, 10);
 
     const float Right = Width - 326;
-    Text(HasSystem ? Short(Systems[SelectedSystem].Name, 22) + TEXT(" / DATABÁZE") : TEXT("DATABÁZE"), Right, 106, White, 15);
+    Text(HasSystem ? Short(Systems[SelectedSystem].Name, 22) + TEXT(" / DATABÁZE") : TEXT("DATABÁZE"), Right, 106, ThemeWhite, 15);
     const auto Filtered = FilteredBodies(Systems);
-    Text(FString::Printf(TEXT("%d výsledků · hledání podle jména / typu"), Filtered.Num()), Right, 129, Pale, 10);
+    Text(FString::Printf(TEXT("%d výsledků · hledání podle jména / typu"), Filtered.Num()), Right, 129, ThemePale, 10);
     Button(EButton::Search, SearchQuery.IsEmpty() ? TEXT("Hledat… klikni a piš") : Short(SearchQuery, 37) + (bSearchFocused ? TEXT(" |") : TEXT("")), Right, 145, 302, bSearchFocused);
     Button(EButton::All, TEXT("Vše"), Right, 176, 49, KindFilter == 0);
     Button(EButton::Planets, TEXT("Planety"), Right + 53, 176, 78, KindFilter == 1);
@@ -584,32 +601,32 @@ void FGalaxyMapView::Draw(UCanvas* Canvas, UFont* Font, const TArray<FGalaxySyst
         const float Y = 210 + Row * 24;
         FBox2D Bounds(FVector2D(Right * S, Y * S), FVector2D((Right + 302) * S, (Y + 22) * S));
         MapPlate(Canvas, Bounds.Min, Bounds.GetSize(), Index == SelectedBody ? FLinearColor(.025f, .15f, .20f) : (Bounds.IsInside(LastCursor) ? FLinearColor(.02f, .067f, .09f) : FLinearColor(.008f, .026f, .039f)));
-        Text(Short(Body.Name, 25), Right + 7, Y + 4, Index == SelectedBody ? White : Pale, 11);
+        Text(Short(Body.Name, 25), Right + 7, Y + 4, Index == SelectedBody ? ThemeWhite : ThemePale, 11);
         const int32 Parent = Systems[SelectedSystem].Bodies.IndexOfByPredicate([&](const FGalaxyBodyView& B) { return B.Id == Body.ParentId; });
         const FString Family = Body.Kind == TEXT("moon") && Systems[SelectedSystem].Bodies.IsValidIndex(Parent) ? Short(Systems[SelectedSystem].Bodies[Parent].Name, 9) : (Body.Kind == TEXT("moon") ? TEXT("měsíc") : (Body.Kind == TEXT("planet") ? TEXT("planeta") : TEXT("")));
-        Text(!Body.bKnownPosition ? TEXT("? poloha") : Family, Right + 237, Y + 6, Body.bKnownPosition ? Pale : FLinearColor(.92f, .63f, .3f), 8);
+        Text(!Body.bKnownPosition ? TEXT("? poloha") : Family, Right + 237, Y + 6, Body.bKnownPosition ? ThemePale : FLinearColor(.92f, .63f, .3f), 8);
         BodyRows.Add({Bounds, Index});
     }
-    if (Filtered.IsEmpty()) Text(TEXT("Nenalezeno. Zkus kratší jméno."), Right + 8, 225, Pale, 11);
+    if (Filtered.IsEmpty()) Text(TEXT("Nenalezeno. Zkus kratší jméno."), Right + 8, 225, ThemePale, 11);
     if (Filtered.Num() > RowCount)
     {
         const float Total = DatabaseRect.GetSize().Y, Thumb = FMath::Max(12 * S, Total * RowCount / Filtered.Num());
         const float Y = DatabaseRect.Min.Y + (Total - Thumb) * ScrollRow / FMath::Max(1, Filtered.Num() - RowCount);
-        MapPlate(Canvas, FVector2D((Right + 305) * S, Y), FVector2D(3 * S, Thumb), Cyan);
+        MapPlate(Canvas, FVector2D((Right + 305) * S, Y), FVector2D(3 * S, Thumb), ThemeAccent);
     }
-    Text(HasBody ? Short(Systems[SelectedSystem].Bodies[SelectedBody].Name, 28) : TEXT("Vyber těleso"), Right, Height - 306, White, 15);
+    Text(HasBody ? Short(Systems[SelectedSystem].Bodies[SelectedBody].Name, 28) : TEXT("Vyber těleso"), Right, Height - 306, ThemeWhite, 15);
     if (HasBody)
     {
         const auto& Body = Systems[SelectedSystem].Bodies[SelectedBody];
-        Text(KindName(Body.Kind) + TEXT(" · R ") + (Body.bKnownRadius ? Distance(Body.RadiusMetres) : TEXT("neznámý")), Right, Height - 282, Pale, 10);
-        Text(!Body.bKnownPosition ? TEXT("Poloha neurčena — přesun není dostupný") : Short(QualityName(Body.SourceQuality), 48), Right, Height - 262, Body.bKnownPosition ? Pale : FLinearColor(.92f, .63f, .3f), 9);
+        Text(KindName(Body.Kind) + TEXT(" · R ") + (Body.bKnownRadius ? Distance(Body.RadiusMetres) : TEXT("neznámý")), Right, Height - 282, ThemePale, 10);
+        Text(!Body.bKnownPosition ? TEXT("Poloha neurčena — přesun není dostupný") : Short(QualityName(Body.SourceQuality), 48), Right, Height - 262, Body.bKnownPosition ? ThemePale : FLinearColor(.92f, .63f, .3f), 9);
     }
     Button(EButton::FocusBody, TEXT("Detail vybraného tělesa"), Right, Height - 240, 302, false, HasBody && Systems[SelectedSystem].Bodies[SelectedBody].bKnownPosition);
-    Text(TEXT("NAVIGACE · VZDÁLENOST MEZI STŘEDY"), Right, Height - 201, Cyan, 10);
-    Text(TEXT("Vzdálenost: ") + (Metrics.bValid ? Distance(Metrics.DistanceMetres) : TEXT("—")), Right, Height - 182, White, 12);
-    Text(TEXT("Při aktuální rychlosti: ") + (Metrics.bCurrentETA ? Duration(Metrics.CurrentETASeconds) : TEXT("loď stojí / nedostupné")), Right, Height - 161, Pale, 10);
-    Text(TEXT("Plný impuls: ") + (Metrics.bPlannedETA ? Duration(Metrics.PlannedETASeconds) : TEXT("—")), Right, Height - 143, Pale, 10);
-    Text(TEXT("Potřebná rychlost: ") + (Metrics.bRequiredSpeed ? RequiredSpeed(Metrics.RequiredSpeedMetresPerSecond) : TEXT("—")), Right, Height - 125, Cyan, 10);
+    Text(TEXT("NAVIGACE · VZDÁLENOST MEZI STŘEDY"), Right, Height - 201, ThemeAccent, 10);
+    Text(TEXT("Vzdálenost: ") + (Metrics.bValid ? Distance(Metrics.DistanceMetres) : TEXT("—")), Right, Height - 182, ThemeWhite, 12);
+    Text(TEXT("Při aktuální rychlosti: ") + (Metrics.bCurrentETA ? Duration(Metrics.CurrentETASeconds) : TEXT("loď stojí / nedostupné")), Right, Height - 161, ThemePale, 10);
+    Text(TEXT("Plný impuls: ") + (Metrics.bPlannedETA ? Duration(Metrics.PlannedETASeconds) : TEXT("—")), Right, Height - 143, ThemePale, 10);
+    Text(TEXT("Potřebná rychlost: ") + (Metrics.bRequiredSpeed ? RequiredSpeed(Metrics.RequiredSpeedMetresPerSecond) : TEXT("—")), Right, Height - 125, ThemeAccent, 10);
     Button(EButton::Hour, TEXT("1 hodina"), Right, Height - 102, 96, DesiredSeconds == 3600);
     Button(EButton::Day, TEXT("1 den"), Right + 101, Height - 102, 94, DesiredSeconds == 86400);
     Button(EButton::Week, TEXT("1 týden"), Right + 200, Height - 102, 102, DesiredSeconds == 604800);
@@ -617,9 +634,9 @@ void FGalaxyMapView::Draw(UCanvas* Canvas, UFont* Font, const TArray<FGalaxySyst
     Button(EButton::Navigate, TEXT("Nastavit navigační cíl"), Right, Height - 68, 302, false, Ready);
     Button(EButton::Inspect, Ready ? TEXT("TEST: přesunout loď k cíli") : TEXT("TEST: přesun není dostupný"), Right, Height - 36, 302, false, Ready);
 
-    MapPlate(Canvas, FVector2D(MapRect.Min.X, ViewSize.Y - 55 * S), FVector2D(MapRect.GetSize().X, 43 * S), Plate);
-    Text(TEXT("Pravá myš: oběh · prostřední: posun · kolečko: zoom"), MapRect.Min.X / S + 12, Height - 47, Pale, 10);
-    Text(TEXT("Kolečko nad seznamem: posun databáze · Home: galaxie"), MapRect.Min.X / S + 12, Height - 29, Pale, 10);
+    MapPlate(Canvas, FVector2D(MapRect.Min.X, ViewSize.Y - 55 * S), FVector2D(MapRect.GetSize().X, 43 * S), ThemePlate);
+    Text(TEXT("Pravá myš: oběh · prostřední: posun · kolečko: zoom"), MapRect.Min.X / S + 12, Height - 47, ThemePale, 10);
+    Text(TEXT("Kolečko nad seznamem: posun databáze · Home: galaxie"), MapRect.Min.X / S + 12, Height - 29, ThemePale, 10);
     const FString CameraLabel = TEXT("Šířka záběru ≈ ") + Distance(MapRect.GetSize().X / FocalPixels() * CameraDistanceLY * LY);
-    Text(CameraLabel, MapRect.Min.X / S + 12, 97, Pale, 10);
+    Text(CameraLabel, MapRect.Min.X / S + 12, 97, ThemePale, 10);
 }

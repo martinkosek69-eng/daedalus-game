@@ -20,6 +20,8 @@ void ASolarFlightGameMode::TickSharpProbe()
     if (FParse::Param(FCommandLine::Get(), TEXT("SolarPlanetProbe"))) { TickPlanetProbe(); return; }
     if (FParse::Param(FCommandLine::Get(), TEXT("SolarIntegrationProbe"))) { TickIntegrationProbe(); return; }
     if (FParse::Param(FCommandLine::Get(), TEXT("SolarAuroraProbe"))) { TickAuroraProbe(); return; }
+    FString HUDProbePhase;
+    if (FParse::Value(FCommandLine::Get(), TEXT("SolarAncientHUDProbe="), HUDProbePhase)) { TickAncientHUDProbe(); return; }
     ++ProbeFrame;
     GEngine->bUseFixedFrameRate = true; GEngine->FixedFrameRate = 60;
     auto* PC = GetWorld()->GetFirstPlayerController();

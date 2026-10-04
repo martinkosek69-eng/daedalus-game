@@ -3,7 +3,7 @@
 
 class ASolarFlightGameMode;
 enum class ESolarPausePage : uint8 { Main, Ships, Settings, Saves };
-enum class ESolarPauseAction : uint8 { Resume, Ships, Settings, Saves, Quit, Back, ChooseShip, None };
+enum class ESolarPauseAction : uint8 { Resume, Ships, Settings, Saves, Quit, Back, ChooseShip, EarthHUD, AncientHUD, None };
 struct FSolarPauseButton
 {
     FString Label, Hint;

@@ -1,5 +1,11 @@
 # Shared application ownership
 
+## Current transfer 0027
+
+Codex owns one sequential build/package/probe slot in the fc0b coordinator
+checkout for the Ancient HUD. Process inspection found no editor/game/Blender.
+No human application or Claude checkout is used. Release after package check.
+
 ## Completed transfer 0026
 
 Codex owns its isolated source Blender conversion and one import/build slot in

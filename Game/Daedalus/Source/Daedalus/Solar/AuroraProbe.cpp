@@ -118,7 +118,11 @@ void ASolarFlightGameMode::TickAuroraProbe()
     if(ProbeFrame==535)Click(2);
     if(ProbeFrame==538)Key(EKeys::LeftMouseButton,IE_Released);
     if(ProbeFrame==545)Check(PauseMenuPage==ESolarPausePage::Settings && bPaused,TEXT("graphics settings page opens"));
-    if(ProbeFrame==550)Click(4);
+    if(ProbeFrame==550)
+    {
+        const auto View=BuildSolarPauseView(*this,FVector2D(3840,2160));
+        Click(View.Buttons.IndexOfByPredicate([](const auto& B){return B.Action==ESolarPauseAction::Back;}));
+    }
     if(ProbeFrame==553)Key(EKeys::LeftMouseButton,IE_Released);
     if(ProbeFrame==560)Click(3);
     if(ProbeFrame==563)Key(EKeys::LeftMouseButton,IE_Released);
