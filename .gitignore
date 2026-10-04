@@ -25,6 +25,8 @@
 *.blend1
 *.blend2
 *.tmp
+__pycache__/
+*.pyc
 *.tar.gz
 *.zip
 **/Content/Developers/

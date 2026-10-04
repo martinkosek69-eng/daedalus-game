@@ -18,14 +18,18 @@ automaticky aktualizovaný přehled všech vzdálených větví.
 
 | 0009 | [Návrat k původní webové podobě a řízení](0009/BRIEF.md) | Codex coordinator; comparison build checked, user feedback pending | ACCEPTED (technical) | `codex/solar-flight` |
 
-| 0010 | [Celá soustava, ostrý obraz a let](0010/BRIEF.md) | Codex coordinator | IN_PROGRESS | `codex/solar-flight` |
-| 0011 | [Bez driftu a plynulý náklon](0011/BRIEF.md) | Codex helper; převzal root | READY_FOR_REVIEW (15tests pass) | `codex/solar-flight` |
-| 0012 | [Katalog a zdroje soustavy](0012/BRIEF.md) | Codex helper; převzal root | READY_FOR_REVIEW | `codex/solar-flight` |
-| 0013 | [Texturovaný model Clauda](0013/BRIEF.md) | Codex helper; převzal root | READY_FOR_REVIEW | `codex/solar-flight` |
+| 0010 | [Celá soustava, ostrý obraz a let](0010/BRIEF.md) | Codex coordinator | ACCEPTED (technical) | `codex/solar-flight` |
+| 0011 | [Bez driftu a plynulý náklon](0011/BRIEF.md) | Codex helper; převzal root | ACCEPTED (technical) | `codex/solar-flight` |
+| 0012 | [Katalog a zdroje soustavy](0012/BRIEF.md) | Codex helper; převzal root | ACCEPTED (technical) | `codex/solar-flight` |
+| 0013 | [Texturovaný model Clauda](0013/BRIEF.md) | Codex helper; převzal root | ACCEPTED (technical) | `codex/solar-flight` |
 
 | 0014 | [Reálné měsíce a malá tělesa](0014/BRIEF.md) | Codex source helper | IN_PROGRESS | `codex/solar-flight` |
 | 0015 | [Pět originálních soustav](0015/BRIEF.md) | Claude Code; user relays start | ASSIGNED | `task/0015-five-original-systems` |
 
-Další volné číslo: **0016**. Číslo 0026 v návodu je pouze příklad.
+| 0016 | [3D galaxie a navigace](0016/BRIEF.md) | Codex coordinator | IN_PROGRESS | `codex/solar-flight` |
+| 0017 | [Výpočty navigace](0017/BRIEF.md) | Codex navigation helper | IN_PROGRESS | `codex/solar-flight` |
+
+Další volné číslo: **0018**. Číslo 0026 v návodu je pouze příklad.
+
 
 

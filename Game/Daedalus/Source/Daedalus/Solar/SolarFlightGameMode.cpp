@@ -5,8 +5,10 @@
 #include "Components/DirectionalLightComponent.h"
 #include "Engine/DirectionalLight.h"
 #include "Engine/Canvas.h"
+#include "CanvasItem.h"
 #include "Engine/Engine.h"
 #include "Engine/StaticMesh.h"
+#include "GameFramework/GameUserSettings.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "GameFramework/PlayerController.h"
 #include "UObject/ConstructorHelpers.h"
@@ -78,8 +80,14 @@ void ASolarFlightPawn::SetupPlayerInputComponent(UInputComponent* Input)
     Input->BindKey(EKeys::Two, IE_Pressed, this, &ASolarFlightPawn::Fast);
     Input->BindKey(EKeys::BackSpace, IE_Pressed, this, &ASolarFlightPawn::ResetFlight);
     Input->BindKey(EKeys::P, IE_Pressed, this, &ASolarFlightPawn::PauseFlight);
+    Input->BindKey(EKeys::PageDown,IE_Pressed,this,&ASolarFlightPawn::NextBody);
+    Input->BindKey(EKeys::PageUp,IE_Pressed,this,&ASolarFlightPawn::PreviousBody);
+    Input->BindKey(EKeys::F,IE_Pressed,this,&ASolarFlightPawn::InspectBody);
     Input->BindKey(EKeys::Escape, IE_Pressed, this, &ASolarFlightPawn::ExitGame);
 }
+void ASolarFlightPawn::NextBody(){if(auto* M=Lab(this))M->SelectBody(1);}
+void ASolarFlightPawn::PreviousBody(){if(auto* M=Lab(this))M->SelectBody(-1);}
+void ASolarFlightPawn::InspectBody(){if(auto* M=Lab(this))M->InspectSelectedBody();}
 void ASolarFlightPawn::MouseX(float V) { if (bOrbit) OrbitYaw = FRotator::NormalizeAxis(OrbitYaw + V * .344f); }
 void ASolarFlightPawn::MouseY(float V) { if (bOrbit) OrbitPitch = FMath::Clamp(OrbitPitch + V * .344f, -65.0f, 85.0f); }
 void ASolarFlightPawn::MoreThrottle() { if (auto* M = Lab(this)) M->ChangeThrottle(.2); }
@@ -131,7 +139,7 @@ void ASolarFlightPawn::Tick(float DeltaSeconds)
     // Only the following heading has lag, as in the web prototype.
     const FRotator Rotation(FMath::Clamp(FollowPitch - 18.3f + OrbitPitch,-85.f,85.f), FollowYaw + OrbitYaw, 0);
     bCameraInitialized = true;
-    const FVector Focus(0, 0, 0);
+    const FVector Focus(0, 0, -6000);
     Camera->SetWorldLocationAndRotation(Focus - Rotation.Vector() * CameraDistanceMetres * 100.0, Rotation);
 }
 
@@ -139,7 +147,7 @@ ASolarFlightGameMode::ASolarFlightGameMode()
 {
     PrimaryActorTick.bCanEverTick = true;
     DefaultPawnClass = ASolarFlightPawn::StaticClass(); HUDClass = ASolarFlightHUD::StaticClass();
-    static ConstructorHelpers::FObjectFinder<UStaticMesh> ShipFinder(TEXT("/Game/Ships/Daedalus/WebReference/SM_WebDaedalus.SM_WebDaedalus"));
+    static ConstructorHelpers::FObjectFinder<UStaticMesh> ShipFinder(TEXT("/Game/Ships/Daedalus/SM_Daedalus.SM_Daedalus"));
     static ConstructorHelpers::FObjectFinder<UStaticMesh> SphereFinder(TEXT("/Game/Solar/SM_SolarSphere.SM_SolarSphere"));
     static ConstructorHelpers::FObjectFinder<UStaticMesh> PlaneFinder(TEXT("/Engine/BasicShapes/Plane.Plane"));
     static ConstructorHelpers::FObjectFinder<UMaterialInterface> EarthFinder(TEXT("/Game/Solar/Materials/M_Earth.M_Earth"));
@@ -184,7 +192,7 @@ bool ASolarFlightGameMode::LoadSettings()
             || !Number(O, TEXT("lateralAcceleration"), P.Config.LateralAcceleration) || !P.Config.Validate(Message)) return false;
         Profiles.Add(P);
     }
-    Bodies = {{TEXT("sol.earth"), FVector3d::ZeroVector, EarthRadius}, {TEXT("sol.sun"), SunPosition, SunRadius}};
+    if (!LoadSystem()) return false;
     return Flight.Initialize(Profiles[ProfileIndex].Config, InitialState, Bodies, Message);
 }
 void ASolarFlightGameMode::BeginPlay()
@@ -198,6 +206,9 @@ void ASolarFlightGameMode::BeginPlay()
         // FXAA has no frame history, so rapid orbit cannot ghost the hull.
         PC->ConsoleCommand(TEXT("r.AntiAliasingMethod 1"));
         PC->ConsoleCommand(TEXT("r.MotionBlurQuality 0"));
+        for(const TCHAR* Command:{TEXT("r.ScreenPercentage 100"),TEXT("r.SecondaryScreenPercentage.GameViewport 100"),TEXT("r.DynamicRes.OperationMode 0"),TEXT("r.Tonemapper.Sharpen 0.5"),TEXT("r.MaxAnisotropy 16")})PC->ConsoleCommand(Command);
+        if(FParse::Param(FCommandLine::Get(),TEXT("SolarNative")))if(auto* Settings=GEngine->GetGameUserSettings()){
+            Settings->SetScreenResolution(Settings->GetDesktopResolution());Settings->SetFullscreenMode(EWindowMode::WindowedFullscreen);Settings->SetResolutionScaleValueEx(100);Settings->ApplySettings(false);}
         PC->bShowMouseCursor = false;
         PC->SetInputMode(FInputModeGameOnly());
         if (PC->GetPawn()) PC->GetPawn()->AddTickPrerequisiteActor(this);
@@ -221,9 +232,14 @@ bool ASolarFlightGameMode::CreateScene()
     if (FMath::Abs(ShipAsset->GetBounds().BoxExtent.X * 2 - 60000) > 30) return false;
     Ship = MakeMesh(ShipAsset, nullptr); Ship->SetCastShadow(true);
     HullLights = MakeMesh(LightsAsset, nullptr);
-    // The restored web mesh already contains these windows; avoid doubled
-    // coplanar light boxes. Keep the separate source for the photo variant.
-    HullLights->SetVisibility(false);
+    // Latest Claude hull uses separately delivered window geometry.
+    HullLights->SetVisibility(true);
+    if (auto* Detail=LoadObject<UStaticMesh>(nullptr,TEXT("/Game/Ships/Daedalus/Details/SM_DaedalusAddOns.SM_DaedalusAddOns"))) ShipDetails.Add(MakeMesh(Detail,nullptr));
+    TSharedPtr<FJsonObject> Details;
+    const TArray<TSharedPtr<FJsonValue>>* DetailRows=nullptr;
+    if(!ReadObject(FPaths::ProjectContentDir()/TEXT("Data/Solar/ship-details.json"),Details) || !Details->TryGetArrayField(TEXT("meshes"),DetailRows) || DetailRows->Num()!=38) return false;
+    for(const auto& Row:*DetailRows){FString Path;if(!Row->TryGetString(Path) || !Path.StartsWith(TEXT("/Game/Ships/Daedalus/Details/"))) return false;
+        auto* Mesh=LoadObject<UStaticMesh>(nullptr,*Path);if(!Mesh)return false;ShipDetails.Add(MakeMesh(Mesh,nullptr));}
     for (const auto& Asset : GlowAssets)
     {
         auto* Glow = MakeMesh(Asset,nullptr);
@@ -234,12 +250,8 @@ bool ASolarFlightGameMode::CreateScene()
         }
         EngineGlows.Add(Glow);
     }
-    EarthDynamic = UMaterialInstanceDynamic::Create(EarthMaterial, this);
-    AtmosphereDynamic = UMaterialInstanceDynamic::Create(AtmosphereMaterial, this);
-    Earth = MakeMesh(SphereAsset, EarthDynamic);
-    Atmosphere = MakeMesh(SphereAsset, AtmosphereDynamic);
-    Sun = MakeMesh(SphereAsset, SunMaterial);
-    auto* Light = GetWorld()->SpawnActor<ADirectionalLight>();
+    if (!CreateSystem()) return false;
+    auto* Light = GetWorld()->SpawnActor<ADirectionalLight>(); SolarLight = Light;
     auto* LC = CastChecked<UDirectionalLightComponent>(Light->GetLightComponent());
     LC->SetMobility(EComponentMobility::Movable); LC->SetIntensity(2.8f); LC->SetLightSourceAngle(2);
     LC->SetLightColor(FLinearColor(1,.92f,.80f));
@@ -269,7 +281,7 @@ bool ASolarFlightGameMode::CreateScene()
         const double Size = FMath::Clamp(1.08 + (6.5 - Mag) * .17, 1.08, 2.5);
         const double Width = SkyRadius * .00075 * Size;
         const int32 I = Stars->AddInstance(FTransform(FRotationMatrix::MakeFromZ(-Direction).ToQuat(), Direction * SkyRadius, FVector(Width / 100)));
-        const double Brightness = FMath::Clamp(FMath::Pow(10.0, -.16 * (Mag - 1)), .09, 1.3);
+        const double Brightness = FMath::Clamp(FMath::Pow(10.0, -.12 * (Mag - 1)), .3, 2.5);
         const double Warm = FMath::Clamp((BV - .3) / 1.7, 0.0, 1.0), Cool = FMath::Clamp((.3 - BV) / .7, 0.0, 1.0);
         const double Saturation = FMath::Clamp((5 - Mag) / 5, 0.0, .7);
         Stars->SetCustomDataValue(I, 0, Brightness * (1 - Cool * Saturation * .25));
@@ -281,7 +293,7 @@ bool ASolarFlightGameMode::CreateScene()
     Dust = NewObject<UInstancedStaticMeshComponent>(this); Dust->RegisterComponent(); Dust->SetStaticMesh(PlaneAsset);
     Dust->SetMaterial(0, DustMaterial); Dust->SetCollisionEnabled(ECollisionEnabled::NoCollision); Dust->SetCastShadow(false);
     FRandomStream Random(6304);
-    for (int32 I = 0; I < 100; ++I)
+    for (int32 I = 0; I < 500; ++I)
     {
         DustPositions.Add(FVector3d(Random.FRandRange(-2500, 2500), Random.FRandRange(-2500, 2500), Random.FRandRange(-2500, 2500)));
         Dust->AddInstance(FTransform::Identity);
@@ -322,33 +334,18 @@ void ASolarFlightGameMode::UpdateScene(float DeltaSeconds)
     for (const auto& Dynamic : EngineDynamics) Dynamic->SetScalarParameterValue(TEXT("EngineLevel"),EngineGlowLevel);
     const auto* Pawn = Cast<ASolarFlightPawn>(GetWorld()->GetFirstPlayerController()->GetPawn());
     const FVector CameraPosition = Pawn ? Pawn->Camera->GetComponentLocation() : FVector::ZeroVector;
-    // Render far spheres nearer while retaining their angular radius. Domain
-    // positions and collision keep real metres; nearby bodies use exact scale.
-    auto ProjectBody = [&](UStaticMeshComponent* Mesh, const FVector3d& Position, double Radius, double Expansion)
-    {
-        const FVector3d Relative = Position - S.PositionMetres - FVector3d(CameraPosition) / 100;
-        const double Distance = Relative.Size();
-        const double Factor = FMath::Min(1.0, 3e6 / FMath::Max(Distance, 1.0));
-        Mesh->SetWorldLocation(CameraPosition + FVector(Relative * (100 * Factor)));
-        Mesh->SetWorldScale3D(FVector(Radius * Factor * Expansion)); // imported sphere radius100cm
-    };
-    ProjectBody(Earth, FVector3d::ZeroVector, EarthRadius, 1);
-    ProjectBody(Atmosphere, FVector3d::ZeroVector, EarthRadius, 1.012);
-    ProjectBody(Sun, SunPosition, SunRadius, 1);
-    const FVector3d SunDir = (SunPosition - S.PositionMetres).GetSafeNormal();
-    const FLinearColor Direction(SunDir.X, SunDir.Y, SunDir.Z, 0);
-    EarthDynamic->SetVectorParameterValue(TEXT("SunDirection"), Direction);
-    AtmosphereDynamic->SetVectorParameterValue(TEXT("SunDirection"), Direction);
+    UpdateSystem(CameraPosition);
     Stars->SetWorldLocation(CameraPosition);
+    for (const auto& Detail : ShipDetails) Detail->SetWorldLocationAndRotation(FVector::ZeroVector,FQuat(S.Attitude()));
     const double Speed = S.VelocityMetresPerSecond.Size();
     Dust->SetVisibility(Speed > .05);
     for (int32 I = 0; I < DustPositions.Num(); ++I)
     {
-        auto& P = DustPositions[I]; P -= S.VelocityMetresPerSecond * (bPaused ? 0.0 : FMath::Min<double>(DeltaSeconds, .1));
+        auto& P = DustPositions[I]; P -= S.VelocityMetresPerSecond.GetSafeNormal() * FMath::Min(Speed, 2200.0) * (bPaused ? 0.0 : FMath::Min<double>(DeltaSeconds, .1));
         for (int32 A = 0; A < 3; ++A) P[A] = FMath::Fmod(FMath::Fmod(P[A] + 2500, 5000) + 5000, 5000) - 2500;
         const FVector Location(P * 100);
         const double Fade = FMath::Clamp((P.Size() - 400) / 600, 0.0, 1.0);
-        Dust->UpdateInstanceTransform(I, FTransform(FRotationMatrix::MakeFromZ(CameraPosition - Location).ToQuat(), Location, FVector(Fade * .7)), false, I == DustPositions.Num() - 1);
+        Dust->UpdateInstanceTransform(I, FTransform(FRotationMatrix::MakeFromZ(CameraPosition - Location).ToQuat(), Location, FVector(Fade * (2+8*FMath::Clamp(Speed/250000.,0.,1.)),Fade*1.4,1)), false, I == DustPositions.Num() - 1);
     }
 }
 void ASolarFlightGameMode::Tick(float DeltaSeconds)
@@ -365,24 +362,33 @@ void ASolarFlightHUD::DrawHUD()
 {
     Super::DrawHUD();
     auto* M = Lab(this); if (!M || !Canvas) return;
-    const float Scale = FMath::Clamp(Canvas->SizeX / 1280.0f, .8f, 1.5f);
+    const float Scale = FMath::Max(.6f,FMath::Min(Canvas->SizeX / 1280.0f,Canvas->SizeY / 720.0f));
     const float Width = Canvas->SizeX / Scale, Height = Canvas->SizeY / Scale;
     const FLinearColor Pale(.55f,.69f,.77f), Cyan(.38f,.81f,.92f), White(.88f,.94f,.98f);
     auto Text = [&](const FString& S, float X, float Y, FLinearColor C, float Factor = 1.0f)
-    { DrawText(S,C,X*Scale,Y*Scale,GEngine->GetSmallFont(),Scale*Factor,false); };
+    {
+        // Rasterize the runtime font at actual output pixels. Scaling a tiny
+        // atlas afterwards blurs 4K text; offline fonts also omit Czech glyphs.
+        FCanvasTextItem Item(FVector2D(X*Scale,Y*Scale),FText::FromString(S),
+            FSlateFontInfo(GEngine->GetLargeFont(),FMath::Max(8,FMath::RoundToInt(14*Scale*Factor))),C);
+        Item.EnableShadow(FLinearColor::Black,FVector2D(Scale,Scale));
+        Canvas->DrawItem(Item);
+    };
     auto Center = [&](const FString& S,float Y,FLinearColor C,float Factor=1.0f)
     {
-        UFont* Font = Factor>1 ? GEngine->GetLargeFont() : GEngine->GetSmallFont();
-        float W=0,H=0; GetTextSize(S,W,H,Font,1);
-        const float FontScale = Scale * (Factor>1 ? 15*Factor/FMath::Max(H,1.f) : Factor);
-        GetTextSize(S,W,H,Font,FontScale);
-        DrawText(S,C,(Canvas->SizeX-W)*.5f,Y*Scale,Font,FontScale,false);
+        FCanvasTextItem Item(FVector2D(Canvas->SizeX*.5f,Y*Scale),FText::FromString(S),
+            FSlateFontInfo(GEngine->GetLargeFont(),FMath::Max(8,FMath::RoundToInt(15*Scale*Factor))),C);
+        Item.bCentreX=true;Item.EnableShadow(FLinearColor::Black,FVector2D(Scale,Scale));Canvas->DrawItem(Item);
     };
+    DrawRect(FLinearColor(.008f,.020f,.030f,.88f),12*Scale,12*Scale,710*Scale,76*Scale);
     Text(TEXT("DAEDALUS  /  LETOVÁ ZKOUŠKA"),22,20,Cyan);
     if (!M->bReady) { Text(M->Message,22,45,FLinearColor::Red); return; }
     const auto& S=M->Flight.GetState();
     const double Speed=S.VelocityMetresPerSecond.Size();
     Text(FString::Printf(TEXT("Země · nad povrchem %.0f km"),(S.PositionMetres.Size()-M->EarthRadius)/1000),22,43,Pale);
+    const auto& Target=M->BodyDefinitions[M->SelectedBody];
+    const double Distance=FMath::Max(0.,(Target.Position-S.PositionMetres).Size()-Target.Radius*Target.Shape.GetMax());
+    Text(FString::Printf(TEXT("Cíl: %s · %.0f km   PgUp/PgDn výběr · F testovací přesun"),*Target.Name,Distance/1000),22,65,Cyan,.85f);
     const FString SpeedText=Speed>=1000?FString::Printf(TEXT("%.0f km/s"),Speed/1000):FString::Printf(TEXT("%.0f m/s"),Speed);
     Center(SpeedText,Height-211,White,2.8f);
     Center(TEXT("S K U T E Č N Á   R Y C H L O S T"),Height-165,Pale,.72f);
@@ -401,5 +407,11 @@ void ASolarFlightHUD::DrawHUD()
     Center(TEXT("W/S sklon   A/D zatáčení   Pravé tlačítko + myš kamera   Kolečko zoom   Home za loď"),Height-28,Pale,.8f);
     if (M->bPaused) Center(TEXT("POZASTAVENO — P pokračovat"),75,Cyan,1.2f);
     if (!S.ContactBodyId.IsEmpty()) Center(TEXT("Povrchová ochrana: otoč se a odleť."),100,Cyan);
-    if (!M->Message.IsEmpty()) Center(M->Message,125,Pale);
+    if (!M->Message.IsEmpty())
+    {
+        DrawRect(FLinearColor(.008f,.020f,.030f,.88f),(Width-680)*.5f*Scale,120*Scale,680*Scale,27*Scale);
+        Center(M->Message,125,Pale);
+    }
 }
+
+

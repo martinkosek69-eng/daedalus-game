@@ -12,6 +12,7 @@ class UInstancedStaticMeshComponent;
 class UMaterialInterface;
 class UMaterialInstanceDynamic;
 class UStaticMesh;
+class ADirectionalLight;
 
 UCLASS()
 class DAEDALUS_API ASolarFlightPawn : public APawn
@@ -40,6 +41,7 @@ private:
     void MoreThrottle(); void LessThrottle(); void ToggleThrottle();
     void ZoomIn(); void ZoomOut();
     void Slow(); void Fast(); void ResetFlight(); void PauseFlight(); void ExitGame();
+    void NextBody(); void PreviousBody(); void InspectBody();
 };
 
 UCLASS()
@@ -54,6 +56,16 @@ struct FSolarFlightProfile
 {
     FString Name;
     Daedalus::FFlightConfig Config;
+};
+
+// Immutable canonical metres; projected meshes below are presentation only.
+struct FSolarBodyDefinition
+{
+    FString Id, Name, ParentId, Kind;
+    FVector3d Position = FVector3d::ZeroVector, Shape = FVector3d(1);
+    double Radius = 0, RotationHours = 0, Tilt = 0;
+    double RingInner = 0, RingOuter = 0;
+    bool bAtmosphere = false;
 };
 
 UCLASS()
@@ -79,6 +91,11 @@ public:
     int32 StarCount() const;
     int32 EngineOutletCount() const { return EngineGlows.Num(); }
     double EngineGlowLevel = .08;
+    TArray<FSolarBodyDefinition> BodyDefinitions;
+    int32 SelectedBody = 3;
+    void SelectBody(int32 Step);
+    void InspectSelectedBody();
+    int32 RingCount() const { return RingMeshes.Num(); }
 private:
     Daedalus::FFlightState InitialState;
     TArray<Daedalus::FFlightBody> Bodies;
@@ -99,12 +116,27 @@ private:
     UPROPERTY() TObjectPtr<UStaticMeshComponent> Earth;
     UPROPERTY() TObjectPtr<UStaticMeshComponent> Sun;
     UPROPERTY() TObjectPtr<UStaticMeshComponent> Atmosphere;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> BodyMeshes;
+    UPROPERTY() TArray<TObjectPtr<UMaterialInstanceDynamic>> BodyDynamics;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> AirMeshes;
+    UPROPERTY() TArray<TObjectPtr<UMaterialInstanceDynamic>> AirDynamics;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> RingMeshes;
+    TArray<int32> RingBodies;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> ShipDetails;
+    UPROPERTY() TObjectPtr<UStaticMeshComponent> Sky;
+    UPROPERTY() TObjectPtr<ADirectionalLight> SolarLight;
+    UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Belt;
+    TArray<FVector3d> BeltPositions;
+    TArray<float> BeltRadii;
     UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Stars;
     UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Dust;
     UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> EarthDynamic;
     UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> AtmosphereDynamic;
     TArray<FVector3d> DustPositions;
     bool LoadSettings();
+    bool LoadSystem();
+    bool CreateSystem();
+    void UpdateSystem(const FVector& CameraPosition);
     bool CreateScene();
     void UpdateScene(float DeltaSeconds);
     UStaticMeshComponent* MakeMesh(UStaticMesh* Asset, UMaterialInterface* Material);

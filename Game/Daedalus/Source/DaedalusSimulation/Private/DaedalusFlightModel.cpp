@@ -27,6 +27,12 @@ double Approach(double Value, double Target, double Change)
     return Value + FMath::Clamp(Target - Value, -Change, Change);
 }
 
+double SignedSpeed(const FFlightState& State)
+{
+    const double Speed = State.VelocityMetresPerSecond.Size();
+    return FVector3d::DotProduct(State.VelocityMetresPerSecond, State.Forward()) < 0 ? -Speed : Speed;
+}
+
 // A small conservative gap also covers floating-point rounding when a local
 // flight takes place far from the system origin (e.g. one astronomical unit).
 double ContactGap(const FVector3d& A, const FVector3d& B)
@@ -135,6 +141,7 @@ bool FFlightModel::Initialize(const FFlightConfig& InConfig, const FFlightState&
     FFlightState NewState = InitialState;
     TArray<FFlightBody> NewBodies = InBodies;
     NewState.YawDegrees = FRotator3d::NormalizeAxis(NewState.YawDegrees);
+    NewState.VelocityMetresPerSecond = NewState.Forward() * SignedSpeed(NewState);
     NewState.ContactBodyId.Reset();
     Config = NewConfig;
     State = MoveTemp(NewState);
@@ -204,41 +211,39 @@ bool FFlightModel::Step()
     const double RateLimit = Config.TurnRateDegrees * TurnAuthority;
     Next.YawRateDegrees = Approach(State.YawRateDegrees, Input.Yaw * RateLimit,
         Config.AngularAccelerationDegrees * Dt);
-    Next.PitchRateDegrees = Approach(State.PitchRateDegrees, Input.Pitch * RateLimit,
-        Config.AngularAccelerationDegrees * Dt);
+    // Ease towards the pitch boundary before reaching it. The terminal rate
+    // integrates an exponential approach, rather than hitting a hard stop.
+    // Bound its slope by available angular acceleration for ordinary steering.
+    const double PitchDamping = FMath::Min(2.0, Config.AngularAccelerationDegrees / RateLimit);
+    const double LimitFraction = 1.0 - FMath::Exp(-PitchDamping * Dt);
+    const double UpRate = (Config.PitchLimitDegrees - State.PitchDegrees) * LimitFraction / Dt;
+    const double DownRate = (Config.PitchLimitDegrees + State.PitchDegrees) * LimitFraction / Dt;
+    const double PitchTarget = FMath::Clamp(Input.Pitch * RateLimit, -DownRate, UpRate);
+    Next.PitchRateDegrees = FMath::Clamp(Approach(State.PitchRateDegrees, PitchTarget,
+        Config.AngularAccelerationDegrees * Dt), -DownRate, UpRate);
     Next.YawDegrees = FRotator3d::NormalizeAxis(State.YawDegrees + Next.YawRateDegrees * Dt);
     Next.PitchDegrees = FMath::Clamp(State.PitchDegrees + Next.PitchRateDegrees * Dt,
         -Config.PitchLimitDegrees, Config.PitchLimitDegrees);
-    if ((Next.PitchDegrees >= Config.PitchLimitDegrees && Next.PitchRateDegrees > 0)
-        || (Next.PitchDegrees <= -Config.PitchLimitDegrees && Next.PitchRateDegrees < 0))
-        Next.PitchRateDegrees = 0;
     const double TargetBank = Config.BankDegrees * Next.YawRateDegrees / Config.TurnRateDegrees;
-    Next.BankDegrees = Approach(State.BankDegrees, TargetBank, Config.AngularAccelerationDegrees * Dt);
+    const double BankDamping = 2.0 * Config.AngularAccelerationDegrees / FMath::Max(1.0, Config.BankDegrees);
+    Next.BankDegrees = TargetBank + (State.BankDegrees - TargetBank) * FMath::Exp(-BankDamping * Dt);
 
     if (Input.bBrake) Next.Throttle = 0;
     const FVector3d Forward = Next.Forward();
-    const double ForwardSpeed = FVector3d::DotProduct(State.VelocityMetresPerSecond, Forward);
+    // Rotate the entire signed velocity with the nose, preserving speed through
+    // a turn. Projecting onto the NEW heading would cause both slip and an
+    // artificial speed loss on every steering step.
+    const double ForwardSpeed = SignedSpeed(State);
     const double TargetSpeed = Next.Throttle * Config.MaxSpeed;
     const bool bSlowing = ForwardSpeed * TargetSpeed < 0 || FMath::Abs(TargetSpeed) < FMath::Abs(ForwardSpeed);
     const double Deceleration = Input.bBrake ? Config.Braking : Config.CoastDeceleration;
-    const double NewForwardSpeed = Approach(ForwardSpeed, TargetSpeed,
+    double NewForwardSpeed = Approach(ForwardSpeed, TargetSpeed,
         (bSlowing ? Deceleration : Config.Acceleration) * Dt);
-    FVector3d Lateral = State.VelocityMetresPerSecond - Forward * ForwardSpeed;
-    const double LateralSpeed = Lateral.Size();
-    if (LateralSpeed > 1e-12)
-        Lateral *= FMath::Exp(-Config.LateralAcceleration / Config.MaxSpeed * Dt);
-    Next.VelocityMetresPerSecond = Forward * NewForwardSpeed + Lateral;
     if (Input.bBrake)
     {
-        // Assisted emergency braking acts against total motion, including
-        // sideways slip after a turn, and reaches an exact stop without reverse.
-        const double Speed = State.VelocityMetresPerSecond.Size();
-        Next.VelocityMetresPerSecond = Speed > 1e-12
-            ? State.VelocityMetresPerSecond * (Approach(Speed, 0, Config.Braking * Dt) / Speed)
-            : FVector3d::ZeroVector;
+        NewForwardSpeed = Approach(ForwardSpeed, 0, Config.Braking * Dt);
     }
-    const double NewSpeed = Next.VelocityMetresPerSecond.Size();
-    if (NewSpeed > Config.MaxSpeed) Next.VelocityMetresPerSecond *= Config.MaxSpeed / NewSpeed;
+    Next.VelocityMetresPerSecond = Forward * FMath::Clamp(NewForwardSpeed, -Config.MaxSpeed, Config.MaxSpeed);
 
     const FVector3d Delta = Next.VelocityMetresPerSecond * Dt;
     double Earliest = 1;

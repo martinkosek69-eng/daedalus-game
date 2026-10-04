@@ -1,4 +1,24 @@
-# Current foundation state — 2026-10-03
+# Current development state — 2026-10-04
+
+## Current solar flight playground0010
+
+DefaultplaylauncherusesBuild-SolarSystem/native monitorresolution. Sun,eight
+planets,24mainmoons,fournamedasteroids,ringsandbelt areimplemented fromtheweb
+layout/authoritativesurfacemaps. ActivehullislatestClaude3effacatexturedplating,
+38turrets,addons,62mounts,windowsand6glows; originalwebcomparisonpreserved.
+Fullspeed2.5s,strictno drift,smoothbank/pitchlimits,brighterstars/MilkyWay,
+500relative-motion cues,non-temporalAA/100%pixelsandnativeCzechfontHUD.
+PgUp/PgDnselect,Fdevelopmentinspection; nothyperspacetravel.
+Final15tests,WindowsIoStorepackage,2150-frameactual3840x2160input/renderprobe,
+all37visitsandfoundationseparateprocessrestartPASS. See0010HANDOFFforpaths.
+SourcespublishwithLFS;DELIVERYrecordsindependentremoteverificationafterpush.
+Staticrepresentativeepochnotcurrentephemerides;unknownphotomapsareschematic.
+Solarposepersistence isfuturework; existingfoundationpersistenceremainsverified.
+Rootnowworking0016realisticSolcatalogand3Dgalaxy/navigation. Claude0015 owns
+fivefictionalsystemassets only; rootintegratesafterreview. No hyperspacevisuals,
+combat orenergy inthismilestone. JPLavailablemoonradiusgapsremainexplicit.
+
+## Historical comparison build
 
 ## Visual correction in task0009
 
@@ -7,7 +27,7 @@ web model/lighting/controls for comparison. Technical acceptance of0008 did not
 constitute user approval of art. Its saved source and branch remain intact.
 Task0009 restores a separately generated original hull, per-pixel web armor,
 compact HUD, direct manual orbit and no temporal/motion-blur smear. Its separate
-package is Build-WebReference, selected by the existing play launcher.
+package is Build-WebReference, retained separately; the current launcher uses0010.
 All62 tracked source/assets were independently downloaded from GitHub and
 checked by SHA256/size after publication ca31f8e. Final package, all15 groups,
 930-frame input/render checks and two-process
@@ -92,3 +112,4 @@ A 2002-definition test is not a performance promise for 2002 detailed battles.
 A Claude introductory report arrived through GitHub while foundation work was in progress. See AgentChecks/COORDINATOR_REVIEW.md: file/tool fallbacks are reported successful, while live client connections need verification after session restart. The separate task 0001 is now ACCEPTED: Codex retrieved both checkpoints directly from GitHub and verified the permitted text-only scope (Tasks/0001/REVIEW.md). The assistant's original worker checkout/branch is
 retained locally; the corrected, accepted module is published in the coordinator
 branch. Source delivery does not depend on publishing that historical branch.
+

@@ -1,120 +1,56 @@
-# První letová scéna
+# Letová zkouška Sluneční soustavy
 
-Pracovní větev: `codex/solar-flight`, úkol 0004. Hra zůstává čistě singleplayer.
-Tato scéna je první hratelná zkouška skutečného Daedala, Země, Slunce a řízení.
-Předchozí mapa Foundation zůstává samostatnou technickou zkouškou.
+Singleplayer, větev codex/solar-flight, úkol0010. Spustit dvojklikem
+Tools/SPUSTIT_LET_DAEDALA.cmd po sestavení. Nic se neinstaluje.
+Nový balíček .local/solar/Build-SolarSystem používá nativní rozlišení monitoru
+v okně přes celou obrazovku. Alt+Enter/F11 mění zobrazení. Data jsou na A:.
 
-## Spuštění
-
-Na tomto PC po sestavení dvojklik na `Tools/SPUSTIT_LET_DAEDALA.cmd`.
-Nic se neinstaluje: spouštěč otevře místní Windows verzi pod `.local/solar/Build-WebReference`.
-Po kliknutí do herního okna:
-
-| Klávesa | Účinek |
+| Ovládání | Účinek |
 | --- | --- |
-| W / S | Příď dolů / nahoru (jako ve webové předloze) |
-| A / D | Zatáčení vlevo / vpravo |
-| E / Q | Zvýšit / snížit tah o 20 procentních bodů; drží se po uvolnění |
-| R | Přepnout mezi nulovým a plným tahem |
-| Držet mezerník nebo X | Brzdit ve všech směrech až do zastavení |
-| Pravé tlačítko + myš | Volná kamera kolem lodě; Home obnoví sledování lodi |
-| Kolečko / Home | Přiblížení kamery / návrat za loď |
-| 1 / 2 | Ve stoje a s nulovým tahem přepnout přístavní chod / impuls |
-| Backspace | Obnovit počáteční polohu u Země |
-| P / Esc | Pozastavit / zavřít |
+| W/S, A/D | Příď dolů/nahoru, zatáčení |
+| E/Q | Tah ±20 %, drží nastavenou hodnotu |
+| R | Nulový/plný tah; rychlost se mění postupně |
+| Mezerník/X | Brzda až do zastavení |
+| Pravé tlačítko + myš | Volný orbit; Home obnoví sledování lodi |
+| Kolečko | Odstup kamery650–6000m |
+| 1/2 | Přístavní150m/s / impuls250km/s (přepnout ve stoje) |
+| PgUp/PgDn | Vybrat těleso soustavy |
+| F | Výslovně testovací přesun k vybranému tělesu |
+| Backspace | Začátek u Země |
+| P/Esc | Pauza/konec |
 
-Záporný tah dovoluje pomalé couvání, nejvýše čtvrtinovou rychlostí.
-Nulový tah sám postupně zpomaluje; brzda zastavuje rychleji. R nevynucuje
-okamžité zastavení. Loď se v zatáčce mírně naklání a po uvolnění dorovná.
-Kamera udržuje rovný horizont.
+Oba letové profily dosáhnou maxima za2,5s. Pohyb se vždy srovnává s přídí,
+včetně couvání a brzdění: žádný boční drift ani umělá ztráta rychlosti v zatáčce.
+Náklon22° a hranice sklonu±60° dosedají postupně. Asistovaný herní let nemá
+Newtonovu gravitaci. Kamera FOV52°, přímý volný orbit a plynulé sledování kurzu.
+Motion blur a časové upscaling/ghosting jsou vypnuté. FXAA,100% skutečné pixely,
+16×anisotropie a písmo vykreslené ve skutečných pixelech pro ostrý český HUD. Výkon4K je třeba osobně ladit;
+automatický obrazový test nepředstavuje měření běžné snímkové frekvence.
 
-## Co ladíme
+Canonical flight.json obsahuje řízení, system.json oddělený svět v double metrech.
+Slunce,8planet,24hlavních měsíců,4pojmenované planetky; Saturn/Uranus mají prstence.
+600 dekorativních těles hlavního pásu nevyjadřuje skutečný počet asteroidů.
+Rozměry/vzdálenosti jsou odvozené od webové předlohy s reálnými AU a poloměry;
+rozložení je pevné reprezentativní období, nikoliv aktuální astronomické efemeridy.
+Povrchy rotují podle délky dne. Použité skutečné mapy a schématické výjimky
+uvádí SOLAR_SOURCES.md. Zdaleka nejde o katalog všech známých měsíců a malých těles.
 
-`Game/Daedalus/Content/Data/Solar/flight.json` je jediný zdroj parametrů této
-scény. Změna dat vyžaduje nový Package, aby ji samostatná hra načetla.
-Režimy nyní přebírají rychlosti webové předlohy: přístavní chod 150 m/s,
-impuls 250 km/s. Start je v impulsu, takže 20 % tahu odpovídá cílovým 50 km/s.
-Zrychlení jsou 25 m/s² a 18 km/s², brzdění 45 m/s² a 45 km/s².
-Zatáčení až 9°/s, sklon ±60°, náklon 22°. Pomoc proti bočnímu skluzu
-zůstává v existujícím samostatném letovém modelu; není to přesná kopie
-všech vnitřních vzorců webu ani uzavřeného STO.
-W snižuje příď a S ji zvedá, podle webu. Kamera má FOV 52°, výchozí
-odstup 1500 m a citlivost přibližně .344° na jednotku myši. Ruční orbit
-reaguje přímo a přestane sledovat zatáčení lodi, dokud nestisknete Home.
-Sledování kurzu používá plynulé dorovnání, bez náklonu horizontu.
-Motion blur je vypnutý a solar scéna používá FXAA bez historie snímků,
-aby rychlé otáčení kamery nerozmazávalo trup. FXAA může mít více jemných
-zubatých hran než časové vyhlazení. HUD je kompaktní dole podle webu.
+Vzdálené objekty se vizuálně promítají blíž při zachování úhlové velikosti;
+reálná poloha a konzervativní ochrana před povrchem zůstávají ve výpočtu letu.
+Žádný vizuál nepřepisuje stav letu. F je dočasná pomůcka pro testování, ne hyperpohon.
+Lokální modré částice dávají čitelnou informaci o pohybu; jejich zobrazovaná
+rychlost je omezená, takže nepředstavují fyzické objekty ani měření prachu.
+Pozadí kombinuje výraznější8920HYG hvězd a skutečnou mapu Mléčné dráhy.
 
-Při zkoušení hodnotíme čitelnost, pohodlí řízení, setrvačnost a měřítka. Jde o
-asistovaný herní let bez gravitace. Nejsou zde oběžné dráhy, hyperpohon,
-boje, cestování mezi soustavami ani přistávání. Povrchová ochrana zastaví
-konzervativní kouli kolem lodě před Zemí nebo Sluncem. Po otočení lze odletět.
-Scéna zatím neukládá letovou polohu: další spuštění začíná znovu u Země.
-Trvalé uložení původního základu funguje dál ve své původní scéně.
+Aktivní je nová upravená Claudeova loď z0008 (3effaca): původní600m trup,
+UV plátování BaseColor/ORM/Normal, barvy vrcholů,38věží,62montážních bodů,
+světla a6motorových efektů. Věže jsou nyní vizuální, palbu teprve přidáme.
+WebReference zůstává zachovaná jako výtvarná předloha. Zdrojový původ/licence
+v Art/Ships/Daedalus; fan model CC BY-NC4.0 není komerční povolení.
 
-## Zdrojové modely a zobrazení
+Reprodukovat: Invoke-SolarFlight.ps1 Build,Assets,Test,Package,Visual,Smoke.
+Visual skutečně vykresluje3840×2160 a zkouší vstupy, let, všechny37návštěvy,
+prstence, motorová světla a vypnuté rozmazání. Podrobnosti výstupů v úkolu0010.
+Foundation zůstává oddělený ověřený základ; solární laboratoř zatím neukládá
+letovou pozici. Hyperprostor, soustavy navíc a mapa galaxie následují samostatně.
 
-Aktuálně použitý model je Art/Ships/Daedalus/WebReference/WebDaedalus.glb:
-nový převod nezměněného původního webového trupu, včetně původních runtime
-detailů. Jemné panely a spáry se znovu počítají při vykreslování povrchu.
-Claudeova fotografická varianta zůstává uložená samostatně pro porovnání.
-Slunce má mírnější hlavní světlo a chladné jemné pomocné světlo.
-
-
-- `Art/Ships/Daedalus`: skutečný původní GLB, původový záznam, upravitelný
-  Blender soubor a export 600 m, +X vpřed, +Z nahoru. 600 m je projektová volba.
-  Claudeův úkol 0008 je převzatý: nové barvy, samostatná světla, šest motorových
-  efektů a změřené body zbraní/hangárů. Zachovává původní trup a proporce;
-  odstranil dodatečné tmavé čtverce a lišty základního převodu. Barvy zůstávají
-  prvním výtvarným přiblížením předloze, které můžeme dál ladit.
-- `Art/Space`: vlastní hladká koule, původní textury Slunce/Země s původovým
-  záznamem; hvězdy používají stejný HYG podvýběr jako webová předloha.
-- `Content/Ships/Daedalus`, `Content/Solar`: importované Unreal assety přes LFS.
-  `Tools/Prepare-SolarContent.py` zkontroluje rozměry a přiřadí materiály.
-  Základní import nyní podporuje vertex color a konstantní PBR materiály.
-  Motorová záře mění jas podle tahu. Zdrojové body jsou v Blenderu +Y vlevo;
-  import je převádí na Unreal -Y. Viz CONTENT_WORKFLOW. Pohyblivé věže a skutečná
-  střelba dosud nejsou implementované. Dodá-li někdo UV textury či pohyblivé díly,
-  nejprve rozšířit
-  a ověřit import; neslučovat je slepě do trupu.
-
-Vzdálená Země/Slunce se vykreslují blíž ke kameře se stejně zmenšeným poloměrem,
-takže jejich úhlová velikost zůstává zachována. Fyzika a vzdálenosti přitom
-používají skutečné metry (Země 6371 km, Slunce přibližně 1 AU od Země).
-Tato projekce řeší kreslení obrovských vzdáleností; není zmenšením fyzikálního
-světa. Loď zůstává ve středu místní scény. Hvězdy se pohybují s kamerou,
-řídké blízké částečky pomáhají poznat pohyb. Jemné pomocné světlo udržuje
-trup čitelný. Povrchy mají denní/noční mapu, oblaka a jednoduchý atmosférický lem;
-nejsou simulací počasí nebo budoucím planetárním terénem.
-
-## Technické oddělení a reprodukce
-
-`DaedalusSimulation/DaedalusFlightModel` vlastní letový stav jako obyčejné
-hodnoty, bez Actorů. Používá double metry a krok 1/120 s. Limit 600 kroků
-na Advance zachová zbytek času. Pauza nepřidává čas. Neplatné příkazy/stav
-jsou odmítnuty. `Daedalus/Solar` posílá vstupní příkazy, čte stav a staví obraz.
-HUD ani model neurčují fyzikální polohu. Tento samostatný ladicí model ještě
-nenahrazuje uložený stav `UDaedalusWorldSubsystem`; jeho převod do společného
-herního letu/persistence bude explicitní další změna, ne druhá trvalá pravda.
-
-Z kořene pracovní kopie s lokálním toolchain nastavením:
-
-```powershell
-./Tools/Invoke-SolarFlight.ps1 Build
-./Tools/Invoke-SolarFlight.ps1 Assets
-./Tools/Invoke-SolarFlight.ps1 Test
-./Tools/Invoke-SolarFlight.ps1 Package
-./Tools/Invoke-SolarFlight.ps1 Smoke
-./Tools/Invoke-SolarFlight.ps1 Visual
-./Tools/Invoke-SolarFlight.ps1 Play
-```
-
-Jeden editor/build současně. Assets nepouští Blender a nezmění existující mapu.
-Nezměněná receptura a zdroje mají SHA256 cache. Výstupy, sestavení a uživatelská
-data jsou lokální pod `.local/solar` na A:, ne veřejná součást GitHubu.
-Visual spouští vlastní izolovaný proces, posílá klávesy přes PlayerController,
-kontroluje odezvu a uloží skutečné screenshoty. Jeho řízený čas není měření FPS.
-Výsledky aktuální kontroly jsou v [předání 0004](../Tasks/0004/HANDOFF.md).
-Zdrojové předání lze nezávisle zkontrolovat přes
-`node Tools/Validate-DaedalusDelivery.mjs`; nevyžaduje Blender ani Unreal.

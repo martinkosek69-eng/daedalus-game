@@ -13,7 +13,7 @@
   "pitchLimitDegrees": 60,
   "bankDegrees": 22,
   "profiles": [
-    {"name": "Přístavní chod", "speed": 150, "acceleration": 25, "coastDeceleration": 45, "braking": 45, "lateralAcceleration": 86},
-    {"name": "Impuls", "speed": 250000, "acceleration": 18000, "coastDeceleration": 45000, "braking": 45000, "lateralAcceleration": 142860}
+    {"name": "Přístavní chod", "speed": 150, "acceleration": 60, "coastDeceleration": 45, "braking": 45, "lateralAcceleration": 86},
+    {"name": "Impuls", "speed": 250000, "acceleration": 100000, "coastDeceleration": 45000, "braking": 45000, "lateralAcceleration": 142860}
   ]
 }

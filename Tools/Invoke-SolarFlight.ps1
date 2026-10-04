@@ -1,5 +1,5 @@
 param([ValidateSet('Build','Assets','Test','Package','Smoke','Visual','Play')][string]$Mode='Play',
-      [ValidatePattern('^[A-Za-z0-9_-]+$')][string]$BuildName='Build-WebReference')
+      [ValidatePattern('^[A-Za-z0-9_-]+$')][string]$BuildName='Build-SolarSystem')
 $ErrorActionPreference='Stop'
 $root=Split-Path -Parent $PSScriptRoot
 $config=Get-Content -LiteralPath (Join-Path $root '.local/toolchain.json') -Raw | ConvertFrom-Json
@@ -70,7 +70,7 @@ switch($Mode){
     if(-not(Test-Path -LiteralPath $exe)){throw 'Package first.'}
     $run=Join-Path $local ('visual-'+[guid]::NewGuid().ToString('N'))
     New-Item -ItemType Directory -Path $run -Force | Out-Null
-    $args=@('/Game/Maps/SolarFlight?game=/Script/Daedalus.SolarFlightGameMode','-nosound','-unattended','-windowed','-ResX=1280','-ResY=720',"-UserDir=$run","-SolarProbe=$run","-abslog=$(Join-Path $run 'run.log')")
+    $args=@('/Game/Maps/SolarFlight?game=/Script/Daedalus.SolarFlightGameMode','-nosound','-unattended','-windowed','-ResX=3840','-ResY=2160','-forceres',"-UserDir=$run","-SolarProbe=$run","-abslog=$(Join-Path $run 'run.log')")
     RunOwnGame $exe $args
     $result=Join-Path $run 'result.json'
     if(-not(Test-Path -LiteralPath $result) -or -not(Get-Content -LiteralPath $result -Raw | ConvertFrom-Json).passed){throw "Solar input/render probe failed: $run"}
@@ -80,7 +80,8 @@ switch($Mode){
     $exe=Join-Path $build 'Windows/Daedalus.exe'
     if(-not(Test-Path -LiteralPath $exe)){throw 'Playable package not found. Run Package first.'}
     $data=Join-Path $local 'PlayerData'
-    & $exe '/Game/Maps/SolarFlight?game=/Script/Daedalus.SolarFlightGameMode' "-UserDir=$data" '-windowed' '-ResX=1280' '-ResY=720'
+    & $exe '/Game/Maps/SolarFlight?game=/Script/Daedalus.SolarFlightGameMode' "-UserDir=$data" '-SolarNative'
     CheckExit
  }
 }
+

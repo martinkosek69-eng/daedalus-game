@@ -9,10 +9,10 @@ namespace Daedalus
 struct DAEDALUSSIMULATION_API FFlightConfig
 {
     double MaxSpeed = 350;
-    double Acceleration = 60;
+    double Acceleration = 140;
     double Braking = 100;
     double CoastDeceleration = 43.75;
-    double LateralAcceleration = 80;
+    double LateralAcceleration = 80; // Legacy tuning retained for catalog compatibility; directional assist eliminates slip.
     double TurnRateDegrees = 6;
     double AngularAccelerationDegrees = 18;
     double PitchLimitDegrees = 80;
@@ -54,7 +54,9 @@ struct DAEDALUSSIMULATION_API FFlightState
 /** Singleplayer, sequential owner-thread domain. No Actor/input-device ownership.
  * Fixed 120 Hz; Advance processes at most 600 steps and retains the rest. Pause
  * accrues no new time. Throttle persists [-.25,1]; brake sets it to zero. At zero
- * throttle the flight assist slows the ship; lateral drift decays separately.
+ * throttle the flight assist slows the ship. Directional assist keeps signed
+ * speed aligned with the nose at every step, including reverse and braking.
+ * Initialization aligns any supplied velocity with the nose, preserving speed.
  * Collision is a conservative swept ship sphere against stationary body spheres,
  * stopping on contact without damage, gravity or a surface landing model.
  * Supported coordinate components: +/-1e15 m; pending time at most 1e6 s. */

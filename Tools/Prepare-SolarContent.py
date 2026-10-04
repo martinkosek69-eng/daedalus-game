@@ -1,5 +1,5 @@
 """Owned Unreal commandlet: source import and repeatable solar content recipe."""
-import unreal, json, struct, hashlib
+import unreal, json, struct, hashlib, importlib.util
 from pathlib import Path
 
 def main():
@@ -7,13 +7,27 @@ def main():
     fingerprint=hashlib.sha256(Path(__file__).read_bytes())
     for source in [base/'Art/Ships/Daedalus'/f for f in ['Daedalus.glb','DaedalusEngineGlow.glb','DaedalusLights.glb','ENGINE_MOUNTS.json']]+[base/'Art/Space/SolarSphere.glb']+sorted((base/'Art/Space/Textures').glob('*.jpg')):
         fingerprint.update(source.read_bytes())
-    recipe=fingerprint.hexdigest()
     web_source=base/'Art/Ships/Daedalus/WebReference/WebDaedalus.glb'
     fingerprint.update(web_source.read_bytes())
+    for source in sorted((base/'Art/Space/SolarSystem').rglob('*'))+sorted((base/'Art/Ships/Daedalus/Textures').glob('*.png'))+[base/'Art/Ships/Daedalus/DaedalusAddOns.glb',base/'Art/Ships/Daedalus/DaedalusTurrets.glb',base/'Game/Daedalus/Content/Data/Solar/system.json',base/'Tools/Prepare-SolarSystemMaterials.py',base/'Tools/Prepare-DaedalusMaterials.py']:
+        if source.is_file():fingerprint.update(source.read_bytes())
     recipe=fingerprint.hexdigest()
     existing=unreal.load_asset('/Game/Ships/Daedalus/SM_Daedalus')
     required=['M_Earth','M_Sun','M_Atmosphere','M_Star','M_Dust','M_Daedalus_EngineGlowCore','M_Daedalus_EngineGlowPlume','M_Daedalus_Glass']
-    if existing and unreal.EditorAssetLibrary.get_metadata_tag(existing,'SolarRecipe')==recipe and all(unreal.EditorAssetLibrary.does_asset_exist('/Game/Solar/Materials/'+name) for name in required) and unreal.EditorAssetLibrary.does_asset_exist('/Game/Maps/SolarFlight') and unreal.EditorAssetLibrary.does_asset_exist('/Game/Ships/Daedalus/WebReference/SM_WebDaedalus'):
+    catalog=json.loads((base/'Game/Daedalus/Content/Data/Solar/system.json').read_text(encoding='utf-8-sig'))
+    paths=['/Game/Solar/Materials/'+name for name in required]
+    paths+=['/Game/Solar/SM_SolarRock','/Game/Solar/Materials/M_Sky','/Game/Solar/Materials/M_Rock','/Game/Ships/Daedalus/Details/SM_DaedalusAddOns','/Game/Maps/SolarFlight','/Game/Ships/Daedalus/WebReference/SM_WebDaedalus']
+    for row in catalog['bodies']:
+        paths.append('/Game/Solar/Materials/M_Body_'+row['id'][4:])
+        if 'atmosphereColor' in row:paths.append('/Game/Solar/Materials/M_Air_'+row['id'][4:])
+        if 'ringTexture' in row:paths.append('/Game/Solar/Materials/M_Ring_'+row['id'][4:])
+    detail_data=base/'Game/Daedalus/Content/Data/Solar/ship-details.json'
+    if detail_data.exists(): paths+=json.loads(detail_data.read_text())['meshes']
+    for filename in ['Daedalus.glb','DaedalusAddOns.glb','DaedalusTurrets.glb']:
+        data=(base/'Art/Ships/Daedalus'/filename).read_bytes()
+        paths+=['/Game/Ships/Daedalus/Materials/M_'+m['name'] for m in json.loads(data[20:20+struct.unpack_from('<I',data,12)[0]])['materials']]
+    paths+=['/Game/Ships/Daedalus/Textures/'+p.stem for p in (base/'Art/Ships/Daedalus/Textures').glob('*.png')]
+    if existing and detail_data.exists() and unreal.EditorAssetLibrary.get_metadata_tag(existing,'SolarRecipe')==recipe and all(unreal.EditorAssetLibrary.does_asset_exist(path) for path in paths):
         print('SOLAR_CONTENT_PASS cached verified recipe')
         return
     root=Path(unreal.Paths.project_dir()).resolve().parent.parent
@@ -146,13 +160,13 @@ def main():
         interpolation=node(star,unreal.MaterialExpressionVertexInterpolator)
         assert lib.connect_material_expressions(value,'',interpolation,'')
         components.append(interpolation)
-    col=custom(star,'return float3(R,G,B)*1.2;',dict(zip(['R','G','B'],[(n,'') for n in components])))
+    col=custom(star,'return float3(R,G,B)*2.4;',dict(zip(['R','G','B'],[(n,'') for n in components])))
     finish(star,col)
     dust=material('M_Dust',True,unreal.BlendMode.BLEND_MASKED,True)
     lib.set_base_material_usage(dust,unreal.MaterialUsage.MATUSAGE_INSTANCED_STATIC_MESHES)
     circle=custom(dust,'return 1-smoothstep(0.1,0.48,length(U-0.5));',{'U':(node(dust,unreal.MaterialExpressionTextureCoordinate),'')},unreal.CustomMaterialOutputType.CMOT_FLOAT1)
     assert lib.connect_material_property(circle,'',unreal.MaterialProperty.MP_OPACITY_MASK)
-    finish(dust,vector(dust,(.17,.23,.28,1)))
+    finish(dust,vector(dust,(.45,.63,.8,1)))
     
     # Stable owned materials on every slot, preserving imported vertex colors.
     def assign_source_materials(mesh,filename,effect=False,web_recipe=False):
@@ -221,7 +235,21 @@ def main():
         mesh.set_material(index,m)
       assert unreal.EditorAssetLibrary.save_loaded_asset(mesh)
       return len(source_mats)
-    count=assign_source_materials(ship,'Daedalus.glb')
+    def module(filename):
+        spec=importlib.util.spec_from_file_location(filename,root/'Tools'/filename)
+        result=importlib.util.module_from_spec(spec);spec.loader.exec_module(result);return result
+    ship_recipe=module('Prepare-DaedalusMaterials.py')
+    count=ship_recipe.assign_materials(root,unreal,tools,lib,ship,'Daedalus.glb')
+    addons=imported(root/'Art/Ships/Daedalus/DaedalusAddOns.glb','/Game/Ships/Daedalus/Details','SM_DaedalusAddOns',unreal.StaticMesh)
+    ship_recipe.assign_materials(root,unreal,tools,lib,addons,'DaedalusAddOns.glb')
+    turret_task=unreal.AssetImportTask();turret_task.filename=str(root/'Art/Ships/Daedalus/DaedalusTurrets.glb')
+    turret_task.destination_path='/Game/Ships/Daedalus/Details';turret_task.automated=True;turret_task.replace_existing=True;turret_task.save=True
+    tools.import_asset_tasks([turret_task])
+    turrets=[unreal.load_asset(p) for p in turret_task.imported_object_paths if isinstance(unreal.load_asset(p),unreal.StaticMesh)]
+    assert len(turrets)==38,(len(turrets),turret_task.imported_object_paths)
+    for mesh in turrets:ship_recipe.assign_materials(root,unreal,tools,lib,mesh,'DaedalusTurrets.glb')
+    (root/'Game/Daedalus/Content/Data/Solar/ship-details.json').write_text(json.dumps({'version':1,'meshes':[m.get_path_name() for m in turrets]},indent=2)+'\n')
+    module('Prepare-SolarSystemMaterials.py').prepare(root,unreal,tools,lib,imported,material,node,constant,vector,texture,custom,finish)
     assign_source_materials(web,'WebReference/WebDaedalus.glb',web_recipe=True)
     assign_source_materials(lights,'DaedalusLights.glb',True)
     for mesh in glows:assign_source_materials(mesh,'DaedalusEngineGlow.glb',True)
@@ -234,3 +262,4 @@ def main():
     unreal.EditorAssetLibrary.set_metadata_tag(ship,'SolarRecipe',recipe)
     assert unreal.EditorAssetLibrary.save_loaded_asset(ship)
 main()
+
