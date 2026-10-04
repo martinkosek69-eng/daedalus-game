@@ -27,3 +27,19 @@
 -390px layout has no horizontal overflow; screenshot inspected.
 - New screenshot: ignored.local/hud/hud-minimal-4k.png. Game unchanged.
 - No editor/build/package while Claude owns0023 applications.
+
+## Instrument revision after user rejected minimalism
+
+- The minimalist revision is superseded. Preserved unframed radar and the
+  four blue shield arc paths; hull now shares the green radar token.
+- Added bevelled technical instrument housings, circular ship chassis,
+  secondary four-channel energy instrument, segmented drive display and modes,
+  detailed weapon modules, and a framed four-section onboard computer.
+- Weapon diagrams use the actual mesh projection and source mount coordinates;
+  bow VLS detail is enlarged. Selection still highlights only its real group.
+- No fake energy/shield/ammo/cooldown values or functioning combat controls.
+- Browser3840x2160:24.96px base text, no page errors/overflow/clipped labels,
+  radar transparent/no border, all three exclusive weapon interactions PASS.
+- Narrow390px preview reflows without horizontal overflow. Screenshots inspected:
+  ignored.local/hud/hud-sto-4k.png and hud-sto-instruments-4k.png.
+- Game integration NOT_STARTED; user design review pending, Claude owns0023 apps.

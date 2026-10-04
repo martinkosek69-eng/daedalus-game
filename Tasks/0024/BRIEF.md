@@ -1,4 +1,4 @@
-# 0024 — Nový minimalistický HUD: nejprve návrh vzhledu
+# 0024 — Nový přístrojový HUD podle STO: nejprve návrh vzhledu
 
 - Vlastník: Codex koordinátor. Základ `91e0e0111de4bc5715b3d847504ae7eabbfae38e`.
 - Pracovní/cílová větev: codex/solar-flight, vlastní přidělená kopie na A:.
@@ -16,6 +16,12 @@ odlišují tlumené modré/jantarové/měděné a neutrální text. Energii upoz
 klávesovou nápovědu/ovládání odstranit. Přidat tři skupiny podle skutečných
 modelových bodů: dělové věže, raketová sila, paprskové emitory.
 Ukázkový výběr zbraně může zvýraznit body, nezapíná střelbu.
+
+**Nejnovější upřesnění:** uživatel odmítl příliš minimalistickou revizi.
+Minimapu zachovat beze změny; obrys lodi zelený jako minimapa, čtyři štíty
+modré. Ostatní funkční barvy zachovat. Přístroje mají být výrazně komplexnější
+a bližší STO: členité rámy, podrobné displeje zbraní, pohon a sekundární energie.
+Nejde o přidání online prvků, bojové logiky nebo smyšlených stavových hodnot.
 
 Přečíst společné pokyny a Docs/VISUAL_QUALITY.md. Pure singleplayer,
 prezentace čte stav, nic v letu nemění. Zachovat funkce a klávesy, oddělit
@@ -42,8 +48,9 @@ Případnou úpravu mapového rozhraní nejdřív vymezit zvlášť.
 
 - Písmo rasterizované v cílových pixelech, čitelné české znaky, žádný
   zvětšený obrázek HUD. Kompaktní rozměry ve4K, bez překryvu panelů.
-- Zachovat rychlost, tah/režim, navigaci, vzdálenost/cíl, pauzu, varování
-  a nápovědu. Dlouhé názvy omezit podle prostoru, ne dovolit přetéct.
+- Zachovat rychlost, tah/režim, navigaci, vzdálenost/cíl, pauzu a varování;
+  klávesovou nápovědu podle pozdějšího upřesnění nezobrazovat.
+  Dlouhé názvy omezit podle prostoru, ne dovolit přetéct.
 - Jediná implementace DrawHUD; čtení stavu bez jeho mutace.
 - Dokud Claude drží editor/build pro0023, žádný Unreal/build/package z Codexu.
   Připravovat pouze vlastní zdroje a běžné statické kontroly. Po uvolnění

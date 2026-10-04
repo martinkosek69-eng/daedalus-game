@@ -4,9 +4,12 @@
 
 ### New HUD design0024
 
-User rejected the first monochrome/card HUD. Revised STO-inspired design has
-an unframed green radar, neutral text/hull, muted blue shields, copper turrets,
-amber missiles/drive, blue beams. Energy secondary, no key hints or slider.
+User rejected both the first monochrome/card HUD and its minimalist revision.
+Current STO-inspired instrument design has bevelled technical frames, detailed
+weapon displays from real model positions, circular green ship outline and
+four preserved blue shield arcs. Radar remains unframed/green. Copper turrets,
+amber missiles/drive, blue beams and neutral text remain. Energy secondary,
+no key hints or slider. Complex instrument treatment is now the requested style.
 Three weapon selectors highlight real mount groups locally, no firing. Standalone
 preview is ready: Tasks/0024/Preview/hud-concept.html, see Docs/HUD.md.
 Browser native3840x2160 layout/interactions checked; design feedback pending.
