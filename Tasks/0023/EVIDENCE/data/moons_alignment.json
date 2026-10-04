@@ -1,0 +1,47 @@
+{
+  "sol.io": {
+    "source": "Io_GalileoSSI-Voyager_Global_Mosaic_ClrMerge_1km.tif",
+    "reference": "jpl-jup1vss2.jpg",
+    "mirror": false,
+    "shift_px": 3,
+    "score": 0.292,
+    "median": 0.002,
+    "mode": "colour"
+  },
+  "sol.europa": {
+    "source": "Europa_Voyager_GalileoSSI_global_mosaic_500m.tif",
+    "reference": "jpl-jup2vss2.jpg",
+    "mirror": false,
+    "shift_px": 721,
+    "score": 0.183,
+    "median": -0.024,
+    "mode": "grey"
+  },
+  "sol.ganymede": {
+    "source": "Ganymede_Voyager_GalileoSSI_global_mosaic_1km.tif",
+    "reference": "jpl-jup3vss2.jpg",
+    "mirror": false,
+    "shift_px": 714,
+    "score": 0.117,
+    "median": 0.037,
+    "mode": "grey"
+  },
+  "sol.callisto": {
+    "source": "Callisto_Voyager_GalileoSSI_global_mosaic_1km.tif",
+    "reference": "jpl-jup4vss2.jpg",
+    "mirror": false,
+    "shift_px": 720,
+    "score": 0.07,
+    "median": -0.004,
+    "mode": "grey"
+  },
+  "sol.enceladus": {
+    "source": "Enceladus_Cassini_mosaic_global_110m.tif",
+    "reference": "jpl-sat2vss2.jpg",
+    "mirror": false,
+    "shift_px": 720,
+    "score": 0.041,
+    "median": -0.041,
+    "mode": "grey"
+  }
+}

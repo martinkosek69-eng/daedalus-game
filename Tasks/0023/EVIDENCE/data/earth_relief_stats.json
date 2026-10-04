@@ -1,0 +1,11 @@
+{
+  "water_fraction": 0.6561187952756882,
+  "height_min": -10754.474609375,
+  "height_max": 7724.5078125,
+  "encoding": {
+    "water": 0,
+    "land_min": 16,
+    "height_max_metres": 8848.0,
+    "curve": "sqrt"
+  }
+}

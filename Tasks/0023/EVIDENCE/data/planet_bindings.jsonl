@@ -1,0 +1,105 @@
+{"day": {"path": "/Game/Solar/Textures/T_sun", "size": [4096, 2048]}, "id": "sol.sun", "type": "star"}
+{"day": {"path": "/Game/Solar/Textures/T_mercury", "size": [8192, 4096]}, "id": "sol.mercury", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_venus_atmosphere", "size": [4096, 2048]}, "id": "sol.venus", "type": "surface"}
+{"clouds": {"path": "/Game/PlanetQuality/Textures/T_PQ_earth_clouds_16k", "size": [16384, 8192]}, "day": {"path": "/Game/PlanetQuality/Textures/T_PQ_earth_day_16k", "size": [16384, 8192]}, "id": "sol.earth", "night": {"path": "/Game/PlanetQuality/Textures/T_PQ_earth_night_8k", "size": [8192, 4096]}, "relief": {"path": "/Game/PlanetQuality/Textures/T_PQ_earth_relief_16k", "size": [16384, 8192]}, "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_mars", "size": [8192, 4096]}, "id": "sol.mars", "relief": {"path": "/Game/PlanetQuality/Textures/T_PQ_mars_relief_4k", "size": [4096, 2048]}, "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_jupiter", "size": [4096, 2048]}, "id": "sol.jupiter", "type": "gas"}
+{"day": {"path": "/Game/Solar/Textures/T_saturn", "size": [4096, 2048]}, "id": "sol.saturn", "type": "gas"}
+{"day": {"path": "/Game/Solar/Textures/T_uranus", "size": [2048, 1024]}, "id": "sol.uranus", "type": "gas"}
+{"day": {"path": "/Game/Solar/Textures/T_neptune", "size": [2048, 1024]}, "id": "sol.neptune", "type": "gas"}
+{"day": {"path": "/Game/Solar/Textures/T_moon", "size": [8192, 4096]}, "id": "sol.moon", "relief": {"path": "/Game/PlanetQuality/Textures/T_PQ_moon_relief_4k", "size": [4096, 2048]}, "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_jpl-mar1kuu2", "size": [1440, 720]}, "id": "sol.phobos", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_jpl-mar2kuu2", "size": [1440, 720]}, "id": "sol.deimos", "type": "surface"}
+{"day": {"path": "/Game/PlanetQuality/Textures/T_PQ_io_8k", "size": [8192, 4096]}, "id": "sol.io", "type": "surface"}
+{"day": {"path": "/Game/PlanetQuality/Textures/T_PQ_europa_8k", "size": [8192, 4096]}, "id": "sol.europa", "type": "surface"}
+{"day": {"path": "/Game/PlanetQuality/Textures/T_PQ_ganymede_8k", "size": [8192, 4096]}, "id": "sol.ganymede", "type": "surface"}
+{"day": {"path": "/Game/PlanetQuality/Textures/T_PQ_callisto_8k", "size": [8192, 4096]}, "id": "sol.callisto", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_jpl-sat1vss2", "size": [1440, 720]}, "id": "sol.mimas", "type": "surface"}
+{"day": {"path": "/Game/PlanetQuality/Textures/T_PQ_enceladus_4k", "size": [4096, 2048]}, "id": "sol.enceladus", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_jpl-sat3vss2", "size": [1440, 720]}, "id": "sol.tethys", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_jpl-sat4vss2", "size": [1440, 720]}, "id": "sol.dione", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_jpl-sat5vss2", "size": [1440, 720]}, "id": "sol.rhea", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_jpl-sat6fss1", "size": [720, 360]}, "id": "sol.titan", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_hyperion_schematic", "size": [2048, 1024]}, "id": "sol.hyperion", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_jpl-sat8vss2", "size": [1440, 720]}, "id": "sol.iapetus", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_phoebe_schematic", "size": [2048, 1024]}, "id": "sol.phoebe", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_jpl-ura5vuu2", "size": [1440, 720]}, "id": "sol.miranda", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_jpl-ura1vuu2", "size": [1440, 720]}, "id": "sol.ariel", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_jpl-ura2vuu2", "size": [1440, 720]}, "id": "sol.umbriel", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_jpl-ura3vuu2", "size": [1440, 720]}, "id": "sol.titania", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_jpl-ura4vuu2", "size": [1440, 720]}, "id": "sol.oberon", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_jpl-nep1vuu2", "size": [1440, 720]}, "id": "sol.triton", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_nereid_schematic", "size": [2048, 1024]}, "id": "sol.nereid", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_proteus_schematic", "size": [2048, 1024]}, "id": "sol.proteus", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_ceres_schematic_albedo_ea2c9f76", "size": [2048, 1024]}, "id": "sol.ceres", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_rock_schematic", "size": [2048, 1024]}, "id": "sol.vesta", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_rock_schematic", "size": [2048, 1024]}, "id": "sol.eros", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_rock_schematic", "size": [2048, 1024]}, "id": "sol.bennu", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_pluto_lorri_4k_1101376c", "size": [4096, 2048]}, "id": "sol.pluto", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_eris_schematic_albedo_1f2ef516", "size": [2048, 1024]}, "id": "sol.eris", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_haumea_schematic_albedo_7d833bf9", "size": [2048, 1024]}, "id": "sol.haumea", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_makemake_schematic_albedo_acdba114", "size": [2048, 1024]}, "id": "sol.makemake", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_charon_lorri_4k_81363a5e", "size": [4096, 2048]}, "id": "sol.moon.jpl_901", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_sun_fdff89e2", "size": [2048, 1024]}, "id": "fic.asterion.sun", "type": "star"}
+{"day": {"path": "/Game/Solar/Textures/T_ignis_1c92f288", "size": [2048, 1024]}, "id": "fic.asterion.ignis", "type": "surface"}
+{"clouds": {"path": "/Game/PlanetQuality/Textures/T_PQ_fic_asterion_calyx_clouds", "size": [2048, 1024]}, "day": {"path": "/Game/Solar/Textures/T_calyx_c8c36fe2", "size": [2048, 1024]}, "id": "fic.asterion.calyx", "type": "surface"}
+{"clouds": {"path": "/Game/PlanetQuality/Textures/T_PQ_fic_asterion_tessaly_clouds", "size": [4096, 2048]}, "day": {"path": "/Game/Solar/Textures/T_tessaly_60d9ec3d", "size": [4096, 2048]}, "id": "fic.asterion.tessaly", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_kestrel_54d68346", "size": [2048, 1024]}, "id": "fic.asterion.kestrel", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_varunis_ba455baa", "size": [4096, 2048]}, "id": "fic.asterion.varunis", "type": "gas"}
+{"day": {"path": "/Game/Solar/Textures/T_halcyon_7d12ff88", "size": [2048, 1024]}, "id": "fic.asterion.halcyon", "type": "gas"}
+{"day": {"path": "/Game/Solar/Textures/T_tessa_minor_7b11f2e0", "size": [4096, 2048]}, "id": "fic.asterion.tessa_minor", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_skerry_82582d9d", "size": [2048, 1024]}, "id": "fic.asterion.skerry", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_pyra_8e601957", "size": [2048, 1024]}, "id": "fic.asterion.pyra", "night": {"path": "/Game/Solar/Textures/T_pyra_night_d7970125", "size": [2048, 1024]}, "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_glacia_e6d2654a", "size": [2048, 1024]}, "id": "fic.asterion.glacia", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_umbra_a035cfc4", "size": [2048, 1024]}, "id": "fic.asterion.umbra", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_sun_82ca839f", "size": [2048, 1024]}, "id": "fic.velara.sun", "type": "star"}
+{"day": {"path": "/Game/Solar/Textures/T_cinder_45686ff4", "size": [2048, 1024]}, "id": "fic.velara.cinder", "night": {"path": "/Game/Solar/Textures/T_cinder_night_6bf62674", "size": [2048, 1024]}, "type": "surface"}
+{"clouds": {"path": "/Game/PlanetQuality/Textures/T_PQ_fic_velara_thalassa_clouds", "size": [4096, 2048]}, "day": {"path": "/Game/Solar/Textures/T_thalassa_d359af78", "size": [4096, 2048]}, "id": "fic.velara.thalassa", "type": "surface"}
+{"clouds": {"path": "/Game/PlanetQuality/Textures/T_PQ_fic_velara_nimbus_clouds", "size": [4096, 2048]}, "day": {"path": "/Game/Solar/Textures/T_nimbus_1c84160f", "size": [4096, 2048]}, "id": "fic.velara.nimbus", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_corvan_356dd42b", "size": [4096, 2048]}, "id": "fic.velara.corvan", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_aurelion_7db03a90", "size": [4096, 2048]}, "id": "fic.velara.aurelion", "type": "gas"}
+{"day": {"path": "/Game/Solar/Textures/T_shard_b89f0272", "size": [2048, 1024]}, "id": "fic.velara.shard", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_mira_639a39df", "size": [2048, 1024]}, "id": "fic.velara.mira", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_coral_45bc6fd4", "size": [2048, 1024]}, "id": "fic.velara.coral", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_opaline_6b88e81a", "size": [2048, 1024]}, "id": "fic.velara.opaline", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_brine_0c797e91", "size": [2048, 1024]}, "id": "fic.velara.brine", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_sun_12475b82", "size": [2048, 1024]}, "id": "fic.nivara.sun", "type": "star"}
+{"day": {"path": "/Game/Solar/Textures/T_ember_c65b81c1", "size": [4096, 2048]}, "id": "fic.nivara.ember", "night": {"path": "/Game/Solar/Textures/T_ember_night_cad46515", "size": [4096, 2048]}, "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_ashfall_9b613ca7", "size": [2048, 1024]}, "id": "fic.nivara.ashfall", "type": "surface"}
+{"clouds": {"path": "/Game/PlanetQuality/Textures/T_PQ_fic_nivara_iris_clouds", "size": [4096, 2048]}, "day": {"path": "/Game/Solar/Textures/T_iris_ec2e8339", "size": [4096, 2048]}, "id": "fic.nivara.iris", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_rime_16d7b705", "size": [2048, 1024]}, "id": "fic.nivara.rime", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_gelid_73fa345f", "size": [2048, 1024]}, "id": "fic.nivara.gelid", "type": "gas"}
+{"day": {"path": "/Game/Solar/Textures/T_mote_c4159c31", "size": [2048, 1024]}, "id": "fic.nivara.mote", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_glint_a2b4f188", "size": [2048, 1024]}, "id": "fic.nivara.glint", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_frost_27dbd4ee", "size": [2048, 1024]}, "id": "fic.nivara.frost", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_cairn_eed0b325", "size": [2048, 1024]}, "id": "fic.nivara.cairn", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_wisp_f67f6502", "size": [2048, 1024]}, "id": "fic.nivara.wisp", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_sun_2da3b1b1", "size": [2048, 1024]}, "id": "fic.caelum.sun", "type": "star"}
+{"day": {"path": "/Game/Solar/Textures/T_pyrrhus_bf1b8383", "size": [4096, 2048]}, "id": "fic.caelum.pyrrhus", "night": {"path": "/Game/Solar/Textures/T_pyrrhus_night_28f1387b", "size": [4096, 2048]}, "type": "gas"}
+{"day": {"path": "/Game/Solar/Textures/T_solace_328d5bb8", "size": [2048, 1024]}, "id": "fic.caelum.solace", "type": "surface"}
+{"clouds": {"path": "/Game/PlanetQuality/Textures/T_PQ_fic_caelum_verdance_clouds", "size": [4096, 2048]}, "day": {"path": "/Game/Solar/Textures/T_verdance_92a37e6c", "size": [4096, 2048]}, "id": "fic.caelum.verdance", "type": "surface"}
+{"clouds": {"path": "/Game/PlanetQuality/Textures/T_PQ_fic_caelum_sere_clouds", "size": [2048, 1024]}, "day": {"path": "/Game/Solar/Textures/T_sere_cc183b13", "size": [2048, 1024]}, "id": "fic.caelum.sere", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_caelestis_a280774f", "size": [4096, 2048]}, "id": "fic.caelum.caelestis", "type": "gas"}
+{"day": {"path": "/Game/Solar/Textures/T_azurine_28b46f6e", "size": [2048, 1024]}, "id": "fic.caelum.azurine", "type": "gas"}
+{"day": {"path": "/Game/Solar/Textures/T_kyra_ce3dde02", "size": [2048, 1024]}, "id": "fic.caelum.kyra", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_geyser_8de70006", "size": [2048, 1024]}, "id": "fic.caelum.geyser", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_lumen_388b9ace", "size": [2048, 1024]}, "id": "fic.caelum.lumen", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_tethra_5cd68264", "size": [2048, 1024]}, "id": "fic.caelum.tethra", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_triss_9a5b3de3", "size": [2048, 1024]}, "id": "fic.caelum.triss", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_veil_060207c2", "size": [2048, 1024]}, "id": "fic.caelum.veil", "type": "surface"}
+{"clouds": {"path": "/Game/PlanetQuality/Textures/T_PQ_fic_caelum_haze_clouds", "size": [2048, 1024]}, "day": {"path": "/Game/Solar/Textures/T_haze_5c9862f7", "size": [2048, 1024]}, "id": "fic.caelum.haze", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_nyx_f1bfadc4", "size": [2048, 1024]}, "id": "fic.caelum.nyx", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_sun_b7742080", "size": [2048, 1024]}, "id": "fic.morava.sun", "type": "star"}
+{"day": {"path": "/Game/Solar/Textures/T_amber_21b3c3c7", "size": [2048, 1024]}, "id": "fic.morava.amber", "type": "surface"}
+{"clouds": {"path": "/Game/PlanetQuality/Textures/T_PQ_fic_morava_serein_clouds", "size": [4096, 2048]}, "day": {"path": "/Game/Solar/Textures/T_serein_bd2cbd8f", "size": [4096, 2048]}, "id": "fic.morava.serein", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_brannock_0ed961c9", "size": [4096, 2048]}, "id": "fic.morava.brannock", "type": "gas"}
+{"day": {"path": "/Game/Solar/Textures/T_lethe_21c2e240", "size": [2048, 1024]}, "id": "fic.morava.lethe", "type": "gas"}
+{"day": {"path": "/Game/Solar/Textures/T_selk_ce3c4dda", "size": [2048, 1024]}, "id": "fic.morava.selk", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_nam_5fab1c29", "size": [2048, 1024]}, "id": "fic.morava.nam", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_ise_dc6e81e1", "size": [2048, 1024]}, "id": "fic.morava.ise", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_kite_6059a876", "size": [2048, 1024]}, "id": "fic.morava.kite", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_penny_345548ae", "size": [2048, 1024]}, "id": "fic.morava.penny", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_mire_ec619cbe", "size": [2048, 1024]}, "id": "fic.morava.mire", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_tarn_52d814d7", "size": [2048, 1024]}, "id": "fic.morava.tarn", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_rook_a2a3f3fd", "size": [2048, 1024]}, "id": "fic.morava.rook", "type": "surface"}
+{"day": {"path": "/Game/Solar/Textures/T_pell_1fc7e54b", "size": [2048, 1024]}, "id": "fic.morava.pell", "type": "surface"}

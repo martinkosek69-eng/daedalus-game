@@ -1,0 +1,16 @@
+{
+  "sol.moon": {
+    "mirror": false,
+    "shift_px": 1439,
+    "score": 0.422,
+    "median": 0.003,
+    "range_m": 19919.9
+  },
+  "sol.mars": {
+    "mirror": false,
+    "shift_px": 719,
+    "score": 0.216,
+    "median": 0.022,
+    "range_m": 29318.7
+  }
+}
