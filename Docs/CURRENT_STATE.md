@@ -12,12 +12,18 @@ this target; its independent proposal-only scope is unchanged.
 
 ### Independent planet-quality proposal0022
 
+User now authorized implementation in0023: codex/claude-0023-planet-upgrade,
+Claude owner, B plus targeted better real source maps, Earth-first then the
+current six-system bodies at native4K. No implementation result yet.
+Claude owns editor/build upon launch. See Tasks/0023/BRIEF.md.
+
 Claude delivered independent read-only diagnosis at c2ccd5d on
 codex/claude-0022-planet-quality. Codex reviewed and integrated the proposal
 and evidence; see Tasks/0022/REVIEW.md. Accepted as analysis only, with runtime
-and numerical qualifications. No game changes or new implementation authorization.
+and numerical qualifications. The proposal itself contains no game changes;
+implementation is now separately authorized in0023.
 Recommendation: B layered materials/clouds plus targeted better real source maps,
-Earth-first at native4K. The user selects before Claude implements the planet part.
+Earth-first at native4K. The user selected proceeding with Claude in0023.
 Claude never started Unreal and released editor/build ownership. Keep the
 approved ship/sky/flight intact. Brief, proposal and comparison: Tasks/0022.
 

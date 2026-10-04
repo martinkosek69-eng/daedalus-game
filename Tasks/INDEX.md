@@ -38,7 +38,9 @@ automaticky aktualizovaný přehled všech vzdálených větví.
 
 | 0022 | [Nezávislá diagnóza planet](0022/BRIEF.md) | Claude Code; Codex reviewed | ACCEPTED (analysis only; solution selection pending) | `codex/claude-0022-planet-quality` |
 
-Další volné číslo: **0023**. Číslo 0026 v návodu je pouze příklad.
+| 0023 | [Kompletní úprava planet](0023/BRIEF.md) | Claude Code | NOT_STARTED (implementation authorized) | `codex/claude-0023-planet-upgrade` |
+
+Další volné číslo: **0024**. Číslo 0026 v návodu je pouze příklad.
 
 
 

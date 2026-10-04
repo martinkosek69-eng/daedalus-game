@@ -1,4 +1,15 @@
-# Shared application ownership — task0022 proposal phase
+# Shared application ownership — task0023 implementation
+
+Claude Code is assigned one Unreal editor, asset preparation and build/package
+slot for0023 upon user launch, in its own clean A: checkout of
+codex/claude-0023-planet-upgrade, Game/Daedalus/Daedalus.uproject.
+Codex does not concurrently use these applications until explicit release.
+Verify actual project path before MCP. Blender background uses own saved
+sources; all human applications remain excluded. Package is isolated as
+Build-PlanetQuality; do not overwrite the user's earlier package/saves.
+Claude records ownership/checkpoints/release in0023/PROGRESS and HANDOFF.
+
+## Historical0022 diagnosis assignment
 
 **Released:** Claude's handoff c2ccd5d confirms Unreal was never started,
 no build ran, and editor/build ownership is released. Codex reviewed the
