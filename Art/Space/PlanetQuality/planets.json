@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "rollout": false,
+  "bodies": {
+    "sol.earth": {
+      "day": "Art/Space/PlanetQuality/Earth/earth_day_16k.jpg",
+      "night": "Art/Space/PlanetQuality/Earth/earth_night_8k.jpg",
+      "clouds": "Art/Space/PlanetQuality/Earth/earth_clouds_16k.jpg",
+      "relief": "Art/Space/PlanetQuality/Earth/earth_relief_16k.png",
+      "reliefScale": 4,
+      "oceanGlint": 3,
+      "cloudShadow": 0.55,
+      "cloudDetail": 0.8,
+      "detail": 0.3,
+      "nightStrength": 1.0
+    }
+  }
+}

@@ -155,6 +155,13 @@ private:
     UPROPERTY() TArray<TObjectPtr<UMaterialInstanceDynamic>> AirDynamics;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> RingMeshes;
     TArray<int32> RingBodies;
+    // Planet presentation layers (PlanetPresentation.cpp): separate cloud shells and finer spheres
+    // chosen by projected pixel radius. Presentation only; canonical body state is untouched.
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> CloudMeshes;
+    UPROPERTY() TArray<TObjectPtr<UMaterialInstanceDynamic>> CloudDynamics;
+    UPROPERTY() TArray<TObjectPtr<UStaticMesh>> PlanetSpheres;
+    TArray<int32> PlanetSphereLevels;
+    TArray<double> PlanetPixelRadii;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> ShipDetails;
     UPROPERTY() TObjectPtr<UStaticMeshComponent> Sky;
     UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> SkyDynamic;
@@ -181,6 +188,11 @@ private:
     void ApplySharpRenderingSettings();
     void UpdateTextureDetail();
     UStaticMeshComponent* MakeMesh(UStaticMesh* Asset, UMaterialInterface* Material);
+    void PreparePlanetLayers();
+    void CreatePlanetLayers(int32 Index);
+    void UpdatePlanetLayers(int32 Index, const FVector& Location, const FQuat& Rotation, const FVector& Scale,
+        const FLinearColor& LightDirection, const FVector& CameraPosition);
+    void ClearPlanetLayers();
     FString ProbeDirectory;
     int32 ProbeFrame = 0;
     bool bProbePassed = true;
@@ -189,5 +201,6 @@ private:
     void TickProbe();
     void TickGalaxyProbe();
     void TickSharpProbe();
+    void TickPlanetProbe();
     bool bSharpProbe = false;
 };

@@ -289,6 +289,7 @@ bool ASolarFlightGameMode::CreateSystem()
     }
     BodyMeshes.SetNumZeroed(BodyDefinitions.Num()); BodyDynamics.SetNumZeroed(BodyDefinitions.Num());
     AirMeshes.SetNumZeroed(BodyDefinitions.Num()); AirDynamics.SetNumZeroed(BodyDefinitions.Num());
+    PreparePlanetLayers();
     for (int32 Index = 0; Index < BodyDefinitions.Num(); ++Index)
     {
         const auto& Body = BodyDefinitions[Index]; if (!Body.bKnownPosition || !Body.bKnownRadius) continue;
@@ -302,6 +303,7 @@ bool ASolarFlightGameMode::CreateSystem()
             AirMeshes[Index] = MakeMesh(SphereAsset, AirDynamics[Index]);
         }
         if (Body.RingOuter > 0) { RingBodies.Add(Index); RingMeshes.Add(MakeMesh(PlaneAsset, Material(RelatedMaterial(Body, TEXT("M_Ring_"))))); }
+        CreatePlanetLayers(Index);
         if (Body.Id == TEXT("sol.earth")) { Earth = BodyMeshes[Index]; EarthDynamic = Dynamic; Atmosphere = AirMeshes[Index]; AtmosphereDynamic = AirDynamics[Index]; }
         if (Body.Id == Systems[ActiveSystem].PrimaryStarId) Sun = BodyMeshes[Index];
     }
@@ -352,6 +354,7 @@ void ASolarFlightGameMode::ClearSystem()
         DestroyMesh(Mesh);
     }
     for (const auto& Mesh : AirMeshes) DestroyMesh(Mesh);
+    ClearPlanetLayers();
     for (const auto& Mesh : RingMeshes) DestroyMesh(Mesh);
     DestroyMesh(UnknownMarker); UnknownMarker = nullptr;
     if (Belt) { Belt->DestroyComponent(); Belt = nullptr; }
@@ -385,6 +388,7 @@ void ASolarFlightGameMode::UpdateSystem(const FVector& CameraPosition)
             AirMeshes[Index]->SetWorldScale3D(FVector(Body.Shape * Body.Radius * Projection.Value * 1.012));
             AirDynamics[Index]->SetVectorParameterValue(TEXT("SunDirection"), LightDirection);
         }
+        UpdatePlanetLayers(Index, Projection.Key, Rotation, FVector(Body.Shape * Body.Radius * Projection.Value), LightDirection, CameraPosition);
     }
     for (int32 Index = 0; Index < RingMeshes.Num(); ++Index)
     {
