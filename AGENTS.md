@@ -51,6 +51,10 @@ canonical data/state/presentation boundaries; do not mutate state through visual
   Keep credentials, machine settings, caches and personal chat exports outside
   the public repository. Preserve the old prototype backup.
 - Run checks appropriate to changes. Test outputs belong in ignored directories.
+- Follow Docs/VISUAL_QUALITY.md for all content and UI: native sharp 4K
+  (3840x2160) minimum target, compact readable HUD/map/text for a 32-inch monitor.
+  A 1440p check does not establish 4K acceptance; texture dimensions alone do not
+  establish visible detail. Preserve the user-approved quality-first default.
 
 Codex and Claude use different client configs and do not share chat memory.
 Keep these instructions and the technical documentation as their common reference.

@@ -24,3 +24,7 @@
 Singleplayer is an explicit scope decision. Multiple development agents are
 independent of runtime multiplayer. AGENTS.md and Tasks/README remain the shared
 ownership/branch/editor rules.
+
+All presentation and UI work must follow [VISUAL_QUALITY.md](VISUAL_QUALITY.md):
+sharp native 3840x2160 minimum target and compact readable layout on a 32-inch
+monitor. Record actual render resolution; do not equate texture size with detail.

@@ -27,8 +27,11 @@ cizího závěru. Existující dokumentaci o předchozích kontrolách ber jako 
 konkrétních minulých běhů, ne jako důkaz pro tento záběr. Pochybnosti označ.
 Pokud důkazy povedou ke stejnému závěru, je to v pořádku; rozdíl nevymýšlej.
 
-Uživatel navrhl možnost přegenerovat objekty do4K, ale nepředepisuje technologii
-ani rozlišení. Tvůj návrh musí vysvětlit, co konkrétně zlepší obraz a proč.
+Uživatel požaduje ostrý nativní výstup minimálně3840×2160 pro32palcový monitor,
+včetně textu, HUD a mapy; kompaktní prvky musí zůstat dobře čitelné. Viz
+Docs/VISUAL_QUALITY.md v aktuální větvi koordinátora codex/solar-flight.
+Technologii ani rozlišení každé jednotlivé textury nepředepisuje.
+Tvůj návrh musí vysvětlit, co konkrétně zlepší obraz a proč.
 Zkontroluj zdroj, geometrii, materiály, import/cook a skutečné vykreslení podle
 potřeby. Nekonči pouhým opisem dokumentace nebo obecnou radou pro engine.
 

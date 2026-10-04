@@ -2,6 +2,14 @@
 
 ## Current six-system lab0016
 
+### Shared 4K requirement
+
+All current and future visuals/UI target sharp native 3840x2160 or higher,
+with compact readable HUD/map/text for a 32-inch monitor. This is a recorded
+user requirement, not a claim that all current visuals meet it. See
+Docs/VISUAL_QUALITY.md. Existing planet diagnosis0022 must evaluate against
+this target; its independent proposal-only scope is unchanged.
+
 ### Independent planet-quality proposal0022
 
 Claude is assigned read-only diagnosis and its own proposal on

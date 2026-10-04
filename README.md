@@ -9,6 +9,9 @@ Start with [the game foundation](Docs/FOUNDATION.md),
 [architecture](Docs/ARCHITECTURE.md), [implementation rules](Docs/CODING_RULES.md),
 [current state](Docs/CURRENT_STATE.md) and [checks](Docs/TESTING.md).
 
+All visuals and UI follow the [sharp native 4K standard](Docs/VISUAL_QUALITY.md)
+for the user's 32-inch monitor, with compact readable HUD, text and maps.
+
 The six-system singleplayer flight and galaxy navigation laboratory is on
 `codex/solar-flight`: [controls and reproduction](Docs/SOLAR_FLIGHT.md).
 After packaging, double-click `Tools/SPUSTIT_LET_DAEDALA.cmd` on this PC.
