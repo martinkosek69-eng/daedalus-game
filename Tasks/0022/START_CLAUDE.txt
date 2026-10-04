@@ -1,0 +1,16 @@
+Převezmi úkol0022 v https://github.com/martinkosek69-eng/daedalus-game,
+větev codex/claude-0022-planet-quality. Fetchni ji a vytvoř vlastní novou
+pracovní kopii na A: z jejího zakládacího commitu. Nezačínej z main nebo0015.
+Přečti AGENTS.md, Tasks/0022/BRIEF.md a uvedené společné podklady.
+
+Uživatel chce druhý NEZÁVISLÝ pohled na nevzhledné/rozmazané povrchy planet
+a mraků. Sám prohlédni skutečné soubory hry, identifikuj příčinu podle důkazů
+a navrhni své nejlepší řešení včetně variant. Codexův předběžný názor tu není
+předkládán jako správný. Referenční herní snímek je Tasks/0022/REFERENCE.png.
+
+Teď dělej POUZE ANALÝZU A NÁVRH. Zapiš PROPOSAL.md a krátké SUMMARY_CZ.md,
+checkpointy a výsledek pushni na svou větev. READY_FOR_REVIEW, HANDOFF,
+větev/SHA a uvolnění případného vlastního editoru. Potom se zastav.
+Codex si návrh přečte a zhodnotí; uživatel pak vybere řešení. Teprve po dalším
+pokynu budeš tuto část celou implementovat. Neprováděj nyní žádné změny hry,
+reimporty nebo hromadné přegenerování textur. Šetři usage a testuj jen cíleně.

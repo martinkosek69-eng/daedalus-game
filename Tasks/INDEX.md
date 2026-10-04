@@ -36,7 +36,9 @@ automaticky aktualizovaný přehled všech vzdálených větví.
 
 | 0021 | [Bodové hvězdy a rychlejší řízení](0021/BRIEF.md) | Codex coordinator | ACCEPTED (technical; user visual test pending) | `codex/solar-flight` |
 
-Další volné číslo: **0022**. Číslo 0026 v návodu je pouze příklad.
+| 0022 | [Nezávislá diagnóza planet](0022/BRIEF.md) | Claude Code | NOT_STARTED (proposal only) | `codex/claude-0022-planet-quality` |
+
+Další volné číslo: **0023**. Číslo 0026 v návodu je pouze příklad.
 
 
 

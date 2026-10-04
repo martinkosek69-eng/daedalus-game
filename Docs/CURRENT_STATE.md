@@ -2,6 +2,15 @@
 
 ## Current six-system lab0016
 
+### Independent planet-quality proposal0022
+
+Claude is assigned read-only diagnosis and its own proposal on
+codex/claude-0022-planet-quality. No implementation is authorized yet.
+Codex will review the proposal from GitHub and compare independent views;
+the user chooses the solution before Claude implements the entire planet part.
+Application ownership for diagnosis: Docs/APP_OWNERSHIP.md. Brief and relay
+prompt: Tasks/0022. No result exists yet; keep approved ship/sky/flight intact.
+
 ### User refinement0021
 
 User approves0020ship sharpness. Runtime sky now hides the old photographed
