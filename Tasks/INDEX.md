@@ -40,7 +40,9 @@ automaticky aktualizovaný přehled všech vzdálených větví.
 
 | 0023 | [Kompletní úprava planet](0023/BRIEF.md) | Claude Code | NOT_STARTED (implementation authorized) | `codex/claude-0023-planet-upgrade` |
 
-Další volné číslo: **0024**. Číslo 0026 v návodu je pouze příklad.
+| 0024 | [Nový zelený HUD](0024/BRIEF.md) | Codex coordinator | READY_FOR_REVIEW (design only; user feedback pending) | `codex/solar-flight` |
+
+Další volné číslo: **0025**. Číslo 0026 v návodu je pouze příklad.
 
 
 

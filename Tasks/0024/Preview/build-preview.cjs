@@ -1,0 +1,11 @@
+const fs=require('fs'),path=require('path');
+const out=__dirname;
+const outline=JSON.parse(fs.readFileSync(path.join(out,'outline.json'),'utf8'));
+let html=fs.readFileSync(path.join(out,'hud-template.html'),'utf8');
+let seed=812;const rand=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
+const stars=Array.from({length:350},()=>`<circle cx="${(rand()*1600).toFixed(1)}" cy="${(rand()*900).toFixed(1)}" r="${(.25+rand()*.6).toFixed(2)}"/>`).join('');
+const scale=150/outline.height;
+html=html.replace('__STARS__',stars).replace('__HULL_PATH__',outline.path).replace('__HULL_TRANSFORM__',`translate(${(120-outline.width*scale/2).toFixed(2)},45) scale(${scale.toFixed(5)})`);
+html=html.replace('__BACKGROUND__','<img class="scene" style="clip-path:inset(0 0 23%);" src="background.png" alt="Referenční snímek hry; původní spodní HUD je mimo výřez"/>');
+fs.writeFileSync(path.join(out,'hud-concept.html'),`<!doctype html><html lang="cs"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Daedalus — návrh HUD</title><style>html,body{margin:0;background:#020504;}button,input{cursor:pointer;}button:focus-visible,input:focus-visible{outline:2px solid #b7e5ba;outline-offset:3px;}</style>${html}</html>`);
+console.log('Generated design preview. No game changes.');
