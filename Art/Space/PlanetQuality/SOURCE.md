@@ -59,7 +59,7 @@ replacements and additions below are listed in `planets.json`.
 
 The replaced Sol maps were 1440 × 720 greyscale JPL maps. The mosaics are aligned to them in
 longitude and east-west mirroring by cross-correlation of edge images
-(`.local/planet-work/moons_alignment.json`). Where the old map is too sparse to match (the
+(`Tasks/0023/EVIDENCE/data/moons_alignment.json`, `relief_alignment.json`). Where the old map is too sparse to match (the
 Voyager-era Enceladus map is mostly blank) the convention of the confident matches is used:
 east-positive, centred on 180°. The mosaics keep the previous maps' mean brightness and
 contrast, and structure above about 60 km is lifted ×1.8 to match the old maps' local contrast.

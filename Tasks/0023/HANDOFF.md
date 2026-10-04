@@ -124,6 +124,45 @@ run-to-run spread.
 "Before" is the baseline content rendered by the same probe build in the editor `-game`.
 "After" is the package.
 
+**Machine-readable data** (`EVIDENCE/data/`):
+
+| File | Contents |
+| --- | --- |
+| `probe_earth_before_editor.json`, `probe_bodies_before_editor.json` | Probe results before, per shot: GPU ms, texture MiB, cloud shells, sphere level, system |
+| `probe_after_package.json` | Probe results after, per shot, same fields |
+| `cooked_planet_textures_package.txt` | Cooked formats, sizes, mips and MiB |
+| `sharp_package_checks.txt` | Packaged Sharp check lines |
+| `planet_bindings.jsonl` | Validator binding per body (type, sources, texture sizes) |
+| `earth_clouds_stats.json`, `earth_relief_stats.json` | Earth cloud and relief preparation statistics |
+| `moons_alignment.json`, `relief_alignment.json` | Moon-map and relief alignment |
+
+## Decision log
+
+1. **Cloud source.** The MODIS 2001 composite has the same "brushed" streaks as the old map,
+   so it cannot fix them. A real VIIRS day (2023-07-29) is used instead. Repairs:
+   - mosaic seams are predicted from the orbit and confirmed against NOAA-20 data, then
+     stitched with least-difference paths;
+   - glint is replaced by NOAA-20, and remaining smooth glint veils over water are suppressed;
+   - the Antarctic polar night comes from 2023-01-29;
+   - clouds over ice stay clear.
+2. **16K Earth base.** Real BMNG 500 m data, not an upscaled 8K map. The October month has no
+   baked topography shading; relief comes from ETOPO in the lighting.
+3. **Night lights.** The Black Marble moonlit blue base is removed, so only city lights glow.
+4. **No tiles.** Variant C (tiles) was not implemented, as the brief required.
+5. **Sphere detail.** The project forces `r.ForceLOD=0`, so finer spheres are a runtime mesh
+   swap by pixel radius rather than static-mesh LODs. Global LOD and streaming are unchanged.
+6. **Appearance data.** Appearance lives in `planets.json`, not `system.json`, which is
+   generated. Catalogs, IDs and geometry are untouched.
+7. **Legacy Earth maps.** `M_Earth` is CDO-referenced, and deleting its graph nodes asserts in
+   UE. The old 8K Earth imports are retired to 64 px instead of deleted, which saves about
+   64 MiB of resident memory.
+8. **Moon maps.** USGS mosaics are aligned by edge correlation. Enceladus's reference map is
+   mostly blank, so it uses the convention of the confident matches. Mean brightness and
+   contrast follow the previous maps.
+9. **No unrelated re-saves committed.** Each recipe run re-saves unrelated legacy assets
+   (graphs accumulate nodes). Those re-saves, and the ship and sky assets of the full run,
+   were reverted before each commit.
+
 ## How to try it
 
 The package is at
