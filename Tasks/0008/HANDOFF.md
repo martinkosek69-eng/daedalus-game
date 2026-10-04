@@ -47,7 +47,8 @@ build is separate and unaffected.
      tabs with bolts, yellow/black hazard stripes on alternate hatches
      (checkerboard). They are overlays on the measured hatch plates.
    - **Hangars like U17:** a new back wall in each bay with the split
-     observation window (dark green glass, light frame bars) in front of the
+     split doors (U17/U33: two dark teal-grey plated halves that open apart at
+     the seam, upper up and lower down; separate objects) in front of the
      model's older X-truss frame. Spotlights above each opening, floodlights
      under the pod edges, nav lights.
    - **Small, faint blue windows (U18–U20):**
@@ -76,6 +77,10 @@ build is separate and unaffected.
      panel and two cyan units.
 
    The whole hull is about 9 % darker.
+7. **Hangar doors (U32–U33).** The user clarified that the "window" is a pair of
+   split doors: the halves open apart at the middle, upward and downward. They
+   are now opaque plated metal halves in the U33 tone, as separate slidable
+   objects.
 
 ## Deliverables (Art/Ships/Daedalus)
 
@@ -87,12 +92,12 @@ build is separate and unaffected.
 | `Textures/T_Daedalus_SiloHatch_{Plain,Striped}_BaseColor.png`, `..._Normal.png` | 2048 × 822, one hatch (15.45 × 6.2 m) per image. Final albedo (COLOR_0 = 1 on those faces). |
 | `DaedalusEngineGlow.glb` | Six `<outletID>_Glow` objects, each with:<br>• a core disc behind the vanes<br>• a faint haze<br>• a child point light (KHR_lights_punctual, range 1.3 × aperture radius)<br>Origin = outlet centre, exhaust = local −X. |
 | `DaedalusLights.glb` | `Daedalus_WindowLights` (30 faint windows) and `Daedalus_DetailLights`:<br>• faint cyan windows in the bow band, on the bridge tiers and on the forward superstructure<br>• pod spotlights and floodlights<br>• nav lights (starboard green, port red)<br>• two cyan deck units<br>Plus 4 teal bay point lights (`BayLight_*`, KHR_lights_punctual). |
-| `DaedalusAddOns.glb` | `Daedalus_AddOns`. Materials: Armor, Hangar, `Daedalus_SiloHatch_Plain/Striped`, `Daedalus_HangarWindow`, `Daedalus_TrimLight`. Contains:<br>• bridge masts<br>• two 40 m forward rods (estimated)<br>• 16 VLS hatch overlays (U16)<br>• two hangar back walls with windows (U17), clipped to the bay section<br>• hangar wall ribs, ceiling beams and floor rails<br>• forward superstructure window panel and unit bases (U31) |
+| `DaedalusAddOns.glb` | `Daedalus_AddOns`. Materials: Armor, Hangar, `Daedalus_SiloHatch_Plain/Striped`, `Daedalus_TrimLight`. Contains:<br>• bridge masts<br>• two 40 m forward rods (estimated)<br>• 16 VLS hatch overlays (U16)<br>• two hangar back walls, clipped to the bay section<br>• 4 split door halves `HangarDoor_<P|S>_<Upper|Lower>` (extras `doorHalf`, `openAxis`, `openDistanceMetres`, `seamZMetres`)<br>• hangar wall ribs, ceiling beams and floor rails<br>• forward superstructure window panel and unit bases (U31) |
 | `DaedalusBeacons.glb` | `Daedalus_Beacons`: three orange lamps on mast tips. Object extras: `blinkPeriodSeconds` 5, `onSeconds` 1/3, `emissionOn` 8, `emissionOff` 0. |
 | `ENGINE_MOUNTS.json` | 6 outlets (unchanged). |
 | `WEAPON_MOUNTS.json` | 62 mounts (see below). |
 | `asset-metadata.json` | Hashes for all exports and textures, counts, checks, add-on, light and beacon info. |
-| `REFERENCES.md` | Sources (R1–R3, U1–U31, F1), U13/U22 colour samples, observations, mapping. |
+| `REFERENCES.md` | Sources (R1–R3, U1–U33, F1), U13/U22 colour samples, observations, mapping. |
 | `SOURCE.md` | Astrofossil CC BY-NC 4.0 credit retained, plus the modification notice. |
 
 `DaedalusTurrets.glb` from `3effaca` is deleted (user decision 5).
@@ -128,6 +133,9 @@ the same files.
   every 5 s. Values come from the object extras.
 - **Engine glow.** Scale the glow object's local X for plume length; scale
   emission and point-light power for throttle.
+- **Hangar doors.** To open, slide each `HangarDoor_*` object along its
+  `openAxis` by up to `openDistanceMetres`. The halves start closed and meet at
+  `seamZMetres`.
 - **Lighting reference.** `LookDev_Series` in the .blend matches U13/U15 with
   the U22 tone.
 
@@ -148,7 +156,6 @@ the same files.
   | Spotlights, floodlights and nav lights | 8 |
   | Engine core | 8 |
   | Turbine vanes | 0.6 |
-  | Hangar window | 0.08 |
 
 ## Mounts (WEAPON_MOUNTS.json)
 
@@ -192,6 +199,7 @@ See `asset-metadata.json` → `checks`. The pipeline prints
   - beacons: blink extras present,
   - glow: 6 objects and 6 lights,
   - bay lights: 4,
+  - hangar door halves: 4,
   - lights objects present.
 - **Rendered checks.** Renders from `CAM_SeriesStill` (compared against U13/U15
   and U22) plus close views of the silos, hangar, engines, bridge and bow. They
