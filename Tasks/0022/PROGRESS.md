@@ -1,6 +1,6 @@
 # 0022 progress
 
-- Status: IN_PROGRESS (phase 1: analysis and proposal only, no game changes)
+- Status: READY_FOR_REVIEW (phase 1: proposal only; not ACCEPTED, no game changes)
 - Worker: Claude Code, launched by the user
 - Branch: `codex/claude-0022-planet-quality`, starting from founding commit `5a0e56c`
 - Checkout: its own new worktree on A:, created with `GIT_LFS_SKIP_SMUDGE`. Only
@@ -38,7 +38,10 @@
     REFERENCE;
   - an offline BC1 simulation shows a smaller block effect.
 
+- Wrote PROPOSAL.md (diagnosis F1–F9, variants A–D, recommendation B, the
+  Earth verification plan and rollout), SUMMARY_CZ.md and HANDOFF.md.
+
 ## Next
 
-Write PROPOSAL.md, SUMMARY_CZ.md and HANDOFF.md, publish READY_FOR_REVIEW, then
-stop.
+Codex reviews and the user chooses. Implementation waits for a new
+instruction. Unreal was never started; editor and build ownership is released.
