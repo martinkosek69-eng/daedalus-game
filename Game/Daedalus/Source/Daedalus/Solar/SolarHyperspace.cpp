@@ -37,7 +37,7 @@ bool ASolarFlightGameMode::BeginHyperspacePreview()
     HyperLight=NewObject<UPointLightComponent>(this);AddInstanceComponent(HyperLight);
     HyperLight->SetMobility(EComponentMobility::Movable);
     HyperLight->SetIntensityUnits(ELightUnits::Candelas);
-    HyperLight->SetAttenuationRadius(400000);HyperLight->SetLightColor(FLinearColor(.34,1,.74));
+    HyperLight->SetAttenuationRadius(400000);HyperLight->SetLightColor(FLinearColor(.34f,1,.74f));
     HyperLight->SetCastShadows(true);HyperLight->RegisterComponent();
     HyperLight->SetWorldLocation(FVector(HyperTimeline.WindowX*100-1000,0,0));
     // Existing meshes are only hidden for this separate process; canonical catalogs stay intact.
@@ -56,7 +56,7 @@ bool ASolarFlightGameMode::BeginHyperspacePreview()
     InputComponent->BindKey(EKeys::Escape,IE_Pressed,this,&ASolarFlightGameMode::ExitHyperspacePreview);
     // Optical glow belongs to the luminous effect; ship/scene stay native, without motion blur.
     PC->ConsoleCommand(TEXT("r.BloomQuality 5"));
-    Pawn->Camera->PostProcessSettings.BloomIntensity=.16f;
+    Pawn->Camera->PostProcessSettings.BloomIntensity=.24f;
     Pawn->Camera->PostProcessSettings.bOverride_BloomThreshold=true;
     Pawn->Camera->PostProcessSettings.BloomThreshold=1.6f;
     FParse::Value(FCommandLine::Get(),TEXT("HyperCapture="),HyperCaptureDirectory);
@@ -120,7 +120,7 @@ void ASolarFlightGameMode::PresentHyperspace(double Seconds)
     HyperTunnel->SetWorldRotation(PlaneRotation);
     HyperTunnel->SetWorldScale3D(FVector(2*10000*FMath::Tan(FMath::DegreesToRadians(24.)),2*10000*FMath::Tan(FMath::DegreesToRadians(24.))*9/16,1));
     // Cool illumination in transit is an authored look, not simulated stellar light.
-    SolarLight->GetLightComponent()->SetLightColor(Inside?FLinearColor(.58,.78,1):FLinearColor(1,.92,.8));
+    SolarLight->GetLightComponent()->SetLightColor(Inside?FLinearColor(.58f,.78f,1):FLinearColor(1,.92f,.8f));
 }
 
 void ASolarFlightGameMode::TickHyperspacePreview(float DeltaSeconds)

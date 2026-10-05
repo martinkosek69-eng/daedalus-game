@@ -1,5 +1,16 @@
 # Current development state — 2026-10-04
 
+## Separate hyperspace animation rehearsal 0028
+
+Tools/SPUSTIT_HYPERPROSTOR.cmd launches Build-Hyperspace28: Daedalus run-up,
+mint/green luminous aperture, depth-correct hull crossing, closure and blue
+transit tunnel. R/1 replays, Space pauses, 2 shows transit, Escape exits.
+Original procedural materials and a shared presentation timeline are based on
+the user's three video references. See Docs/HYPERSPACE_PRESENTATION.md and
+Tasks/0028/HANDOFF.md for checks and limits. This separate preview does not
+advance canonical flight state or implement inter-system travel. The normal
+flight launcher below continues to open 0027.
+
 ## Current integrated six-system lab 0027
 
 Normal launcher: Tools/SPUSTIT_LET_DAEDALA.cmd → Build-Ancient27, retaining
