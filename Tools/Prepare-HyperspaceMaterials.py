@@ -9,7 +9,12 @@ folder='/Game/Hyperspace/Materials'
 lib=unreal.MaterialEditingLibrary
 tools=unreal.AssetToolsHelpers.get_asset_tools()
 for name,shader,translucent in [('M_HyperWindow','Window.ush',True),('M_HyperTunnel','Tunnel.ush',False)]:
+    code=(src/'Noise.ush').read_text()+'\n'+(src/shader).read_text()
+    recipe=hashlib.sha256(code.encode()).hexdigest()
     mat=unreal.load_asset(folder+'/'+name)
+    if mat and unreal.EditorAssetLibrary.get_metadata_tag(mat,'HyperspaceRecipe')==recipe:
+        unreal.log('HYPER_MATERIAL_UNCHANGED '+mat.get_path_name())
+        continue
     if not mat: mat=tools.create_asset(name,folder,unreal.Material,unreal.MaterialFactoryNew())
     assert mat
     lib.delete_all_material_expressions(mat)
@@ -24,7 +29,6 @@ for name,shader,translucent in [('M_HyperWindow','Window.ush',True),('M_HyperTun
         node.set_editor_property('parameter_name',key)
         node.set_editor_property('default_value',value)
         inputs.append((key,node))
-    code=(src/'Noise.ush').read_text()+'\n'+(src/shader).read_text()
     custom=lib.create_material_expression(mat,unreal.MaterialExpressionCustom)
     custom.set_editor_property('code',code)
     custom.set_editor_property('output_type',unreal.CustomMaterialOutputType.CMOT_FLOAT4)
@@ -43,7 +47,7 @@ for name,shader,translucent in [('M_HyperWindow','Window.ush',True),('M_HyperTun
         assert lib.connect_material_expressions(custom,'',alpha,'')
         assert lib.connect_material_property(alpha,'',unreal.MaterialProperty.MP_OPACITY)
     lib.recompile_material(mat)
-    unreal.EditorAssetLibrary.set_metadata_tag(mat,'HyperspaceRecipe',hashlib.sha256(code.encode()).hexdigest())
+    unreal.EditorAssetLibrary.set_metadata_tag(mat,'HyperspaceRecipe',recipe)
     assert unreal.EditorAssetLibrary.save_loaded_asset(mat)
     unreal.log('HYPER_MATERIAL_SAVED '+mat.get_path_name())
 unreal.log('HYPER_MATERIALS_PASS')

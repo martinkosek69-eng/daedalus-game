@@ -1,6 +1,8 @@
 # 0028 — Daedalus hyperspace presentation
 
-ACCEPTED technically by the coordinator. User reference-likeness review pending.
+Historical technical delivery. The user rejected its visual appearance;
+see task 0029 for the green rupture revision. Passing checks did not establish
+photorealistic likeness or user acceptance.
 Owner: Codex. Branch: codex/solar-flight. Base: ef356d35e60bcf8720feb8df8c88b0231794387e.
 Initial source checkpoint: da964ba. Final delivery follows it on this branch.
 

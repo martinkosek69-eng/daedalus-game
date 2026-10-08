@@ -1,5 +1,11 @@
 # Shared application ownership
 
+## Current transfer 0029
+
+Codex owns the window material and sequential material generation/build/capture
+in fc0b for the user's appearance revision. Initial process inventory found no
+editor or game. No ship/planet binary editing or other worker checkout use.
+
 ## Completed transfer 0028
 
 Codex owns sequential background media analysis, Unreal effect material generation,

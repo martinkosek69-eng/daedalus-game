@@ -1,26 +1,64 @@
-// UV quad spans six aperture radii. A luminous turbulent volume-like aperture,
-// not a torus: dense white/mint core, layered plasma and radial filaments.
-float2 p=(UV-.5)*6/max(Radius,.001);
+// Green spacetime rupture: layered luminous sheets and sparse torn creases.
+// Original procedural field, evaluated at native pixel resolution, no movie texture.
+float opening=saturate(Radius);
+float2 p=(UV-.5)*6/max(opening,.001);
+p.x/=lerp(.42,1.0,smoothstep(.05,.78,opening));
 float r=length(p), t=PhaseTime;
-float edge=1-smoothstep(2.4,2.95,r);
-float a=atan2(p.y,p.x);
-float3 q=float3(p*2.6,t*.45);
-float2 warp=float2(F.Fbm(q),F.Fbm(q+float3(13,7,3)))-.5;
-float3 w=float3(p*3.3+warp*1.6,t*.68);
-float n=F.Fbm(w), fine=F.Fbm(w*2.2+float3(0,0,-t*.8));
-float web=pow(saturate(1-abs(2*n-1)),15);
-float web2=pow(saturate(1-abs(2*fine-1)),21);
-float twist=a+(.17+ .09*sin(t*.7))*sin(r*4.3-t*1.8)+.32*(n-.5);
-float rays=pow(saturate(.5+.5*sin(twist*23+1.8*sin(a*9+t))),22);
-float rays2=pow(saturate(.5+.5*sin(twist*37-r*3-t)),38);
-float envelope=exp(-r*r*1.5);
-float veins=(web*.34+web2*.16)*envelope*2.3;
-float tendrils=(rays*.65+rays2*.28)*exp(-r*1.7)*smoothstep(.35,.8,r);
-float haze=exp(-r*r*.68)*.35;
-float core=exp(-r*r*8.5)*8;
-float clouds=pow(n,2.3)*envelope*5.0;
-float pulse=1+.035*sin(t*19)+.028*sin(t*31);
-float3 mint=float3(.32,.80,.65), teal=float3(.025,.27,.24);
-float3 c=(float3(.82,1,.9)*core+mint*(veins+clouds)*2.4+mint*tendrils*2+teal*haze)*pulse;
-float opacity=max(1-smoothstep(.48,.72,r),saturate((veins+clouds)*.75+tendrils*2+haze));
+float edge=1-smoothstep(2.3,2.9,r);
+if(edge<=0 || Strength<=0)return float4(0,0,0,0);
+float pixel=max(length(float2(ddx(p.x),ddy(p.y))),.0007);
+float3 q=float3(p*3.1,t*.55);
+float2 warp=float2(F.Fbm(q+3),F.Fbm(q+17))-.5;
+float2 tornP=p+warp*.48;
+float coreR=length(tornP*float2(1.0,.92));
+float n=F.Fbm(float3(tornP*6,t*.48));
+float fine=F.Noise(float3(p*47,t*.8));
+float lips=0, sheets=0, scatter=0;
+[unroll] for(int i=0;i<21;++i)
+{
+    float id=i+1;
+    float seed=F.Hash(float3(id,11,6));
+    float seed2=F.Hash(float3(id,29,7));
+    float angle=id*2.399963+.7*(seed-.5);
+    float2 axis=float2(cos(angle),sin(angle)),side=float2(-axis.y,axis.x);
+    float x=dot(tornP,axis), y=dot(tornP,side);
+    float extent=lerp(.62,1.86,seed);
+    float along=saturate((x-.15)/(extent-.15));
+    float bend=(F.Noise(float3(x*4.3,id*3.7,t*.48))-.5)*.37;
+    bend+=(seed2-.5)*x*x*.17;
+    float torn=(F.Noise(float3(x*23,id*5,t*.8))-.5)*.033;
+    float width=(.07+.28*seed2)*pow(1-along,1.2);
+    width*=.45+.55*smoothstep(seed*.28,.65+seed*.3,opening);
+    float growth=lerp(.35,1,smoothstep(seed*.22,.7+seed*.25,opening));
+    float gate=smoothstep(.07,.3,x)*(1-smoothstep(extent*growth-.14,extent*growth,x));
+    float d=y-bend-torn;
+    float lip=exp(-pow(abs(d-width*.3)/max(width*.045+pixel,.002),1.3));
+    float sheet=exp(-pow(abs(d+width*.5)/max(width*1.1,.002),1.5));
+    float tipFade=pow(1-along,1.3);
+    float striation=F.Fbm(float3(x*8,d*32+id*2,t*.65));
+    float breaks=smoothstep(.28,.70,striation);
+    float strength=i<8?1.0:.48;
+    lips+=lip*gate*tipFade*(.25+seed)*breaks*strength;
+    sheets+=sheet*gate*tipFade*(.3+.5*seed2)*striation*strength;
+    scatter+=exp(-abs(d)/(.06+width))*gate*tipFade*.12*breaks;
+}
+// Integrate six displaced depth layers. Density is anisotropic and broken into
+// fine folded sheets; dark gaps survive outside the luminous entry core.
+float volume=0;
+[unroll] for(int layer=0;layer<6;++layer)
+{
+    float z=layer*.23;
+    float3 v=float3(tornP*(3.7+z*.4)+float2(z*.09,-z*.11),z-t*.46);
+    float f=F.Fbm(v);
+    float ridge=pow(saturate(1-abs(f*2.6-1.22)),4);
+    float envelope=exp(-coreR*coreR*(3.6+z));
+    volume+=ridge*envelope*(.6+f)*.24;
+}
+float core=exp(-coreR*coreR*12)*(3.8+1.8*n);
+float cloud=volume*(.65+.35*fine);
+float3 mint=float3(.55,1.0,.73), jade=float3(.10,.54,.32);
+float3 c=mint*(core+cloud*2.0+lips*1.8)+jade*(sheets*3.2+scatter*.8);
+// Broad density is translucent; the central aperture alone fully occludes hull.
+float coreMask=1-smoothstep(.27,.53+.10*(n-.5),coreR);
+float opacity=max(coreMask,saturate(volume*.8+sheets*1.5+lips*.28+scatter*.18));
 return float4(c*Strength,opacity*edge*saturate(Strength*2));

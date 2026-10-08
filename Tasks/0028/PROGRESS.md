@@ -1,6 +1,7 @@
 # 0028 progress
 
-ACCEPTED (technical delivery; user appearance review pending). Codex owns the animation.
+NEEDS_CHANGES: user rejected the electrical/magical-portal appearance after this
+technical delivery. Revision continues in task 0029. Codex owns the animation.
 Supplied three MP4 paths are readable.
 Reference sheets and full-size frames inspected. Source timings, mint/cyan/white
 window structure and cobalt/cyan tunnel documented in HYPERSPACE_PRESENTATION.md.

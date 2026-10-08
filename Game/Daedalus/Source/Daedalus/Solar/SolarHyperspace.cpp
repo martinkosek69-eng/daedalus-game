@@ -30,6 +30,7 @@ bool ASolarFlightGameMode::BeginHyperspacePreview()
     HyperWindowMaterial=UMaterialInstanceDynamic::Create(Window,this);
     HyperTunnelMaterial=UMaterialInstanceDynamic::Create(Tunnel,this);
     HyperWindow->SetMaterial(0,HyperWindowMaterial);HyperTunnel->SetMaterial(0,HyperTunnelMaterial);
+    HyperWindow->PrecachePSOs();HyperTunnel->PrecachePSOs();
     HyperWindow->SetWorldLocation(FVector(HyperTimeline.WindowX*100,0,0));
     HyperWindow->SetWorldRotation(FRotationMatrix::MakeFromZ(FVector(-1,0,0)).ToQuat());
     HyperWindow->SetWorldScale3D(FVector(HyperTimeline.WindowRadius*6));
@@ -73,7 +74,7 @@ bool ASolarFlightGameMode::BeginHyperspacePreview()
 
 void ASolarFlightGameMode::RestartHyperspacePreview(){if(HyperCaptureDirectory.IsEmpty()){HyperSeconds=0;bHyperPaused=false;}}
 void ASolarFlightGameMode::PauseHyperspacePreview(){if(HyperCaptureDirectory.IsEmpty())bHyperPaused=!bHyperPaused;}
-void ASolarFlightGameMode::InspectHyperspaceTransit(){if(HyperCaptureDirectory.IsEmpty()){HyperSeconds=HyperTimeline.Transit+.4;bHyperPaused=false;}}
+void ASolarFlightGameMode::InspectHyperspaceTransit(){if(HyperCaptureDirectory.IsEmpty()&&!FParse::Param(FCommandLine::Get(),TEXT("HyperWindowOnly"))){HyperSeconds=HyperTimeline.Transit+.4;bHyperPaused=false;}}
 void ASolarFlightGameMode::ExitHyperspacePreview(){FPlatformMisc::RequestExit(false);}
 
 void ASolarFlightGameMode::PresentHyperspace(double Seconds)
@@ -125,16 +126,32 @@ void ASolarFlightGameMode::PresentHyperspace(double Seconds)
 
 void ASolarFlightGameMode::TickHyperspacePreview(float DeltaSeconds)
 {
+    constexpr int32 Warmup=60;
+    const bool WindowOnly=FParse::Param(FCommandLine::Get(),TEXT("HyperWindowOnly"));
+    const double PreviewEnd=WindowOnly?HyperTimeline.Transit:HyperTimeline.End;
+    // A cold driver can finish a translucent PSO after the aperture is due to
+    // open. Do not advance the cinematic until its real materials are ready.
+    if(HyperFrame<Warmup&&(HyperWindow->IsPSOPrecaching()||HyperTunnel->IsPSOPrecaching()))
+    {
+        HyperFrame=0;PresentHyperspace(0);
+        HyperWindow->SetVisibility(true); // zero-strength draw primes the real PSO
+        return;
+    }
     ++HyperFrame;
+    if(HyperFrame<Warmup)
+    {
+        PresentHyperspace(0);HyperWindow->SetVisibility(true);return;
+    }
     if(HyperCaptureDirectory.IsEmpty())
     {
-        if(!bHyperPaused)HyperSeconds=FMath::Fmod(HyperSeconds+DeltaSeconds,HyperTimeline.End+.5);
+        if(!bHyperPaused)HyperSeconds=FMath::Fmod(HyperSeconds+FMath::Min(DeltaSeconds,.05f),PreviewEnd+(WindowOnly?0:.5));
         PresentHyperspace(HyperSeconds);return;
     }
-    constexpr int32 Warmup=60;
     const double Moments[]={0,.8,HyperTimeline.Full,HyperTimeline.Nose-.05,(HyperTimeline.Nose+HyperTimeline.Tail)*.5,
-        HyperTimeline.Collapse,HyperTimeline.Closed-.4,HyperTimeline.Closed,HyperTimeline.Transit+1,HyperTimeline.Transit+4};
-    const int32 Count=bHyperStills?UE_ARRAY_COUNT(Moments):FMath::CeilToInt(HyperTimeline.End*30);
+        HyperTimeline.Collapse,HyperTimeline.Closed-.4,HyperTimeline.Closed,
+        WindowOnly?HyperTimeline.Opening+.12:HyperTimeline.Transit+1,
+        WindowOnly?HyperTimeline.Closed+.1:HyperTimeline.Transit+4};
+    const int32 Count=bHyperStills?UE_ARRAY_COUNT(Moments):FMath::CeilToInt(PreviewEnd*30);
     const int32 Local=HyperFrame-Warmup;
     const int32 Index=bHyperStills?Local/10:Local;
     if(Local>=0&&Index<Count)

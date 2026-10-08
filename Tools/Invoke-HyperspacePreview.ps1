@@ -1,4 +1,5 @@
-param([ValidateSet('Materials','Package','Stills','Render','Play')][string]$Mode='Play')
+param([ValidateSet('Materials','Package','Stills','Render','Play')][string]$Mode='Play',
+      [switch]$IncludeTransit)
 $ErrorActionPreference='Stop'
 $root=Split-Path -Parent $PSScriptRoot
 $config=Get-Content -LiteralPath (Join-Path $root '.local/toolchain.json') -Raw | ConvertFrom-Json
@@ -6,7 +7,7 @@ if($config.environment){foreach($entry in $config.environment.psobject.Propertie
 $local=Join-Path $root '.local/hyper'
 New-Item -ItemType Directory -Path $local -Force | Out-Null
 $project=Join-Path $root 'Game/Daedalus/Daedalus.uproject'
-$exe=Join-Path $root '.local/solar/Build-Hyperspace28/Windows/Daedalus/Binaries/Win64/Daedalus.exe'
+$exe=Join-Path $root '.local/solar/Build-Hyperspace29/Windows/Daedalus/Binaries/Win64/Daedalus.exe'
 if(Get-Process -Name UnrealEditor,UnrealEditor-Cmd,Daedalus -ErrorAction SilentlyContinue){throw 'Coordinate shared application ownership first.'}
 switch($Mode){
  'Materials' {
@@ -15,13 +16,15 @@ switch($Mode){
    if($LASTEXITCODE -ne 0){throw 'Hyperspace material generation failed.'}
  }
  'Package' {
-   & (Join-Path $PSScriptRoot 'Invoke-SolarFlight.ps1') -Mode Package -BuildName Build-Hyperspace28
+   & (Join-Path $PSScriptRoot 'Invoke-SolarFlight.ps1') -Mode Package -BuildName Build-Hyperspace29
    if($LASTEXITCODE -ne 0){throw 'Hyperspace package failed.'}
  }
  'Play' {
    if(-not(Test-Path -LiteralPath $exe)){throw 'Package the preview first.'}
-   Write-Output 'DAEDALUS: R / 1 replay, SPACE pause, 2 hyperspace interior, ESC close.'
-   & $exe '/Game/Maps/SolarFlight?game=/Script/Daedalus.SolarFlightGameMode' -HyperspacePreview -SolarNative "-UserDir=$(Join-Path $local 'PlayerData')"
+   Write-Output 'DAEDALUS: R / 1 replay, SPACE pause, ESC close. Use -IncludeTransit for the earlier tunnel.'
+   $previewArgs=@('/Game/Maps/SolarFlight?game=/Script/Daedalus.SolarFlightGameMode','-HyperspacePreview','-SolarNative',"-UserDir=$(Join-Path $local 'PlayerData')")
+   if(-not $IncludeTransit){$previewArgs+='-HyperWindowOnly'}
+   & $exe @previewArgs
  }
  {$_ -in @('Stills','Render')} {
    if(-not(Test-Path -LiteralPath $exe)){throw 'Package the preview first.'}
@@ -29,6 +32,7 @@ switch($Mode){
    New-Item -ItemType Directory -Path $run -Force | Out-Null
    $args=@('/Game/Maps/SolarFlight?game=/Script/Daedalus.SolarFlightGameMode','-HyperspacePreview','-nosound','-unattended','-windowed','-ResX=3840','-ResY=2160','-forceres',"-UserDir=$run","-HyperCapture=$run","-abslog=$(Join-Path $run 'run.log')")
    if($Mode -eq 'Stills'){$args+='-HyperStills'}
+   if(-not $IncludeTransit){$args+='-HyperWindowOnly'}
    $quoted=@($args | ForEach-Object {'"'+$_+'"'})
    $process=Start-Process -FilePath $exe -ArgumentList ($quoted -join ' ') -WindowStyle Hidden -PassThru
    if(-not $process.WaitForExit(900000)){Stop-Process -Id $process.Id -Force;throw 'Own preview exceeded time limit.'}
@@ -38,7 +42,8 @@ switch($Mode){
    if($Mode -eq 'Render'){
      $ffmpeg=if($env:DAEDALUS_FFMPEG){$env:DAEDALUS_FFMPEG}else{$config.ffmpeg}
      if(-not $ffmpeg){throw 'Frames passed; configure ffmpeg locally to encode preview.'}
-     & $ffmpeg -hide_banner -loglevel error -y -framerate 30 -i (Join-Path $run '%04d.png') -c:v libx264 -preset medium -crf 16 -pix_fmt yuv420p -movflags +faststart (Join-Path $local 'Daedalus-hyperspace-4K.mp4')
+     $movie=if($IncludeTransit){'Daedalus-hyperspace-revised-4K.mp4'}else{'Daedalus-green-window-4K.mp4'}
+     & $ffmpeg -hide_banner -loglevel error -y -framerate 30 -i (Join-Path $run '%04d.png') -c:v libx264 -preset medium -crf 16 -pix_fmt yuv420p -movflags +faststart (Join-Path $local $movie)
      if($LASTEXITCODE -ne 0){throw 'Frames passed; encoding failed.'}
    }
    Write-Output "HYPERSPACE_PREVIEW_PASS: $run"
