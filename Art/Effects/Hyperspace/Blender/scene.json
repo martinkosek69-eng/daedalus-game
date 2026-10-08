@@ -1,0 +1,19 @@
+{
+  "blender": "5.2.2 LTS",
+  "renderEngine": "BLENDER_EEVEE",
+  "resolution": [
+    3840,
+    2160
+  ],
+  "fps": 24,
+  "frames": [
+    1,
+    108
+  ],
+  "membranes": 28,
+  "animatedShapeKeys": 84,
+  "selfContainedTextures": true,
+  "reference": "Tasks/0029/REFERENCE_REVIEW.md; user-supplied series excerpts",
+  "gameIntegration": false,
+  "userAppearanceAccepted": false
+}

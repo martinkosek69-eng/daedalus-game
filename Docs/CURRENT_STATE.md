@@ -1,12 +1,21 @@
 # Current development state — 2026-10-08
 
+## Blender hyperspace revision 0030 (in progress)
+
+User rejected 0029's appearance and explicitly requested a Blender animation.
+New editable source: Art/Effects/Hyperspace/Blender/Daedalus_GreenRupture.blend.
+28 deforming mesh sheets, fine fracture lips and an emissive volume, with the
+existing ship imported as read-only context. Offline native 4K render is in
+progress. See Tasks/0030/PROGRESS.md. This is an appearance proposal, not an
+Unreal integration; normal game assets/launcher and saves are unchanged.
+
 ## Separate hyperspace window revision 0029
 
 Tools/SPUSTIT_HYPERPROSTOR.cmd launches Build-Hyperspace29: Daedalus run-up,
 revised green translucent rupture sheets, depth-correct hull crossing and closure.
 R/1 replays, Space pauses, Escape exits. Default preview loops only the window;
 the earlier blue tunnel is optional through -IncludeTransit and remains deferred.
-0028 was rejected visually. 0029 is READY_FOR_REVIEW, not user-approved:
+0028 and 0029 were rejected visually. Historical 0029 technical result:
 116 native 3840x2160 frames passed state preservation and aperture visibility /
 closure checks; the encoded 4K movie decoded successfully. Startup now waits for
 material readiness to prevent missing early opening frames. See

@@ -1,5 +1,9 @@
 # 0029 handoff — READY_FOR_REVIEW
 
+Coordinator update: user subsequently rejected this appearance. Status is
+NEEDS_CHANGES; task0030 replaces the approach with a Blender-made animation.
+The technical evidence below remains historical, not visual acceptance.
+
 Codex, 2026-10-08. Source checkpoint 2295b6b on codex/solar-flight.
 Singleplayer, presentation only. User appearance approval remains pending.
 

@@ -1,5 +1,12 @@
 # Shared application ownership
 
+## Current transfer 0030
+
+Codex owns Art/Effects/Hyperspace/Blender and sequential background Blender
+scene generation/render in fc0b. Initial process inventory found no Blender,
+Unreal editor or game. Existing ship files are read-only dependencies; no GUI
+scene or other worker checkout is touched. Unreal is not reserved for this task.
+
 ## Completed transfer 0029
 
 Codex owns the window material and sequential material generation/build/capture
