@@ -1,0 +1,63 @@
+{
+  "task": "0028",
+  "baseCommit": "ef356d35e60bcf8720feb8df8c88b0231794387e",
+  "sourceCheckpoint": "da964ba",
+  "packageBuild": "Build-Hyperspace28",
+  "gameAndEditorBuildPassed": true,
+  "packagePassed": true,
+  "automationSucceeded": 24,
+  "automationFailed": 0,
+  "timelineAutomation": "Daedalus.Presentation.HyperspaceTimeline: Success",
+  "finalCapture": {
+    "passed": true,
+    "width": 3840,
+    "height": 2160,
+    "frames": 321,
+    "flightStateUnchanged": true
+  },
+  "video": {
+    "name": "Daedalus-hyperspace-4K.mp4",
+    "sha256": "05967165fb62a59d6b41c43acabf5fc4e129661ade75ab1571a001ef1128cbe2",
+    "bytes": 45072764,
+    "width": 3840,
+    "height": 2160,
+    "framesPerSecond": 30,
+    "seconds": 10.7,
+    "audio": false
+  },
+  "inspectedFrames": [
+    {
+      "name": "0037.png",
+      "sha256": "7294e970788e735cdf4d18ae7bb049b148072036304e518dfa60eae30c9427df",
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "name": "0061.png",
+      "sha256": "312ba727f8263f42a788efa3c7b0a7d0fe3cd8f0c43f7d938323721280f302da",
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "name": "0091.png",
+      "sha256": "24390ffdcc351b570aacbfe7a0dfd431c53a29203e66e2e5444374a1be2e57c6",
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "name": "0103.png",
+      "sha256": "384467320935fee81695b2830eb319ec40eaaa791427f9222703731a316a12de",
+      "width": 3840,
+      "height": 2160
+    },
+    {
+      "name": "0150.png",
+      "sha256": "7ecb55c5d89b632e4a9d472cc43642e1d2486c101986e79e8007193e2e53796f",
+      "width": 3840,
+      "height": 2160
+    }
+  ],
+  "keyboardInputProbeRun": false,
+  "ownedProcessesExited": true,
+  "subjectiveUserReview": "pending"
+}

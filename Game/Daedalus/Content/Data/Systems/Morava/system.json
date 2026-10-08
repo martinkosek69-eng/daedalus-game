@@ -1,0 +1,440 @@
+{
+  "version": 1,
+  "id": "fic.morava",
+  "name": "Morava",
+  "source": "fictional",
+  "galaxyPositionLightYears": [
+    35000,
+    -22000,
+    -80
+  ],
+  "primaryStarId": "fic.morava.sun",
+  "stellarColor": "#ffe3c0",
+  "bodies": [
+    {
+      "id": "fic.morava.sun",
+      "name": "Morava",
+      "parentId": "",
+      "kind": "star",
+      "radiusMetres": 612216000.0,
+      "positionMetres": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "texture": "sun.jpg",
+      "rotationHours": 912.0,
+      "tiltDegrees": 5.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Morava/Textures/sun.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_morava_sun",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_morava_sun"
+    },
+    {
+      "id": "fic.morava.amber",
+      "name": "Amber",
+      "parentId": "fic.morava.sun",
+      "kind": "planet",
+      "radiusMetres": 3504050.0,
+      "positionMetres": [
+        9871411200.0,
+        55938453504.0,
+        2246720512.0
+      ],
+      "texture": "amber.jpg",
+      "rotationHours": 1630.0,
+      "tiltDegrees": 0.5,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Morava/Textures/amber.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_morava_amber",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_morava_amber"
+    },
+    {
+      "id": "fic.morava.serein",
+      "name": "Serein",
+      "parentId": "fic.morava.sun",
+      "kind": "planet",
+      "radiusMetres": 6753260.0,
+      "positionMetres": [
+        -115600359424.0,
+        30973843456.0,
+        270304640.0
+      ],
+      "texture": "serein.jpg",
+      "rotationHours": 29.4,
+      "tiltDegrees": 12.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "cloudTexture": "serein_clouds.png",
+      "atmosphereColor": "#bcd6ff",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Morava/Textures/serein.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_morava_serein",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_morava_serein",
+      "cloudTextureSource": "Art/Space/Systems/Morava/Textures/serein_clouds.png"
+    },
+    {
+      "id": "fic.morava.brannock",
+      "name": "Brannock",
+      "parentId": "fic.morava.sun",
+      "kind": "planet",
+      "radiusMetres": 55928800.0,
+      "positionMetres": [
+        -168846098432.0,
+        -463799123968.0,
+        -9715206144.0
+      ],
+      "texture": "brannock.jpg",
+      "rotationHours": 11.8,
+      "tiltDegrees": 7.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "ringInnerMetres": 83893200.0,
+      "ringOuterMetres": 106264720.0,
+      "ringTexture": "brannock_ring.png",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Morava/Textures/brannock.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_morava_brannock",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_morava_brannock",
+      "ringTextureSource": "Art/Space/Systems/Morava/Textures/brannock_ring.png"
+    },
+    {
+      "id": "fic.morava.lethe",
+      "name": "Lethe",
+      "parentId": "fic.morava.sun",
+      "kind": "planet",
+      "radiusMetres": 21024300.0,
+      "positionMetres": [
+        1217822195712.0,
+        702835851264.0,
+        19631982592.0
+      ],
+      "texture": "lethe.jpg",
+      "rotationHours": 18.2,
+      "tiltDegrees": 33.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Morava/Textures/lethe.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_morava_lethe",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_morava_lethe"
+    },
+    {
+      "id": "fic.morava.selk",
+      "name": "Selk",
+      "parentId": "fic.morava.sun",
+      "kind": "planet",
+      "radiusMetres": 1050000.0,
+      "positionMetres": [
+        -3216354312192.0,
+        5529364594688.0,
+        678920585216.0
+      ],
+      "texture": "selk.jpg",
+      "rotationHours": 3.92,
+      "tiltDegrees": 28.0,
+      "shapeScale": [
+        1.0,
+        0.78,
+        0.52
+      ],
+      "surfaceQuality": "fictional-authored",
+      "ringInnerMetres": 2289000.0,
+      "ringOuterMetres": 2436000.0,
+      "ringTexture": "selk_ring.png",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Morava/Textures/selk.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_morava_selk",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_morava_selk",
+      "ringTextureSource": "Art/Space/Systems/Morava/Textures/selk_ring.png"
+    },
+    {
+      "id": "fic.morava.nam",
+      "name": "Nam",
+      "parentId": "fic.morava.selk",
+      "kind": "moon",
+      "radiusMetres": 90000.0,
+      "positionMetres": [
+        -3216370827264.0,
+        5529347293184.0,
+        678911410176.0
+      ],
+      "texture": "nam.jpg",
+      "rotationHours": 434.87,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "mesh": "Models/nam.glb",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Morava/Textures/nam.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_morava_nam",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_morava_nam",
+      "meshSource": "Art/Space/Systems/Morava/Models/nam.glb",
+      "meshAsset": "/Game/Solar/Models/SM_Body_fic_morava_nam"
+    },
+    {
+      "id": "fic.morava.ise",
+      "name": "Ise",
+      "parentId": "fic.morava.selk",
+      "kind": "moon",
+      "radiusMetres": 170000.0,
+      "positionMetres": [
+        -3216316301312.0,
+        5529392906240.0,
+        678935527424.0
+      ],
+      "texture": "ise.jpg",
+      "rotationHours": 1173.75,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Morava/Textures/ise.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_morava_ise",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_morava_ise"
+    },
+    {
+      "id": "fic.morava.kite",
+      "name": "Kite",
+      "parentId": "fic.morava.brannock",
+      "kind": "moon",
+      "radiusMetres": 150000.0,
+      "positionMetres": [
+        -168724856832.0,
+        -463729655808.0,
+        -9706675200.0
+      ],
+      "texture": "kite.jpg",
+      "rotationHours": 12.11,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "mesh": "Models/kite.glb",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Morava/Textures/kite.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_morava_kite",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_morava_kite",
+      "meshSource": "Art/Space/Systems/Morava/Models/kite.glb",
+      "meshAsset": "/Game/Solar/Models/SM_Body_fic_morava_kite"
+    },
+    {
+      "id": "fic.morava.penny",
+      "name": "Penny",
+      "parentId": "fic.morava.serein",
+      "kind": "moon",
+      "radiusMetres": 410000.0,
+      "positionMetres": [
+        -115520356352.0,
+        31109380096.0,
+        299113728.0
+      ],
+      "texture": "penny.jpg",
+      "rotationHours": 164.98,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Morava/Textures/penny.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_morava_penny",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_morava_penny"
+    },
+    {
+      "id": "fic.morava.mire",
+      "name": "Mire",
+      "parentId": "fic.morava.lethe",
+      "kind": "moon",
+      "radiusMetres": 380000.0,
+      "positionMetres": [
+        1217649049600.0,
+        702919737344.0,
+        19686447104.0
+      ],
+      "texture": "mire.jpg",
+      "rotationHours": 74.55,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Morava/Textures/mire.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_morava_mire",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_morava_mire"
+    },
+    {
+      "id": "fic.morava.tarn",
+      "name": "Tarn",
+      "parentId": "fic.morava.brannock",
+      "kind": "moon",
+      "radiusMetres": 430000.0,
+      "positionMetres": [
+        -168928182272.0,
+        -463575285760.0,
+        -9687720960.0
+      ],
+      "texture": "tarn.jpg",
+      "rotationHours": 27.18,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Morava/Textures/tarn.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_morava_tarn",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_morava_tarn"
+    },
+    {
+      "id": "fic.morava.rook",
+      "name": "Rook",
+      "parentId": "fic.morava.brannock",
+      "kind": "moon",
+      "radiusMetres": 240000.0,
+      "positionMetres": [
+        -169174990848.0,
+        -463917940736.0,
+        -9729795072.0
+      ],
+      "texture": "rook.jpg",
+      "rotationHours": 47.86,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Morava/Textures/rook.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_morava_rook",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_morava_rook"
+    },
+    {
+      "id": "fic.morava.pell",
+      "name": "Pell",
+      "parentId": "fic.morava.brannock",
+      "kind": "moon",
+      "radiusMetres": 610000.0,
+      "positionMetres": [
+        -168654569472.0,
+        -464321413120.0,
+        -9779337216.0
+      ],
+      "texture": "pell.jpg",
+      "rotationHours": 96.87,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Morava/Textures/pell.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_morava_pell",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_morava_pell"
+    }
+  ],
+  "belts": [
+    {
+      "id": "fic.morava.inner_belt",
+      "parentId": "fic.morava.sun",
+      "innerMetres": 239356593120.0,
+      "outerMetres": 359034889680.0,
+      "count": 600,
+      "seed": 5301,
+      "kind": "asteroid"
+    },
+    {
+      "id": "fic.morava.outer_icy_belt",
+      "parentId": "fic.morava.sun",
+      "innerMetres": 4188740379600.0,
+      "outerMetres": 8377480759200.0,
+      "count": 600,
+      "seed": 5302,
+      "kind": "icy"
+    }
+  ],
+  "regions": [
+    {
+      "name": "inner_belt (fiktivní pás)",
+      "geometry": "disk",
+      "centreMetres": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "innerMetres": 239356593120.0,
+      "outerMetres": 359034889680.0
+    },
+    {
+      "name": "outer_icy_belt (fiktivní pás)",
+      "geometry": "disk",
+      "centreMetres": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "innerMetres": 4188740379600.0,
+      "outerMetres": 8377480759200.0
+    }
+  ]
+}

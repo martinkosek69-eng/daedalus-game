@@ -1,0 +1,9 @@
+# Úvodní povel pro Claude Code
+
+Přečti aktuální origin/codex/solar-flight:Tasks/0015/BRIEF.md. Přijmi pouze
+úkol0015: pět originálních soustav v Blenderu. Pracuj ve vlastním worktree na A:
+a větvi task/0015-five-original-systems z base4e2e7b6. Použij svůj přístup ke
+GitHubu a existující technické instrukce. Codex souběžně používá Unreal; ty
+smíš pouze přidělené zdrojové assety a background Blender. Zapiš postup a
+normálně commituj/pushujcheckpointy. Nakonec HANDOFF a READY_FOR_REVIEW.
+Nedělej mapu,navigaci,integraci,hyperspace ani další úkoly.

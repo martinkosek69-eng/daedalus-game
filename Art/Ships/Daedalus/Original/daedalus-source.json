@@ -1,0 +1,20 @@
+{
+  "creator": "Astrofossil",
+  "source": "https://www.thingiverse.com/thing:2256025",
+  "license": "CC BY-NC 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
+  "triangles": 222330,
+  "lengthMeters": 600,
+  "widthMeters": 378.5320739746094,
+  "heightMeters": 92.60707092285156,
+  "changes": [
+    "Reoriented forward to -Z",
+    "Centered bounding box",
+    "Rescaled to an explicitly assumed 600 m length",
+    "Split into six damage sections",
+    "New PBR materials",
+    "Runtime reference-based armor shader, emissive windows, launch hatches, vent slats and differentiated engines"
+  ],
+  "productionAsset": false,
+  "surfaceNote": "Palette based on TV stills; small detail placement interpreted; original production textures not available"
+}

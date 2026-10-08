@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "shipLengthMetres": 600,
+  "shipRadiusMetres": 360,
+  "earthRadiusMetres": 6371000,
+  "sunRadiusMetres": 695700000,
+  "sunPositionMetres": [105781669000, -105781669000, 0],
+  "startPositionMetres": [0, -12000000, 2000000],
+  "startYawDegrees": 80,
+  "startPitchDegrees": -5,
+  "turnRateDegrees": 10.8,
+  "angularAccelerationDegrees": 28.8,
+  "lowSpeedTurnMultiplier": 1.45,
+  "highSpeedBankFraction": 0.6,
+  "pitchLimitDegrees": 60,
+  "bankDegrees": 36,
+  "profiles": [
+    {"name": "Přístavní chod", "speed": 150, "acceleration": 60, "coastDeceleration": 45, "braking": 45, "lateralAcceleration": 86},
+    {"name": "Impuls", "speed": 250000, "acceleration": 100000, "coastDeceleration": 45000, "braking": 45000, "lateralAcceleration": 142860},
+    {"name": "Plný impuls · podsvětelný", "speed": 250000000, "acceleration": 100000000, "coastDeceleration": 35000000, "braking": 35000000, "lateralAcceleration": 142860}
+  ]
+}

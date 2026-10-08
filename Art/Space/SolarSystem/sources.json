@@ -1,0 +1,402 @@
+{
+  "version": 1,
+  "generatedWith": "Blender 5.2.2 LTS",
+  "attributionDate": "2026-10-04",
+  "files": [
+    {
+      "file": "Textures/hyperion_schematic.png",
+      "width": 2048,
+      "height": 1024,
+      "bytes": 1971764,
+      "sha256": "fa52d006bd2a5a3715bbcf5eefa9ff6b91d301e686ab7d1f301abf2e4c6fbee8",
+      "source": "Project-authored deterministic procedural illustration",
+      "license": "Project-owned; no third-party imagery",
+      "unchangedFromWeb": false
+    },
+    {
+      "file": "Textures/jpl-jup1vss2.jpg",
+      "width": 1440,
+      "height": 720,
+      "bytes": 113001,
+      "sha256": "71c574f74555552fa4bec70931e954c6139d3489df825c9edf40213d49cba132",
+      "source": "https://maps.jpl.nasa.gov/tmaps/pix/jup1vss2.jpg",
+      "license": "JPL Image Use Policy; Courtesy NASA/JPL-Caltech; additional USGS credit",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/jpl-jup2vss2.jpg",
+      "width": 1440,
+      "height": 720,
+      "bytes": 135970,
+      "sha256": "03164d293c46b3eff16678c20dfb73337db8a404e2d83f057bc320b95484b54f",
+      "source": "https://maps.jpl.nasa.gov/tmaps/pix/jup2vss2.jpg",
+      "license": "JPL Image Use Policy; Courtesy NASA/JPL-Caltech; additional USGS credit",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/jpl-jup3vss2.jpg",
+      "width": 1440,
+      "height": 720,
+      "bytes": 183557,
+      "sha256": "626302a877528d7eab74f4229f6c7249fffc91be8e28e8edc040433aca98cc6d",
+      "source": "https://maps.jpl.nasa.gov/tmaps/pix/jup3vss2.jpg",
+      "license": "JPL Image Use Policy; Courtesy NASA/JPL-Caltech; additional USGS credit",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/jpl-jup4vss2.jpg",
+      "width": 1440,
+      "height": 720,
+      "bytes": 216624,
+      "sha256": "9659f85b76d5cb90cb709b32f3282f3ca94199be4d8b3b159d7d373a1887551c",
+      "source": "https://maps.jpl.nasa.gov/tmaps/pix/jup4vss2.jpg",
+      "license": "JPL Image Use Policy; Courtesy NASA/JPL-Caltech; additional USGS credit",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/jpl-mar1kuu2.jpg",
+      "width": 1440,
+      "height": 720,
+      "bytes": 138689,
+      "sha256": "84eb21c08626a0558d1e88ccb666bd1e914606146423f9ebcf6c09953d7543af",
+      "source": "https://maps.jpl.nasa.gov/tmaps/pix/mar1kuu2.jpg",
+      "license": "JPL Image Use Policy; Courtesy NASA/JPL-Caltech; additional USGS credit",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/jpl-mar2kuu2.jpg",
+      "width": 1440,
+      "height": 720,
+      "bytes": 71976,
+      "sha256": "e8902c5b34e634c5146e5d8d2bf352bb5f45181c715ed15644edb5f009826ed6",
+      "source": "https://maps.jpl.nasa.gov/tmaps/pix/mar2kuu2.jpg",
+      "license": "JPL Image Use Policy; Courtesy NASA/JPL-Caltech; additional USGS credit",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/jpl-nep1vuu2.jpg",
+      "width": 1440,
+      "height": 720,
+      "bytes": 58050,
+      "sha256": "45f107996448c2236ede95624bfb672b56f0db843f084ed61a197454050b3214",
+      "source": "https://maps.jpl.nasa.gov/tmaps/pix/nep1vuu2.jpg",
+      "license": "JPL Image Use Policy; Courtesy NASA/JPL-Caltech; additional USGS credit",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/jpl-sat1vss2.jpg",
+      "width": 1440,
+      "height": 720,
+      "bytes": 111227,
+      "sha256": "c854a36beffc806bf1b86700f427c37d19f20f74e8e6275be2b4568e6c175a39",
+      "source": "https://maps.jpl.nasa.gov/tmaps/pix/sat1vss2.jpg",
+      "license": "JPL Image Use Policy; Courtesy NASA/JPL-Caltech; additional USGS credit",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/jpl-sat2vss2.jpg",
+      "width": 1440,
+      "height": 720,
+      "bytes": 101190,
+      "sha256": "224b4510a75dc6554cfb0802507f9f1bb959c52848b8ec9286d4253d417d6dd2",
+      "source": "https://maps.jpl.nasa.gov/tmaps/pix/sat2vss2.jpg",
+      "license": "JPL Image Use Policy; Courtesy NASA/JPL-Caltech; additional USGS credit",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/jpl-sat3vss2.jpg",
+      "width": 1440,
+      "height": 720,
+      "bytes": 150474,
+      "sha256": "6510470c66bc47f3f50c4dad924c0546acaedfeefe380c101af171e78f37e5b8",
+      "source": "https://maps.jpl.nasa.gov/tmaps/pix/sat3vss2.jpg",
+      "license": "JPL Image Use Policy; Courtesy NASA/JPL-Caltech; additional USGS credit",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/jpl-sat4vss2.jpg",
+      "width": 1440,
+      "height": 720,
+      "bytes": 120516,
+      "sha256": "42984a39ab5839ea20351d8ec9d7f9d00091c0c8f9f24683644cea5db434ef43",
+      "source": "https://maps.jpl.nasa.gov/tmaps/pix/sat4vss2.jpg",
+      "license": "JPL Image Use Policy; Courtesy NASA/JPL-Caltech; additional USGS credit",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/jpl-sat5vss2.jpg",
+      "width": 1440,
+      "height": 720,
+      "bytes": 99961,
+      "sha256": "8dd523b908012edfcb52f03e37d54bc1358f75bd1e1c04cf6223a71f2c82624c",
+      "source": "https://maps.jpl.nasa.gov/tmaps/pix/sat5vss2.jpg",
+      "license": "JPL Image Use Policy; Courtesy NASA/JPL-Caltech; additional USGS credit",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/jpl-sat6fss1.jpg",
+      "width": 720,
+      "height": 360,
+      "bytes": 6597,
+      "sha256": "112c05c54cc32156b7f3410abe743240db5fd937a73dfcd92852056f784658d6",
+      "source": "https://maps.jpl.nasa.gov/tmaps/pix/sat6fss1.jpg",
+      "license": "JPL Image Use Policy; Courtesy NASA/JPL-Caltech; additional USGS credit",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/jpl-sat8vss2.jpg",
+      "width": 1440,
+      "height": 720,
+      "bytes": 64670,
+      "sha256": "3b5054f41e9cec5d220655260930c9d31a1ec44fa43b82f2d105f3ee4daac26b",
+      "source": "https://maps.jpl.nasa.gov/tmaps/pix/sat8vss2.jpg",
+      "license": "JPL Image Use Policy; Courtesy NASA/JPL-Caltech; additional USGS credit",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/jpl-ura1vuu2.jpg",
+      "width": 1440,
+      "height": 720,
+      "bytes": 51290,
+      "sha256": "88e21bc6094ddd3821a58dd9552d5d8496ca7b3e69925ad5085cd561e8500c16",
+      "source": "https://maps.jpl.nasa.gov/tmaps/pix/ura1vuu2.jpg",
+      "license": "JPL Image Use Policy; Courtesy NASA/JPL-Caltech; additional USGS credit",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/jpl-ura2vuu2.jpg",
+      "width": 1440,
+      "height": 720,
+      "bytes": 37653,
+      "sha256": "fbca608955c27872c6276aa17c35b9ac7c81040614b1849b864e9ffd08e943f1",
+      "source": "https://maps.jpl.nasa.gov/tmaps/pix/ura2vuu2.jpg",
+      "license": "JPL Image Use Policy; Courtesy NASA/JPL-Caltech; additional USGS credit",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/jpl-ura3vuu2.jpg",
+      "width": 1440,
+      "height": 720,
+      "bytes": 64502,
+      "sha256": "cde4432380f44d2cda56c0059ae8ad44b7029bc930aefadf2cbac91379dd41e7",
+      "source": "https://maps.jpl.nasa.gov/tmaps/pix/ura3vuu2.jpg",
+      "license": "JPL Image Use Policy; Courtesy NASA/JPL-Caltech; additional USGS credit",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/jpl-ura4vuu2.jpg",
+      "width": 1440,
+      "height": 720,
+      "bytes": 51214,
+      "sha256": "ed29842e1b1fb96ee9626a62d4ee7bbf53756997ef33b1edda2dbead43383460",
+      "source": "https://maps.jpl.nasa.gov/tmaps/pix/ura4vuu2.jpg",
+      "license": "JPL Image Use Policy; Courtesy NASA/JPL-Caltech; additional USGS credit",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/jpl-ura5vuu2.jpg",
+      "width": 1440,
+      "height": 720,
+      "bytes": 73419,
+      "sha256": "de6fab3acb9a68bcbe59b3ac0c5b985b63c5b5bf6b75b142f4749cb6eadfca36",
+      "source": "https://maps.jpl.nasa.gov/tmaps/pix/ura5vuu2.jpg",
+      "license": "JPL Image Use Policy; Courtesy NASA/JPL-Caltech; additional USGS credit",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/jupiter.jpg",
+      "width": 4096,
+      "height": 2048,
+      "bytes": 3080980,
+      "sha256": "0bd844bf20822c4e3e80882b077859833c0dac44c7e4e1e0cd63d1b1b6d43085",
+      "source": "https://www.solarsystemscope.com/textures/download/8k_jupiter.jpg",
+      "license": "CC BY 4.0; Solar System Scope / INOVE",
+      "unchangedFromWeb": false
+    },
+    {
+      "file": "Textures/mars.jpg",
+      "width": 8192,
+      "height": 4096,
+      "bytes": 8396951,
+      "sha256": "4cc52149924abc6ae507d63032f994e1d42a55cb82c09e002d1a567ff66c23ee",
+      "source": "https://www.solarsystemscope.com/textures/download/8k_mars.jpg",
+      "license": "CC BY 4.0; Solar System Scope / INOVE",
+      "unchangedFromWeb": false
+    },
+    {
+      "file": "Textures/mercury.jpg",
+      "width": 8192,
+      "height": 4096,
+      "bytes": 15035740,
+      "sha256": "5c8bd885ae3571c6ba2cd34b3446b9c6d767e314bf0ee8c1d5c147cadd388fc3",
+      "source": "https://www.solarsystemscope.com/textures/download/8k_mercury.jpg",
+      "license": "CC BY 4.0; Solar System Scope / INOVE",
+      "unchangedFromWeb": false
+    },
+    {
+      "file": "Textures/moon.jpg",
+      "width": 8192,
+      "height": 4096,
+      "bytes": 15030356,
+      "sha256": "d1875bcec83588ca25e4802e576f6bb9f88b39e1e403cb41ff55867419c54796",
+      "source": "https://www.solarsystemscope.com/textures/download/8k_moon.jpg",
+      "license": "CC BY 4.0; Solar System Scope / INOVE",
+      "unchangedFromWeb": false
+    },
+    {
+      "file": "Textures/neptune.jpg",
+      "width": 2048,
+      "height": 1024,
+      "bytes": 241580,
+      "sha256": "cb42ea82709741d28b0af44d8b283cbc6dbd0c521a7f0e1e1e010ade00977df6",
+      "source": "https://www.solarsystemscope.com/textures/download/2k_neptune.jpg",
+      "license": "CC BY 4.0; Solar System Scope / INOVE",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/nereid_schematic.png",
+      "width": 2048,
+      "height": 1024,
+      "bytes": 1890733,
+      "sha256": "2221506b39ef9bafc6e415516660367a1fdfe0f056b9e00e049f873472c8e37f",
+      "source": "Project-authored deterministic procedural illustration",
+      "license": "Project-owned; no third-party imagery",
+      "unchangedFromWeb": false
+    },
+    {
+      "file": "Textures/phoebe_schematic.png",
+      "width": 2048,
+      "height": 1024,
+      "bytes": 1947348,
+      "sha256": "48b33bc8cb4373792ce0024ab927d05333ebd855801874e0144be206f81e4aee",
+      "source": "Project-authored deterministic procedural illustration",
+      "license": "Project-owned; no third-party imagery",
+      "unchangedFromWeb": false
+    },
+    {
+      "file": "Textures/proteus_schematic.png",
+      "width": 2048,
+      "height": 1024,
+      "bytes": 1910058,
+      "sha256": "92212cd8d2e274947548832c05114f391f146250b07f658491ae42f2527fa737",
+      "source": "Project-authored deterministic procedural illustration",
+      "license": "Project-owned; no third-party imagery",
+      "unchangedFromWeb": false
+    },
+    {
+      "file": "Textures/rock_schematic.png",
+      "width": 2048,
+      "height": 1024,
+      "bytes": 1946713,
+      "sha256": "15dc2539bf9969ae83c4f750e934be96b653aa93354a7ae4eaea82f827b6d295",
+      "source": "Project-authored deterministic procedural illustration",
+      "license": "Project-owned; no third-party imagery",
+      "unchangedFromWeb": false
+    },
+    {
+      "file": "Textures/saturn.jpg",
+      "width": 4096,
+      "height": 2048,
+      "bytes": 1098204,
+      "sha256": "0d39a4a490c87c3edabe00a3881a29bb3418364178c79c534fe0986e97e09853",
+      "source": "https://www.solarsystemscope.com/textures/download/8k_saturn.jpg",
+      "license": "CC BY 4.0; Solar System Scope / INOVE",
+      "unchangedFromWeb": false
+    },
+    {
+      "file": "Textures/saturn_ring_alpha.png",
+      "width": 2048,
+      "height": 125,
+      "bytes": 12119,
+      "sha256": "4b0644b2f3ef259fd0bfaedd9dc52f9e7d9738f65f50363e8c4dd19f650d7334",
+      "source": "https://www.solarsystemscope.com/textures/download/2k_saturn_ring_alpha.png",
+      "license": "CC BY 4.0; Solar System Scope / INOVE",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/stars_milky_way.jpg",
+      "width": 8192,
+      "height": 4096,
+      "bytes": 1905513,
+      "sha256": "1fd005ddd6d53364cc5106e0121b83fd3bca236b1503f6b51f5501d9d51eafaf",
+      "source": "https://www.solarsystemscope.com/textures/download/8k_stars_milky_way.jpg",
+      "license": "CC BY 4.0; Solar System Scope / INOVE",
+      "unchangedFromWeb": false
+    },
+    {
+      "file": "Textures/sun.jpg",
+      "width": 4096,
+      "height": 2048,
+      "bytes": 3696361,
+      "sha256": "f22b1cfb306ddce72a7e3b628668a0175b745038ce6268557cb2f7f1bdf98b9d",
+      "source": "https://www.solarsystemscope.com/textures/download/8k_sun.jpg",
+      "license": "CC BY 4.0; Solar System Scope / INOVE",
+      "unchangedFromWeb": false
+    },
+    {
+      "file": "Textures/uranus.jpg",
+      "width": 2048,
+      "height": 1024,
+      "bytes": 77751,
+      "sha256": "d15239d46f82d3ea13d2b260b5b29b2a382f42f2916dae0694d0387b1204a09d",
+      "source": "https://www.solarsystemscope.com/textures/download/2k_uranus.jpg",
+      "license": "CC BY 4.0; Solar System Scope / INOVE",
+      "unchangedFromWeb": true
+    },
+    {
+      "file": "Textures/uranus_ring_schematic.png",
+      "width": 4096,
+      "height": 32,
+      "bytes": 3318,
+      "sha256": "1050fe1c01698cf6686497926cf49d0b3eb2fe134089b4255317d342c459f68b",
+      "source": "Project-authored deterministic procedural illustration",
+      "license": "Project-owned; no third-party imagery",
+      "unchangedFromWeb": false
+    },
+    {
+      "file": "Textures/venus_atmosphere.jpg",
+      "width": 4096,
+      "height": 2048,
+      "bytes": 1546146,
+      "sha256": "a14aeba3c6ad7a56f989bb32008dec548077aeded420495b34df98f2dc14ba91",
+      "source": "https://www.solarsystemscope.com/textures/download/4k_venus_atmosphere.jpg",
+      "license": "CC BY 4.0; Solar System Scope / INOVE",
+      "unchangedFromWeb": false
+    }
+  ],
+  "rock": {
+    "file": "SolarRock.glb",
+    "editableFile": "SolarRock.blend",
+    "radiusMetres": 1.0,
+    "triangles": 5120,
+    "sha256": "b9eef394c7f6bf442a345f6940dd93a257ec61058c87e05c640e0e1437ffe9e9",
+    "editableSha256": "db0b0dd76f655beefdf2591a368aef3e8725c7d329fb990d6b0942ef4159fa0b",
+    "license": "Project-owned original generic geometry"
+  },
+  "sharedTextures": [
+    {
+      "file": "../Textures/earth_daymap.jpg",
+      "width": 8192,
+      "height": 4096,
+      "sha256": "88ab060b6e7d241cfc590c69f528fab2b3247b738d40124cb590999a6fe44abc",
+      "source": "https://www.solarsystemscope.com/textures/download/8k_earth_daymap.jpg",
+      "license": "CC BY 4.0; Solar System Scope / INOVE"
+    },
+    {
+      "file": "../Textures/earth_clouds.jpg",
+      "width": 8192,
+      "height": 4096,
+      "sha256": "c792eca228989d36ebb45d3ea6ff1198be5e21a25d70d2fbcb2124ffd14ba7f5",
+      "source": "https://www.solarsystemscope.com/textures/download/8k_earth_clouds.jpg",
+      "license": "CC BY 4.0; Solar System Scope / INOVE"
+    },
+    {
+      "file": "../Textures/earth_nightmap.jpg",
+      "width": 8192,
+      "height": 4096,
+      "sha256": "9894e83a585a22c1c425e7ca4f987a9ba625bf08ecee45d3c9dcacae3c2ad5f7",
+      "source": "https://www.solarsystemscope.com/textures/download/8k_earth_nightmap.jpg",
+      "license": "CC BY 4.0; Solar System Scope / INOVE"
+    }
+  ]
+}

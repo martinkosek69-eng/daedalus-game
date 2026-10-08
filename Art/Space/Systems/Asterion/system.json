@@ -1,0 +1,287 @@
+{
+  "version": 1,
+  "id": "fic.asterion",
+  "name": "Asterion",
+  "source": "fictional",
+  "galaxyPositionLightYears": [
+    25970,
+    40,
+    20
+  ],
+  "primaryStarId": "fic.asterion.sun",
+  "stellarColor": "#fff1df",
+  "bodies": [
+    {
+      "id": "fic.asterion.sun",
+      "name": "Asterion",
+      "parentId": "",
+      "kind": "star",
+      "radiusMetres": 716571000.0,
+      "positionMetres": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "texture": "Textures/sun.jpg",
+      "rotationHours": 609.6,
+      "tiltDegrees": 6.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    },
+    {
+      "id": "fic.asterion.ignis",
+      "name": "Ignis",
+      "parentId": "fic.asterion.sun",
+      "kind": "planet",
+      "radiusMetres": 2675820.0,
+      "positionMetres": [
+        43386146816.0,
+        20217706496.0,
+        741349632.0
+      ],
+      "texture": "Textures/ignis.jpg",
+      "rotationHours": 1407.0,
+      "tiltDegrees": 0.2,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    },
+    {
+      "id": "fic.asterion.calyx",
+      "name": "Calyx",
+      "parentId": "fic.asterion.sun",
+      "kind": "planet",
+      "radiusMetres": 6052450.0,
+      "positionMetres": [
+        -77927063552.0,
+        65374228480.0,
+        1369394816.0
+      ],
+      "texture": "Textures/calyx.jpg",
+      "rotationHours": -2802.0,
+      "tiltDegrees": 2.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "cloudTexture": "Textures/calyx_clouds.png",
+      "atmosphereColor": "#e9c98f"
+    },
+    {
+      "id": "fic.asterion.tessaly",
+      "name": "Tessaly",
+      "parentId": "fic.asterion.sun",
+      "kind": "planet",
+      "radiusMetres": 7136000.0,
+      "positionMetres": [
+        -103852433408.0,
+        -123763490816.0,
+        -864046208.0
+      ],
+      "texture": "Textures/tessaly.jpg",
+      "rotationHours": 84.97,
+      "tiltDegrees": 11.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "cloudTexture": "Textures/tessaly_clouds.png",
+      "atmosphereColor": "#d9a07a"
+    },
+    {
+      "id": "fic.asterion.kestrel",
+      "name": "Kestrel",
+      "parentId": "fic.asterion.sun",
+      "kind": "asteroid",
+      "radiusMetres": 265000.0,
+      "positionMetres": [
+        203453104128.0,
+        -351908167680.0,
+        -18442725376.0
+      ],
+      "texture": "Textures/kestrel.jpg",
+      "rotationHours": 7.6,
+      "tiltDegrees": 30.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "mesh": "Models/kestrel.glb"
+    },
+    {
+      "id": "fic.asterion.varunis",
+      "name": "Varunis",
+      "parentId": "fic.asterion.sun",
+      "kind": "planet",
+      "radiusMetres": 73406550.0,
+      "positionMetres": [
+        674764881920.0,
+        245531115520.0,
+        5571880448.0
+      ],
+      "texture": "Textures/varunis.jpg",
+      "rotationHours": 9.6,
+      "tiltDegrees": 26.5,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "ringInnerMetres": 101301039.0,
+      "ringOuterMetres": 165164737.5,
+      "ringTexture": "Textures/varunis_ring.png"
+    },
+    {
+      "id": "fic.asterion.halcyon",
+      "name": "Halcyon",
+      "parentId": "fic.asterion.sun",
+      "kind": "planet",
+      "radiusMetres": 22935600.0,
+      "positionMetres": [
+        -733384409088.0,
+        1571971792896.0,
+        49401204736.0
+      ],
+      "texture": "Textures/halcyon.jpg",
+      "rotationHours": 15.2,
+      "tiltDegrees": 41.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    },
+    {
+      "id": "fic.asterion.tessa_minor",
+      "name": "Tessa Minor",
+      "parentId": "fic.asterion.tessaly",
+      "kind": "moon",
+      "radiusMetres": 3900000.0,
+      "positionMetres": [
+        -103764336640.0,
+        -123690926080.0,
+        -849941504.0
+      ],
+      "texture": "Textures/tessa_minor.jpg",
+      "rotationHours": 84.97,
+      "tiltDegrees": 11.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    },
+    {
+      "id": "fic.asterion.skerry",
+      "name": "Skerry",
+      "parentId": "fic.asterion.halcyon",
+      "kind": "moon",
+      "radiusMetres": 540000.0,
+      "positionMetres": [
+        -733176594432.0,
+        1572062363648.0,
+        49479929856.0
+      ],
+      "texture": "Textures/skerry.jpg",
+      "rotationHours": 86.87,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    },
+    {
+      "id": "fic.asterion.pyra",
+      "name": "Pyra",
+      "parentId": "fic.asterion.varunis",
+      "kind": "moon",
+      "radiusMetres": 1840000.0,
+      "positionMetres": [
+        674915352576.0,
+        245901131776.0,
+        5756367360.0
+      ],
+      "texture": "Textures/pyra.jpg",
+      "rotationHours": 39.69,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "nightTexture": "Textures/pyra_night.jpg"
+    },
+    {
+      "id": "fic.asterion.glacia",
+      "name": "Glacia",
+      "parentId": "fic.asterion.varunis",
+      "kind": "moon",
+      "radiusMetres": 1560000.0,
+      "positionMetres": [
+        674107097088.0,
+        245745369088.0,
+        5678706688.0
+      ],
+      "texture": "Textures/glacia.jpg",
+      "rotationHours": 79.65,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    },
+    {
+      "id": "fic.asterion.umbra",
+      "name": "Umbra",
+      "parentId": "fic.asterion.varunis",
+      "kind": "moon",
+      "radiusMetres": 2410000.0,
+      "positionMetres": [
+        674381824000.0,
+        244589232128.0,
+        5102277120.0
+      ],
+      "texture": "Textures/umbra.jpg",
+      "rotationHours": 161.2,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    }
+  ],
+  "belts": [
+    {
+      "id": "fic.asterion.main_belt",
+      "parentId": "fic.asterion.sun",
+      "innerMetres": 329115315540.0,
+      "outerMetres": 478713186240.0,
+      "count": 600,
+      "seed": 1301,
+      "kind": "asteroid"
+    }
+  ]
+}

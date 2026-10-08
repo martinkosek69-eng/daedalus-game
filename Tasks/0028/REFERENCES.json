@@ -1,0 +1,11 @@
+{
+  "source": "Three original-series excerpts supplied by the user, used as visual references only",
+  "sampling": "4 frames per second contact sheets plus selected full-resolution frames",
+  "clips": [
+    {"id":"entry-1","sha256":"79ae0cde4b5c0c86ba855c4064a7d5866c3e6a2fbf5087e104dcb66077720a2d","durationSeconds":11.12,"width":1920,"height":1036},
+    {"id":"entry-2","sha256":"01d7ee81e4bd0a6a20d4fb17eeede07002a65f43db2bb6d80d7aeeeb59575e2c","durationSeconds":12.60,"width":1920,"height":1036},
+    {"id":"transit","sha256":"3d6b4a93a92575327df6d82efaf3fafa5a255209e5b6d75fd53c97413798a39f","durationSeconds":8.58,"width":1920,"height":1080}
+  ],
+  "rawFootagePublished": false,
+  "productionAnimationCurvesAvailable": false
+}

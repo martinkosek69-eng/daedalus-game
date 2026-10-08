@@ -1,0 +1,262 @@
+{
+  "version": 1,
+  "id": "fic.nivara",
+  "name": "Nivara",
+  "source": "fictional",
+  "galaxyPositionLightYears": [
+    7000,
+    -7000,
+    -120
+  ],
+  "primaryStarId": "fic.nivara.sun",
+  "stellarColor": "#ff9d63",
+  "bodies": [
+    {
+      "id": "fic.nivara.sun",
+      "name": "Nivara",
+      "parentId": "",
+      "kind": "star",
+      "radiusMetres": 146097000.0,
+      "positionMetres": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "texture": "Textures/sun.jpg",
+      "rotationHours": 96.0,
+      "tiltDegrees": 3.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    },
+    {
+      "id": "fic.nivara.ember",
+      "name": "Ember",
+      "parentId": "fic.nivara.sun",
+      "kind": "planet",
+      "radiusMetres": 5224220.0,
+      "positionMetres": [
+        1589504896.0,
+        425903968.0,
+        1486691.4
+      ],
+      "texture": "Textures/ember.jpg",
+      "rotationHours": 23.84,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "nightTexture": "Textures/ember_night.jpg"
+    },
+    {
+      "id": "fic.nivara.ashfall",
+      "name": "Ashfall",
+      "parentId": "fic.nivara.sun",
+      "kind": "planet",
+      "radiusMetres": 6116160.0,
+      "positionMetres": [
+        -228170480.0,
+        2607964928.0,
+        13655397.0
+      ],
+      "texture": "Textures/ashfall.jpg",
+      "rotationHours": 47.83,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    },
+    {
+      "id": "fic.nivara.iris",
+      "name": "Iris",
+      "parentId": "fic.nivara.sun",
+      "kind": "planet",
+      "radiusMetres": 6816970.0,
+      "positionMetres": [
+        -4321829376.0,
+        -378110528.0,
+        -659928.0
+      ],
+      "texture": "Textures/iris.jpg",
+      "rotationHours": 102.04,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "cloudTexture": "Textures/iris_clouds.png",
+      "atmosphereColor": "#a8cfff"
+    },
+    {
+      "id": "fic.nivara.rime",
+      "name": "Rime",
+      "parentId": "fic.nivara.sun",
+      "kind": "planet",
+      "radiusMetres": 5861320.0,
+      "positionMetres": [
+        599762432.0,
+        -6855149056.0,
+        -47858744.0
+      ],
+      "texture": "Textures/rime.jpg",
+      "rotationHours": 203.85,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    },
+    {
+      "id": "fic.nivara.gelid",
+      "name": "Gelid",
+      "parentId": "fic.nivara.sun",
+      "kind": "planet",
+      "radiusMetres": 15290400.0,
+      "positionMetres": [
+        25911111680.0,
+        -14958328832.0,
+        -208871248.0
+      ],
+      "texture": "Textures/gelid.jpg",
+      "rotationHours": 31.0,
+      "tiltDegrees": 12.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    },
+    {
+      "id": "fic.nivara.mote",
+      "name": "Mote",
+      "parentId": "fic.nivara.iris",
+      "kind": "moon",
+      "radiusMetres": 160000.0,
+      "positionMetres": [
+        -4317314560.0,
+        -352505536.0,
+        -659928.0
+      ],
+      "texture": "Textures/mote.jpg",
+      "rotationHours": 10.37,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "mesh": "Models/mote.glb"
+    },
+    {
+      "id": "fic.nivara.glint",
+      "name": "Glint",
+      "parentId": "fic.nivara.rime",
+      "kind": "moon",
+      "radiusMetres": 190000.0,
+      "positionMetres": [
+        569692288.0,
+        -6866093568.0,
+        -47858744.0
+      ],
+      "texture": "Textures/glint.jpg",
+      "rotationHours": 18.91,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "mesh": "Models/glint.glb"
+    },
+    {
+      "id": "fic.nivara.frost",
+      "name": "Frost",
+      "parentId": "fic.nivara.gelid",
+      "kind": "moon",
+      "radiusMetres": 610000.0,
+      "positionMetres": [
+        26070859776.0,
+        -14901455872.0,
+        -196782544.0
+      ],
+      "texture": "Textures/frost.jpg",
+      "rotationHours": 70.75,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    },
+    {
+      "id": "fic.nivara.cairn",
+      "name": "Cairn",
+      "parentId": "fic.nivara.gelid",
+      "kind": "moon",
+      "radiusMetres": 430000.0,
+      "positionMetres": [
+        25704280064.0,
+        -14788569088.0,
+        -172787616.0
+      ],
+      "texture": "Textures/cairn.jpg",
+      "rotationHours": 141.62,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    },
+    {
+      "id": "fic.nivara.wisp",
+      "name": "Wisp",
+      "parentId": "fic.nivara.gelid",
+      "kind": "moon",
+      "radiusMetres": 260000.0,
+      "positionMetres": [
+        25843388416.0,
+        -15334010880.0,
+        -288724928.0
+      ],
+      "texture": "Textures/wisp.jpg",
+      "rotationHours": 245.85,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored"
+    }
+  ],
+  "belts": [
+    {
+      "id": "fic.nivara.icy_belt",
+      "parentId": "fic.nivara.sun",
+      "innerMetres": 44879361210.0,
+      "outerMetres": 68815020522.0,
+      "count": 600,
+      "seed": 3301,
+      "kind": "icy"
+    }
+  ]
+}

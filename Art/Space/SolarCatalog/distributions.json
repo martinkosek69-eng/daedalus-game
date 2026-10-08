@@ -1,0 +1,167 @@
+{
+  "version": 1,
+  "astronomicalUnitMetres": 149597870700.0,
+  "reviewedDate": "2026-10-04",
+  "regions": [
+    {
+      "id": "sol.environment.main_belt",
+      "name": "Main asteroid belt",
+      "parentId": "sol.sun",
+      "geometry": "broad-orbital-disk",
+      "sourceUrls": [
+        "https://science.nasa.gov/solar-system/asteroids/"
+      ],
+      "approximatePhysicalBoundsAu": null,
+      "authoredSamplingEnvelopeAu": [
+        2.1,
+        3.3
+      ],
+      "physicalNumberDensity": null,
+      "catalogBodyCount": null,
+      "sampledObjectsAreAuthoritative": false,
+      "seed": 3260068124,
+      "visualPolicy": "sparse-local-samples-and-map-overlay; no opaque global volume",
+      "uncertainty": "NASA source locates main belt between Mars and Jupiter. 2.1-3.3 AU is an authored sampling envelope, not measured sharp boundaries or density."
+    },
+    {
+      "id": "sol.environment.jupiter_trojans",
+      "name": "Jupiter Trojan populations",
+      "parentId": "sol.sun",
+      "geometry": "two-resonant-orbital-lobes",
+      "sourceUrls": [
+        "https://science.nasa.gov/mission/lucy/science/",
+        "https://www.nasa.gov/solar-system/how-the-sun-affects-asteroids-in-our-neighborhood/"
+      ],
+      "approximatePhysicalBoundsAu": null,
+      "authoredSamplingEnvelopeAu": null,
+      "physicalNumberDensity": null,
+      "catalogBodyCount": null,
+      "sampledObjectsAreAuthoritative": false,
+      "seed": 360983840,
+      "visualPolicy": "sparse-local-samples-and-map-overlay; no opaque global volume",
+      "uncertainty": "L4/L5 approximately 60 degrees ahead/behind Jupiter. No measured lobe width or density selected; use current Jupiter orbital phase.",
+      "resonantLongitudeOffsetsDegrees": [
+        -60,
+        60
+      ]
+    },
+    {
+      "id": "sol.environment.kuiper_belt",
+      "name": "Kuiper belt core",
+      "parentId": "sol.sun",
+      "geometry": "thick-orbital-disk",
+      "sourceUrls": [
+        "https://science.nasa.gov/solar-system/kuiper-belt/facts/"
+      ],
+      "approximatePhysicalBoundsAu": [
+        30,
+        50
+      ],
+      "authoredSamplingEnvelopeAu": null,
+      "physicalNumberDensity": null,
+      "catalogBodyCount": null,
+      "sampledObjectsAreAuthoritative": false,
+      "seed": 1515792097,
+      "visualPolicy": "sparse-local-samples-and-map-overlay; no opaque global volume",
+      "uncertainty": "Approximate core, not empty outside its boundaries. Cold and dynamically hot populations have different inclinations/eccentricities."
+    },
+    {
+      "id": "sol.environment.scattered_disk",
+      "name": "Scattered trans-Neptunian population",
+      "parentId": "sol.sun",
+      "geometry": "eccentric-inclined-orbits",
+      "sourceUrls": [
+        "https://science.nasa.gov/solar-system/kuiper-belt/facts/"
+      ],
+      "approximatePhysicalBoundsAu": [
+        null,
+        1000
+      ],
+      "authoredSamplingEnvelopeAu": null,
+      "physicalNumberDensity": null,
+      "catalogBodyCount": null,
+      "sampledObjectsAreAuthoritative": false,
+      "seed": 1978934047,
+      "visualPolicy": "sparse-local-samples-and-map-overlay; no opaque global volume",
+      "uncertainty": "Rough maximum reach quoted by NASA; not a uniformly filled shell or hard edge."
+    },
+    {
+      "id": "sol.environment.inner_oort",
+      "name": "Inner Oort population",
+      "parentId": "sol.sun",
+      "geometry": "inferred-outer-population",
+      "sourceUrls": [
+        "https://science.nasa.gov/solar-system/oort-cloud/facts/"
+      ],
+      "approximatePhysicalBoundsAu": null,
+      "authoredSamplingEnvelopeAu": null,
+      "physicalNumberDensity": null,
+      "catalogBodyCount": null,
+      "sampledObjectsAreAuthoritative": false,
+      "seed": 2417480568,
+      "visualPolicy": "sparse-local-samples-and-map-overlay; no opaque global volume",
+      "uncertainty": "2000-5000 AU expresses uncertainty in where inner boundary may begin, not the thickness of a measured narrow shell. No direct cloud image.",
+      "innerBoundaryUncertaintyRangeAu": [
+        2000,
+        5000
+      ]
+    },
+    {
+      "id": "sol.environment.outer_oort",
+      "name": "Outer Oort population",
+      "parentId": "sol.sun",
+      "geometry": "inferred-spherical-population",
+      "sourceUrls": [
+        "https://science.nasa.gov/solar-system/oort-cloud/facts/"
+      ],
+      "approximatePhysicalBoundsAu": null,
+      "authoredSamplingEnvelopeAu": null,
+      "physicalNumberDensity": null,
+      "catalogBodyCount": null,
+      "sampledObjectsAreAuthoritative": false,
+      "seed": 1693416763,
+      "visualPolicy": "sparse-local-samples-and-map-overlay; no opaque global volume",
+      "uncertainty": "10000-100000 AU expresses uncertainty in outer extent, not a measured hard shell. Extremely distant sparse icy bodies; not visible fog.",
+      "outerBoundaryUncertaintyRangeAu": [
+        10000,
+        100000
+      ]
+    },
+    {
+      "id": "sol.environment.zodiacal_dust",
+      "name": "Interplanetary zodiacal dust",
+      "parentId": "sol.sun",
+      "geometry": "diffuse-sunlight-scattering-disk",
+      "sourceUrls": [
+        "https://www.nasa.gov/missions/serendipitous-juno-spacecraft-detections-shatter-ideas-about-origin-of-zodiacal-light/",
+        "https://pds.nasa.gov/data/uly-j-gas-5-sky-maps-v1.0/uly_5001/document/dust/dustinst.htm"
+      ],
+      "approximatePhysicalBoundsAu": null,
+      "authoredSamplingEnvelopeAu": null,
+      "physicalNumberDensity": null,
+      "catalogBodyCount": null,
+      "sampledObjectsAreAuthoritative": false,
+      "seed": 4018907909,
+      "visualPolicy": "sparse-local-samples-and-map-overlay; no opaque global volume",
+      "uncertainty": "Faint diffuse illumination from tiny grains. Selected source gives no absolute density or sharp radial edges. Do not render universal dense glowing particles.",
+      "lightProbedGrainSizeMetres": [
+        1e-05,
+        0.001
+      ]
+    }
+  ],
+  "cometAppearance": {
+    "sourceUrl": "https://science.nasa.gov/solar-system/comets/",
+    "nucleus": "solid ice-rock-dust body",
+    "coma": "activity-dependent sunlight-scattering gas/dust around nucleus",
+    "tail": "points generally away from Sun; do not orient by velocity alone",
+    "activityThresholdAu": null
+  },
+  "pilotMotionAid": {
+    "kind": "optional-authored-local-particles",
+    "measuredAstronomicalDust": false,
+    "mutatesCanonicalBodies": false,
+    "collide": false
+  },
+  "note": "Sampling counts/radii/LOD/brightness are engine presentation choices, never measured population density or undiscovered persistent celestial bodies."
+}

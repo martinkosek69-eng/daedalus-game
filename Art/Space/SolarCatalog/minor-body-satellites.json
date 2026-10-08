@@ -1,0 +1,693 @@
+{
+  "version": 1,
+  "note": "Five duplicate Pluto moons excluded: use satellites.json. No unknown sizes or phases invented.",
+  "bodies": [
+    {
+      "id": "sol.smallbody.sp_k20000243.moon.s_1993_243_1",
+      "parentId": "sol.smallbody.sp_k20000243",
+      "name": "Dactyl",
+      "kind": "moon",
+      "radiusMetres": null,
+      "radiusStatus": "unknown-in-selected-API",
+      "relativePositionMetres": null,
+      "positionMetres": null,
+      "positionEpochJdTdb": null,
+      "positionFrame": "right-handed-ecliptic-J2000-parent-centred",
+      "positionStatus": "unknown-or-insufficient-elements",
+      "orbit": {
+        "frame": "equatorial",
+        "epochJdTdb": null,
+        "semiMajorAxisMetres": null,
+        "eccentricity": null,
+        "meanAnomalyDegrees": null,
+        "inclinationDegrees": null,
+        "argumentPeriapsisDegrees": null,
+        "ascendingNodeDegrees": null,
+        "elementDetails": [],
+        "sourceRecord": {}
+      },
+      "sourceRecord": {
+        "fullname": "(243) Ida I Dactyl",
+        "year": "1993",
+        "iau_name": "Dactyl",
+        "orbit": {},
+        "prov_des": "S/1993 (243) 1",
+        "confirmed": "Y",
+        "notes": null,
+        "iau_num": 1,
+        "ref": "Belton et al. (1994), IAUC 5948",
+        "oid": null
+      },
+      "sourceUrl": "https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=243&phys-par=true&full-prec=true&sat=true",
+      "texture": null,
+      "surfaceQuality": "unmapped-in-project",
+      "rotationHours": null
+    },
+    {
+      "id": "sol.smallbody.sp_k20065803.moon.s_2003_65803_1",
+      "parentId": "sol.smallbody.sp_k20065803",
+      "name": "Dimorphos",
+      "kind": "moon",
+      "radiusMetres": null,
+      "radiusStatus": "unknown-in-selected-API",
+      "relativePositionMetres": null,
+      "positionMetres": null,
+      "positionEpochJdTdb": null,
+      "positionFrame": "right-handed-ecliptic-J2000-parent-centred",
+      "positionStatus": "unknown-or-insufficient-elements",
+      "orbit": {
+        "frame": "ecliptic",
+        "epochJdTdb": null,
+        "semiMajorAxisMetres": null,
+        "eccentricity": 0.02,
+        "meanAnomalyDegrees": null,
+        "inclinationDegrees": 160.0,
+        "argumentPeriapsisDegrees": null,
+        "ascendingNodeDegrees": 60.0,
+        "elementDetails": [
+          {
+            "title": "eccentricity                                           ",
+            "sigma": "0.03",
+            "name": "e",
+            "value": "0.02",
+            "units": null,
+            "label": "e"
+          },
+          {
+            "units": "km",
+            "label": "q",
+            "name": "q",
+            "sigma": null,
+            "title": "perihelion distance                                    ",
+            "value": null
+          },
+          {
+            "value": null,
+            "name": "tp",
+            "sigma": null,
+            "title": "time of perihelion passage (TDB) in Julian Day form",
+            "label": "tp",
+            "units": "d"
+          },
+          {
+            "label": "node",
+            "units": "deg",
+            "value": "60",
+            "sigma": "20",
+            "title": "longitude of the ascending node                        ",
+            "name": "om"
+          },
+          {
+            "label": "peri",
+            "units": "deg",
+            "value": null,
+            "name": "w",
+            "sigma": null,
+            "title": "argument of perihelion                                 "
+          },
+          {
+            "value": "160",
+            "name": "i",
+            "sigma": "20",
+            "title": "inclination; angle with respect to x-y ecliptic plane  ",
+            "label": "i",
+            "units": "deg"
+          },
+          {
+            "label": "a",
+            "units": "km",
+            "value": null,
+            "title": "semi-major axis                                        ",
+            "sigma": null,
+            "name": "a"
+          },
+          {
+            "label": "M",
+            "units": "deg",
+            "value": null,
+            "name": "ma",
+            "sigma": null,
+            "title": "mean anomaly                                           "
+          },
+          {
+            "label": "period",
+            "units": "h",
+            "value": "11.92",
+            "sigma": "0.005",
+            "name": "per",
+            "title": "sidereal orbital period                                "
+          },
+          {
+            "label": "n",
+            "units": "deg/d",
+            "value": null,
+            "name": "n",
+            "sigma": null,
+            "title": "mean motion                                            "
+          },
+          {
+            "units": "deg/y^2",
+            "label": "dn/dt",
+            "sigma": null,
+            "title": "time rate of change of mean motion",
+            "name": "dn_dt",
+            "value": null
+          },
+          {
+            "units": null,
+            "label": "a/D",
+            "sigma": "0.2",
+            "title": "ratio of semi-major axis to primary diameter",
+            "name": "a_D",
+            "value": "1.5"
+          }
+        ],
+        "sourceRecord": {
+          "frame": "EC",
+          "equinox": "J2000",
+          "epoch": null,
+          "ref": "Pravec et al. 2006",
+          "notes": null,
+          "elements": [
+            {
+              "title": "eccentricity                                           ",
+              "sigma": "0.03",
+              "name": "e",
+              "value": "0.02",
+              "units": null,
+              "label": "e"
+            },
+            {
+              "units": "km",
+              "label": "q",
+              "name": "q",
+              "sigma": null,
+              "title": "perihelion distance                                    ",
+              "value": null
+            },
+            {
+              "value": null,
+              "name": "tp",
+              "sigma": null,
+              "title": "time of perihelion passage (TDB) in Julian Day form",
+              "label": "tp",
+              "units": "d"
+            },
+            {
+              "label": "node",
+              "units": "deg",
+              "value": "60",
+              "sigma": "20",
+              "title": "longitude of the ascending node                        ",
+              "name": "om"
+            },
+            {
+              "label": "peri",
+              "units": "deg",
+              "value": null,
+              "name": "w",
+              "sigma": null,
+              "title": "argument of perihelion                                 "
+            },
+            {
+              "value": "160",
+              "name": "i",
+              "sigma": "20",
+              "title": "inclination; angle with respect to x-y ecliptic plane  ",
+              "label": "i",
+              "units": "deg"
+            },
+            {
+              "label": "a",
+              "units": "km",
+              "value": null,
+              "title": "semi-major axis                                        ",
+              "sigma": null,
+              "name": "a"
+            },
+            {
+              "label": "M",
+              "units": "deg",
+              "value": null,
+              "name": "ma",
+              "sigma": null,
+              "title": "mean anomaly                                           "
+            },
+            {
+              "label": "period",
+              "units": "h",
+              "value": "11.92",
+              "sigma": "0.005",
+              "name": "per",
+              "title": "sidereal orbital period                                "
+            },
+            {
+              "label": "n",
+              "units": "deg/d",
+              "value": null,
+              "name": "n",
+              "sigma": null,
+              "title": "mean motion                                            "
+            },
+            {
+              "units": "deg/y^2",
+              "label": "dn/dt",
+              "sigma": null,
+              "title": "time rate of change of mean motion",
+              "name": "dn_dt",
+              "value": null
+            },
+            {
+              "units": null,
+              "label": "a/D",
+              "sigma": "0.2",
+              "title": "ratio of semi-major axis to primary diameter",
+              "name": "a_D",
+              "value": "1.5"
+            }
+          ]
+        }
+      },
+      "sourceRecord": {
+        "iau_name": "Dimorphos",
+        "iau_num": 1,
+        "notes": null,
+        "ref": "Pravec et al. (2003), IAUC 8244",
+        "orbit": {
+          "0": {
+            "frame": "EC",
+            "equinox": "J2000",
+            "epoch": null,
+            "ref": "Pravec et al. 2006",
+            "notes": null,
+            "elements": [
+              {
+                "title": "eccentricity                                           ",
+                "sigma": "0.03",
+                "name": "e",
+                "value": "0.02",
+                "units": null,
+                "label": "e"
+              },
+              {
+                "units": "km",
+                "label": "q",
+                "name": "q",
+                "sigma": null,
+                "title": "perihelion distance                                    ",
+                "value": null
+              },
+              {
+                "value": null,
+                "name": "tp",
+                "sigma": null,
+                "title": "time of perihelion passage (TDB) in Julian Day form",
+                "label": "tp",
+                "units": "d"
+              },
+              {
+                "label": "node",
+                "units": "deg",
+                "value": "60",
+                "sigma": "20",
+                "title": "longitude of the ascending node                        ",
+                "name": "om"
+              },
+              {
+                "label": "peri",
+                "units": "deg",
+                "value": null,
+                "name": "w",
+                "sigma": null,
+                "title": "argument of perihelion                                 "
+              },
+              {
+                "value": "160",
+                "name": "i",
+                "sigma": "20",
+                "title": "inclination; angle with respect to x-y ecliptic plane  ",
+                "label": "i",
+                "units": "deg"
+              },
+              {
+                "label": "a",
+                "units": "km",
+                "value": null,
+                "title": "semi-major axis                                        ",
+                "sigma": null,
+                "name": "a"
+              },
+              {
+                "label": "M",
+                "units": "deg",
+                "value": null,
+                "name": "ma",
+                "sigma": null,
+                "title": "mean anomaly                                           "
+              },
+              {
+                "label": "period",
+                "units": "h",
+                "value": "11.92",
+                "sigma": "0.005",
+                "name": "per",
+                "title": "sidereal orbital period                                "
+              },
+              {
+                "label": "n",
+                "units": "deg/d",
+                "value": null,
+                "name": "n",
+                "sigma": null,
+                "title": "mean motion                                            "
+              },
+              {
+                "units": "deg/y^2",
+                "label": "dn/dt",
+                "sigma": null,
+                "title": "time rate of change of mean motion",
+                "name": "dn_dt",
+                "value": null
+              },
+              {
+                "units": null,
+                "label": "a/D",
+                "sigma": "0.2",
+                "title": "ratio of semi-major axis to primary diameter",
+                "name": "a_D",
+                "value": "1.5"
+              }
+            ]
+          }
+        },
+        "fullname": "(65803) Didymos I Dimorphos",
+        "confirmed": "Y",
+        "oid": 0,
+        "year": "2003",
+        "prov_des": "S/2003 (65803) 1"
+      },
+      "sourceUrl": "https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=65803&phys-par=true&full-prec=true&sat=true",
+      "texture": null,
+      "surfaceQuality": "unmapped-in-project",
+      "rotationHours": null
+    },
+    {
+      "id": "sol.eris.moon.s_2005_136199_1",
+      "parentId": "sol.eris",
+      "name": "Dysnomia",
+      "kind": "moon",
+      "radiusMetres": 350000,
+      "radiusStatus": "published-supplemental-measurement",
+      "relativePositionMetres": null,
+      "positionMetres": null,
+      "positionEpochJdTdb": null,
+      "positionFrame": "right-handed-ecliptic-J2000-parent-centred",
+      "positionStatus": "unknown-or-insufficient-elements",
+      "orbit": {
+        "frame": "equatorial",
+        "epochJdTdb": null,
+        "semiMajorAxisMetres": null,
+        "eccentricity": null,
+        "meanAnomalyDegrees": null,
+        "inclinationDegrees": null,
+        "argumentPeriapsisDegrees": null,
+        "ascendingNodeDegrees": null,
+        "elementDetails": [],
+        "sourceRecord": {}
+      },
+      "sourceRecord": {
+        "year": "2005",
+        "oid": null,
+        "prov_des": "S/2005 (136199) 1",
+        "iau_name": "Dysnomia",
+        "orbit": {},
+        "fullname": "(136199) Eris I Dysnomia",
+        "confirmed": "Y",
+        "ref": "Brown et al. (2005), IAUC 8610",
+        "notes": null,
+        "iau_num": 1
+      },
+      "sourceUrl": "https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=136199&phys-par=true&full-prec=true&sat=true",
+      "texture": null,
+      "surfaceQuality": "unmapped-in-project",
+      "rotationHours": null,
+      "radiusSigmaMetres": 57500,
+      "radiusProvenance": {
+        "bodyId": "sol.eris.moon.s_2005_136199_1",
+        "radiusMetres": 350000,
+        "radiusSigmaMetres": 57500,
+        "method": "thermal observations; modeled radius",
+        "reference": "Brown and Butler (2018), as reported in Holler et al., Icarus 355 (2021), section 4, page 6",
+        "sourceUrl": "https://ntrs.nasa.gov/api/citations/20210012932/downloads/21-49.pdf",
+        "doi": "10.1016/j.icarus.2020.114130",
+        "uncertainty": "Large model uncertainty; not a measured terrain mesh or current orbit solution."
+      }
+    },
+    {
+      "id": "sol.haumea.moon.s_2005_136108_1",
+      "parentId": "sol.haumea",
+      "name": "Hi'iaka",
+      "kind": "moon",
+      "radiusMetres": null,
+      "radiusStatus": "unknown-in-selected-API",
+      "relativePositionMetres": null,
+      "positionMetres": null,
+      "positionEpochJdTdb": null,
+      "positionFrame": "right-handed-ecliptic-J2000-parent-centred",
+      "positionStatus": "unknown-or-insufficient-elements",
+      "orbit": {
+        "frame": "equatorial",
+        "epochJdTdb": null,
+        "semiMajorAxisMetres": null,
+        "eccentricity": null,
+        "meanAnomalyDegrees": null,
+        "inclinationDegrees": null,
+        "argumentPeriapsisDegrees": null,
+        "ascendingNodeDegrees": null,
+        "elementDetails": [],
+        "sourceRecord": {}
+      },
+      "sourceRecord": {
+        "year": "2005",
+        "oid": null,
+        "prov_des": "S/2005 (136108) 1",
+        "iau_name": "Hi'iaka",
+        "notes": null,
+        "iau_num": 1,
+        "ref": "Brown et al. (2005), IAUC 8577",
+        "orbit": {},
+        "fullname": "(136108) Haumea I Hi'iaka",
+        "confirmed": "Y"
+      },
+      "sourceUrl": "https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=136108&phys-par=true&full-prec=true&sat=true",
+      "texture": null,
+      "surfaceQuality": "unmapped-in-project",
+      "rotationHours": null
+    },
+    {
+      "id": "sol.haumea.moon.s_2005_136108_2",
+      "parentId": "sol.haumea",
+      "name": "Namaka",
+      "kind": "moon",
+      "radiusMetres": null,
+      "radiusStatus": "unknown-in-selected-API",
+      "relativePositionMetres": null,
+      "positionMetres": null,
+      "positionEpochJdTdb": null,
+      "positionFrame": "right-handed-ecliptic-J2000-parent-centred",
+      "positionStatus": "unknown-or-insufficient-elements",
+      "orbit": {
+        "frame": "equatorial",
+        "epochJdTdb": null,
+        "semiMajorAxisMetres": null,
+        "eccentricity": null,
+        "meanAnomalyDegrees": null,
+        "inclinationDegrees": null,
+        "argumentPeriapsisDegrees": null,
+        "ascendingNodeDegrees": null,
+        "elementDetails": [],
+        "sourceRecord": {}
+      },
+      "sourceRecord": {
+        "year": "2005",
+        "oid": null,
+        "prov_des": "S/2005 (136108) 2",
+        "iau_name": "Namaka",
+        "iau_num": 2,
+        "notes": null,
+        "ref": "Brown et al. (2005), IAUC 8636",
+        "orbit": {},
+        "fullname": "(136108) Haumea II Namaka",
+        "confirmed": "Y"
+      },
+      "sourceUrl": "https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=136108&phys-par=true&full-prec=true&sat=true",
+      "texture": null,
+      "surfaceQuality": "unmapped-in-project",
+      "rotationHours": null
+    },
+    {
+      "id": "sol.makemake.moon.s_2015_136472_1",
+      "parentId": "sol.makemake",
+      "name": "S/2015 (136472) 1",
+      "kind": "moon",
+      "radiusMetres": null,
+      "radiusStatus": "unknown-in-selected-API",
+      "relativePositionMetres": null,
+      "positionMetres": null,
+      "positionEpochJdTdb": null,
+      "positionFrame": "right-handed-ecliptic-J2000-parent-centred",
+      "positionStatus": "unknown-or-insufficient-elements",
+      "orbit": {
+        "frame": "equatorial",
+        "epochJdTdb": null,
+        "semiMajorAxisMetres": null,
+        "eccentricity": null,
+        "meanAnomalyDegrees": null,
+        "inclinationDegrees": null,
+        "argumentPeriapsisDegrees": null,
+        "ascendingNodeDegrees": null,
+        "elementDetails": [],
+        "sourceRecord": {}
+      },
+      "sourceRecord": {
+        "iau_name": "",
+        "orbit": {},
+        "prov_des": "S/2015 (136472) 1",
+        "fullname": "S/2015 (136472) 1",
+        "year": "2015",
+        "iau_num": null,
+        "ref": "Parker et al. (2015), CBET 4275",
+        "oid": null,
+        "confirmed": "Y",
+        "notes": null
+      },
+      "sourceUrl": "https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=136472&phys-par=true&full-prec=true&sat=true",
+      "texture": null,
+      "surfaceQuality": "unmapped-in-project",
+      "rotationHours": null
+    },
+    {
+      "id": "sol.smallbody.sp_k20050000.moon.s_2006_50000_1",
+      "parentId": "sol.smallbody.sp_k20050000",
+      "name": "Weywot",
+      "kind": "moon",
+      "radiusMetres": null,
+      "radiusStatus": "unknown-in-selected-API",
+      "relativePositionMetres": null,
+      "positionMetres": null,
+      "positionEpochJdTdb": null,
+      "positionFrame": "right-handed-ecliptic-J2000-parent-centred",
+      "positionStatus": "unknown-or-insufficient-elements",
+      "orbit": {
+        "frame": "equatorial",
+        "epochJdTdb": null,
+        "semiMajorAxisMetres": null,
+        "eccentricity": null,
+        "meanAnomalyDegrees": null,
+        "inclinationDegrees": null,
+        "argumentPeriapsisDegrees": null,
+        "ascendingNodeDegrees": null,
+        "elementDetails": [],
+        "sourceRecord": {}
+      },
+      "sourceRecord": {
+        "prov_des": "S/2006 (50000) 1",
+        "oid": null,
+        "year": "2006",
+        "confirmed": "Y",
+        "fullname": "(50000) Quaoar I Weywot",
+        "orbit": {},
+        "ref": "Brown and Suer (2007), IAUC 8812",
+        "notes": null,
+        "iau_num": 1,
+        "iau_name": "Weywot"
+      },
+      "sourceUrl": "https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=50000&phys-par=true&full-prec=true&sat=true",
+      "texture": null,
+      "surfaceQuality": "unmapped-in-project",
+      "rotationHours": null
+    },
+    {
+      "id": "sol.smallbody.sp_k20090482.moon.s_2005_90482_1",
+      "parentId": "sol.smallbody.sp_k20090482",
+      "name": "Vanth",
+      "kind": "moon",
+      "radiusMetres": null,
+      "radiusStatus": "unknown-in-selected-API",
+      "relativePositionMetres": null,
+      "positionMetres": null,
+      "positionEpochJdTdb": null,
+      "positionFrame": "right-handed-ecliptic-J2000-parent-centred",
+      "positionStatus": "unknown-or-insufficient-elements",
+      "orbit": {
+        "frame": "equatorial",
+        "epochJdTdb": null,
+        "semiMajorAxisMetres": null,
+        "eccentricity": null,
+        "meanAnomalyDegrees": null,
+        "inclinationDegrees": null,
+        "argumentPeriapsisDegrees": null,
+        "ascendingNodeDegrees": null,
+        "elementDetails": [],
+        "sourceRecord": {}
+      },
+      "sourceRecord": {
+        "fullname": "(90482) Orcus I Vanth",
+        "year": "2005",
+        "prov_des": "S/2005 (90482) 1",
+        "iau_name": "Vanth",
+        "orbit": {},
+        "notes": null,
+        "confirmed": "Y",
+        "iau_num": 1,
+        "oid": null,
+        "ref": "Brown and Suer (2007), IAUC 8812"
+      },
+      "sourceUrl": "https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=90482&phys-par=true&full-prec=true&sat=true",
+      "texture": null,
+      "surfaceQuality": "unmapped-in-project",
+      "rotationHours": null
+    },
+    {
+      "id": "sol.smallbody.sp_k20225088.moon.s_2010_225088_1",
+      "parentId": "sol.smallbody.sp_k20225088",
+      "name": "Xiangliu",
+      "kind": "moon",
+      "radiusMetres": null,
+      "radiusStatus": "unknown-in-selected-API",
+      "relativePositionMetres": null,
+      "positionMetres": null,
+      "positionEpochJdTdb": null,
+      "positionFrame": "right-handed-ecliptic-J2000-parent-centred",
+      "positionStatus": "unknown-or-insufficient-elements",
+      "orbit": {
+        "frame": "equatorial",
+        "epochJdTdb": null,
+        "semiMajorAxisMetres": null,
+        "eccentricity": null,
+        "meanAnomalyDegrees": null,
+        "inclinationDegrees": null,
+        "argumentPeriapsisDegrees": null,
+        "ascendingNodeDegrees": null,
+        "elementDetails": [],
+        "sourceRecord": {}
+      },
+      "sourceRecord": {
+        "iau_name": "Xiangliu",
+        "iau_num": 1,
+        "notes": null,
+        "ref": "Kiss et al. (2017), ApJL 838",
+        "confirmed": "Y",
+        "fullname": "(225088) Gonggong I Xiangliu",
+        "orbit": {},
+        "oid": null,
+        "year": "2010",
+        "prov_des": "S/2010 (225088) 1"
+      },
+      "sourceUrl": "https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=225088&phys-par=true&full-prec=true&sat=true",
+      "texture": null,
+      "surfaceQuality": "unmapped-in-project",
+      "rotationHours": null
+    }
+  ]
+}

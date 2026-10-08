@@ -1,0 +1,500 @@
+{
+  "sourceSHA256": "c7c670ff703842e2d9e1525bcfba44682de05705defbc74743d1cd66fd8335cd",
+  "blendSHA256": "77aa5a04b4996ccd9baca87f03a966f119b02059df601ebed641014c1015bc7c",
+  "glbSHA256": "9cefa922abba0869d54065054dab5908d171c13dfbaa57667c7d4dd674e355ab",
+  "engineGlowGlbSHA256": "bcd5e49359d8498773f97a931060f17c523d9b85c60c480b76b1fd04090b8237",
+  "dimensionsMetres": [
+    600.0001,
+    378.5321,
+    92.6071
+  ],
+  "originalTriangles": 222330,
+  "finalTriangles": 222330,
+  "vertices": 503846,
+  "originalAstrofossilGeometryChanged": false,
+  "changesFromBaseline": "hull is the exact Astrofossil geometry: the baseline hatch squares and vent slats (not in the original) were removed at the user request; baseline window cubes moved to the separate DaedalusLights.glb; parts the stills show but the model lacks (bridge masts, bow rods, U16-style VLS hatches, U17-style hangar back walls, detail lights, blinking mast beacons) are separate exports",
+  "materialSlots": [
+    "Daedalus_Armor",
+    "Daedalus_EngineMetal",
+    "Daedalus_HangarInterior",
+    "Daedalus_LightWhite",
+    "Daedalus_EngineInner"
+  ],
+  "vertexColour": "COLOR_0 linear large-scale albedo x baked AO; textured slots multiply it with the plating base colour (glTF rule), untextured slots carry their base colour",
+  "textures": {
+    "files": {
+      "base": "Textures/T_Daedalus_Plating_BaseColor.png",
+      "orm": "Textures/T_Daedalus_Plating_ORM.png",
+      "normal": "Textures/T_Daedalus_Plating_Normal.png"
+    },
+    "sizePixels": 2048,
+    "tileMetres": 32.0,
+    "siloHatchFiles": [
+      "Textures/T_Daedalus_SiloHatch_Normal.png",
+      "Textures/T_Daedalus_SiloHatch_Plain_BaseColor.png",
+      "Textures/T_Daedalus_SiloHatch_Striped_BaseColor.png"
+    ],
+    "siloHatchSizeMetres": [
+      6.2,
+      15.45
+    ],
+    "uv": "UVMap: world-scale box projection per face (dominant normal axis), 1 UV unit = 32 m",
+    "generator": "procedural, plating_maps() in this script (seed 304); no third-party images",
+    "stats": {
+      "plates": 152,
+      "albedoMeanSRGB": 0.709,
+      "roughnessMean": 0.563
+    },
+    "sha256": {
+      "T_Daedalus_Plating_BaseColor": "cecf95d3d24f448b1381c54843fa9146cd788afa6ab581f40720874dc5b267e9",
+      "T_Daedalus_Plating_Normal": "c27f873a543cde79f0d78b5b79aee1c8a86795a9bdd962fdd16c67b57241c7dd",
+      "T_Daedalus_Plating_ORM": "55032c451e5869ca1e659b9aab6a1ade4c4b77336e854046c13a91bfd5f3e988",
+      "T_Daedalus_SiloHatch_Normal": "5a6fb86247d45fb4e3e0f865dccb4cc8aff69bcc46ce118350f96ebb70e7aef8",
+      "T_Daedalus_SiloHatch_Plain_BaseColor": "b69f3da83fb08f3f80ebb91e14d0dc03bbb6deb640982b89d077b431efa51a58",
+      "T_Daedalus_SiloHatch_Striped_BaseColor": "6ccc7221705961aeb985e05385f019d2200c4758cddfa8b8014294b9ed67c6b8"
+    }
+  },
+  "addOns": {
+    "masts": [
+      {
+        "baseMetres": [
+          -215.0,
+          40.0,
+          46.3
+        ],
+        "heightMetres": 14.0,
+        "beacon": true
+      },
+      {
+        "baseMetres": [
+          -215.0,
+          60.0,
+          46.3
+        ],
+        "heightMetres": 14.0,
+        "beacon": true
+      },
+      {
+        "baseMetres": [
+          -246.0,
+          76.0,
+          28.71
+        ],
+        "heightMetres": 50.0,
+        "beacon": true
+      },
+      {
+        "baseMetres": [
+          -248.5,
+          78.0,
+          28.71
+        ],
+        "heightMetres": 44.0,
+        "beacon": false
+      },
+      {
+        "baseMetres": [
+          -244.0,
+          79.5,
+          28.71
+        ],
+        "heightMetres": 38.0,
+        "beacon": false
+      }
+    ],
+    "rods": [
+      {
+        "baseMetres": [
+          291.14,
+          29.5,
+          -14.0
+        ],
+        "tipMetres": [
+          331.14,
+          29.5,
+          -14.0
+        ]
+      },
+      {
+        "baseMetres": [
+          291.13,
+          -29.5,
+          -14.0
+        ],
+        "tipMetres": [
+          331.13,
+          -29.5,
+          -14.0
+        ]
+      }
+    ],
+    "siloHatches": [
+      {
+        "centreMetres": [
+          221.5,
+          -10.62,
+          17.18
+        ],
+        "sizeMetres": [
+          6.2,
+          15.45
+        ],
+        "hazardStripes": true
+      },
+      {
+        "centreMetres": [
+          221.5,
+          12.88,
+          17.18
+        ],
+        "sizeMetres": [
+          6.2,
+          15.45
+        ],
+        "hazardStripes": false
+      },
+      {
+        "centreMetres": [
+          206.5,
+          -10.62,
+          17.18
+        ],
+        "sizeMetres": [
+          6.2,
+          15.45
+        ],
+        "hazardStripes": false
+      },
+      {
+        "centreMetres": [
+          206.5,
+          12.88,
+          17.18
+        ],
+        "sizeMetres": [
+          6.2,
+          15.45
+        ],
+        "hazardStripes": true
+      },
+      {
+        "centreMetres": [
+          191.5,
+          -10.62,
+          17.18
+        ],
+        "sizeMetres": [
+          6.2,
+          15.45
+        ],
+        "hazardStripes": true
+      },
+      {
+        "centreMetres": [
+          191.5,
+          12.88,
+          17.18
+        ],
+        "sizeMetres": [
+          6.2,
+          15.45
+        ],
+        "hazardStripes": false
+      },
+      {
+        "centreMetres": [
+          176.38,
+          -10.62,
+          17.18
+        ],
+        "sizeMetres": [
+          6.2,
+          15.45
+        ],
+        "hazardStripes": false
+      },
+      {
+        "centreMetres": [
+          176.38,
+          12.88,
+          17.18
+        ],
+        "sizeMetres": [
+          6.2,
+          15.45
+        ],
+        "hazardStripes": true
+      },
+      {
+        "centreMetres": [
+          161.25,
+          -10.62,
+          17.18
+        ],
+        "sizeMetres": [
+          6.2,
+          15.45
+        ],
+        "hazardStripes": true
+      },
+      {
+        "centreMetres": [
+          161.25,
+          12.88,
+          17.18
+        ],
+        "sizeMetres": [
+          6.2,
+          15.45
+        ],
+        "hazardStripes": false
+      },
+      {
+        "centreMetres": [
+          146.25,
+          -10.62,
+          17.18
+        ],
+        "sizeMetres": [
+          6.2,
+          15.45
+        ],
+        "hazardStripes": false
+      },
+      {
+        "centreMetres": [
+          146.25,
+          12.88,
+          17.18
+        ],
+        "sizeMetres": [
+          6.2,
+          15.45
+        ],
+        "hazardStripes": true
+      },
+      {
+        "centreMetres": [
+          131.25,
+          -10.62,
+          17.18
+        ],
+        "sizeMetres": [
+          6.2,
+          15.45
+        ],
+        "hazardStripes": true
+      },
+      {
+        "centreMetres": [
+          131.25,
+          12.88,
+          17.18
+        ],
+        "sizeMetres": [
+          6.2,
+          15.45
+        ],
+        "hazardStripes": false
+      },
+      {
+        "centreMetres": [
+          116.12,
+          -10.62,
+          17.18
+        ],
+        "sizeMetres": [
+          6.2,
+          15.45
+        ],
+        "hazardStripes": false
+      },
+      {
+        "centreMetres": [
+          116.12,
+          12.88,
+          17.18
+        ],
+        "sizeMetres": [
+          6.2,
+          15.45
+        ],
+        "hazardStripes": true
+      }
+    ],
+    "hangarInserts": [
+      {
+        "bayCentreY": -141.25,
+        "backWallX": -23.48,
+        "windowZ": [
+          -26.5,
+          -17.3
+        ],
+        "windowY": [
+          -173.55,
+          -101.94
+        ]
+      },
+      {
+        "bayCentreY": 141.25,
+        "backWallX": -23.48,
+        "windowZ": [
+          -26.5,
+          -17.3
+        ],
+        "windowY": [
+          101.94,
+          173.55
+        ]
+      }
+    ],
+    "lights": {
+      "bridgeWindows": 185,
+      "bowWindows": 7,
+      "faces": 1246
+    },
+    "forwardSuperstructure": {
+      "windowFaceX": 66.12,
+      "cyanUnitsX": 76.4
+    }
+  },
+  "beacons": {
+    "objects": [
+      "Daedalus_Beacons"
+    ],
+    "blinkPeriodSeconds": 5.0,
+    "onSeconds": 0.3333333333333333,
+    "colour": "#ff6a2a",
+    "emissionOn": 8.0,
+    "emissionOff": 0.0,
+    "note": "blink in the engine: emissionOn for onSeconds once every blinkPeriodSeconds; Blender .blend has a preview animation"
+  },
+  "fittings": {
+    "windowLights": 30,
+    "removedBaselineHatchSquares": 14,
+    "removedBaselineVentSlats": 36
+  },
+  "materialAssignment": {
+    "engineMetalFaces": 6372,
+    "engineInnerFaces": 1544,
+    "hangarInteriorFaces": 156,
+    "bowLightFaces": 38
+  },
+  "engineOutlets": 6,
+  "mountGroups": {
+    "asgard_beams": 4,
+    "bow_rods": 2,
+    "bow_vls": 16,
+    "dorsal_railguns": 26,
+    "f302_bays": 2,
+    "ventral_railguns": 12
+  },
+  "exports": {
+    "hull": "Daedalus.glb",
+    "engineGlow": "DaedalusEngineGlow.glb",
+    "lights": "DaedalusLights.glb",
+    "addOns": "DaedalusAddOns.glb",
+    "beacons": "DaedalusBeacons.glb"
+  },
+  "lightsGlbSHA256": "3b92c27cd054b301df4226b7f96ef8b285307da11cf9e91d3a038f78e3d2f3f7",
+  "addOnsGlbSHA256": "a07d287434c37bba259089a33152aa17b183a83ed3d2e42cda8d47cb06f6d33f",
+  "beaconsGlbSHA256": "45de287adf09f674e7c44258f9800be842b4013c83953b9d336813193811e7f5",
+  "checks": {
+    "blendReopen": true,
+    "dimensionsMetres": [
+      600.0001,
+      378.5321,
+      92.6071
+    ],
+    "materialSlots": [
+      "Daedalus_Armor",
+      "Daedalus_EngineMetal",
+      "Daedalus_HangarInterior",
+      "Daedalus_LightWhite",
+      "Daedalus_EngineInner"
+    ],
+    "colorAttributes": [
+      "COLOR_0"
+    ],
+    "uvMaps": [
+      "UVMap"
+    ],
+    "imageDependencies": [
+      "//Textures\\T_Daedalus_Plating_BaseColor.png",
+      "//Textures\\T_Daedalus_Plating_Normal.png",
+      "//Textures\\T_Daedalus_Plating_ORM.png",
+      "//Textures\\T_Daedalus_SiloHatch_Normal.png",
+      "//Textures\\T_Daedalus_SiloHatch_Plain_BaseColor.png",
+      "//Textures\\T_Daedalus_SiloHatch_Striped_BaseColor.png"
+    ],
+    "glbMeshes": [
+      "SM_Daedalus"
+    ],
+    "glbDimensions": [
+      600.0,
+      378.532,
+      92.607
+    ],
+    "glbTriangles": 222330,
+    "glbColorAttributes": [
+      "Color"
+    ],
+    "glbMaterials": [
+      "Daedalus_Armor",
+      "Daedalus_EngineInner",
+      "Daedalus_EngineMetal",
+      "Daedalus_HangarInterior",
+      "Daedalus_LightWhite"
+    ],
+    "glbUVMaps": [
+      "UVMap"
+    ],
+    "glbImages": 3,
+    "addOnObjects": [
+      "Daedalus_AddOns",
+      "HangarDoor_P_Lower",
+      "HangarDoor_P_Upper",
+      "HangarDoor_S_Lower",
+      "HangarDoor_S_Upper"
+    ],
+    "addOnMaterials": [
+      "Daedalus_Armor",
+      "Daedalus_DarkPanel",
+      "Daedalus_HangarInterior",
+      "Daedalus_SiloHatch_Plain",
+      "Daedalus_SiloHatch_Striped",
+      "Daedalus_TrimLight"
+    ],
+    "hangarDoors": [
+      "HangarDoor_P_Lower",
+      "HangarDoor_P_Upper",
+      "HangarDoor_S_Lower",
+      "HangarDoor_S_Upper"
+    ],
+    "beaconObjects": [
+      "Daedalus_Beacons"
+    ],
+    "beaconBlinkExtras": true,
+    "lightsObjects": [
+      "Daedalus_DetailLights",
+      "Daedalus_WindowLights"
+    ],
+    "bayLights": 4,
+    "glowObjects": [
+      "ENG_Main_Port_Glow",
+      "ENG_Main_Starboard_Glow",
+      "ENG_Pod_Port_Inner_Glow",
+      "ENG_Pod_Port_Outer_Glow",
+      "ENG_Pod_Starboard_Inner_Glow",
+      "ENG_Pod_Starboard_Outer_Glow"
+    ],
+    "glowMaterials": [
+      "Daedalus_EngineGlowCore",
+      "Daedalus_EngineGlowPlume"
+    ],
+    "glowLights": 6
+  },
+  "coordinateMapping": "source (x,y,z) -> Unreal/Blender (-z,-x,y)",
+  "detailScript": "Tools/Prepare-DaedalusDetail.py",
+  "baselineScript": "Tools/Prepare-DaedalusSource.py (baseline only; do not run over this detailed source)"
+}

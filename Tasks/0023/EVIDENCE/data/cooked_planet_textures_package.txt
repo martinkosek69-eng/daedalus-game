@@ -1,0 +1,14 @@
+/Game/PlanetQuality/Textures/T_PQ_earth_day_16k.T_PQ_earth_day_16k 16384x8192 PF_BC7 mips=15/15 170.7 MiB
+/Game/PlanetQuality/Textures/T_PQ_earth_night_8k.T_PQ_earth_night_8k 8192x4096 PF_BC7 mips=14/14 42.7 MiB
+/Game/PlanetQuality/Textures/T_PQ_io_8k.T_PQ_io_8k 8192x4096 PF_BC7 mips=14/14 42.7 MiB
+/Game/PlanetQuality/Textures/T_PQ_europa_8k.T_PQ_europa_8k 8192x4096 PF_BC7 mips=14/14 42.7 MiB
+/Game/PlanetQuality/Textures/T_PQ_ganymede_8k.T_PQ_ganymede_8k 8192x4096 PF_BC7 mips=14/14 42.7 MiB
+/Game/PlanetQuality/Textures/T_PQ_callisto_8k.T_PQ_callisto_8k 8192x4096 PF_BC7 mips=14/14 42.7 MiB
+/Game/PlanetQuality/Textures/T_PQ_enceladus_4k.T_PQ_enceladus_4k 4096x2048 PF_BC7 mips=13/13 10.7 MiB
+/Game/PlanetQuality/Textures/T_PQ_DefaultBlack.T_PQ_DefaultBlack 4x4 PF_BC7 mips=3/3 0.0 MiB
+/Game/PlanetQuality/Textures/T_PQ_DefaultClear.T_PQ_DefaultClear 4x4 PF_BC4 mips=3/3 0.0 MiB
+/Game/PlanetQuality/Textures/T_PQ_DefaultFlatLand.T_PQ_DefaultFlatLand 4x4 PF_BC4 mips=3/3 0.0 MiB
+/Game/PlanetQuality/Textures/T_PQ_earth_clouds_16k.T_PQ_earth_clouds_16k 16384x8192 PF_BC4 mips=15/15 85.4 MiB
+/Game/PlanetQuality/Textures/T_PQ_earth_relief_16k.T_PQ_earth_relief_16k 16384x8192 PF_BC4 mips=15/15 85.4 MiB
+/Game/PlanetQuality/Textures/T_PQ_mars_relief_4k.T_PQ_mars_relief_4k 4096x2048 PF_BC4 mips=13/13 5.4 MiB
+/Game/PlanetQuality/Textures/T_PQ_moon_relief_4k.T_PQ_moon_relief_4k 4096x2048 PF_BC4 mips=13/13 5.4 MiB

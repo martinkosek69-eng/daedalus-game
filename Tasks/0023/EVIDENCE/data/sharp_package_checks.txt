@@ -1,0 +1,49 @@
+SHARP_PROBE scene and three drives ready PASS
+SHARP_PROBE viewport equals native display or explicit 4K PASS
+SHARP_PROBE Windows high DPI enabled before window creation PASS
+SHARP_PROBE no resolution upscaling PASS
+SHARP_PROBE no temporal FXAA motion focus or colour blur PASS
+SHARP_VIEWPORT 3840x2160
+SHARP_TEXTURE ship-near T_Daedalus_Plating_Normal size=2048x2048 mips=12/12
+SHARP_PROBE full texture detail in ordinary flight PASS
+SHARP_TEXTURE ship-near T_Daedalus_Plating_BaseColor size=2048x2048 mips=12/12
+SHARP_PROBE full texture detail in ordinary flight PASS
+SHARP_TEXTURE ship-near T_Daedalus_Plating_ORM size=2048x2048 mips=12/12
+SHARP_PROBE full texture detail in ordinary flight PASS
+SHARP_PROBE ship-near PASS
+SHARP_TEXTURE earth-normal-flight T_PQ_earth_day_16k size=16384x8192 mips=15/15
+SHARP_PROBE full texture detail in ordinary flight PASS
+SHARP_TEXTURE earth-normal-flight T_PQ_earth_relief_16k size=16384x8192 mips=15/15
+SHARP_PROBE full texture detail in ordinary flight PASS
+SHARP_TEXTURE earth-normal-flight T_PQ_earth_clouds_16k size=16384x8192 mips=15/15
+SHARP_PROBE full texture detail in ordinary flight PASS
+SHARP_TEXTURE earth-normal-flight T_PQ_earth_night_8k size=8192x4096 mips=14/14
+SHARP_PROBE full texture detail in ordinary flight PASS
+SHARP_PROBE earth-normal-flight PASS
+SHARP_TEXTURE sky T_stars_milky_way size=8192x4096 mips=14/14
+SHARP_PROBE full texture detail in ordinary flight PASS
+SHARP_PROBE sky PASS
+SHARP_PROBE actual wheel zoom far PASS
+SHARP_TEXTURE ship-far T_Daedalus_Plating_Normal size=2048x2048 mips=12/12
+SHARP_PROBE full texture detail in ordinary flight PASS
+SHARP_TEXTURE ship-far T_Daedalus_Plating_BaseColor size=2048x2048 mips=12/12
+SHARP_PROBE full texture detail in ordinary flight PASS
+SHARP_TEXTURE ship-far T_Daedalus_Plating_ORM size=2048x2048 mips=12/12
+SHARP_PROBE full texture detail in ordinary flight PASS
+SHARP_PROBE ship-far PASS
+SHARP_PROBE clear sublight input course PASS
+SHARP_PROBE R starts ordinary impulse within three seconds PASS
+SHARP_PROBE Shift R engages full impulse without plain R stop PASS
+SHARP_PROBE full sublight reaches 250000 km per second in three seconds PASS
+SHARP_PROBE full sublight turn has no drift PASS
+SHARP_PROBE second Shift R smoothly disengages full impulse PASS
+SHARP_PROBE return to ordinary impulse completes without speed snap PASS
+SHARP_PROBE R stop works after downshift PASS
+SHARP_PROBE map prevents Shift R from commanding ship PASS
+SHARP_PROBE harbour selectable while coasting PASS
+SHARP_PROBE Space brake works after live profile change PASS
+SHARP_PROBE no domain errors after input sequence PASS
+SHARP_PROBE actual render written PASS
+SHARP_PROBE actual render written PASS
+SHARP_PROBE actual render written PASS
+SHARP_PROBE actual render written PASS

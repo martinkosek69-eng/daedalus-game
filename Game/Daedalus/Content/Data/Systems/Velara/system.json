@@ -1,0 +1,341 @@
+{
+  "version": 1,
+  "id": "fic.velara",
+  "name": "Velara",
+  "source": "fictional",
+  "galaxyPositionLightYears": [
+    25400,
+    300,
+    100
+  ],
+  "primaryStarId": "fic.velara.sun",
+  "stellarColor": "#ffd2a1",
+  "bodies": [
+    {
+      "id": "fic.velara.sun",
+      "name": "Velara",
+      "parentId": "",
+      "kind": "star",
+      "radiusMetres": 549603000.0,
+      "positionMetres": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "texture": "sun.jpg",
+      "rotationHours": 792.0,
+      "tiltDegrees": 4.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Velara/Textures/sun.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_velara_sun",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_velara_sun"
+    },
+    {
+      "id": "fic.velara.cinder",
+      "name": "Cinder",
+      "parentId": "fic.velara.sun",
+      "kind": "planet",
+      "radiusMetres": 3822600.0,
+      "positionMetres": [
+        12715819008.0,
+        22016897024.0,
+        576532736.0
+      ],
+      "texture": "cinder.jpg",
+      "rotationHours": 695.71,
+      "tiltDegrees": 0.5,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "nightTexture": "cinder_night.jpg",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Velara/Textures/cinder.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_velara_cinder",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_velara_cinder",
+      "nightTextureSource": "Art/Space/Systems/Velara/Textures/cinder_night.jpg"
+    },
+    {
+      "id": "fic.velara.thalassa",
+      "name": "Thalassa",
+      "parentId": "fic.velara.sun",
+      "kind": "planet",
+      "radiusMetres": 8600850.0,
+      "positionMetres": [
+        -94288093184.0,
+        16624622592.0,
+        174099008.0
+      ],
+      "texture": "thalassa.jpg",
+      "rotationHours": 19.5,
+      "tiltDegrees": 18.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "cloudTexture": "thalassa_clouds.png",
+      "atmosphereColor": "#8ccaff",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Velara/Textures/thalassa.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_velara_thalassa",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_velara_thalassa",
+      "cloudTextureSource": "Art/Space/Systems/Velara/Textures/thalassa_clouds.png"
+    },
+    {
+      "id": "fic.velara.nimbus",
+      "name": "Nimbus",
+      "parentId": "fic.velara.sun",
+      "kind": "planet",
+      "radiusMetres": 13697650.0,
+      "positionMetres": [
+        43365031936.0,
+        -161810677760.0,
+        -3106923776.0
+      ],
+      "texture": "nimbus.jpg",
+      "rotationHours": 14.2,
+      "tiltDegrees": 9.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "cloudTexture": "nimbus_clouds.png",
+      "atmosphereColor": "#d8d0f2",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Velara/Textures/nimbus.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_velara_nimbus",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_velara_nimbus",
+      "cloudTextureSource": "Art/Space/Systems/Velara/Textures/nimbus_clouds.png"
+    },
+    {
+      "id": "fic.velara.corvan",
+      "name": "Corvan",
+      "parentId": "fic.velara.sun",
+      "kind": "planet",
+      "radiusMetres": 10958120.0,
+      "positionMetres": [
+        226705293312.0,
+        158721179648.0,
+        2493391360.0
+      ],
+      "texture": "corvan.jpg",
+      "rotationHours": 21.7,
+      "tiltDegrees": 23.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "ringInnerMetres": 17532992.0,
+      "ringOuterMetres": 29586924.0,
+      "ringTexture": "corvan_ring.png",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Velara/Textures/corvan.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_velara_corvan",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_velara_corvan",
+      "ringTextureSource": "Art/Space/Systems/Velara/Textures/corvan_ring.png"
+    },
+    {
+      "id": "fic.velara.aurelion",
+      "name": "Aurelion",
+      "parentId": "fic.velara.sun",
+      "kind": "planet",
+      "radiusMetres": 65017230.0,
+      "positionMetres": [
+        -732141256704.0,
+        -341301166080.0,
+        -8341220864.0
+      ],
+      "texture": "aurelion.jpg",
+      "rotationHours": 10.4,
+      "tiltDegrees": 14.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "ringInnerMetres": 80621365.2,
+      "ringOuterMetres": 152790490.5,
+      "ringTexture": "aurelion_ring.png",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Velara/Textures/aurelion.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_velara_aurelion",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_velara_aurelion",
+      "ringTextureSource": "Art/Space/Systems/Velara/Textures/aurelion_ring.png"
+    },
+    {
+      "id": "fic.velara.shard",
+      "name": "Shard",
+      "parentId": "fic.velara.corvan",
+      "kind": "moon",
+      "radiusMetres": 320000.0,
+      "positionMetres": [
+        226674294784.0,
+        158770610176.0,
+        2514371072.0
+      ],
+      "texture": "shard.jpg",
+      "rotationHours": 21.08,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Velara/Textures/shard.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_velara_shard",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_velara_shard"
+    },
+    {
+      "id": "fic.velara.mira",
+      "name": "Mira",
+      "parentId": "fic.velara.aurelion",
+      "kind": "moon",
+      "radiusMetres": 1120000.0,
+      "positionMetres": [
+        -731991244800.0,
+        -341553250304.0,
+        -8404073984.0
+      ],
+      "texture": "mira.jpg",
+      "rotationHours": 32.36,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Velara/Textures/mira.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_velara_mira",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_velara_mira"
+    },
+    {
+      "id": "fic.velara.coral",
+      "name": "Coral",
+      "parentId": "fic.velara.thalassa",
+      "kind": "moon",
+      "radiusMetres": 950000.0,
+      "positionMetres": [
+        -94525562880.0,
+        16435110912.0,
+        112522992.0
+      ],
+      "texture": "coral.jpg",
+      "rotationHours": 321.54,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Velara/Textures/coral.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_velara_coral",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_velara_coral"
+    },
+    {
+      "id": "fic.velara.opaline",
+      "name": "Opaline",
+      "parentId": "fic.velara.aurelion",
+      "kind": "moon",
+      "radiusMetres": 760000.0,
+      "positionMetres": [
+        -731742863360.0,
+        -341077983232.0,
+        -8285578752.0
+      ],
+      "texture": "opaline.jpg",
+      "rotationHours": 61.44,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Velara/Textures/opaline.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_velara_opaline",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_velara_opaline"
+    },
+    {
+      "id": "fic.velara.brine",
+      "name": "Brine",
+      "parentId": "fic.velara.aurelion",
+      "kind": "moon",
+      "radiusMetres": 1930000.0,
+      "positionMetres": [
+        -732428566528.0,
+        -340535279616.0,
+        -8150261760.0
+      ],
+      "texture": "brine.jpg",
+      "rotationHours": 151.61,
+      "tiltDegrees": 0.0,
+      "shapeScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "surfaceQuality": "fictional-authored",
+      "radiusKnown": true,
+      "positionKnown": true,
+      "textureSource": "Art/Space/Systems/Velara/Textures/brine.jpg",
+      "material": "/Game/Solar/Materials/M_Body_fic_velara_brine",
+      "mapMaterial": "/Game/Solar/Materials/M_Map_fic_velara_brine"
+    }
+  ],
+  "belts": [
+    {
+      "id": "fic.velara.main_belt",
+      "parentId": "fic.velara.sun",
+      "innerMetres": 373994676750.0,
+      "outerMetres": 508632760380.0,
+      "count": 600,
+      "seed": 2301,
+      "kind": "asteroid"
+    }
+  ],
+  "regions": [
+    {
+      "name": "main_belt (fiktivní pás)",
+      "geometry": "disk",
+      "centreMetres": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "innerMetres": 373994676750.0,
+      "outerMetres": 508632760380.0
+    }
+  ]
+}

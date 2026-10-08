@@ -1,0 +1,191 @@
+<div id="daedalus-hud-concept" aria-label="Přístrojový HUD Daedala">
+<style>
+#daedalus-hud-concept{--radar:#a9d4b0;--shield:#87b8d9;--text:#d7e0e6;--muted:#9aaab5;--amber:#d4b470;--turret:#cf9a78;--beam:#92cbe5;--frame:#607b8b;--panel:#101b25;color:var(--text);font-family:'Segoe UI',Arial,sans-serif}
+#daedalus-hud-concept *{box-sizing:border-box}
+#daedalus-hud-concept .stage{position:relative;aspect-ratio:16/9;overflow:hidden;background:#020405;isolation:isolate;font-size:clamp(11px,.65vw,32px)}
+#daedalus-hud-concept .scene{position:absolute;top:0;left:0;width:100%;height:124%;object-fit:cover;object-position:48% top}
+#daedalus-hud-concept .stars{position:absolute;inset:0;width:100%;height:100%;color:#c0ccd5;opacity:.4}
+#daedalus-hud-concept .location{position:absolute;top:4%;left:3%;width:16em;text-shadow:0 1px 3px #000}
+#daedalus-hud-concept .system-name{font-weight:500;letter-spacing:.06em}
+#daedalus-hud-concept .sub{color:var(--muted);margin-top:.45em}
+#daedalus-hud-concept .radar{color:var(--radar);width:12.6em;height:12.6em;display:block;margin:1em 0 0;overflow:visible}
+#daedalus-hud-concept .radar .grid{fill:none;stroke:currentColor;opacity:.45;stroke-width:1}
+#daedalus-hud-concept .radar text{fill:currentColor;font-size:11px;font-family:inherit}
+#daedalus-hud-concept .frame{position:relative;background:linear-gradient(135deg,#536b7b,#263a49 23%,#0b141d 50%,#324957 82%,#637f8d);padding:.25em;box-shadow:0 .16em .55em #0009;clip-path:polygon(0 .65em,.65em 0,calc(100% - .65em) 0,100% .65em,100% calc(100% - .65em),calc(100% - .65em) 100%,.65em 100%,0 calc(100% - .65em))}
+#daedalus-hud-concept .instrument{background:linear-gradient(135deg,#192933,#081119 65%);border:1px solid #8194a04d;box-shadow:inset 0 0 0 .15em #02080e;position:relative;padding:.65em .7em}
+#daedalus-hud-concept .module-heading{display:flex;justify-content:space-between;gap:.5em;align-items:center;letter-spacing:.08em;font-size:.85em;padding-bottom:.5em;color:#c4d3de;border-bottom:1px solid #476375}
+#daedalus-hud-concept .serial{font-size:.8em;color:var(--muted);letter-spacing:.04em}
+#daedalus-hud-concept .computer{position:absolute;top:4%;right:3%;width:21em}
+#daedalus-hud-concept .computer-header{background:linear-gradient(90deg,#355266,#1b2c3b);display:flex;justify-content:space-between;align-items:center;padding:.7em .8em;letter-spacing:.06em;border-bottom:1px solid #728f9e}
+#daedalus-hud-concept .computer-body{background:#0b151fe8;padding:.5em .7em .7em;border:1px solid #5d79894d}
+#daedalus-hud-concept .computer-nav{display:grid;grid-template-columns:1fr 1fr;gap:.35em}
+#daedalus-hud-concept .computer button{display:flex;align-items:center;gap:.6em;background:linear-gradient(#223440,#121f29);border:1px solid #587486;color:var(--text);font:inherit;text-align:left;min-height:3.4em;padding:.5em .55em}
+#daedalus-hud-concept .computer button span:first-child{color:var(--shield);font-size:.82em;border-right:1px solid #5b73844f;padding-right:.5em}
+#daedalus-hud-concept .computer button span:last-child{font-size:.85em}
+#daedalus-hud-concept .computer button:hover,#daedalus-hud-concept .computer button[aria-pressed="true"]{background:linear-gradient(#3c596c,#213b4d);border-color:#9db9cb}
+#daedalus-hud-concept .content{margin-top:.7em;padding:.8em;background:#030b13;border:1px solid #344c5c;color:var(--muted);font-size:.85em;min-height:3.7em}
+#daedalus-hud-concept .computer-footer{display:flex;justify-content:space-between;margin-top:.6em;color:var(--muted);font-size:.78em;letter-spacing:.08em}
+#daedalus-hud-concept .dock{position:absolute;bottom:2.3%;left:50%;transform:translateX(-50%);display:flex;align-items:flex-end;width:max-content;max-width:94%;gap:.4em;text-shadow:0 1px 2px #000}
+#daedalus-hud-concept .energy-block{width:8.3em;align-self:flex-end;margin-bottom:1.45em}
+#daedalus-hud-concept .power-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.42em;margin:.75em .05em .35em}
+#daedalus-hud-concept .channel{text-align:center;color:var(--muted);font-size:.8em}
+#daedalus-hud-concept .energy-track{height:7.6em;margin:.5em .18em;background:repeating-linear-gradient(to top,#2c3d49 0,#2c3d49 .42em,#080f17 .42em,#080f17 .54em);opacity:.7}
+#daedalus-hud-concept .channel-value{background:#060e17;padding:.3em;color:var(--text)}
+#daedalus-hud-concept .channel:nth-child(1){color:var(--turret)}
+#daedalus-hud-concept .channel:nth-child(2){color:var(--shield)}
+#daedalus-hud-concept .channel:nth-child(3){color:var(--amber)}
+#daedalus-hud-concept .panel-status{font-size:.74em;letter-spacing:.08em;color:var(--muted);margin-top:.7em;text-align:center}
+#daedalus-hud-concept .ship-block{width:14em;text-align:center}
+#daedalus-hud-concept .ship-chassis{padding:.3em;background:linear-gradient(135deg,#98aab4,#314b5c 27%,#09121a 52%,#456171 79%,#a7b7be);border-radius:50%;box-shadow:0 .12em .6em #0009,inset 0 0 0 .12em #91a7b6}
+#daedalus-hud-concept .ship-screen{position:relative;background:radial-gradient(circle,#183327,#091a16 48%,#030c11 70%);border-radius:50%;border:.16em solid #0b151e;box-shadow:inset 0 0 0 .2em #314957;overflow:hidden}
+#daedalus-hud-concept .vessel{width:100%;height:auto;display:block}
+#daedalus-hud-concept .shield{fill:none;stroke:var(--shield);stroke-width:4;opacity:.85}
+#daedalus-hud-concept .hull{fill:#a9d4b019;stroke:var(--radar);stroke-width:2}
+#daedalus-hud-concept .hull-grid{fill:none;stroke:var(--radar);stroke-width:.5;opacity:.14}
+#daedalus-hud-concept .sector-labels text{fill:#9fbbcc;font-size:8px;letter-spacing:.7px}
+#daedalus-hud-concept .zone{display:none}
+#daedalus-hud-concept .zone.is-selected{display:inline}
+#daedalus-hud-concept .zone[data-weapon="turret"]{fill:var(--turret)}
+#daedalus-hud-concept .zone[data-weapon="missile"]{fill:var(--amber)}
+#daedalus-hud-concept .zone[data-weapon="beam"]{fill:var(--beam)}
+#daedalus-hud-concept .ship-name{letter-spacing:.15em;font-size:.95em;background:linear-gradient(#2d4352,#0e1d28);border:1px solid #657e8c;margin:.35em 1.2em 0;padding:.5em .3em;box-shadow:inset 0 0 0 2px #0c1720}
+#daedalus-hud-concept .drive{width:11.5em;margin-bottom:1.45em}
+#daedalus-hud-concept .drive-body{display:flex;gap:.7em;padding-top:.6em}
+#daedalus-hud-concept .thrust{display:flex;align-items:stretch;gap:.3em;height:8.8em}
+#daedalus-hud-concept .meter{position:relative;width:.9em;height:100%;background:repeating-linear-gradient(to top,#3b3c32 0,#3b3c32 .36em,#0b151c .36em,#0b151c .47em)}
+#daedalus-hud-concept .meter::after{content:'';position:absolute;bottom:0;width:100%;height:var(--thrust-fill,0%);background:var(--amber)}
+#daedalus-hud-concept .meter-scale{height:100%;display:flex;flex-direction:column;justify-content:space-between;font-size:.8em;color:var(--muted)}
+#daedalus-hud-concept .drive-readings{flex:1;min-width:0}
+#daedalus-hud-concept .speed{font-size:2em;font-variant-numeric:tabular-nums;background:#020a12;border-bottom:1px solid #486274;padding:.13em .18em}
+#daedalus-hud-concept .speed small{font-size:.42em;color:var(--muted)}
+#daedalus-hud-concept .reading-label{font-size:.76em;color:var(--muted);margin:.5em 0 .45em;letter-spacing:.06em}
+#daedalus-hud-concept .throttle-readout{color:var(--amber);font-variant-numeric:tabular-nums;font-size:1.15em}
+#daedalus-hud-concept .mode-stack{display:grid;gap:.22em;margin-top:.65em}
+#daedalus-hud-concept .mode{font-size:.78em;color:#7f919c;letter-spacing:.05em;padding:.38em .55em;background:#101e29;border-left:.22em solid #344856}
+#daedalus-hud-concept .mode.active{color:var(--amber);background:#342e21;border-left-color:var(--amber)}
+#daedalus-hud-concept .weapons{width:26em;margin-bottom:1.45em}
+#daedalus-hud-concept .weapon-options{display:grid;grid-template-columns:repeat(3,1fr);gap:.5em;padding-top:.65em}
+#daedalus-hud-concept .weapon{--weapon-color:var(--turret);position:relative;display:flex;flex-direction:column;align-items:stretch;color:var(--text);background:linear-gradient(145deg,#2e3e4b,#101c27);padding:.35em;border:1px solid #758a98;font:inherit;text-align:left;box-shadow:inset 0 0 0 2px #0b131d}
+#daedalus-hud-concept .weapon[data-weapon="missile"]{--weapon-color:var(--amber)}
+#daedalus-hud-concept .weapon[data-weapon="beam"]{--weapon-color:var(--beam)}
+#daedalus-hud-concept .weapon-title{display:flex;align-items:center;justify-content:space-between;font-size:.79em;letter-spacing:.06em;padding:.35em .25em .55em}
+#daedalus-hud-concept .weapon-title span:first-child{color:var(--weapon-color)}
+#daedalus-hud-concept .weapon-title span:last-child{color:var(--muted);font-size:.9em}
+#daedalus-hud-concept .weapon-display{height:5.65em;background:radial-gradient(ellipse,#1b2f3c,#040b13 77%);border:1px solid #486071;position:relative;overflow:hidden}
+#daedalus-hud-concept .weapon-display::before,#daedalus-hud-concept .weapon-display::after{content:'';position:absolute;top:.25em;bottom:.25em;width:.38em;border-top:1px solid var(--weapon-color);border-bottom:1px solid var(--weapon-color);opacity:.8}
+#daedalus-hud-concept .weapon-display::before{left:.25em;border-left:1px solid var(--weapon-color)}
+#daedalus-hud-concept .weapon-display::after{right:.25em;border-right:1px solid var(--weapon-color)}
+#daedalus-hud-concept .weapon-map{width:100%;height:100%;color:var(--weapon-color);display:block}
+#daedalus-hud-concept .weapon-hull{fill:#9eb5c00c;stroke:#728896;stroke-width:2.5}
+#daedalus-hud-concept .weapon-point{fill:currentColor}
+#daedalus-hud-concept .weapon-label{font-size:.8em;padding:.55em .25em .4em;min-height:3.35em}
+#daedalus-hud-concept .weapon-state{display:flex;justify-content:space-between;gap:.4em;background:#080f17;font-size:.75em;color:var(--muted);padding:.45em .4em;border-top:1px solid #354b5b}
+#daedalus-hud-concept .weapon[aria-pressed="true"]{border-color:var(--weapon-color);box-shadow:inset 0 0 0 2px var(--weapon-color)}
+#daedalus-hud-concept .weapon:hover{background:linear-gradient(145deg,#455968,#1d303e)}
+#daedalus-hud-concept .zone-summary{font-size:.79em;color:var(--muted);min-height:1.8em;padding-top:.65em}
+@media(max-width:1050px){
+ #daedalus-hud-concept .stage{min-height:720px;aspect-ratio:auto}
+ #daedalus-hud-concept .dock{gap:.25em;max-width:98%;bottom:2%}
+ #daedalus-hud-concept .ship-block{width:12em}
+ #daedalus-hud-concept .weapons{width:23em}
+ #daedalus-hud-concept .computer{right:2%;top:3%}
+}
+@media(max-width:700px){
+ #daedalus-hud-concept .stage{min-height:1100px}
+ #daedalus-hud-concept .location{width:43%;left:3%;top:20px}
+ #daedalus-hud-concept .radar{width:100%;max-width:150px;height:auto}
+ #daedalus-hud-concept .computer{width:46%;right:3%;top:20px}
+ #daedalus-hud-concept .computer-header{flex-wrap:wrap;gap:.4em}
+ #daedalus-hud-concept .computer-nav{grid-template-columns:1fr}
+ #daedalus-hud-concept .computer button{min-height:44px}
+ #daedalus-hud-concept .dock{width:95%;max-width:95%;flex-wrap:wrap;justify-content:center;gap:.6em}
+ #daedalus-hud-concept .energy-block{width:7.5em;margin-bottom:0}
+ #daedalus-hud-concept .ship-block{width:12em}
+ #daedalus-hud-concept .drive{width:11.5em;margin-bottom:0}
+ #daedalus-hud-concept .weapons{width:100%;margin:0}
+}
+</style>
+<div class="stage">
+ <svg class="stars" viewBox="0 0 1600 900" aria-hidden="true"><g fill="currentColor">__STARS__</g></svg>
+ __BACKGROUND__
+ <section class="location" aria-label="Poloha a volná holografická minimapa">
+  <div class="system-name">SLUNEČNÍ SOUSTAVA</div><div class="sub">Země · oběžná dráha</div>
+  <svg class="radar" viewBox="0 0 190 190" role="img" aria-label="Minimapa bez panelu, tři kruhy, příď lodi, Země a Měsíc">
+   <g class="grid"><circle cx="95" cy="95" r="87"/><circle cx="95" cy="95" r="58"/><circle cx="95" cy="95" r="29"/><path d="M8 95H182M95 8V182"/></g>
+   <path d="M95 86L90 100L95 97L100 100Z" fill="currentColor"/>
+   <circle cx="53" cy="121" r="3" fill="currentColor"/><text x="18" y="144">Země</text>
+   <circle cx="132" cy="50" r="2" fill="currentColor"/><text x="130" y="37">Měsíc</text>
+  </svg>
+ </section>
+ <section class="computer frame" aria-label="Palubní počítač">
+  <div class="computer-header"><span>PALUBNÍ POČÍTAČ</span><span class="serial">BC–304</span></div>
+  <div class="computer-body">
+   <div class="computer-nav">
+    <button class="cursor-interaction" type="button" data-page="navigace" aria-pressed="true"><span>01</span><span>Navigace</span></button>
+    <button class="cursor-interaction" type="button" data-page="skenovani" aria-pressed="false"><span>02</span><span>Skenování</span></button>
+    <button class="cursor-interaction" type="button" data-page="lod" aria-pressed="false"><span>03</span><span>Informace o lodi</span></button>
+    <button class="cursor-interaction" type="button" data-page="hyperpohon" aria-pressed="false"><span>04</span><span>Hyperpohon</span></button>
+   </div>
+   <div class="content" aria-live="polite">Databáze soustav a těles</div>
+   <div class="computer-footer"><span>DAEDALUS</span><span>NAV / SYS</span></div>
+  </div>
+ </section>
+ <div class="dock">
+  <section class="energy-block frame" aria-label="Sekundární panel energie, dosud nezapojený">
+   <div class="instrument"><div class="module-heading"><span>ENERGIE</span><span class="serial">SYS</span></div>
+    <div class="power-grid">
+     <div class="channel">ZBR<div class="energy-track"></div><div class="channel-value">—</div></div>
+     <div class="channel">ŠTÍ<div class="energy-track"></div><div class="channel-value">—</div></div>
+     <div class="channel">MOT<div class="energy-track"></div><div class="channel-value">—</div></div>
+     <div class="channel">SYS<div class="energy-track"></div><div class="channel-value">—</div></div>
+    </div><div class="panel-status">NEZAPOJENO</div>
+   </div>
+  </section>
+  <section class="ship-block" aria-label="Daedalus a čtyři sektory štítů">
+   <div class="ship-chassis"><div class="ship-screen">
+    <svg class="vessel" viewBox="0 0 240 240" role="img" aria-label="Zelený skutečný obrys Daedala, čtyři modré sektory štítů; bez smyšlené síly štítů">
+     <g class="hull-grid"><circle cx="120" cy="120" r="78"/><circle cx="120" cy="120" r="48"/><path d="M42 120H198M120 42V198"/></g>
+     <g class="shield"><path d="M46 48 A103 103 0 0 1 194 48"/><path d="M199 53 A103 103 0 0 1 199 187"/><path d="M194 192 A103 103 0 0 1 46 192"/><path d="M41 187 A103 103 0 0 1 41 53"/></g>
+     <g class="sector-labels"><text x="120" y="33" text-anchor="middle">PŘÍĎ</text><text x="120" y="217" text-anchor="middle">ZÁĎ</text><text x="21" y="120" text-anchor="middle" transform="rotate(-90 21 120)">LEVÝ</text><text x="219" y="120" text-anchor="middle" transform="rotate(90 219 120)">PRAVÝ</text></g>
+     <g transform="__HULL_TRANSFORM__"><path class="hull" d="__HULL_PATH__"/>__WEAPON_ZONES__</g>
+    </svg>
+   </div></div><div class="ship-name">DAEDALUS</div>
+  </section>
+  <section class="drive frame" aria-label="Rychlost, tah motoru a režimy pohonu">
+   <div class="instrument"><div class="module-heading"><span>POHON</span><span class="serial">ENG</span></div>
+    <div class="drive-body">
+     <div class="thrust"><div class="meter" role="meter" aria-label="Tah motoru" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div><div class="meter-scale"><span>100</span><span>75</span><span>50</span><span>25</span><span>0</span></div></div>
+     <div class="drive-readings"><div class="speed">0 <small>km/s</small></div><div class="reading-label">RYCHLOST</div><div class="throttle-readout">TAH 0 %</div>
+      <div class="mode-stack"><div class="mode">MANÉVROVÁNÍ</div><div class="mode active">IMPULS</div><div class="mode">PLNÝ IMPULS</div></div>
+     </div>
+    </div>
+   </div>
+  </section>
+  <section class="weapons frame" aria-label="Tři podrobné skupiny výzbroje Daedala">
+   <div class="instrument"><div class="module-heading"><span>ZBRAŇOVÉ SYSTÉMY</span><span class="serial">NEZAPOJENO</span></div>
+    <div class="weapon-options">
+     <button class="weapon cursor-interaction" type="button" data-weapon="turret" aria-pressed="false" aria-label="Ukázat skutečné pozice dělových věží"><span class="weapon-title"><span>VĚŽE</span><span>01</span></span><span class="weapon-display">__TURRET_DIAGRAM__</span><span class="weapon-label">Railguny</span><span class="weapon-state"><span>ZAMĚŘENÍ</span><span>—</span></span></button>
+     <button class="weapon cursor-interaction" type="button" data-weapon="missile" aria-pressed="false" aria-label="Ukázat skutečné pozice raketových sil"><span class="weapon-title"><span>RAKETY</span><span>02</span></span><span class="weapon-display">__MISSILE_DIAGRAM__</span><span class="weapon-label">Příďová sila</span><span class="weapon-state"><span>ODPAL</span><span>—</span></span></button>
+     <button class="weapon cursor-interaction" type="button" data-weapon="beam" aria-pressed="false" aria-label="Ukázat skutečné pozice paprskových emitorů"><span class="weapon-title"><span>PAPRSKY</span><span>03</span></span><span class="weapon-display">__BEAM_DIAGRAM__</span><span class="weapon-label">Asgardské emitory</span><span class="weapon-state"><span>ZAMĚŘENÍ</span><span>—</span></span></button>
+    </div><div class="zone-summary" aria-live="polite">PŘÍĎ / ZÁĎ · ZBRAŇOVÉ ZÓNY</div>
+   </div>
+  </section>
+ </div>
+</div>
+<script>
+(()=>{
+ const root=document.getElementById('daedalus-hud-concept');
+ const pages={navigace:'Databáze soustav a těles',skenovani:'Připraveno pro budoucí skenování',lod:'Daedalus · BC–304',hyperpohon:'Připraveno pro budoucí hyperpohon'};
+ root.querySelectorAll('[data-page]').forEach(button=>button.addEventListener('click',()=>{root.querySelectorAll('[data-page]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));root.querySelector('.content').textContent=pages[button.dataset.page];}));
+ const names={turret:'Dělové věže',missile:'Raketová sila',beam:'Paprskové emitory'};
+ root.querySelectorAll('button[data-weapon]').forEach(button=>button.addEventListener('click',()=>{
+  const selected=button.getAttribute('aria-pressed')!=='true';
+  root.querySelectorAll('button[data-weapon]').forEach(b=>b.setAttribute('aria-pressed',String(selected&&b===button)));
+  root.querySelectorAll('.zone').forEach(dot=>dot.classList.toggle('is-selected',selected&&dot.dataset.weapon===button.dataset.weapon));
+  root.querySelector('.zone-summary').textContent=selected?names[button.dataset.weapon]+' · umístění na modelu':'PŘÍĎ / ZÁĎ · ZBRAŇOVÉ ZÓNY';
+ }));
+ const appearance={radar:'#a9d4b0',shields:'#87b8d9'};
+ if(globalThis.Tweak){const tweak=new Tweak({container:root,onChange:()=>{root.style.setProperty('--radar',appearance.radar);root.style.setProperty('--shield',appearance.shields);}});tweak.addColorPicker(appearance,'radar',{label:'Odstín minimapy a obrysu lodi',reference:'--radar'});tweak.addColorPicker(appearance,'shields',{label:'Odstín štítů',reference:'--shield'});}
+})();
+</script>
+</div>

@@ -1,0 +1,108 @@
+{
+  "version": 1,
+  "sourceReviewDate": "2026-10-04",
+  "surfaces": [
+    {
+      "bodyId": "sol.pluto",
+      "texture": "Textures/pluto_lorri_4k.jpg",
+      "observationMask": "Textures/pluto_observation_mask.png",
+      "sourceUrl": "https://www.jpl.nasa.gov/images/pia20658-pluto-a-global-perspective/",
+      "downloadUrl": "https://d2pn8kiwq2w21t.cloudfront.net/original_images/jpegPIA20658.jpg",
+      "sourceFile": "Sources/PIA20658.jpg",
+      "sourceSha256": "82657c107c3578a33ad8dc7d4250482841563abb2ae7083646189ef8e64a94d2",
+      "sourceSize": [
+        2400,
+        1200
+      ],
+      "outputSize": [
+        4096,
+        2048
+      ],
+      "surfaceQuality": "real-partial-panchromatic-New-Horizons-mosaic",
+      "projection": "simple cylindrical; north at top; Charon zero longitude at centre, Pluto encounter hemisphere at centre; no authoritative runtime spin phase implied",
+      "credit": "NASA/Johns Hopkins University Applied Physics Laboratory/Southwest Research Institute",
+      "licence": "JPL Image Use Policy; image-specific credit retained; no endorsement",
+      "maskPolicy": "black/near-black no-data threshold <=2 in decoded source luminance; conservative visual coverage indicator, not a calibrated scientific confidence map",
+      "note": "Observed far hemisphere is genuinely low resolution. Pluto's 2400-wide source is resampled upward for a uniform 4k pipeline; no added observed detail. Black unmapped southern area is not a dark geological feature; no photographic color or relief reconstructed."
+    },
+    {
+      "bodyId": "sol.moon.jpl_901",
+      "texture": "Textures/charon_lorri_4k.jpg",
+      "observationMask": "Textures/charon_observation_mask.png",
+      "sourceUrl": "https://www.jpl.nasa.gov/images/pia19866-global-map-of-plutos-moon-charon/",
+      "downloadUrl": "https://d2pn8kiwq2w21t.cloudfront.net/original_images/jpegPIA19866.jpg",
+      "sourceFile": "Sources/PIA19866.jpg",
+      "sourceSha256": "542f6f76ece2dca82eb0ff5911875e6ed2f239d170dc9b8278e6c1b415437d29",
+      "sourceSize": [
+        9520,
+        4760
+      ],
+      "outputSize": [
+        4096,
+        2048
+      ],
+      "surfaceQuality": "real-partial-panchromatic-New-Horizons-mosaic",
+      "projection": "simple cylindrical; north at top; Charon zero longitude at centre, Pluto encounter hemisphere at centre; no authoritative runtime spin phase implied",
+      "credit": "NASA/Johns Hopkins University Applied Physics Laboratory/Southwest Research Institute",
+      "licence": "JPL Image Use Policy; image-specific credit retained; no endorsement",
+      "maskPolicy": "black/near-black no-data threshold <=2 in decoded source luminance; conservative visual coverage indicator, not a calibrated scientific confidence map",
+      "note": "Observed far hemisphere is genuinely low resolution. Pluto's 2400-wide source is resampled upward for a uniform 4k pipeline; no added observed detail. Black unmapped southern area is not a dark geological feature; no photographic color or relief reconstructed."
+    },
+    {
+      "bodyId": "sol.eris",
+      "texture": "Textures/eris_schematic_albedo.jpg",
+      "sourceUrl": null,
+      "credit": "Daedalus project original procedural schematic",
+      "licence": "Project-owned original generated map",
+      "outputSize": [
+        2048,
+        1024
+      ],
+      "surfaceQuality": "explicit-fictional-unmapped-schematic",
+      "observedTerrain": false,
+      "note": "Smooth authored albedo placeholder, not a photographed map, measured crater distribution or reconstructed terrain. Ceres has Dawn observations, but none is imported by this recipe."
+    },
+    {
+      "bodyId": "sol.makemake",
+      "texture": "Textures/makemake_schematic_albedo.jpg",
+      "sourceUrl": null,
+      "credit": "Daedalus project original procedural schematic",
+      "licence": "Project-owned original generated map",
+      "outputSize": [
+        2048,
+        1024
+      ],
+      "surfaceQuality": "explicit-fictional-unmapped-schematic",
+      "observedTerrain": false,
+      "note": "Smooth authored albedo placeholder, not a photographed map, measured crater distribution or reconstructed terrain. Ceres has Dawn observations, but none is imported by this recipe."
+    },
+    {
+      "bodyId": "sol.haumea",
+      "texture": "Textures/haumea_schematic_albedo.jpg",
+      "sourceUrl": null,
+      "credit": "Daedalus project original procedural schematic",
+      "licence": "Project-owned original generated map",
+      "outputSize": [
+        2048,
+        1024
+      ],
+      "surfaceQuality": "explicit-fictional-unmapped-schematic",
+      "observedTerrain": false,
+      "note": "Smooth authored albedo placeholder, not a photographed map, measured crater distribution or reconstructed terrain. Ceres has Dawn observations, but none is imported by this recipe."
+    },
+    {
+      "bodyId": "sol.ceres",
+      "texture": "Textures/ceres_schematic_albedo.jpg",
+      "sourceUrl": null,
+      "credit": "Daedalus project original procedural schematic",
+      "licence": "Project-owned original generated map",
+      "outputSize": [
+        2048,
+        1024
+      ],
+      "surfaceQuality": "explicit-fictional-unmapped-schematic",
+      "observedTerrain": false,
+      "note": "Smooth authored albedo placeholder, not a photographed map, measured crater distribution or reconstructed terrain. Ceres has Dawn observations, but none is imported by this recipe."
+    }
+  ]
+}

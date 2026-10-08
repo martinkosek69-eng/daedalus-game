@@ -1,0 +1,16 @@
+// Continuous perspective tunnel. Cyan/white flowing lobes on deep cobalt,
+// angular and longitudinal noise joined continuously around the cylinder.
+float2 p=(UV-float2(.37,.5))*float2(1.777778,1);
+float r=max(length(p),.018), a=atan2(p.y,p.x);
+float z=1.15/r, t=PhaseTime;
+float bend=.17*sin(z*.55-t*.65)+.10*sin(z*1.6+t*.8);
+float3 q=float3(cos(a+bend)*4.2,sin(a+bend)*4.2,z*.46-t*1.8);
+float n=F.Fbm(q), n2=F.Fbm(q*1.9+float3(7,3,-t*.6));
+float wave=.5+.5*sin(a*13+z*.37-t*.9+5*n);
+float streak=pow(saturate(wave),2.1)*(.3+1.2*n2);
+float lobe=smoothstep(.43,.72,n)*(.4+.6*wave);
+float3 c=float3(.002,.004,.06)+float3(.08,.17,1.15)*(streak*.45+n*.14);
+c+=float3(.18,1.4,1.7)*pow(saturate(lobe+streak*.46),3.8)*1.45;
+float center=smoothstep(.016,.09,r);
+c=lerp(float3(.02,.10,.48),c,center);
+return float4(c,1);

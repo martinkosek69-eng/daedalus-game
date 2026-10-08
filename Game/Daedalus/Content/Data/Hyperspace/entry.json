@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "openingAtSeconds": 0.5,
+  "fullAtSeconds": 1.25,
+  "accelerationAtSeconds": 0.9,
+  "noseAtSeconds": 1.9,
+  "tailAtSeconds": 2.15,
+  "collapseAtSeconds": 2.35,
+  "closedAtSeconds": 3.4,
+  "transitAtSeconds": 3.85,
+  "endAtSeconds": 10.7,
+  "shipLengthMetres": 600,
+  "windowXMetres": 1200,
+  "windowRadiusMetres": 420
+}

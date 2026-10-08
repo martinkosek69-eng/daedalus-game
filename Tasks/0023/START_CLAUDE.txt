@@ -1,0 +1,17 @@
+Převezmi implementační úkol0023 v repozitáři
+https://github.com/martinkosek69-eng/daedalus-game,
+větev codex/claude-0023-planet-upgrade. Fetchni ji a použij vlastní čistý
+checkout na A: z jejího zakládacího commitu, nikoli starý základ0022/main.
+
+Přečti Tasks/0023/BRIEF.md, Tasks/0022/REVIEW.md a Docs/VISUAL_QUALITY.md
+v této nové větvi. Uživatel povolil implementaci celé planetární části:
+varianta B + cíleně lepší skutečné mapy. První Země, pak ostatní tělesa šesti
+soustav. Ostré nativní4K,32palcový monitor. Schválená loď, bodové hvězdy,
+ovládání a HUD zůstanou. Proveď zdroje, materiály, napojení v Unrealu,
+import, kontroly a hratelný balíček; není to další pouhý návrh.
+
+Máš přidělený Unreal editor/build a Blender background podle BRIEF.
+Vždy vlastní projekt, nepoužívej lidské otevřené aplikace. Šetři usage,
+testuj cíleně. Po Zemi ulož checkpoint, ověř základ a pokračuj na ostatní,
+nemusíš čekat na další povel. Průběžně commit/push na vlastní větev.
+Na konci READY_FOR_REVIEW, HANDOFF, RESULTS_CZ, větev/SHA a uvolnění aplikací.

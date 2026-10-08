@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "planetSourceCommit": "aa9072c",
+  "shipSourceCommit": "7c35635",
+  "hullSourceSHA256": "9cefa922abba0869d54065054dab5908d171c13dfbaa57667c7d4dd674e355ab",
+  "automationSucceeded": 20,
+  "automationFailed": 0,
+  "planetBindings": 105,
+  "cloudLayersAcrossSystems": 10,
+  "reliefMaps": 3,
+  "nightMaps": 5,
+  "planetMasters": 4,
+  "viewportWidth": 3840,
+  "viewportHeight": 2160,
+  "doorHalves": 4,
+  "pointLights": 10,
+  "engineOutlets": 6,
+  "systems": 6,
+  "packagedProbePassed": true,
+  "hudRenderCount": 5,
+  "subjectiveUserReview": "pending"
+}
