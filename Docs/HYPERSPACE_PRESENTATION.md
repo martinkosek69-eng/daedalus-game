@@ -1,8 +1,9 @@
-# Daedalus: hyperspace entry rehearsal (0028)
+# Daedalus: hyperspace window rehearsal (0029)
 
 Pure singleplayer presentation rehearsal, launched separately through
 `Tools/SPUSTIT_HYPERPROSTOR.cmd`. R or 1 replays the entry, Space pauses/resumes,
-2 jumps to the interior view, Escape closes the preview. It loops automatically.
+Escape closes the preview. It loops automatically. Default is window-only.
+The optional -IncludeTransit helper switch restores the earlier tunnel and key 2.
 Normal flight and its launcher remain the accepted 0027 delivery while the
 user reviews this animation. This is not a destination/travel/save implementation.
 
@@ -30,18 +31,22 @@ has capture/player chrome and compression; native 4K output does not invent
 missing measured reference detail.
 
 Window structure is a filled luminous aperture, irregular around the edge, with
-a near-white mint core, green/turquoise plasma and thin radial branching strands.
+a near-white mint core, green/turquoise translucent sheets and thin trailing tears.
 It is not an empty geometric ring. A sample from entry-1 at 9.25 s gave sRGB
 median [233,249,243] for the bright core and [76,128,128] for selected green/cyan
 midtones (selection-dependent, not a complete calibrated colour transform).
 Preserve near-white energy, green/cyan halo and black surrounding space together.
 
-## Original implementation
+## Revised implementation
 
 Art/Effects/Hyperspace contains editable procedural HLSL, reconstructed from the
 observed structure. Prepare-HyperspaceMaterials.py generates only two owned Unreal
-materials. Window has evolving multi-scale plasma, a dense core, turbulent webs,
-uneven radial filaments and a restrained local optical glow. No low-resolution
+materials, preserving each asset when its source recipe is unchanged. 0028's
+dense electrical-web appearance was rejected. 0029 uses finite tapered tears,
+eight dominant irregular extensions, broken luminous edges and six sampled
+noise layers for folded translucent sheets. These are artistically layered
+fields, not a physical volumetric simulation. Local glow remains restrained.
+No low-resolution
 image sequence is enlarged. The translucent plane depth-tests against the hull:
 the advancing bow becomes occluded by the core while the stern remains visible.
 Ship visibility ends only after the complete 600 m hull has cleared the plane.
@@ -61,6 +66,11 @@ at 3.85 s. Run-up joins crossing at continuous speed. These are artistic fits to
 the supplied timings, not gameplay propulsion speeds. Exact style and timing
 acceptance belongs to the user.
 
+The window-only loop ends at 3.85 s. Material PSO readiness and a zero-strength
+draw warmup precede playback/capture; otherwise first-launch pipeline creation
+can cause early aperture frames to disappear. The separate visual regression
+check catches this failure even when capture dimensions and flight state pass.
+
 FHyperTimeline validates into a temporary value and samples deterministically.
 SolarHyperspace is the scene adapter. It never advances or overwrites canonical
 flight state, inter-system navigation or save data. Existing mesh assets and
@@ -75,4 +85,9 @@ mode, sequentially with no other editor/build/game using the shared slot.
 Stills creates ten native 3840×2160 frames and checks flight-state preservation.
 Render creates a deterministic native 4K/30 fps sequence and an MP4 preview under
 .local/hyper, using an isolated user-data folder. Play launches the looping scene.
-Verification status, failures and remaining limits are in Tasks/0028/HANDOFF.md.
+Default output is .local/hyper/Daedalus-green-window-4K.mp4 (116 frames).
+Run Tools/Check-HyperspaceCapture.py with the Render output folder using a Python
+environment with Pillow and NumPy. Its fixed-camera pixel tests check opening,
+full aperture and closure, not artistic likeness. Verification status, failed
+iterations and remaining limits are in Tasks/0029/HANDOFF.md; additional online
+reference inspection is in Tasks/0029/REFERENCE_REVIEW.md.

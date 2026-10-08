@@ -1,10 +1,12 @@
 # Shared application ownership
 
-## Current transfer 0029
+## Completed transfer 0029
 
 Codex owns the window material and sequential material generation/build/capture
 in fc0b for the user's appearance revision. Initial process inventory found no
 editor or game. No ship/planet binary editing or other worker checkout use.
+Final package, 116-frame native 4K capture and movie encoding completed and
+owned processes exited. Slot released; inspect applications before another run.
 
 ## Completed transfer 0028
 

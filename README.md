@@ -24,7 +24,7 @@ selects the original Earth HUD or the new Ancient interface; the choice survives
 restart. Ancient ships default to Ancient HUD, Daedalus stays Earth.
 See [Aurora](Docs/AURORA.md) and [Ancient HUD references/controls](Docs/ANCIENT_HUD.md).
 The separate [hyperspace animation rehearsal](Docs/HYPERSPACE_PRESENTATION.md)
-uses `Tools/SPUSTIT_HYPERPROSTOR.cmd` after packaging Build-Hyperspace28.
+uses `Tools/SPUSTIT_HYPERPROSTOR.cmd` after packaging Build-Hyperspace29.
 It previews Daedalus entry/closure and transit without changing flight or saves.
 Press M for the 3D galaxy, searchable body database and navigation estimates.
 See [map controls and data limits](Docs/GALAXY_NAVIGATION.md).

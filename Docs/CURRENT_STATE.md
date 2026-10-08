@@ -1,13 +1,17 @@
-# Current development state — 2026-10-04
+# Current development state — 2026-10-08
 
-## Separate hyperspace animation rehearsal 0028
+## Separate hyperspace window revision 0029
 
-Tools/SPUSTIT_HYPERPROSTOR.cmd launches Build-Hyperspace28: Daedalus run-up,
-mint/green luminous aperture, depth-correct hull crossing, closure and blue
-transit tunnel. R/1 replays, Space pauses, 2 shows transit, Escape exits.
-Original procedural materials and a shared presentation timeline are based on
-the user's three video references. See Docs/HYPERSPACE_PRESENTATION.md and
-Tasks/0028/HANDOFF.md for checks and limits. This separate preview does not
+Tools/SPUSTIT_HYPERPROSTOR.cmd launches Build-Hyperspace29: Daedalus run-up,
+revised green translucent rupture sheets, depth-correct hull crossing and closure.
+R/1 replays, Space pauses, Escape exits. Default preview loops only the window;
+the earlier blue tunnel is optional through -IncludeTransit and remains deferred.
+0028 was rejected visually. 0029 is READY_FOR_REVIEW, not user-approved:
+116 native 3840x2160 frames passed state preservation and aperture visibility /
+closure checks; the encoded 4K movie decoded successfully. Startup now waits for
+material readiness to prevent missing early opening frames. See
+Docs/HYPERSPACE_PRESENTATION.md and Tasks/0029/HANDOFF.md for checks and limits.
+This separate preview does not
 advance canonical flight state or implement inter-system travel. The normal
 flight launcher below continues to open 0027.
 

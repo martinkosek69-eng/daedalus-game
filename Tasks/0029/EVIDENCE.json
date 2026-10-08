@@ -1,0 +1,17 @@
+{
+  "task": "0029",
+  "sourceCheckpoint": "2295b6b",
+  "package": "Build-Hyperspace29",
+  "capture": ".local/hyper/render-20261008-214250",
+  "nativeSize": [3840, 2160],
+  "frames": 116,
+  "fps": 30,
+  "flightStateUnchanged": true,
+  "apertureBrightPixelCounts": {"24": 19867, "38": 352223, "103": 0},
+  "movie": ".local/hyper/Daedalus-green-window-4K.mp4",
+  "movieSHA256": "5F06421FCF050998AB42C8119BB2031DFF22C3D02DBEAE083B8240E61AB8047E",
+  "frame0038SHA256": "19C43E4793A3EA2619B4DCE2DF236AB4A1B6E764B487C14D6FB127EC5E87A280",
+  "movieDecodePassed": true,
+  "artisticLikenessAccepted": false,
+  "realtimePerformanceBenchmarked": false
+}

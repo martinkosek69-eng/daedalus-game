@@ -50,7 +50,7 @@ automaticky aktualizovaný přehled všech vzdálených větví.
 
 | 0028 | [Daidalos: animace vstupu do hyperprostoru](0028/BRIEF.md) | Codex coordinator | NEEDS_CHANGES (user rejected appearance; revision 0029) | `codex/solar-flight` |
 
-| 0029 | [Zelené hyperprostorové trhliny](0029/BRIEF.md) | Codex coordinator | IN_PROGRESS | `codex/solar-flight` |
+| 0029 | [Zelené hyperprostorové trhliny](0029/BRIEF.md) | Codex coordinator | READY_FOR_REVIEW (4K technical checks passed; appearance pending) | `codex/solar-flight` |
 
 Další volné číslo: **0030**.
 
