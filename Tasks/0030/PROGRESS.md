@@ -14,5 +14,12 @@ uniform strands; revised transparency, spatial density, thin edge paths and
 source light scaling before full rendering. Reload check found no missing or
 unpacked file images. Selected native 4K opening/full/crossing/closed frames
 inspected. Final 108-frame, 24 fps, native 3840x2160 render/encode is running.
-No completed movie or artistic acceptance claimed yet. Resume helper checks
-the .blend hash and rejects mixing frames from different revisions.
+First EEVEE movie completed and passed native dimensions, packed dependencies
+and opening/closure checks. User emphasized maximum sharp detail again; native
+inspection found soft volume structure and stochastic sheet grain. Increasing
+the EEVEE volume grid crashed, so the delivery switched to Cycles GPU/OptiX,
+96 maximum samples, 0.01 adaptive threshold and denoising disabled. Cycles
+native frame44 rendered and was inspected; final full Cycles sequence now runs.
+Stars also changed from visible triangles to smaller round points. Earlier
+EEVEE movie is superseded; do not deliver it as the current source render.
+Resume helper puts each .blend hash into its own frame folder.

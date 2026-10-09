@@ -1,6 +1,6 @@
 {
   "blender": "5.2.2 LTS",
-  "renderEngine": "BLENDER_EEVEE",
+  "renderEngine": "CYCLES",
   "resolution": [
     3840,
     2160

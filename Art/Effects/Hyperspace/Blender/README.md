@@ -6,8 +6,9 @@ in Blender 5.2.2. The effect uses 28 independently folded mesh membranes with
 emissive volume with animated procedural structure. Opening and collapse are
 keyframed; no external simulation cache or downloaded effect assets are needed.
 
-Native 3840x2160, 24 fps, frames 1-108 (4.5 seconds), EEVEE, 48 render samples.
-Motion blur and depth of field are disabled. The compositor adds limited glow
+Native 3840x2160, 24 fps, frames 1-108 (4.5 seconds), Cycles GPU (OptiX),
+96 maximum samples, adaptive threshold 0.01, minimum 16 samples. Denoising,
+motion blur and depth of field are disabled. The compositor adds limited glow
 around emitted light; volume softness is intentional light structure, not an
 upscaled background image. Source appearance still requires user review.
 
@@ -21,9 +22,10 @@ This does not define or modify authoritative flight state or propulsion.
 Regenerate: Tools/Invoke-BlenderHyperspace.ps1 -Mode Create.
 Reload dependency check: same helper -Mode Audit.
 Render saved scene: -Mode Render; optional -Frames '20,44,61,90' or '1:108'.
-Render resumes only complete PNGs under frames-final and rejects a changed
-scene hash. After editing the scene, preserve old frames separately before
-rerendering to avoid mixing revisions. Encode: -Mode Video.
+Render resumes only complete PNGs under frames/<scene-hash-prefix>. A changed
+scene automatically gets a different output folder; old renders are preserved.
+Encode: -Mode Video. Check PNG integrity and aperture opening/closure with
+Tools/Check-BlenderHyperspace.py --root <checkout> (Python, Pillow and NumPy).
 All outputs stay under ignored .local/hyper/blender0030 on A:.
 
 Existing original-series reference clips are private local comparison inputs,
@@ -36,3 +38,8 @@ This is not an Unreal-ready import: Blender volume/compositor nodes do not
 transfer as ordinary glTF materials. After visual approval, preserve the timing
 and geometry and explicitly adapt/bake the effect for Unreal, with another
 native 4K in-game review. No normal game launcher or game materials are replaced.
+
+The first full EEVEE render was technically valid but original-size inspection
+showed coarse volume structure and stochastic transparency grain. A higher
+EEVEE volume-grid configuration crashed locally; the delivery uses Cycles
+per-pixel volume integration instead. EEVEE is not the delivery renderer.

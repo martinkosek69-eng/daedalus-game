@@ -25,7 +25,27 @@ output.mkdir(parents=True, exist_ok=True)
 renders.mkdir(parents=True, exist_ok=True)
 bpy.ops.wm.read_factory_settings(use_empty=True)
 scene = bpy.context.scene
-scene.render.engine = 'BLENDER_EEVEE'
+scene.render.engine = 'CYCLES'
+scene.cycles.samples = 96
+scene.cycles.use_adaptive_sampling = True
+scene.cycles.adaptive_threshold = .01
+scene.cycles.adaptive_min_samples = 16
+scene.cycles.use_denoising = False
+scene.cycles.transparent_max_bounces = 32
+scene.cycles.max_bounces = 6
+scene.cycles.volume_bounces = 0
+scene.cycles.volume_step_rate = .5
+scene.cycles.pixel_filter_type = 'BLACKMAN_HARRIS'
+scene.cycles.filter_width = 1.0
+preferences = bpy.context.preferences.addons['cycles'].preferences
+preferences.compute_device_type = 'OPTIX'
+preferences.get_devices()
+gpu_devices = [d for d in preferences.devices if d.type == 'OPTIX']
+if not gpu_devices:
+    raise RuntimeError('Configure a Cycles GPU before this native 4K offline render')
+for device in preferences.devices:
+    device.use = device.type == 'OPTIX'
+scene.cycles.device = 'GPU'
 scene.render.resolution_x = 3840
 scene.render.resolution_y = 2160
 scene.render.resolution_percentage = 100
@@ -37,11 +57,12 @@ scene.render.image_settings.color_mode = 'RGB'
 scene.render.image_settings.color_depth = '8'
 scene.render.film_transparent = False
 scene.render.use_motion_blur = False
-scene.eevee.taa_render_samples = 48
+scene.eevee.taa_render_samples = 128
 scene.eevee.volumetric_tile_size = '2'
-scene.eevee.volumetric_samples = 64
-scene.eevee.volumetric_start = .1
-scene.eevee.volumetric_end = 50
+scene.eevee.volumetric_samples = 192
+scene.eevee.volumetric_start = 18
+scene.eevee.volumetric_end = 29
+scene.eevee.volumetric_sample_distribution = 0
 scene.view_settings.view_transform = 'AgX'
 scene.view_settings.look = 'AgX - Medium High Contrast'
 scene.world = bpy.data.worlds.new('Black space')
@@ -316,9 +337,10 @@ em.inputs['Strength'].default_value=1.4;tree.links.new(em.outputs[0],out.inputs[
 verts=[];faces=[]
 for i in range(450):
     x,y,z=rng.uniform(-32,32),35,rng.uniform(-20,24)
-    r=rng.uniform(.009,.027)
-    base=len(verts);verts.extend([(x-r,y,z-r),(x+r,y,z-r),(x,y,z+r)])
-    faces.append((base,base+1,base+2))
+    r=rng.uniform(.004,.012)
+    base=len(verts)
+    verts.extend([(x+r*math.cos(j*math.tau/8),y,z+r*math.sin(j*math.tau/8)) for j in range(8)])
+    faces.append(tuple(base+j for j in range(8)))
 mesh=bpy.data.meshes.new('Distant star geometry');mesh.from_pydata(verts,[],faces)
 obj=bpy.data.objects.new('Sparse sharp starfield',mesh);scene.collection.objects.link(obj);mesh.materials.append(star)
 

@@ -13,6 +13,14 @@ p.add_argument('--frames',default='1:108')
 p.add_argument('--audit-only',action='store_true')
 a=p.parse_args(sys.argv[sys.argv.index('--')+1:])
 scene=bpy.context.scene
+if scene.render.engine=='CYCLES':
+    preferences=bpy.context.preferences.addons['cycles'].preferences
+    preferences.compute_device_type='OPTIX'
+    preferences.get_devices()
+    assert any(d.type=='OPTIX' for d in preferences.devices), 'Cycles OptiX GPU required'
+    for device in preferences.devices:
+        device.use=device.type=='OPTIX'
+    scene.cycles.device='GPU'
 assert (scene.render.resolution_x,scene.render.resolution_y,scene.render.resolution_percentage)==(3840,2160,100)
 assert not scene.render.use_motion_blur and not scene.camera.data.dof.use_dof
 missing=[im.name for im in bpy.data.images if im.source=='FILE' and not im.packed_file
@@ -35,8 +43,8 @@ if not a.audit_only:
         frames=range(start,end+1)
     else:
         frames=[int(x) for x in a.frames.split(',')]
-    folder=out/'frames-final'
-    folder.mkdir(exist_ok=True)
+    folder=out/'frames'/source_hash[:12]
+    folder.mkdir(parents=True,exist_ok=True)
     stamp=folder/'source-sha256.txt'
     if stamp.exists():
         assert stamp.read_text().strip()==source_hash, 'Scene changed; use a fresh frame folder before rendering'
